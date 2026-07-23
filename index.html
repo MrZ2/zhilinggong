@@ -45,6 +45,13 @@
     #dailySection { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
     #dailySection .filter-bar { margin-bottom: 0; }
     #dailySection .table-wrapper { margin-top: 0; border-radius: 0 0 8px 8px; }
+    /* Monthly section wrapper */
+    #monthlySection { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+    #monthlySection .filter-bar { margin-bottom: 0; }
+    #monthlySection .table-wrapper { margin-top: 0; border-radius: 0 0 8px 8px; }
+    #monthlyOverviewFilter { grid-template-columns: repeat(5, 1fr); }
+    #monthlyOverviewFilter input[type="month"] { flex: 1; min-width: 0; height: 32px; border: 1px solid #d9d9d9; border-radius: 6px; padding: 0 10px; font-size: 13px; outline: none; background: #fff; }
+    #monthlyOverviewFilter input[type="month"]:focus { border-color: #1677ff; box-shadow: 0 0 0 2px rgba(22,119,255,.1); }
     .tab-content { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
     .tab-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(0,0,0,.25); }
     .tab-placeholder svg { width: 64px; height: 64px; opacity: .4; }
@@ -62,6 +69,18 @@
     .btn:hover { border-color: #1677ff; color: #1677ff; }
     .btn-primary { background: #1677ff; border-color: #1677ff; color: #fff; }
     .btn-primary:hover { background: #4096ff; border-color: #4096ff; color: #fff; }
+
+    /* Export toolbar */
+    .export-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin: 12px 24px 0; flex-shrink: 0; }
+    .export-toolbar .btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; }
+    .export-toolbar .btn svg { flex-shrink: 0; }
+    .btn-export { color: #1677ff; border-color: #91caff; background: #f0f7ff; }
+    .btn-export:hover { background: #1677ff; border-color: #1677ff; color: #fff; }
+
+    /* Toast */
+    .toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-16px); background: rgba(0,0,0,.78); color: #fff; padding: 10px 18px; border-radius: 6px; font-size: 14px; z-index: 3000; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.18); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast svg { flex-shrink: 0; color: #52c41a; }
 
     /* Date picker */
     .date-picker-wrap { position: relative; flex: 1; min-width: 0; }
@@ -278,6 +297,43 @@
     .dd-status-absent { background: #f5f5f5; color: rgba(0,0,0,.35); border: 1px solid #e8e8e8; }
     .dd-status-approval { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
     .dd-record-cell { text-align: left; padding: 8px 10px; white-space: nowrap; line-height: 1.6; color: rgba(0,0,0,.55); font-size: 11px; }
+
+    /* Monthly Overview Table */
+    #monthlyOverviewTable { border-collapse: separate; border-spacing: 0; min-width: max-content; width: 100%; }
+    #monthlyOverviewTable thead th { background: #fafafa; padding: 8px 6px; text-align: center; font-weight: 500; font-size: 12px; color: rgba(0,0,0,.75); border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; white-space: nowrap; vertical-align: middle; letter-spacing: .3px; }
+    #monthlyOverviewTable thead tr:first-child th { font-size: 13px; color: rgba(0,0,0,.65); letter-spacing: .5px; position: sticky; top: 0; z-index: 20; background: #fafafa; border-top: 1px solid #f0f0f0; }
+    #monthlyOverviewTable thead tr:nth-child(2) th { padding: 7px 6px; line-height: 1.35; position: sticky; top: 36px; z-index: 20; background: #fafafa; font-size: 12px; }
+    #monthlyOverviewTable thead th:first-child, #monthlyOverviewTable tbody td:first-child { border-left: 1px solid #f0f0f0; }
+    #monthlyOverviewTable thead th.mo-sticky-name   { position: sticky; left: 0; z-index: 30 !important; background: #fafafa; padding: 0; }
+    #monthlyOverviewTable thead th.mo-sticky-phone  { position: sticky; left: var(--do-col-name); z-index: 30 !important; background: #fafafa; padding: 0; }
+    #monthlyOverviewTable thead th.mo-sticky-source { position: sticky; left: calc(var(--do-col-name) + var(--do-col-phone)); z-index: 30 !important; background: #fafafa; box-shadow: 4px 0 8px rgba(0,0,0,.06); padding: 0; }
+    #monthlyOverviewTable tbody td { padding: 10px 8px; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; vertical-align: middle; font-size: 12px; text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; transition: background .15s; }
+    #monthlyOverviewTable tbody tr:hover td { background: #f0f7ff; }
+    #monthlyOverviewTable tbody tr:nth-child(even) td { background: #fafcff; }
+    #monthlyOverviewTable tbody tr:nth-child(even):hover td { background: #f0f7ff; }
+    #monthlyOverviewTable tbody td.mo-sticky-name   { position: sticky; left: 0; z-index: 5; background: #fff; padding: 0; }
+    #monthlyOverviewTable tbody td.mo-sticky-phone  { position: sticky; left: var(--do-col-name); z-index: 5; background: #fff; color: rgba(0,0,0,.55); padding: 0; }
+    #monthlyOverviewTable tbody td.mo-sticky-source { position: sticky; left: calc(var(--do-col-name) + var(--do-col-phone)); z-index: 5; background: #fff; box-shadow: 4px 0 8px rgba(0,0,0,.06); padding: 0; }
+    #monthlyOverviewTable tbody tr:nth-child(even) td.mo-sticky-name,
+    #monthlyOverviewTable tbody tr:nth-child(even) td.mo-sticky-phone,
+    #monthlyOverviewTable tbody tr:nth-child(even) td.mo-sticky-source { background: #fafcff; }
+    #monthlyOverviewTable tbody tr:hover td.mo-sticky-name,
+    #monthlyOverviewTable tbody tr:hover td.mo-sticky-phone,
+    #monthlyOverviewTable tbody tr:hover td.mo-sticky-source { background: #f0f7ff; }
+    /* Group start separator */
+    #monthlyOverviewTable tbody tr.mo-group-start td { border-top: 2px solid #e8e8e8; }
+    /* Inner div padding for monthly sticky cells */
+    .mo-sticky-inner { padding: 10px 8px; display: block; text-align: center; }
+    .mo-sticky-inner-name { padding: 10px 8px 10px 12px; display: block; text-align: left; font-weight: 500; }
+    .mo-sticky-inner-th { padding: 8px 6px; display: block; text-align: center; }
+
+    /* Monthly Detail Table: reuses timeline global classes (sticky-l0/l1, date-cell, source-group...).
+       Only overrides border-collapse to separate (avoids Chrome collapse-mode z-index bug) with single-edge borders. */
+    #monthlyDetailTable { border-collapse: separate; border-spacing: 0; min-width: max-content; }
+    #monthlyDetailTable thead th { border: none; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
+    #monthlyDetailTable thead tr:first-child th { border-top: 1px solid #f0f0f0; }
+    #monthlyDetailTable thead th:first-child, #monthlyDetailTable tbody td:first-child { border-left: 1px solid #f0f0f0; }
+    #monthlyDetailTable tbody td { border: none; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
   </style>
 </head>
 <body>
@@ -365,6 +421,11 @@
     <button class="btn btn-primary" onclick="applyFilter()">查询</button>
     <button class="btn" onclick="resetFilter()">重置</button>
   </div>
+</div>
+
+<div class="export-toolbar">
+  <button class="btn" onclick="handleExportRecord()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>导出记录</button>
+  <button class="btn btn-export" onclick="handleExport()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出</button>
 </div>
 
 <div class="table-wrapper">
@@ -473,6 +534,10 @@
     <button class="btn" onclick="resetDailyDetailFilter()">重置</button>
   </div>
 </div>
+<div class="export-toolbar">
+  <button class="btn" onclick="handleExportRecord()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>导出记录</button>
+  <button class="btn btn-export" onclick="handleExport()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出</button>
+</div>
 <!-- 子Tab：紧贴列表上方 -->
 <div class="sub-tab-bar" id="subTabBar">
   <div class="sub-tab-item active" id="subTab0" onclick="switchSubTab(0)">概况统计</div>
@@ -497,6 +562,71 @@
   </div>
 </div>
 </div><!-- /#dailySection -->
+
+<!-- 月汇总区域 -->
+<div id="monthlySection" style="display:none;">
+<!-- 筛选栏：概况统计 -->
+<div class="filter-bar" id="monthlyOverviewFilter">
+  <div class="filter-item">
+    <label>月份</label>
+    <input type="month" id="monthPicker" value="2026-07">
+  </div>
+  <div class="filter-item">
+    <label>姓名</label>
+    <input type="text" id="searchName4" placeholder="输入员工姓名">
+  </div>
+  <div class="filter-item">
+    <label>考勤规则</label>
+    <select id="filterRule4">
+      <option value="">全部规则</option>
+      <option value="标准班">标准班</option>
+      <option value="夜班">夜班</option>
+      <option value="弹性工时">弹性工时</option>
+      <option value="休息">休息</option>
+    </select>
+  </div>
+  <div class="filter-item">
+    <label>数据来源</label>
+    <select id="filterSource4">
+      <option value="">全部来源</option>
+      <option value="internal">内部系统</option>
+      <option value="wecom">企业微信</option>
+      <option value="hikvision">海康威视</option>
+    </select>
+  </div>
+  <div class="btn-group" style="grid-column: 5;">
+    <button class="btn btn-primary" onclick="applyMonthlyFilter()">查询</button>
+    <button class="btn" onclick="resetMonthlyFilter()">重置</button>
+  </div>
+</div>
+<div class="export-toolbar">
+  <button class="btn" onclick="handleExportRecord()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>导出记录</button>
+  <button class="btn btn-export" onclick="handleExport()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出</button>
+</div>
+<!-- 子Tab：紧贴列表上方 -->
+<div class="sub-tab-bar" id="monthlySubTabBar">
+  <div class="sub-tab-item active" id="monthlySubTab0" onclick="switchMonthlySubTab(0)">月报概况统计</div>
+  <div class="sub-tab-item" id="monthlySubTab1" onclick="switchMonthlySubTab(1)">月报打卡明细</div>
+</div>
+<!-- 表格：概况统计 -->
+<div class="table-wrapper" id="monthlyOverviewTableWrap">
+  <div class="table-scroll">
+    <table id="monthlyOverviewTable">
+      <thead id="monthlyOverviewHead"></thead>
+      <tbody id="monthlyOverviewBody"></tbody>
+    </table>
+  </div>
+</div>
+<!-- 表格：打卡明细 -->
+<div class="table-wrapper" id="monthlyDetailTableWrap" style="display:none;">
+  <div class="table-scroll">
+    <table id="monthlyDetailTable">
+      <thead id="monthlyDetailHead"></thead>
+      <tbody id="monthlyDetailBody"></tbody>
+    </table>
+  </div>
+</div>
+</div><!-- /#monthlySection -->
 
 <!-- Tab: 占位（月汇总） -->
 <div class="tab-content" id="tabPlaceholder" style="display:none;">
@@ -530,6 +660,11 @@
 <div class="image-viewer" id="imageViewer" onclick="closeImageViewer()">
   <span class="iv-close">&times;</span>
   <img id="viewerImg" src="" alt="打卡照片">
+</div>
+
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
 </div>
 
 <script>
@@ -576,30 +711,67 @@ function switchTab(tab) {
     const tabs = ['timeline','daily','monthly'];
     el.classList.toggle('active', tabs[i] === tab);
   });
-  // Show/hide content
+  // Hide all sections first
   const timeline    = document.getElementById('tabTimeline');
   const dailySec    = document.getElementById('dailySection');
+  const monthlySec  = document.getElementById('monthlySection');
   const placeholder = document.getElementById('tabPlaceholder');
+  timeline.style.display    = 'none';
+  dailySec.style.display    = 'none';
+  monthlySec.style.display  = 'none';
+  placeholder.style.display = 'none';
   if (tab === 'timeline') {
     timeline.style.display = 'flex';
-    dailySec.style.display = 'none';
-    placeholder.style.display = 'none';
   } else if (tab === 'daily') {
-    timeline.style.display = 'none';
     dailySec.style.display = 'flex';
-    placeholder.style.display = 'none';
     const labels = SUB_TAB_LABELS['daily'];
     document.getElementById('subTab0').textContent = labels[0];
     document.getElementById('subTab1').textContent = labels[1];
     updateSubTabActive();
     showDailyContent(0);
   } else {
-    // monthly: show placeholder
-    timeline.style.display = 'none';
-    dailySec.style.display = 'none';
-    placeholder.style.display = 'flex';
-    updatePlaceholderTitle();
+    // monthly
+    monthlySec.style.display = 'flex';
+    showMonthlyContent(0);
   }
+}
+
+let _currentMonthlySubTab = 0;
+
+function showMonthlyContent(subIdx) {
+  _currentMonthlySubTab = subIdx;
+  const filter       = document.getElementById('monthlyOverviewFilter');
+  const overviewWrap = document.getElementById('monthlyOverviewTableWrap');
+  const detailWrap   = document.getElementById('monthlyDetailTableWrap');
+  filter.style.display       = '';
+  overviewWrap.style.display = 'none';
+  detailWrap.style.display   = 'none';
+  document.getElementById('monthlySubTab0').classList.toggle('active', subIdx === 0);
+  document.getElementById('monthlySubTab1').classList.toggle('active', subIdx === 1);
+  if (subIdx === 0) {
+    overviewWrap.style.display = '';
+    applyMonthlyOverviewFilter();
+  } else if (subIdx === 1) {
+    detailWrap.style.display = '';
+    applyMonthlyDetailFilter();
+  }
+}
+
+function switchMonthlySubTab(idx) {
+  showMonthlyContent(idx);
+}
+
+// Filter dispatcher: applies to whichever monthly sub-tab is active
+function applyMonthlyFilter() {
+  if (_currentMonthlySubTab === 0) applyMonthlyOverviewFilter();
+  else applyMonthlyDetailFilter();
+}
+function resetMonthlyFilter() {
+  document.getElementById('monthPicker').value   = '2026-07';
+  document.getElementById('searchName4').value   = '';
+  document.getElementById('filterRule4').value   = '';
+  document.getElementById('filterSource4').value = '';
+  applyMonthlyFilter();
 }
 
 function switchSubTab(idx) {
@@ -1032,8 +1204,10 @@ let _filterSource = '';
 
 function render(dateList, emps) { renderHead(dateList); renderBody(dateList, emps); }
 
-function renderHead(dateList) {
-  document.getElementById('tableHead').innerHTML = `
+function renderHead(dateList) { renderPunchHead('tableHead', dateList); }
+
+function renderPunchHead(headId, dateList) {
+  document.getElementById(headId).innerHTML = `
     <tr>
       <th class="sticky-l0" colspan="2" style="text-align:left;padding-left:16px;">基础信息</th>
       <th colspan="${dateList.length}">打卡时间记录</th>
@@ -1058,14 +1232,16 @@ function renderEffectivePunch(p) {
   return html;
 }
 
-function renderBody(dateList, emps) {
-  const tbody = document.getElementById('tableBody');
+function renderBody(dateList, emps) { renderPunchBody('tableBody', dateList, emps, _filterSource); }
+
+function renderPunchBody(bodyId, dateList, emps, sourceFilter) {
+  const tbody = document.getElementById(bodyId);
   if (emps.length === 0) { tbody.innerHTML = `<tr><td colspan="${2+dateList.length}"><div class="empty-state">暂无数据</div></td></tr>`; return; }
   tbody.innerHTML = emps.map(emp => {
     const empData = attendanceData[emp.id] || {};
     const cells = dateList.map(d => {
       let sources = empData[d.str] || [];
-      if (_filterSource) sources = sources.filter(s => s.source === _filterSource);
+      if (sourceFilter) sources = sources.filter(s => s.source === sourceFilter);
       const weekendCls = d.isWeekend ? 'weekend' : '';
       if (sources.length === 0) {
         return `<td class="date-cell empty ${weekendCls}" style="min-width:var(--col-date);"><div class="no-record">--</div></td>`;
@@ -1174,6 +1350,21 @@ function closeDrawer() { document.getElementById('drawerMask').classList.remove(
 function openImageViewer(url) { document.getElementById('viewerImg').src = url; document.getElementById('imageViewer').classList.add('open'); }
 function closeImageViewer() { document.getElementById('imageViewer').classList.remove('open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeImageViewer(); closeDrawer(); closeDatePicker(); closeDatePicker2(); closeDatePicker3(); } });
+
+// ===== Export =====
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+function handleExport() {
+  showToast('导出任务已提交');
+}
+function handleExportRecord() {
+  // 仅按钮UI，暂无实际功能
+}
 
 // ===== Date Picker 2 (Daily Overview) =====
 function toggleDatePicker2() { document.getElementById('dpPanel2').classList.toggle('open'); }
@@ -1492,6 +1683,190 @@ function resetDailyDetailFilter() {
   document.getElementById('filterSource3').value = '';
   document.getElementById('dpText3').textContent = '2026-07-01 ~ 2026-07-31';
   applyDailyDetailFilter();
+}
+
+// ===== Monthly Overview =====
+// Build date list for a whole month from 'YYYY-MM'
+function getMonthDateList(monthVal) {
+  const parts = monthVal.split('-');
+  const y = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10);
+  const mm = String(m).padStart(2, '0');
+  const lastDay = new Date(y, m, 0).getDate();
+  return getDateList(`${y}-${mm}-01`, `${y}-${mm}-${String(lastDay).padStart(2, '0')}`);
+}
+
+// Aggregate a whole month's stats for one employee + one source
+function computeMonthlyStats(empId, source, dateList) {
+  const agg = {
+    requiredDays: 0, actualDays: 0, restDays: 0, normalDays: 0, abnormalDays: 0,
+    stdHours: 0, actHours: 0,
+    abnormalTotal: 0, lateCount: 0, lateMin: 0, earlyLeave: 0, earlyMin: 0,
+    absentCount: 0, absentMin: 0, missingCard: 0, locAbnormal: 0, devAbnormal: 0,
+    makeupCount: 0, approvalCount: 0, fieldCount: 0, outing: 0, businessTrip: 0,
+    personalLeave: 0, annualLeave: 0, marriageLeave: 0, maternityLeave: 0,
+    otHours: 0, otWdHours: 0, otWdRest: 0, otWdPay: 0,
+    otReHours: 0, otReRest: 0, otRePay: 0, otHoHours: 0, otHoRest: 0, otHoPay: 0,
+  };
+  const emp = employees.find(e => e.id === empId);
+  const isRest = emp && emp.rule === '休息';
+  const weekdays = dateList.filter(d => !d.isWeekend).length;
+  agg.requiredDays = isRest ? 0 : weekdays;
+  agg.restDays = isRest ? dateList.length : (dateList.length - weekdays);
+  const empData = attendanceData[empId] || {};
+  dateList.forEach(d => {
+    const sources = empData[d.str] || [];
+    const src = sources.find(s => s.source === source);
+    if (!src) return;
+    const st = computeSingleSourceStats(src);
+    agg.actualDays++;
+    if (st.result === '正常') agg.normalDays++;
+    if (st.result === '异常') agg.abnormalDays++;
+    agg.actHours += st.actHours;
+    agg.abnormalTotal += st.abnormalTotal;
+    agg.lateCount += st.lateCount;
+    agg.lateMin += st.lateMin;
+    agg.earlyLeave += st.earlyLeave;
+    agg.earlyMin += st.earlyMin;
+    agg.absentCount += st.absentCount;
+    agg.absentMin += st.absentMin;
+    agg.missingCard += st.missingCard;
+    agg.locAbnormal += st.locAbnormal;
+    agg.devAbnormal += st.devAbnormal;
+    agg.makeupCount += st.makeupCount;
+    agg.approvalCount += st.approvalCount;
+    agg.fieldCount += st.fieldCount;
+    agg.outing += st.outing;
+    agg.businessTrip += st.businessTrip;
+    agg.personalLeave += st.personalLeave;
+    agg.annualLeave += st.annualLeave;
+    agg.marriageLeave += st.marriageLeave;
+    agg.maternityLeave += st.maternityLeave;
+    // Overtime: split by day type (weekend -> rest-day OT, else workday OT)
+    const dayOt = st.otHours;
+    agg.otHours += dayOt;
+    if (d.isWeekend) {
+      agg.otReHours += dayOt;
+      agg.otReRest += dayOt * 0.5;
+      agg.otRePay  += dayOt * 0.5;
+    } else {
+      agg.otWdHours += dayOt;
+      agg.otWdRest += dayOt * 0.5;
+      agg.otWdPay  += dayOt * 0.5;
+    }
+  });
+  agg.stdHours = agg.requiredDays * 8;
+  // Round hour fields to 0.1
+  ['actHours','otHours','otWdHours','otWdRest','otWdPay','otReHours','otReRest','otRePay','otHoHours','otHoRest','otHoPay'].forEach(k => {
+    agg[k] = Math.round(agg[k] * 10) / 10;
+  });
+  return agg;
+}
+
+function renderMonthlyOverviewHead() {
+  document.getElementById('monthlyOverviewHead').innerHTML = `
+    <tr>
+      <th class="mo-sticky-name" colspan="3" style="text-align:left;"><div class="mo-sticky-inner-name">基础信息</div></th>
+      <th class="do-group-attend" colspan="7">考勤概况</th>
+      <th class="do-group-abnormal" colspan="10">异常统计</th>
+      <th class="do-group-leave" colspan="9">假勤统计</th>
+      <th class="do-group-overtime" colspan="10">加班统计</th>
+    </tr>
+    <tr>
+      <th class="mo-sticky-name" style="width:var(--do-col-name);"><div class="mo-sticky-inner-name">员工姓名</div></th>
+      <th class="mo-sticky-phone" style="width:var(--do-col-phone);"><div class="mo-sticky-inner-th">手机号</div></th>
+      <th class="mo-sticky-source" style="width:var(--do-col-source);"><div class="mo-sticky-inner-th">数据来源</div></th>
+      <th>应出勤天数<br>(天)</th><th>实际出勤天数<br>(天)</th><th>休息天数<br>(天)</th><th>正常天数<br>(天)</th><th>异常天数<br>(天)</th><th>标准工作时长<br>(小时)</th><th>实际工作时长<br>(小时)</th>
+      <th>异常合计<br>(次)</th><th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>旷工次数<br>(次)</th><th>旷工时长<br>(分钟)</th><th>缺卡次数<br>(次)</th><th>地点异常<br>(次)</th><th>设备异常<br>(次)</th>
+      <th>补卡次数<br>(次)</th><th>审批打卡次数<br>(次)</th><th>外勤次数<br>(次)</th><th>外出<br>(小时)</th><th>出差<br>(天)</th><th>事假<br>(小时)</th><th>年假<br>(天)</th><th>婚假<br>(天)</th><th>产假<br>(天)</th>
+      <th>加班时长<br>(小时)</th><th>工作日加班<br>时长(小时)</th><th>工作日加班<br>计为调休(小时)</th><th>工作日加班<br>计为加班费(小时)</th><th>休息日加班<br>时长(小时)</th><th>休息日加班<br>计为调休(小时)</th><th>休息日加班<br>计为加班费(小时)</th><th>节假日加班<br>时长(小时)</th><th>节假日加班<br>计为调休(小时)</th><th>节假日加班<br>计为加班费(小时)</th>
+    </tr>
+  `;
+}
+
+function renderMonthlyOverviewBody(dateList, emps, sourceFilter) {
+  const tbody = document.getElementById('monthlyOverviewBody');
+  const rows = [];
+  const v  = (val) => val === 0 ? '<span class="do-val-empty">0</span>' : val;
+  const va = (val) => val === 0 ? '<span class="do-val-empty">0</span>' : `<span class="do-abnormal-val">${val}</span>`;
+  emps.forEach(emp => {
+    const empData = attendanceData[emp.id] || {};
+    // Collect distinct sources this employee has in the month
+    let srcSet = [];
+    dateList.forEach(d => {
+      (empData[d.str] || []).forEach(s => {
+        if (!srcSet.includes(s.source)) srcSet.push(s.source);
+      });
+    });
+    if (sourceFilter) srcSet = srcSet.filter(s => s === sourceFilter);
+    if (srcSet.length === 0) return;
+    const rowCount = srcSet.length;
+    srcSet.forEach((source, si) => {
+      const cfg = SOURCE_CFG[source];
+      const st = computeMonthlyStats(emp.id, source, dateList);
+      const rowCls = (si > 0) ? ' class="mo-group-cont"' : ' class="mo-group-start"';
+      let row = `<tr${rowCls}>`;
+      if (si === 0) {
+        row += `
+          <td class="mo-sticky-name" rowspan="${rowCount}"><div class="mo-sticky-inner-name">${emp.name}</div></td>
+          <td class="mo-sticky-phone" rowspan="${rowCount}"><div class="mo-sticky-inner">${emp.phone}</div></td>`;
+      }
+      row += `
+          <td class="mo-sticky-source"><div class="mo-sticky-inner"><span class="do-src-tag ${cfg.cls}">${cfg.label}</span></div></td>
+          <td>${st.requiredDays}</td><td>${st.actualDays}</td><td>${st.restDays}</td><td>${st.normalDays}</td><td>${va(st.abnormalDays)}</td><td>${st.stdHours}</td><td>${st.actHours}</td>
+          <td>${va(st.abnormalTotal)}</td><td>${va(st.lateCount)}</td><td>${va(st.lateMin)}</td><td>${va(st.earlyLeave)}</td><td>${va(st.earlyMin)}</td><td>${va(st.absentCount)}</td><td>${va(st.absentMin)}</td><td>${va(st.missingCard)}</td><td>${va(st.locAbnormal)}</td><td>${va(st.devAbnormal)}</td>
+          <td>${v(st.makeupCount)}</td><td>${v(st.approvalCount)}</td><td>${v(st.fieldCount)}</td><td>${v(st.outing)}</td><td>${v(st.businessTrip)}</td><td>${v(st.personalLeave)}</td><td>${v(st.annualLeave)}</td><td>${v(st.marriageLeave)}</td><td>${v(st.maternityLeave)}</td>
+          <td>${v(st.otHours)}</td><td>${v(st.otWdHours)}</td><td>${v(st.otWdRest)}</td><td>${v(st.otWdPay)}</td><td>${v(st.otReHours)}</td><td>${v(st.otReRest)}</td><td>${v(st.otRePay)}</td><td>${v(st.otHoHours)}</td><td>${v(st.otHoRest)}</td><td>${v(st.otHoPay)}</td>
+        </tr>`;
+      rows.push(row);
+    });
+  });
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="39"><div class="empty-state">暂无数据</div></td></tr>`;
+  } else {
+    tbody.innerHTML = rows.join('');
+  }
+}
+
+function applyMonthlyOverviewFilter() {
+  const monthVal     = document.getElementById('monthPicker').value || '2026-07';
+  const nameVal      = document.getElementById('searchName4').value.trim();
+  const ruleVal      = document.getElementById('filterRule4').value;
+  const sourceFilter = document.getElementById('filterSource4').value;
+  const dateList = getMonthDateList(monthVal);
+  let filtered = employees.filter(e => {
+    if (nameVal && !e.name.includes(nameVal)) return false;
+    if (ruleVal && e.rule !== ruleVal) return false;
+    return true;
+  });
+  renderMonthlyOverviewHead();
+  renderMonthlyOverviewBody(dateList, filtered, sourceFilter);
+}
+
+function resetMonthlyOverviewFilter() {
+  document.getElementById('monthPicker').value    = '2026-07';
+  document.getElementById('searchName4').value    = '';
+  document.getElementById('filterRule4').value    = '';
+  document.getElementById('filterSource4').value  = '';
+  applyMonthlyOverviewFilter();
+}
+
+// ===== Monthly Detail =====
+// Reuses the same rendering as the timeline (考勤时间记录): name+phone sticky, one row per employee,
+// date cells grouped by source. Clicking a cell opens the shared openDrawer.
+function applyMonthlyDetailFilter() {
+  const monthVal     = document.getElementById('monthPicker').value || '2026-07';
+  const nameVal      = document.getElementById('searchName4').value.trim();
+  const ruleVal      = document.getElementById('filterRule4').value;
+  const sourceFilter = document.getElementById('filterSource4').value;
+  const dateList = getMonthDateList(monthVal);
+  let filtered = employees.filter(e => {
+    if (nameVal && !e.name.includes(nameVal)) return false;
+    if (ruleVal && e.rule !== ruleVal) return false;
+    return true;
+  });
+  renderPunchHead('monthlyDetailHead', dateList);
+  renderPunchBody('monthlyDetailBody', dateList, filtered, sourceFilter);
 }
 
 // ===== Init =====
