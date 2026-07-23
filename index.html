@@ -37,10 +37,14 @@
     .tab-item { padding: 12px 20px; font-size: 14px; color: rgba(0,0,0,.65); cursor: pointer; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; font-weight: 500; user-select: none; position: relative; }
     .tab-item:hover { color: #1677ff; }
     .tab-item.active { color: #1677ff; border-bottom-color: #1677ff; }
-    .sub-tab-bar { background: #fafafa; border-bottom: 1px solid #f0f0f0; padding: 0 24px 0 48px; display: flex; gap: 0; flex-shrink: 0; }
-    .sub-tab-item { padding: 9px 16px; font-size: 13px; color: rgba(0,0,0,.55); cursor: pointer; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; user-select: none; }
+    .sub-tab-bar { background: #fff; border-bottom: 1px solid #f0f0f0; padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; margin: 12px 24px 0; border-radius: 8px 8px 0 0; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .sub-tab-item { padding: 10px 20px; font-size: 13px; color: rgba(0,0,0,.55); cursor: pointer; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; user-select: none; font-weight: 500; }
     .sub-tab-item:hover { color: #1677ff; }
-    .sub-tab-item.active { color: #1677ff; border-bottom-color: #1677ff; font-weight: 500; }
+    .sub-tab-item.active { color: #1677ff; border-bottom-color: #1677ff; font-weight: 600; }
+    /* Daily section wrapper */
+    #dailySection { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+    #dailySection .filter-bar { margin-bottom: 0; }
+    #dailySection .table-wrapper { margin-top: 0; border-radius: 0 0 8px 8px; }
     .tab-content { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
     .tab-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(0,0,0,.25); }
     .tab-placeholder svg { width: 64px; height: 64px; opacity: .4; }
@@ -176,6 +180,104 @@
     .table-scroll::-webkit-scrollbar-track { background: #f5f5f5; }
     .table-scroll::-webkit-scrollbar-thumb { background: #d9d9d9; border-radius: 4px; }
     .table-scroll::-webkit-scrollbar-thumb:hover { background: #bbb; }
+
+    /* Daily Overview Table */
+    :root { --do-col-date: 120px; --do-col-name: 80px; --do-col-phone: 110px; --do-col-source: 72px; }
+    #dailyOverviewFilter { grid-template-columns: repeat(5, 1fr); }
+    #dailyOverviewTable { border-collapse: separate; border-spacing: 0; min-width: max-content; }
+    #dailyOverviewTable thead th { background: #fafafa; padding: 8px 6px; text-align: center; font-weight: 500; font-size: 12px; color: rgba(0,0,0,.75); border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; white-space: nowrap; vertical-align: middle; letter-spacing: .3px; }
+    #dailyOverviewTable thead tr:first-child th { font-size: 13px; color: rgba(0,0,0,.65); letter-spacing: .5px; position: sticky; top: 0; z-index: 20; background: #fafafa; border-top: 1px solid #f0f0f0; }
+    #dailyOverviewTable thead tr:nth-child(2) th { padding: 7px 6px; line-height: 1.35; position: sticky; top: 36px; z-index: 20; background: #fafafa; font-size: 12px; }
+    #dailyOverviewTable thead th:first-child, #dailyOverviewTable tbody td:first-child { border-left: 1px solid #f0f0f0; }
+    #dailyOverviewTable thead th.do-sticky-date   { position: sticky; left: 0; z-index: 30 !important; background: #fafafa; padding: 0; }
+    #dailyOverviewTable thead th.do-sticky-name   { position: sticky; left: var(--do-col-date); z-index: 30 !important; background: #fafafa; padding: 0; }
+    #dailyOverviewTable thead th.do-sticky-phone  { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name)); z-index: 30 !important; background: #fafafa; padding: 0; }
+    #dailyOverviewTable thead th.do-sticky-source { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name) + var(--do-col-phone)); z-index: 30 !important; background: #fafafa; box-shadow: 4px 0 8px rgba(0,0,0,.06); padding: 0; }
+    #dailyOverviewTable tbody td { padding: 10px 8px; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; vertical-align: middle; font-size: 12px; text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; transition: background .15s; }
+    #dailyOverviewTable tbody tr:hover td { background: #f0f7ff; }
+    #dailyOverviewTable tbody tr:nth-child(even) td { background: #fafcff; }
+    #dailyOverviewTable tbody tr:nth-child(even):hover td { background: #f0f7ff; }
+    #dailyOverviewTable tbody td.do-sticky-date   { position: sticky; left: 0; z-index: 5; background: #fff; text-align: center; padding: 0; }
+    #dailyOverviewTable tbody td.do-sticky-name   { position: sticky; left: var(--do-col-date); z-index: 5; background: #fff; padding: 0; }
+    #dailyOverviewTable tbody td.do-sticky-phone  { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name)); z-index: 5; background: #fff; color: rgba(0,0,0,.55); padding: 0; }
+    #dailyOverviewTable tbody td.do-sticky-source { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name) + var(--do-col-phone)); z-index: 5; background: #fff; box-shadow: 4px 0 8px rgba(0,0,0,.06); padding: 0; }
+    #dailyOverviewTable tbody tr:nth-child(even) td.do-sticky-date,
+    #dailyOverviewTable tbody tr:nth-child(even) td.do-sticky-name,
+    #dailyOverviewTable tbody tr:nth-child(even) td.do-sticky-phone,
+    #dailyOverviewTable tbody tr:nth-child(even) td.do-sticky-source { background: #fafcff; }
+    #dailyOverviewTable tbody tr:hover td.do-sticky-date,
+    #dailyOverviewTable tbody tr:hover td.do-sticky-name,
+    #dailyOverviewTable tbody tr:hover td.do-sticky-phone,
+    #dailyOverviewTable tbody tr:hover td.do-sticky-source { background: #f0f7ff; }
+    /* Group start separator */
+    #dailyOverviewTable tbody tr.do-group-start td { border-top: 2px solid #e8e8e8; }
+    /* Inner div padding for sticky cells */
+    .do-sticky-inner { padding: 10px 8px; display: block; text-align: center; }
+    .do-sticky-inner-name { padding: 10px 8px 10px 12px; display: block; text-align: left; font-weight: 500; }
+    .do-sticky-inner-th { padding: 8px 6px; display: block; text-align: center; }
+    .do-date-str { font-size: 13px; font-weight: 600; color: rgba(0,0,0,.88); display: block; }
+    .do-date-week { font-size: 11px; color: rgba(0,0,0,.4); display: block; margin-top: 2px; }
+    .do-val-empty { color: rgba(0,0,0,.15); }
+    .do-group-attend    { background: #fafafa !important; color: rgba(0,0,0,.65) !important; font-weight: 600; }
+    .do-group-abnormal  { background: #fafafa !important; color: rgba(0,0,0,.65) !important; font-weight: 600; }
+    .do-group-outing    { background: #fafafa !important; color: rgba(0,0,0,.65) !important; font-weight: 600; }
+    .do-group-overtime  { background: #fafafa !important; color: rgba(0,0,0,.65) !important; font-weight: 600; }
+    .do-group-leave     { background: #fafafa !important; color: rgba(0,0,0,.65) !important; font-weight: 600; }
+    /* Result & status tags */
+    .do-result-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; line-height: 1.4; }
+    .do-result-normal   { background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; }
+    .do-result-abnormal { background: #fff2f0; color: #cf1322; border: 1px solid #ffccc7; }
+    .do-result-rest     { background: #f5f5f5; color: rgba(0,0,0,.45); border: 1px solid #e8e8e8; }
+    .do-ot-yes { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; background: #f9f0ff; color: #531dab; border: 1px solid #d3adf7; line-height: 1.4; }
+    .do-ot-no  { color: rgba(0,0,0,.25); }
+    .do-abnormal-val { color: #fa541c; font-weight: 600; }
+    /* Source tags in table cells */
+    .do-source-tags, .dd-source-tags { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; }
+    .do-src-tag, .dd-src-tag { font-size: 10px; padding: 1px 5px; border-radius: 3px; white-space: nowrap; font-weight: 500; }
+    .do-src-tag.src-internal,  .dd-src-tag.src-internal  { background: #e6f4ff; color: #1677ff; }
+    .do-src-tag.src-wecom,     .dd-src-tag.src-wecom     { background: #f6ffed; color: #389e0d; }
+    .do-src-tag.src-hikvision, .dd-src-tag.src-hikvision { background: #fff7e6; color: #d46b08; }
+
+    /* Daily Detail Table */
+    #dailyDetailFilter { grid-template-columns: repeat(5, 1fr); }
+    #dailyDetailTable { border-collapse: separate; border-spacing: 0; min-width: max-content; width: 100%; }
+    #dailyDetailTable thead th { background: #fafafa; padding: 8px 8px; text-align: center; font-weight: 500; font-size: 12px; color: rgba(0,0,0,.75); border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; white-space: nowrap; vertical-align: middle; letter-spacing: .3px; }
+    #dailyDetailTable thead tr:first-child th { font-size: 13px; color: rgba(0,0,0,.65); letter-spacing: .5px; position: sticky; top: 0; z-index: 20; background: #fafafa; border-top: 1px solid #f0f0f0; }
+    #dailyDetailTable thead tr:nth-child(2) th { padding: 7px 6px; line-height: 1.35; position: sticky; top: 38px; z-index: 20; background: #fafafa; font-size: 12px; }
+    #dailyDetailTable thead th:first-child, #dailyDetailTable tbody td:first-child { border-left: 1px solid #f0f0f0; }
+    #dailyDetailTable thead th.dd-sticky-date   { position: sticky; left: 0; z-index: 30 !important; background: #fafafa; padding: 0; }
+    #dailyDetailTable thead th.dd-sticky-name   { position: sticky; left: var(--do-col-date); z-index: 30 !important; background: #fafafa; padding: 0; }
+    #dailyDetailTable thead th.dd-sticky-phone  { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name)); z-index: 30 !important; background: #fafafa; padding: 0; }
+    #dailyDetailTable thead th.dd-sticky-source { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name) + var(--do-col-phone)); z-index: 30 !important; background: #fafafa; box-shadow: 4px 0 8px rgba(0,0,0,.06); padding: 0; }
+    #dailyDetailTable tbody td { padding: 10px 8px; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; vertical-align: middle; font-size: 12px; text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; transition: background .15s; }
+    #dailyDetailTable tbody tr:hover td { background: #f0f7ff; }
+    #dailyDetailTable tbody tr:nth-child(even) td { background: #fafcff; }
+    #dailyDetailTable tbody tr:nth-child(even):hover td { background: #f0f7ff; }
+    #dailyDetailTable tbody td.dd-sticky-date   { position: sticky; left: 0; z-index: 5; background: #fff; text-align: center; padding: 0; }
+    #dailyDetailTable tbody td.dd-sticky-name   { position: sticky; left: var(--do-col-date); z-index: 5; background: #fff; padding: 0; }
+    #dailyDetailTable tbody td.dd-sticky-phone  { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name)); z-index: 5; background: #fff; color: rgba(0,0,0,.55); padding: 0; }
+    #dailyDetailTable tbody td.dd-sticky-source { position: sticky; left: calc(var(--do-col-date) + var(--do-col-name) + var(--do-col-phone)); z-index: 5; background: #fff; box-shadow: 4px 0 8px rgba(0,0,0,.06); padding: 0; }
+    #dailyDetailTable tbody tr:nth-child(even) td.dd-sticky-date,
+    #dailyDetailTable tbody tr:nth-child(even) td.dd-sticky-name,
+    #dailyDetailTable tbody tr:nth-child(even) td.dd-sticky-phone,
+    #dailyDetailTable tbody tr:nth-child(even) td.dd-sticky-source { background: #fafcff; }
+    #dailyDetailTable tbody tr:hover td.dd-sticky-date,
+    #dailyDetailTable tbody tr:hover td.dd-sticky-name,
+    #dailyDetailTable tbody tr:hover td.dd-sticky-phone,
+    #dailyDetailTable tbody tr:hover td.dd-sticky-source { background: #f0f7ff; }
+    /* Group start separator */
+    #dailyDetailTable tbody tr.dd-group-start td { border-top: 2px solid #e8e8e8; }
+    /* Inner div padding for detail sticky cells */
+    .dd-sticky-inner { padding: 10px 8px; display: block; text-align: center; }
+    .dd-sticky-inner-name { padding: 10px 8px 10px 12px; display: block; text-align: left; font-weight: 500; }
+    .dd-sticky-inner-th { padding: 8px 8px; display: block; text-align: center; }
+    .dd-status-tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; font-weight: 500; line-height: 1.4; }
+    .dd-status-normal { background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; }
+    .dd-status-late   { background: #fff7e6; color: #d46b08; border: 1px solid #ffd591; }
+    .dd-status-early  { background: #fff2f0; color: #cf1322; border: 1px solid #ffccc7; }
+    .dd-status-absent { background: #f5f5f5; color: rgba(0,0,0,.35); border: 1px solid #e8e8e8; }
+    .dd-status-approval { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
+    .dd-record-cell { text-align: left; padding: 8px 10px; white-space: nowrap; line-height: 1.6; color: rgba(0,0,0,.55); font-size: 11px; }
   </style>
 </head>
 <body>
@@ -215,11 +317,6 @@
   <div class="tab-item" onclick="switchTab('monthly')">月汇总</div>
 </div>
 
-<!-- 二级 Tab -->
-<div class="sub-tab-bar" id="subTabBar" style="display:none;">
-  <div class="sub-tab-item active" id="subTab0" onclick="switchSubTab(0)">概况统计</div>
-  <div class="sub-tab-item" id="subTab1" onclick="switchSubTab(1)">打卡明细</div>
-</div>
 
 <!-- Tab: 考勤时间记录 -->
 <div class="tab-content" id="tabTimeline">
@@ -280,7 +377,128 @@
 </div>
 </div><!-- /#tabTimeline -->
 
-<!-- Tab: 占位（日汇总/月汇总） -->
+<!-- 日汇总区域 -->
+<div id="dailySection" style="display:none;">
+<!-- 筛选栏：概况统计 -->
+<div class="filter-bar" id="dailyOverviewFilter">
+  <div class="filter-item">
+    <label>日期</label>
+    <div class="date-picker-wrap">
+      <div class="date-picker-trigger" id="dpTrigger2" onclick="toggleDatePicker2()">
+        <span id="dpText2">2026-07-01 ~ 2026-07-31</span>
+        <span class="dp-icon">&#128197;</span>
+      </div>
+      <div class="date-picker-panel" id="dpPanel2">
+        <div class="dp-row"><label>开始</label><input type="date" id="dateStart2" value="2026-07-01"></div>
+        <div class="dp-row"><label>结束</label><input type="date" id="dateEnd2" value="2026-07-31"></div>
+        <div class="dp-actions">
+          <button class="btn" onclick="closeDatePicker2()">取消</button>
+          <button class="btn btn-primary" onclick="confirmDatePicker2()">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="filter-item">
+    <label>姓名</label>
+    <input type="text" id="searchName2" placeholder="输入员工姓名">
+  </div>
+  <div class="filter-item">
+    <label>考勤规则</label>
+    <select id="filterRule2">
+      <option value="">全部规则</option>
+      <option value="标准班">标准班</option>
+      <option value="夜班">夜班</option>
+      <option value="弹性工时">弹性工时</option>
+      <option value="休息">休息</option>
+    </select>
+  </div>
+  <div class="filter-item">
+    <label>数据来源</label>
+    <select id="filterSource2">
+      <option value="">全部来源</option>
+      <option value="internal">内部系统</option>
+      <option value="wecom">企业微信</option>
+      <option value="hikvision">海康威视</option>
+    </select>
+  </div>
+  <div class="btn-group" style="grid-column: 5;">
+    <button class="btn btn-primary" onclick="applyDailyOverviewFilter()">查询</button>
+    <button class="btn" onclick="resetDailyOverviewFilter()">重置</button>
+  </div>
+</div>
+<!-- 筛选栏：打卡明细 -->
+<div class="filter-bar" id="dailyDetailFilter" style="display:none;">
+  <div class="filter-item">
+    <label>日期</label>
+    <div class="date-picker-wrap">
+      <div class="date-picker-trigger" id="dpTrigger3" onclick="toggleDatePicker3()">
+        <span id="dpText3">2026-07-01 ~ 2026-07-31</span>
+        <span class="dp-icon">&#128197;</span>
+      </div>
+      <div class="date-picker-panel" id="dpPanel3">
+        <div class="dp-row"><label>开始</label><input type="date" id="dateStart3" value="2026-07-01"></div>
+        <div class="dp-row"><label>结束</label><input type="date" id="dateEnd3" value="2026-07-31"></div>
+        <div class="dp-actions">
+          <button class="btn" onclick="closeDatePicker3()">取消</button>
+          <button class="btn btn-primary" onclick="confirmDatePicker3()">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="filter-item">
+    <label>姓名</label>
+    <input type="text" id="searchName3" placeholder="输入员工姓名">
+  </div>
+  <div class="filter-item">
+    <label>考勤规则</label>
+    <select id="filterRule3">
+      <option value="">全部规则</option>
+      <option value="标准班">标准班</option>
+      <option value="夜班">夜班</option>
+      <option value="弹性工时">弹性工时</option>
+      <option value="休息">休息</option>
+    </select>
+  </div>
+  <div class="filter-item">
+    <label>数据来源</label>
+    <select id="filterSource3">
+      <option value="">全部来源</option>
+      <option value="internal">内部系统</option>
+      <option value="wecom">企业微信</option>
+      <option value="hikvision">海康威视</option>
+    </select>
+  </div>
+  <div class="btn-group" style="grid-column: 5;">
+    <button class="btn btn-primary" onclick="applyDailyDetailFilter()">查询</button>
+    <button class="btn" onclick="resetDailyDetailFilter()">重置</button>
+  </div>
+</div>
+<!-- 子Tab：紧贴列表上方 -->
+<div class="sub-tab-bar" id="subTabBar">
+  <div class="sub-tab-item active" id="subTab0" onclick="switchSubTab(0)">概况统计</div>
+  <div class="sub-tab-item" id="subTab1" onclick="switchSubTab(1)">打卡明细</div>
+</div>
+<!-- 表格：概况统计 -->
+<div class="table-wrapper" id="dailyOverviewTableWrap">
+  <div class="table-scroll">
+    <table id="dailyOverviewTable">
+      <thead id="dailyOverviewHead"></thead>
+      <tbody id="dailyOverviewBody"></tbody>
+    </table>
+  </div>
+</div>
+<!-- 表格：打卡明细 -->
+<div class="table-wrapper" id="dailyDetailTableWrap" style="display:none;">
+  <div class="table-scroll">
+    <table id="dailyDetailTable">
+      <thead id="dailyDetailHead"></thead>
+      <tbody id="dailyDetailBody"></tbody>
+    </table>
+  </div>
+</div>
+</div><!-- /#dailySection -->
+
+<!-- Tab: 占位（月汇总） -->
 <div class="tab-content" id="tabPlaceholder" style="display:none;">
   <div class="tab-placeholder">
     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -330,6 +548,26 @@ const SUB_TAB_LABELS = {
   monthly: ['月报概况统计', '月报打卡明细'],
 };
 
+function showDailyContent(subIdx) {
+  const overviewFilter = document.getElementById('dailyOverviewFilter');
+  const detailFilter   = document.getElementById('dailyDetailFilter');
+  const overviewWrap   = document.getElementById('dailyOverviewTableWrap');
+  const detailWrap     = document.getElementById('dailyDetailTableWrap');
+  overviewFilter.style.display = 'none';
+  detailFilter.style.display   = 'none';
+  overviewWrap.style.display   = 'none';
+  detailWrap.style.display     = 'none';
+  if (subIdx === 0) {
+    overviewFilter.style.display = '';
+    overviewWrap.style.display   = '';
+    applyDailyOverviewFilter();
+  } else if (subIdx === 1) {
+    detailFilter.style.display = '';
+    detailWrap.style.display   = '';
+    applyDailyDetailFilter();
+  }
+}
+
 function switchTab(tab) {
   _currentTab = tab;
   _currentSubTab = 0;
@@ -339,22 +577,27 @@ function switchTab(tab) {
     el.classList.toggle('active', tabs[i] === tab);
   });
   // Show/hide content
-  const timeline = document.getElementById('tabTimeline');
+  const timeline    = document.getElementById('tabTimeline');
+  const dailySec    = document.getElementById('dailySection');
   const placeholder = document.getElementById('tabPlaceholder');
-  const subBar = document.getElementById('subTabBar');
   if (tab === 'timeline') {
     timeline.style.display = 'flex';
+    dailySec.style.display = 'none';
     placeholder.style.display = 'none';
-    subBar.style.display = 'none';
-  } else {
+  } else if (tab === 'daily') {
     timeline.style.display = 'none';
-    placeholder.style.display = 'flex';
-    subBar.style.display = 'flex';
-    // Update sub-tab labels
-    const labels = SUB_TAB_LABELS[tab];
+    dailySec.style.display = 'flex';
+    placeholder.style.display = 'none';
+    const labels = SUB_TAB_LABELS['daily'];
     document.getElementById('subTab0').textContent = labels[0];
     document.getElementById('subTab1').textContent = labels[1];
     updateSubTabActive();
+    showDailyContent(0);
+  } else {
+    // monthly: show placeholder
+    timeline.style.display = 'none';
+    dailySec.style.display = 'none';
+    placeholder.style.display = 'flex';
     updatePlaceholderTitle();
   }
 }
@@ -362,7 +605,12 @@ function switchTab(tab) {
 function switchSubTab(idx) {
   _currentSubTab = idx;
   updateSubTabActive();
-  updatePlaceholderTitle();
+  if (_currentTab === 'daily') {
+    showDailyContent(idx);
+  } else {
+    // monthly
+    updatePlaceholderTitle();
+  }
 }
 
 function updateSubTabActive() {
@@ -390,8 +638,13 @@ function confirmDatePicker() {
 }
 // Close picker on outside click
 document.addEventListener('click', function(ev) {
-  const wrap = document.querySelector('.date-picker-wrap');
-  if (wrap && !wrap.contains(ev.target)) closeDatePicker();
+  const wraps = document.querySelectorAll('.date-picker-wrap');
+  wraps.forEach(wrap => {
+    if (!wrap.contains(ev.target)) {
+      const panel = wrap.querySelector('.date-picker-panel');
+      if (panel) panel.classList.remove('open');
+    }
+  });
 });
 
 // ===== Config =====
@@ -419,6 +672,12 @@ const employees = [
   { id:'E008', name:'田碟碟', phone:'13800138008', rule:'标准班' },
   { id:'E009', name:'王五',   phone:'13800138009', rule:'标准班' },
   { id:'E010', name:'赵六',   phone:'13800138010', rule:'休息'   },
+  { id:'E011', name:'陈晨',   phone:'13800138011', rule:'标准班' },
+  { id:'E012', name:'刘洋',   phone:'13800138012', rule:'夜班'   },
+  { id:'E013', name:'周婷',   phone:'13800138013', rule:'弹性工时' },
+  { id:'E014', name:'吴强',   phone:'13800138014', rule:'标准班' },
+  { id:'E015', name:'郑洁',   phone:'13800138015', rule:'休息'   },
+  { id:'E016', name:'孙磊',   phone:'13800138016', rule:'标准班' },
 ];
 
 // ===== Data helpers =====
@@ -452,6 +711,34 @@ const attendanceData = {
       mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:53','in'), mkP('18:04','out') ]) ]),
       mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('08:50','in'), mkP('18:07','out') ]) ]),
     ],
+    '2026-07-09': [ // 迟到
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:25','in',{photo:P('p1')}), mkP('18:10','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('09:27','in'), mkP('18:08','out') ]) ]),
+    ],
+    '2026-07-10': [ // 早退
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:50','in'), mkP('16:45','out',{photo:P('p2')}) ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('08:52','in'), mkP('16:48','out') ]) ]),
+    ],
+    '2026-07-13': [ // 迟到+早退
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:40','in'), mkP('16:30','out') ]) ]),
+    ],
+    '2026-07-14': [ // 缺卡-下班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:55','in') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:57','in') ]) ]),
+    ],
+    '2026-07-15': [ // 缺卡-上班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('18:05','out') ]) ]),
+    ],
+    '2026-07-16': [ // 加班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:30','in'), mkP('21:00','out',{photo:P('p3')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:32','in'), mkP('20:58','out') ]) ]),
+    ],
+    '2026-07-17': [ // 补卡
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:58','in',{category:'makeup'}), mkP('18:02','out') ]) ]),
+    ],
+    '2026-07-20': [ // 审批
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('09:00','in',{category:'approval'}), mkP('18:00','out',{category:'approval'}) ]) ]),
+    ],
     '2026-07-22': [
       mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:45','in',{category:'makeup'}) ]) ]),
       mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:47','in',{category:'makeup'}) ]) ]),
@@ -472,12 +759,36 @@ const attendanceData = {
       mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:38','in'), mkP('12:30','out') ]), mkShift('班次2',[ mkP('18:30','in'), mkP('23:53','out') ]) ]),
       mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:40','in'), mkP('12:28','out') ]), mkShift('班次2',[ mkP('18:28','in'), mkP('23:50','out') ]) ]),
     ],
+    '2026-07-11': [ // 夜班迟到
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('09:15','in'), mkP('12:00','out') ]), mkShift('班次2',[ mkP('18:00','in'), mkP('22:00','out') ]) ]),
+    ],
+    '2026-07-14': [ // 夜班加班
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:00','in'), mkP('12:00','out') ]), mkShift('班次2',[ mkP('18:00','in'), mkP('23:59','out') ]) ]),
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:05','in'), mkP('12:05','out') ]), mkShift('班次2',[ mkP('18:05','in'), mkP('23:55','out') ]) ]),
+    ],
+    '2026-07-18': [ // 夜班缺卡
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:20','in'), mkP('12:00','out') ]), mkShift('班次2',[ mkP('18:00','in') ]) ]),
+    ],
   },
   'E003': {
     '2026-07-01': [
       mkSource('internal','标准班',[ mkShift('班次1',[ mkP('07:36','in',{photo:P('f1')}), mkP('18:48','out',{photo:P('f2')}) ]) ]),
       mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('07:38','in'), mkP('18:46','out') ]) ]),
       mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('07:35','in'), mkP('18:50','out') ]) ]),
+    ],
+    '2026-07-07': [ // 加班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:00','in'), mkP('20:30','out') ]) ]),
+    ],
+    '2026-07-10': [ // 迟到
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:35','in'), mkP('18:00','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('09:38','in'), mkP('18:02','out') ]) ]),
+    ],
+    '2026-07-15': [ // 正常
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:20','in'), mkP('18:00','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('08:22','in'), mkP('18:05','out') ]) ]),
+    ],
+    '2026-07-21': [ // 早退
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:30','in'), mkP('16:00','out') ]) ]),
     ],
     '2026-07-22': [
       mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:01','in',{photo:P('g1')}), mkP('18:00','out',{photo:P('g2')}) ]) ]),
@@ -486,13 +797,23 @@ const attendanceData = {
   },
   'E004': {
     '2026-07-06': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in',{category:'approval',photo:P('h1')}), mkP('18:00','out',{category:'approval',photo:P('h2')}) ]) ]) ],
+    '2026-07-09': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('10:00','in'), mkP('19:00','out') ]) ]) ], // 弹性加班
     '2026-07-13': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('10:00','in',{category:'approval'}), mkP('18:30','out',{category:'approval'}) ]) ]) ],
+    '2026-07-16': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:00','in'), mkP('18:30','out') ]) ]) ],
+    '2026-07-20': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('11:00','in'), mkP('17:00','out') ]) ]) ], // 弹性早退
   },
   'E005': {
     '2026-07-08': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('10:00','in',{category:'approval'}), mkP('18:30','out',{category:'approval'}) ]) ]) ],
+    '2026-07-10': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in'), mkP('18:00','out') ]) ]) ],
     '2026-07-15': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in',{category:'approval',photo:P('i1')}), mkP('18:00','out',{category:'approval',photo:P('i2')}) ]) ]) ],
+    '2026-07-17': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('10:30','in'), mkP('20:00','out') ]) ]) ], // 弹性加班
+    '2026-07-22': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:45','in') ]) ]) ], // 缺卡
   },
   'E006': {
+    '2026-07-03': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:40','in'), mkP('18:00','out') ]) ]) ],
+    '2026-07-08': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:10','in'), mkP('18:00','out') ]) ]) ], // 迟到
+    '2026-07-13': [ mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:50','in'), mkP('18:10','out') ]) ]) ],
+    '2026-07-16': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:45','in'), mkP('17:00','out') ]) ]) ], // 早退
     '2026-07-22': [ mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('07:55','in',{category:'makeup'}) ]) ]) ],
   },
   'E007': {
@@ -505,6 +826,12 @@ const attendanceData = {
       mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:28','in',{photo:P('k1')}), mkP('12:00','out',{photo:P('k2')}) ]), mkShift('班次2',[ mkP('18:00','in',{photo:P('k3')}), mkP('22:00','out',{photo:P('k4')}) ]) ]),
       mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:30','in'), mkP('12:02','out') ]), mkShift('班次2',[ mkP('18:02','in'), mkP('21:58','out') ]) ]),
     ],
+    '2026-07-12': [ // 夜班补卡
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:25','in',{category:'makeup'}), mkP('12:00','out') ]), mkShift('班次2',[ mkP('18:00','in'), mkP('22:00','out') ]) ]),
+    ],
+    '2026-07-17': [ // 夜班审批
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:30','in',{category:'approval'}), mkP('12:00','out') ]), mkShift('班次2',[ mkP('18:00','in',{category:'approval'}), mkP('22:00','out',{category:'approval'}) ]) ]),
+    ],
   },
   'E008': {
     '2026-07-01': [
@@ -516,11 +843,24 @@ const attendanceData = {
       mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('07:57','in'), mkP('17:35','out') ]) ]),
       mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('07:54','in'), mkP('17:38','out') ]) ]),
     ],
+    '2026-07-11': [ // 迟到
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:50','in'), mkP('17:40','out') ]) ]),
+    ],
+    '2026-07-16': [ // 正常
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:00','in'), mkP('17:45','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:02','in'), mkP('17:42','out') ]) ]),
+    ],
+    '2026-07-21': [ // 加班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:00','in'), mkP('19:30','out') ]) ]),
+    ],
   },
   'E009': {
     '2026-07-01': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:00','in'), mkP('18:00','out') ]) ]) ],
     '2026-07-03': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:10','in',{category:'makeup'}), mkP('17:50','out',{category:'makeup'}) ]) ]) ],
     '2026-07-08': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:05','in',{category:'approval',photo:P('m1')}), mkP('18:00','out',{category:'approval',photo:P('m2')}) ]) ]) ],
+    '2026-07-13': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:55','in'), mkP('18:05','out') ]) ]) ],
+    '2026-07-17': [ mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('09:20','in'), mkP('16:50','out') ]) ]) ], // 迟到+早退
+    '2026-07-22': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:50','in'), mkP('18:00','out') ]) ]) ],
   },
   'E010': {
     '2026-07-01': [ mkSource('hikvision','休息',[ mkShift('班次1',[ mkP('08:30','in'), mkP('17:30','out') ]) ]) ],
@@ -532,6 +872,141 @@ const attendanceData = {
       mkSource('internal','休息',[ mkShift('班次1',[ mkP('08:27','in',{photo:P('n1')}), mkP('17:33','out',{photo:P('n2')}) ]) ]),
       mkSource('wecom','休息',[ mkShift('班次1',[ mkP('08:29','in'), mkP('17:31','out') ]) ]),
       mkSource('hikvision','休息',[ mkShift('班次1',[ mkP('08:26','in'), mkP('17:34','out') ]) ]),
+    ],
+    '2026-07-12': [ mkSource('internal','休息',[ mkShift('班次1',[ mkP('09:00','in'), mkP('17:00','out') ]) ]) ],
+    '2026-07-18': [ mkSource('wecom','休息',[ mkShift('班次1',[ mkP('08:40','in'), mkP('17:20','out') ]) ]) ],
+  },
+  'E011': {
+    '2026-07-01': [ // 正常多来源
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:35','in',{photo:P('q1')}), mkP('18:05','out',{photo:P('q2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:37','in'), mkP('18:03','out') ]) ]),
+    ],
+    '2026-07-02': [ // 迟到
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:55','in'), mkP('18:00','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('09:58','in'), mkP('18:02','out') ]) ]),
+    ],
+    '2026-07-03': [ // 早退
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:45','in'), mkP('15:30','out') ]) ]),
+    ],
+    '2026-07-06': [ // 加班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:00','in'), mkP('22:00','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:05','in'), mkP('21:55','out') ]) ]),
+    ],
+    '2026-07-07': [ // 缺卡-下班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:50','in') ]) ]),
+    ],
+    '2026-07-08': [ // 补卡
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:55','in',{category:'makeup'}), mkP('18:00','out') ]) ]),
+    ],
+    '2026-07-09': [ // 审批
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:00','in',{category:'approval'}), mkP('18:00','out',{category:'approval'}) ]) ]),
+    ],
+    '2026-07-10': [ // 正常
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:40','in'), mkP('18:10','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:42','in'), mkP('18:08','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('08:38','in'), mkP('18:12','out') ]) ]),
+    ],
+    '2026-07-13': [ // 迟到+早退
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('10:15','in'), mkP('16:00','out') ]) ]),
+    ],
+    '2026-07-14': [ // 缺卡-上班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('18:00','out') ]) ]),
+    ],
+  },
+  'E012': {
+    '2026-07-01': [ // 夜班正常
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('20:00','in'), mkP('23:00','out') ]), mkShift('班次2',[ mkP('00:00','in'), mkP('06:00','out') ]) ]),
+    ],
+    '2026-07-02': [ // 夜班多来源
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('20:05','in'), mkP('23:00','out') ]), mkShift('班次2',[ mkP('00:00','in'), mkP('06:05','out') ]) ]),
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('20:08','in'), mkP('23:02','out') ]), mkShift('班次2',[ mkP('00:02','in'), mkP('06:02','out') ]) ]),
+    ],
+    '2026-07-03': [ // 夜班缺卡
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('20:00','in') ]) ]),
+    ],
+    '2026-07-06': [ // 夜班补卡
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('20:10','in',{category:'makeup'}), mkP('23:00','out') ]), mkShift('班次2',[ mkP('00:00','in'), mkP('06:00','out') ]) ]),
+    ],
+    '2026-07-07': [ // 夜班审批
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('20:00','in',{category:'approval'}), mkP('23:00','out') ]), mkShift('班次2',[ mkP('00:00','in',{category:'approval'}), mkP('06:00','out',{category:'approval'}) ]) ]),
+    ],
+    '2026-07-08': [ // 夜班正常
+      mkSource('hikvision','夜班',[ mkShift('班次1',[ mkP('20:00','in'), mkP('23:00','out') ]), mkShift('班次2',[ mkP('00:00','in'), mkP('06:00','out') ]) ]),
+    ],
+  },
+  'E013': {
+    '2026-07-01': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in'), mkP('18:30','out') ]) ]) ],
+    '2026-07-02': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('10:00','in',{category:'approval'}), mkP('19:00','out',{category:'approval'}) ]) ]) ],
+    '2026-07-03': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:00','in'), mkP('20:00','out') ]) ]) ], // 弹性加班
+    '2026-07-06': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('10:30','in'), mkP('16:30','out') ]) ]) ], // 弹性早退
+    '2026-07-07': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('09:45','in') ]) ]) ], // 缺卡
+    '2026-07-08': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:15','in',{category:'makeup'}), mkP('18:15','out') ]) ]) ],
+    '2026-07-09': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in'), mkP('18:30','out') ]) ]) ],
+  },
+  'E014': {
+    '2026-07-01': [ // 多班次(3班)
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('06:00','in'), mkP('10:00','out') ]), mkShift('班次2',[ mkP('12:00','in'), mkP('16:00','out') ]), mkShift('班次3',[ mkP('18:00','in'), mkP('20:00','out') ]) ]),
+    ],
+    '2026-07-02': [ // 多班次(4班)
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('06:00','in'), mkP('09:00','out') ]), mkShift('班次2',[ mkP('10:00','in'), mkP('12:00','out') ]), mkShift('班次3',[ mkP('14:00','in'), mkP('17:00','out') ]), mkShift('班次4',[ mkP('19:00','in'), mkP('21:00','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('06:05','in'), mkP('09:05','out') ]), mkShift('班次2',[ mkP('10:05','in'), mkP('12:05','out') ]), mkShift('班次3',[ mkP('14:05','in'), mkP('17:05','out') ]), mkShift('班次4',[ mkP('19:05','in'), mkP('21:05','out') ]) ]),
+    ],
+    '2026-07-03': [ // 迟到
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('06:40','in'), mkP('10:00','out') ]), mkShift('班次2',[ mkP('12:30','in'), mkP('16:00','out') ]) ]),
+    ],
+    '2026-07-06': [ // 正常
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('06:00','in'), mkP('10:00','out') ]), mkShift('班次2',[ mkP('12:00','in'), mkP('16:00','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('06:02','in'), mkP('10:02','out') ]), mkShift('班次2',[ mkP('12:02','in'), mkP('16:02','out') ]) ]),
+    ],
+    '2026-07-07': [ // 缺卡
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('06:00','in'), mkP('10:00','out') ]), mkShift('班次2',[ mkP('12:00','in') ]) ]),
+    ],
+    '2026-07-08': [ // 加班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('06:00','in'), mkP('10:00','out') ]), mkShift('班次2',[ mkP('12:00','in'), mkP('16:00','out') ]), mkShift('班次3',[ mkP('18:00','in'), mkP('23:00','out') ]) ]),
+    ],
+  },
+  'E015': {
+    '2026-07-01': [ mkSource('internal','休息',[ mkShift('班次1',[ mkP('09:00','in'), mkP('17:00','out') ]) ]) ],
+    '2026-07-04': [ mkSource('wecom','休息',[ mkShift('班次1',[ mkP('09:30','in'), mkP('17:30','out') ]) ]) ],
+    '2026-07-05': [ mkSource('hikvision','休息',[ mkShift('班次1',[ mkP('08:50','in'), mkP('17:10','out') ]) ]) ],
+    '2026-07-11': [
+      mkSource('internal','休息',[ mkShift('班次1',[ mkP('09:00','in'), mkP('17:00','out') ]) ]),
+      mkSource('wecom','休息',[ mkShift('班次1',[ mkP('09:02','in'), mkP('17:02','out') ]) ]),
+    ],
+    '2026-07-19': [ mkSource('internal','休息',[ mkShift('班次1',[ mkP('10:00','in'), mkP('16:00','out') ]) ]) ],
+  },
+  'E016': {
+    '2026-07-01': [ // 正常
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:20','in',{photo:P('r1')}), mkP('18:00','out',{photo:P('r2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:22','in'), mkP('18:02','out') ]) ]),
+    ],
+    '2026-07-02': [ // 迟到
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:30','in'), mkP('18:00','out') ]) ]),
+    ],
+    '2026-07-03': [ // 早退
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:30','in'), mkP('16:20','out') ]) ]),
+    ],
+    '2026-07-06': [ // 迟到+早退
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('09:45','in'), mkP('16:40','out') ]) ]),
+    ],
+    '2026-07-07': [ // 缺卡-下班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:40','in') ]) ]),
+    ],
+    '2026-07-08': [ // 缺卡-上班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('18:10','out') ]) ]),
+    ],
+    '2026-07-09': [ // 补卡
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:50','in',{category:'makeup'}), mkP('18:00','out') ]) ]),
+    ],
+    '2026-07-10': [ // 审批
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('09:00','in',{category:'approval'}), mkP('18:00','out',{category:'approval'}) ]) ]),
+    ],
+    '2026-07-13': [ // 加班
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:00','in'), mkP('21:30','out') ]) ]),
+    ],
+    '2026-07-14': [ // 正常
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:35','in'), mkP('18:05','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('08:37','in'), mkP('18:07','out') ]) ]),
     ],
   },
 };
@@ -698,7 +1173,326 @@ function closeDrawer() { document.getElementById('drawerMask').classList.remove(
 // ===== Image Viewer =====
 function openImageViewer(url) { document.getElementById('viewerImg').src = url; document.getElementById('imageViewer').classList.add('open'); }
 function closeImageViewer() { document.getElementById('imageViewer').classList.remove('open'); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeImageViewer(); closeDrawer(); closeDatePicker(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeImageViewer(); closeDrawer(); closeDatePicker(); closeDatePicker2(); closeDatePicker3(); } });
+
+// ===== Date Picker 2 (Daily Overview) =====
+function toggleDatePicker2() { document.getElementById('dpPanel2').classList.toggle('open'); }
+function closeDatePicker2() { document.getElementById('dpPanel2').classList.remove('open'); }
+function confirmDatePicker2() {
+  const s = document.getElementById('dateStart2').value;
+  const e = document.getElementById('dateEnd2').value;
+  document.getElementById('dpText2').textContent = `${s} ~ ${e}`;
+  closeDatePicker2();
+}
+
+// ===== Daily Overview Render =====
+function renderDailyOverviewHead() {
+  document.getElementById('dailyOverviewHead').innerHTML = `
+    <tr>
+      <th class="do-sticky-date" rowspan="2" style="width:var(--do-col-date);"><div class="do-sticky-inner-th">日期</div></th>
+      <th class="do-sticky-name" colspan="3" style="text-align:left;"><div class="do-sticky-inner-name">基础信息</div></th>
+      <th class="do-group-attend" colspan="9">考勤概况</th>
+      <th class="do-group-abnormal" colspan="10">异常统计</th>
+      <th class="do-group-outing" colspan="3">外出打卡</th>
+      <th class="do-group-overtime" colspan="8">加班统计</th>
+      <th class="do-group-leave" colspan="9">假勤统计</th>
+    </tr>
+    <tr>
+      <th class="do-sticky-name" style="width:var(--do-col-name);"><div class="do-sticky-inner-name">员工姓名</div></th>
+      <th class="do-sticky-phone" style="width:var(--do-col-phone);"><div class="do-sticky-inner-th">手机号</div></th>
+      <th class="do-sticky-source" style="width:var(--do-col-source);"><div class="do-sticky-inner-th">数据来源</div></th>
+      <th>所属规则</th><th>班次</th><th>最早</th><th>最晚</th><th>打卡次数<br>(次)</th><th>标准工作时长<br>(小时)</th><th>实际工作时长<br>(小时)</th><th>假勤申请</th><th>考勤结果</th>
+      <th>异常合计<br>(次)</th><th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>旷工次数<br>(次)</th><th>旷工时长<br>(分钟)</th><th>缺卡次数<br>(次)</th><th>地点异常<br>(次)</th><th>设备异常<br>(次)</th>
+      <th>外出打卡次数<br>(次)</th><th>最早</th><th>最晚</th>
+      <th>加班状态</th><th>加班时长<br>(小时)</th><th>工作日加班<br>计为调休(小时)</th><th>工作日加班<br>计为加班费(小时)</th><th>休息日加班<br>计为调休(小时)</th><th>休息日加班<br>计为加班费(小时)</th><th>节假日加班<br>计为调休(小时)</th><th>节假日加班<br>计为加班费(小时)</th>
+      <th>补卡次数<br>(次)</th><th>审批打卡次数<br>(次)</th><th>外勤次数<br>(次)</th><th>外出<br>(小时)</th><th>出差<br>(天)</th><th>事假<br>(小时)</th><th>年假<br>(天)</th><th>婚假<br>(天)</th><th>产假<br>(天)</th>
+    </tr>
+  `;
+}
+
+// Compute stats from a single source object
+function computeSingleSourceStats(src) {
+  let allPunches = [];
+  src.shifts.forEach(sh => sh.punches.forEach(p => allPunches.push(p)));
+  const inPunches  = allPunches.filter(p => p.type === 'in');
+  const outPunches = allPunches.filter(p => p.type === 'out');
+  const earliest = inPunches.length  > 0 ? inPunches.map(p=>p.time).sort()[0]    : '--';
+  const latest   = outPunches.length > 0 ? outPunches.map(p=>p.time).sort().pop() : '--';
+  const punchCount = allPunches.length;
+  let stdHours = 8, actHours = 0;
+  if (earliest !== '--' && latest !== '--') {
+    const [h1,m1] = earliest.split(':').map(Number);
+    const [h2,m2] = latest.split(':').map(Number);
+    actHours = Math.round(((h2*60+m2)-(h1*60+m1))/6)/10;
+  }
+  const lateCount  = (earliest !== '--' && earliest > '09:00') ? 1 : 0;
+  const lateMin    = lateCount  ? 15 : 0;
+  const earlyLeave = (latest   !== '--' && latest   < '17:30') ? 1 : 0;
+  const earlyMin   = earlyLeave ? 20 : 0;
+  const absentCount = 0, absentMin = 0;
+  const missingCard = (inPunches.length === 0 || outPunches.length === 0) ? 1 : 0;
+  const locAbnormal = 0, devAbnormal = 0;
+  const abnormalTotal = lateCount + earlyLeave + absentCount + missingCard + locAbnormal + devAbnormal;
+  const outingCount = 0, outingEarliest = '--', outingLatest = '--';
+  const otStatus = actHours > stdHours ? '是' : '否';
+  const otHours  = actHours > stdHours ? Math.round((actHours - stdHours)*10)/10 : 0;
+  const makeupCount   = allPunches.filter(p => p.category === 'makeup').length;
+  const approvalCount = allPunches.filter(p => p.category === 'approval').length;
+  const fieldCount = 0;
+  let result = '正常';
+  if (abnormalTotal > 0) result = '异常';
+  if (src.rule === '休息') result = '休息';
+  const rule  = src.rule || '--';
+  const shift = src.shifts.map(s=>s.name).join(',');
+  const leaveApp = approvalCount > 0 ? '有' : '无';
+  return {
+    rule, shift, earliest, latest, punchCount, stdHours, actHours, leaveApp, result,
+    abnormalTotal, lateCount, lateMin, earlyLeave, earlyMin, absentCount, absentMin, missingCard, locAbnormal, devAbnormal,
+    outingCount, outingEarliest, outingLatest,
+    otStatus, otHours, otWdRest: 0, otWdPay: 0, otReRest: 0, otRePay: 0, otHoRest: 0, otHoPay: 0,
+    makeupCount, approvalCount, fieldCount, outing: 0, businessTrip: 0, personalLeave: 0, annualLeave: 0, marriageLeave: 0, maternityLeave: 0
+  };
+}
+
+// Render helpers for colored tags
+function renderResultTag(result) {
+  const clsMap = { '正常': 'do-result-normal', '异常': 'do-result-abnormal', '休息': 'do-result-rest' };
+  return `<span class="do-result-tag ${clsMap[result] || 'do-result-rest'}">${result}</span>`;
+}
+function renderOtStatus(st) {
+  return st === '是' ? '<span class="do-ot-yes">是</span>' : '<span class="do-ot-no">否</span>';
+}
+
+function renderDailyOverviewBody(dateList, emps, sourceFilter) {
+  const tbody = document.getElementById('dailyOverviewBody');
+  const rows = [];
+  const v  = (val) => val === 0  ? '<span class="do-val-empty">0</span>'  : val;
+  const ve = (val) => val === '--' ? '<span class="do-val-empty">--</span>' : val;
+  const va = (val) => val === 0 ? '<span class="do-val-empty">0</span>' : `<span class="do-abnormal-val">${val}</span>`;
+  emps.forEach(emp => {
+    dateList.forEach(d => {
+      const allSources = (attendanceData[emp.id] || {})[d.str] || [];
+      if (allSources.length === 0) return;
+      const displaySources = sourceFilter
+        ? allSources.filter(s => s.source === sourceFilter)
+        : allSources;
+      if (displaySources.length === 0) return;
+      // Rowspan merge: date/name/phone merged for same group; first row carries rowspan
+      const rowCount = displaySources.length;
+      displaySources.forEach((src, si) => {
+        const cfg   = SOURCE_CFG[src.source];
+        const stats = computeSingleSourceStats(src);
+        const rowCls = (si > 0) ? ' class="do-group-cont"' : ' class="do-group-start"';
+        let row = `<tr${rowCls}>`;
+        if (si === 0) {
+          row += `
+          <td class="do-sticky-date" rowspan="${rowCount}"><div class="do-sticky-inner"><span class="do-date-str">${d.str}</span><span class="do-date-week">${d.week}</span></div></td>
+          <td class="do-sticky-name" rowspan="${rowCount}"><div class="do-sticky-inner-name">${emp.name}</div></td>
+          <td class="do-sticky-phone" rowspan="${rowCount}"><div class="do-sticky-inner">${emp.phone}</div></td>`;
+        }
+        row += `
+          <td class="do-sticky-source"><div class="do-sticky-inner"><span class="do-src-tag ${cfg.cls}">${cfg.label}</span></div></td>
+          <td>${stats.rule}</td><td>${stats.shift}</td><td>${ve(stats.earliest)}</td><td>${ve(stats.latest)}</td><td>${stats.punchCount}</td><td>${stats.stdHours}</td><td>${stats.actHours}</td><td>${stats.leaveApp}</td><td>${renderResultTag(stats.result)}</td>
+          <td>${va(stats.abnormalTotal)}</td><td>${va(stats.lateCount)}</td><td>${va(stats.lateMin)}</td><td>${va(stats.earlyLeave)}</td><td>${va(stats.earlyMin)}</td><td>${va(stats.absentCount)}</td><td>${va(stats.absentMin)}</td><td>${va(stats.missingCard)}</td><td>${va(stats.locAbnormal)}</td><td>${va(stats.devAbnormal)}</td>
+          <td>${v(stats.outingCount)}</td><td>${ve(stats.outingEarliest)}</td><td>${ve(stats.outingLatest)}</td>
+          <td>${renderOtStatus(stats.otStatus)}</td><td>${v(stats.otHours)}</td><td>${v(stats.otWdRest)}</td><td>${v(stats.otWdPay)}</td><td>${v(stats.otReRest)}</td><td>${v(stats.otRePay)}</td><td>${v(stats.otHoRest)}</td><td>${v(stats.otHoPay)}</td>
+          <td>${v(stats.makeupCount)}</td><td>${v(stats.approvalCount)}</td><td>${v(stats.fieldCount)}</td><td>${v(stats.outing)}</td><td>${v(stats.businessTrip)}</td><td>${v(stats.personalLeave)}</td><td>${v(stats.annualLeave)}</td><td>${v(stats.marriageLeave)}</td><td>${v(stats.maternityLeave)}</td>
+        </tr>`;
+        rows.push(row);
+      });
+    });
+  });
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="45"><div class="empty-state">暂无数据</div></td></tr>`;
+  } else {
+    tbody.innerHTML = rows.join('');
+  }
+}
+
+function applyDailyOverviewFilter() {
+  const startVal    = document.getElementById('dateStart2').value;
+  const endVal      = document.getElementById('dateEnd2').value;
+  const nameVal     = document.getElementById('searchName2').value.trim();
+  const ruleVal     = document.getElementById('filterRule2').value;
+  const sourceFilter = document.getElementById('filterSource2').value;
+  const dateList = getDateList(startVal, endVal);
+  let filtered = employees.filter(e => {
+    if (nameVal && !e.name.includes(nameVal)) return false;
+    if (ruleVal && e.rule !== ruleVal) return false;
+    return true;
+  });
+  renderDailyOverviewHead();
+  renderDailyOverviewBody(dateList, filtered, sourceFilter);
+}
+
+function resetDailyOverviewFilter() {
+  document.getElementById('dateStart2').value    = '2026-07-01';
+  document.getElementById('dateEnd2').value      = '2026-07-31';
+  document.getElementById('searchName2').value   = '';
+  document.getElementById('filterRule2').value   = '';
+  document.getElementById('filterSource2').value = '';
+  document.getElementById('dpText2').textContent = '2026-07-01 ~ 2026-07-31';
+  applyDailyOverviewFilter();
+}
+
+// ===== Date Picker 3 (Daily Detail) =====
+function toggleDatePicker3() { document.getElementById('dpPanel3').classList.toggle('open'); }
+function closeDatePicker3() { document.getElementById('dpPanel3').classList.remove('open'); }
+function confirmDatePicker3() {
+  const s = document.getElementById('dateStart3').value;
+  const e = document.getElementById('dateEnd3').value;
+  document.getElementById('dpText3').textContent = `${s} ~ ${e}`;
+  closeDatePicker3();
+}
+
+// ===== Daily Detail Render =====
+function renderDailyDetailHead() {
+  document.getElementById('dailyDetailHead').innerHTML = `
+    <tr>
+      <th class="dd-sticky-date"   rowspan="2" style="width:var(--do-col-date);"><div class="dd-sticky-inner-th">日期</div></th>
+      <th class="dd-sticky-name"   rowspan="2" style="width:var(--do-col-name);"><div class="dd-sticky-inner-name">员工姓名</div></th>
+      <th class="dd-sticky-phone"  rowspan="2" style="width:var(--do-col-phone);"><div class="dd-sticky-inner-th">手机号</div></th>
+      <th class="dd-sticky-source" rowspan="2" style="width:var(--do-col-source);"><div class="dd-sticky-inner-th">数据来源</div></th>
+      <th colspan="2">上班1</th>
+      <th colspan="2">下班1</th>
+      <th colspan="2">上班2</th>
+      <th colspan="2">下班2</th>
+      <th colspan="2">上班3</th>
+      <th colspan="2">下班3</th>
+      <th colspan="2">上班4</th>
+      <th colspan="2">下班4</th>
+      <th rowspan="2">打卡时间记录</th>
+    </tr>
+    <tr>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+      <th style="min-width:70px;">打卡时间</th><th style="min-width:60px;">打卡状态</th>
+    </tr>
+  `;
+}
+
+// Determine punch status label and CSS class
+function getPunchStatus(p, isLastIn, isLastOut) {
+  if (!p) return { label: '--', cls: 'dd-status-absent' };
+  if (p.category === 'makeup')   return { label: '补卡', cls: 'dd-status-late' };
+  if (p.category === 'approval') return { label: '审批', cls: 'dd-status-approval' };
+  if (isLastIn  && p.time > '09:00') return { label: '迟到', cls: 'dd-status-late' };
+  if (isLastOut && p.time < '17:30') return { label: '早退', cls: 'dd-status-early' };
+  return { label: '正常', cls: 'dd-status-normal' };
+}
+
+// Build slot cells for one source's shifts
+function buildSlotCells(src) {
+  const shiftSlots = src.shifts.map(sh => {
+    const inP  = sh.punches.filter(p => p.type === 'in');
+    const outP = sh.punches.filter(p => p.type === 'out');
+    const lastIn  = inP.length  > 0 ? inP[inP.length  - 1] : null;
+    const lastOut = outP.length > 0 ? outP[outP.length - 1] : null;
+    return { lastIn, lastOut };
+  });
+  while (shiftSlots.length < 4) shiftSlots.push({ lastIn: null, lastOut: null });
+  const cells = [];
+  for (let si = 0; si < 4; si++) {
+    const slot = shiftSlots[si];
+    if (slot.lastIn) {
+      const st = getPunchStatus(slot.lastIn, true, false);
+      cells.push(`<td>${slot.lastIn.time}</td><td><span class="dd-status-tag ${st.cls}">${st.label}</span></td>`);
+    } else {
+      cells.push(`<td><span class="do-val-empty">--</span></td><td><span class="dd-status-tag dd-status-absent">缺卡</span></td>`);
+    }
+    if (slot.lastOut) {
+      const st = getPunchStatus(slot.lastOut, false, true);
+      cells.push(`<td>${slot.lastOut.time}</td><td><span class="dd-status-tag ${st.cls}">${st.label}</span></td>`);
+    } else {
+      cells.push(`<td><span class="do-val-empty">--</span></td><td><span class="dd-status-tag dd-status-absent">缺卡</span></td>`);
+    }
+  }
+  return cells.join('');
+}
+
+// Build record text for one source
+function buildRecordText(src) {
+  const punches = [];
+  src.shifts.forEach(sh => sh.punches.forEach(p => punches.push(p)));
+  return punches.map(p => {
+    const tag    = p.type === 'in' ? '上' : '下';
+    const catTag = p.category === 'makeup' ? '[补]' : p.category === 'approval' ? '[审]' : '';
+    return `${tag}${p.time}${catTag}`;
+  }).join(' / ');
+}
+
+function renderDailyDetailBody(dateList, emps, sourceFilter) {
+  const tbody = document.getElementById('dailyDetailBody');
+  const rows = [];
+  emps.forEach(emp => {
+    dateList.forEach(d => {
+      const allSources = (attendanceData[emp.id] || {})[d.str] || [];
+      if (allSources.length === 0) return;
+      const displaySources = sourceFilter
+        ? allSources.filter(s => s.source === sourceFilter)
+        : allSources;
+      if (displaySources.length === 0) return;
+      // Rowspan merge: date/name/phone merged for same group; first row carries rowspan
+      const rowCount = displaySources.length;
+      displaySources.forEach((src, si) => {
+        const cfg = SOURCE_CFG[src.source];
+        const srcTag = `<span class="dd-src-tag ${cfg.cls}">${cfg.label}</span>`;
+        const slotCells  = buildSlotCells(src);
+        const recordText = buildRecordText(src);
+        const rowCls = (si > 0) ? ' class="dd-group-cont"' : ' class="dd-group-start"';
+        let row = `<tr${rowCls}>`;
+        if (si === 0) {
+          row += `
+          <td class="dd-sticky-date" rowspan="${rowCount}"><div class="dd-sticky-inner"><span class="do-date-str">${d.str}</span><span class="do-date-week">${d.week}</span></div></td>
+          <td class="dd-sticky-name" rowspan="${rowCount}"><div class="dd-sticky-inner-name">${emp.name}</div></td>
+          <td class="dd-sticky-phone" rowspan="${rowCount}"><div class="dd-sticky-inner">${emp.phone}</div></td>`;
+        }
+        row += `
+          <td class="dd-sticky-source"><div class="dd-sticky-inner"><div class="dd-source-tags">${srcTag}</div></div></td>
+          ${slotCells}
+          <td class="dd-record-cell">${recordText}</td>
+        </tr>`;
+        rows.push(row);
+      });
+    });
+  });
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="21"><div class="empty-state">暂无数据</div></td></tr>`;
+  } else {
+    tbody.innerHTML = rows.join('');
+  }
+}
+
+function applyDailyDetailFilter() {
+  const startVal     = document.getElementById('dateStart3').value;
+  const endVal       = document.getElementById('dateEnd3').value;
+  const nameVal      = document.getElementById('searchName3').value.trim();
+  const ruleVal      = document.getElementById('filterRule3').value;
+  const sourceFilter = document.getElementById('filterSource3').value;
+  const dateList = getDateList(startVal, endVal);
+  let filtered = employees.filter(e => {
+    if (nameVal && !e.name.includes(nameVal)) return false;
+    if (ruleVal && e.rule !== ruleVal) return false;
+    return true;
+  });
+  renderDailyDetailHead();
+  renderDailyDetailBody(dateList, filtered, sourceFilter);
+}
+
+function resetDailyDetailFilter() {
+  document.getElementById('dateStart3').value    = '2026-07-01';
+  document.getElementById('dateEnd3').value      = '2026-07-31';
+  document.getElementById('searchName3').value   = '';
+  document.getElementById('filterRule3').value   = '';
+  document.getElementById('filterSource3').value = '';
+  document.getElementById('dpText3').textContent = '2026-07-01 ~ 2026-07-31';
+  applyDailyDetailFilter();
+}
 
 // ===== Init =====
 applyFilter();
