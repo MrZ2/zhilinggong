@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>考勤记录 - 智灵工</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: rgba(0,0,0,.88); font-size: 14px; }
+
+    /* Sidebar */
+    .sidebar { position: fixed; top: 0; left: 0; width: 220px; height: 100vh; background: #001529; z-index: 100; display: flex; flex-direction: column; overflow-y: auto; box-shadow: 2px 0 8px rgba(0,0,0,.15); }
+    .sidebar-logo { padding: 20px 24px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #1677ff, #4096ff); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+    .sidebar-logo .logo-text { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+    .sidebar-menu { padding: 12px 0; flex: 1; }
+    .menu-group { padding: 0; }
+    .menu-group-title { padding: 10px 24px; font-size: 13px; color: rgba(255,255,255,.65); font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: color .2s; user-select: none; }
+    .menu-group-title:hover { color: #fff; }
+    .menu-group-title .arrow { width: 12px; height: 12px; transition: transform .25s; opacity: .5; }
+    .menu-group-title.collapsed .arrow { transform: rotate(-90deg); }
+    .menu-group-items { overflow: hidden; transition: max-height .3s ease; max-height: 200px; }
+    .menu-group-items.collapsed { max-height: 0; }
+    .menu-item { display: flex; align-items: center; gap: 10px; padding: 10px 24px 10px 36px; color: rgba(255,255,255,.65); font-size: 14px; cursor: pointer; transition: all .2s; border-left: 3px solid transparent; text-decoration: none; }
+    .menu-item:hover { color: #fff; background: rgba(255,255,255,.04); }
+    .menu-item.active { color: #fff; background: #1677ff; border-left-color: #fff; }
+    .menu-item .menu-icon { width: 16px; height: 16px; opacity: .7; flex-shrink: 0; }
+    .menu-item.active .menu-icon { opacity: 1; }
+
+    /* Main content */
+    .main-content { margin-left: 220px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    .page-header { background: #fff; padding: 14px 24px; border-bottom: 1px solid #f0f0f0; flex-shrink: 0; }
+    .page-header h2 { font-size: 18px; font-weight: 600; }
+
+    /* Tabs */
+    .tab-bar { background: #fff; border-bottom: 1px solid #f0f0f0; padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; }
+    .tab-item { padding: 12px 20px; font-size: 14px; color: rgba(0,0,0,.65); cursor: pointer; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; font-weight: 500; user-select: none; position: relative; }
+    .tab-item:hover { color: #1677ff; }
+    .tab-item.active { color: #1677ff; border-bottom-color: #1677ff; }
+    .sub-tab-bar { background: #fafafa; border-bottom: 1px solid #f0f0f0; padding: 0 24px 0 48px; display: flex; gap: 0; flex-shrink: 0; }
+    .sub-tab-item { padding: 9px 16px; font-size: 13px; color: rgba(0,0,0,.55); cursor: pointer; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; user-select: none; }
+    .sub-tab-item:hover { color: #1677ff; }
+    .sub-tab-item.active { color: #1677ff; border-bottom-color: #1677ff; font-weight: 500; }
+    .tab-content { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+    .tab-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(0,0,0,.25); }
+    .tab-placeholder svg { width: 64px; height: 64px; opacity: .4; }
+    .tab-placeholder p { font-size: 14px; }
+    .tab-placeholder .ph-title { font-size: 16px; font-weight: 500; color: rgba(0,0,0,.35); }
+
+    /* Filter bar - grid 4 cols */
+    .filter-bar { background: #fff; padding: 14px 24px; margin: 12px 24px 0; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.04); display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 20px; align-items: center; flex-shrink: 0; }
+    .filter-item { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+    .filter-item label { font-size: 13px; color: rgba(0,0,0,.65); white-space: nowrap; flex-shrink: 0; }
+    .filter-item select, .filter-item input[type="text"] { flex: 1; min-width: 0; height: 32px; border: 1px solid #d9d9d9; border-radius: 6px; padding: 0 10px; font-size: 13px; outline: none; background: #fff; }
+    .filter-item select:focus, .filter-item input:focus { border-color: #1677ff; box-shadow: 0 0 0 2px rgba(22,119,255,.1); }
+    .btn-group { display: flex; gap: 8px; justify-content: flex-end; }
+    .btn { height: 32px; padding: 0 20px; border-radius: 6px; border: 1px solid #d9d9d9; background: #fff; cursor: pointer; font-size: 13px; transition: all .2s; }
+    .btn:hover { border-color: #1677ff; color: #1677ff; }
+    .btn-primary { background: #1677ff; border-color: #1677ff; color: #fff; }
+    .btn-primary:hover { background: #4096ff; border-color: #4096ff; color: #fff; }
+
+    /* Date picker */
+    .date-picker-wrap { position: relative; flex: 1; min-width: 0; }
+    .date-picker-trigger { width: 100%; height: 32px; border: 1px solid #d9d9d9; border-radius: 6px; padding: 0 10px; font-size: 13px; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: rgba(0,0,0,.88); transition: border-color .2s; }
+    .date-picker-trigger:hover { border-color: #1677ff; }
+    .date-picker-trigger .dp-icon { color: rgba(0,0,0,.3); font-size: 14px; }
+    .date-picker-panel { position: absolute; top: 36px; left: 0; z-index: 50; background: #fff; border: 1px solid #e8e8e8; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.12); padding: 16px; display: none; min-width: 280px; }
+    .date-picker-panel.open { display: block; }
+    .date-picker-panel .dp-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .date-picker-panel .dp-row label { font-size: 12px; color: rgba(0,0,0,.55); width: 50px; flex-shrink: 0; }
+    .date-picker-panel .dp-row input[type="date"] { flex: 1; height: 30px; border: 1px solid #d9d9d9; border-radius: 4px; padding: 0 8px; font-size: 13px; outline: none; }
+    .date-picker-panel .dp-row input[type="date"]:focus { border-color: #1677ff; }
+    .date-picker-panel .dp-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f0f0f0; }
+    .date-picker-panel .dp-actions .btn { height: 28px; padding: 0 14px; font-size: 12px; }
+
+    /* Table - constrained height */
+    .table-wrapper { margin: 12px 24px 16px; background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.04); overflow: hidden; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .table-scroll { overflow: auto; flex: 1; min-height: 0; }
+    table { border-collapse: collapse; min-width: max-content; }
+
+    :root { --col-name: 100px; --col-phone: 120px; --col-date: 240px; }
+
+    thead th { background: #fafafa; padding: 0; text-align: center; font-weight: 500; font-size: 13px; color: rgba(0,0,0,.75); border: 1px solid #f0f0f0; white-space: nowrap; vertical-align: middle; }
+    thead tr:first-child th { padding: 10px 12px; font-size: 13px; color: rgba(0,0,0,.55); letter-spacing: .5px; }
+    thead tr:nth-child(2) th { padding: 6px 4px; line-height: 1.3; }
+    thead tr:nth-child(2) .day-num { font-size: 14px; font-weight: 600; color: rgba(0,0,0,.88); display: block; }
+    thead tr:nth-child(2) .day-week { font-size: 11px; color: rgba(0,0,0,.4); display: block; margin-top: 1px; }
+    thead tr:first-child th { position: sticky; top: 0; z-index: 20; background: #fafafa; }
+    thead tr:nth-child(2) th { position: sticky; top: 38px; z-index: 20; background: #fafafa; }
+    thead tr:first-child th.sticky-l0 { position: sticky; left: 0; z-index: 30; background: #fafafa; }
+    thead tr:nth-child(2) th.sticky-l0 { position: sticky; left: 0; z-index: 30; background: #fafafa; }
+    thead tr:nth-child(2) th.sticky-l1 { position: sticky; left: var(--col-name); z-index: 30; background: #fafafa; }
+
+    tbody td { padding: 0; border: 1px solid #f0f0f0; vertical-align: top; font-size: 13px; }
+    tbody tr:hover td { background: #f8fbff; }
+    tbody td.sticky-l0 { position: sticky; left: 0; z-index: 5; background: #fff; }
+    tbody td.sticky-l1 { position: sticky; left: var(--col-name); z-index: 5; background: #fff; }
+    tbody tr:hover td.sticky-l0, tbody tr:hover td.sticky-l1 { background: #f8fbff; }
+
+    .cell-text { padding: 10px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .emp-name { padding: 10px 12px; font-weight: 500; }
+
+    .date-cell { min-width: var(--col-date); min-height: 48px; cursor: pointer; transition: background .15s; }
+    .date-cell:hover { background: #e6f4ff !important; }
+    .date-cell.empty { cursor: default; }
+    .date-cell.empty:hover { background: transparent !important; }
+
+    .source-group { border-bottom: 1px solid #f0f0f0; }
+    .source-group:last-child { border-bottom: none; }
+    .source-header { font-size: 11px; font-weight: 700; padding: 3px 8px; border-bottom: 1px solid #f5f5f5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .source-header.src-internal { color: #1677ff; background: #f0f7ff; }
+    .source-header.src-wecom { color: #389e0d; background: #f6ffed; }
+    .source-header.src-hikvision { color: #d46b08; background: #fff7e6; }
+
+    .shift-line { display: flex; align-items: flex-start; gap: 3px; padding: 3px 8px; border-bottom: 1px solid #f8f8f8; font-size: 12px; flex-wrap: wrap; }
+    .shift-line:last-child { border-bottom: none; }
+    .shift-tag { font-size: 10px; padding: 1px 4px; border-radius: 3px; background: #f0f0f0; color: rgba(0,0,0,.5); font-weight: 500; flex-shrink: 0; margin-top: 1px; }
+    .punch-item { display: inline-flex; align-items: center; gap: 2px; }
+    .punch-time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .punch-type-mini { font-size: 10px; padding: 0 3px; border-radius: 2px; }
+    .pt-in { background: #e6f4ff; color: #1677ff; }
+    .pt-out { background: #fff0f6; color: #c41d7f; }
+    .cat-tag { font-size: 10px; padding: 0 3px; border-radius: 2px; font-weight: 600; }
+    .cat-makeup { background: #fff7e6; color: #d46b08; }
+    .cat-approval { background: #f9f0ff; color: #722ed1; }
+    .punch-thumb { width: 22px; height: 22px; border-radius: 3px; object-fit: cover; cursor: pointer; border: 1px solid #e8e8e8; flex-shrink: 0; transition: border-color .15s; }
+    .punch-thumb:hover { border-color: #1677ff; }
+    .no-record { padding: 14px 12px; color: rgba(0,0,0,.2); text-align: center; font-size: 13px; }
+
+    .weekend { background: #fffbe6; }
+    thead .weekend { background: #fff8e1; }
+
+    /* Drawer */
+    .drawer-mask { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .25s; }
+    .drawer-mask.open { opacity: 1; pointer-events: auto; }
+    .drawer { position: fixed; top: 0; right: -540px; width: 540px; height: 100%; background: #fff; z-index: 1001; transition: right .3s cubic-bezier(.4,0,.2,1); box-shadow: -4px 0 24px rgba(0,0,0,.1); display: flex; flex-direction: column; }
+    .drawer.open { right: 0; }
+    .drawer-header { padding: 16px 24px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .drawer-header h3 { font-size: 16px; font-weight: 600; }
+    .drawer-close { width: 32px; height: 32px; border: none; background: none; font-size: 20px; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: rgba(0,0,0,.45); }
+    .drawer-close:hover { background: #f5f5f5; color: rgba(0,0,0,.88); }
+    .drawer-body { padding: 20px 24px; flex: 1; overflow-y: auto; }
+    .detail-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 16px; background: #f8faff; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e8f0fe; }
+    .info-item { display: flex; flex-direction: column; gap: 3px; }
+    .info-label { font-size: 11px; color: rgba(0,0,0,.4); letter-spacing: .5px; }
+    .info-value { font-size: 14px; font-weight: 500; }
+    .section-title { font-size: 13px; font-weight: 600; color: rgba(0,0,0,.65); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 6px; }
+    .section-title .count { background: #f0f0f0; border-radius: 10px; padding: 1px 7px; font-size: 11px; font-weight: 400; color: rgba(0,0,0,.45); }
+    .source-section { margin-bottom: 20px; }
+    .source-section-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; padding: 6px 12px; border-radius: 6px; }
+    .source-section-title.src-internal { background: #e6f4ff; color: #1677ff; }
+    .source-section-title.src-wecom { background: #f6ffed; color: #389e0d; }
+    .source-section-title.src-hikvision { background: #fff7e6; color: #d46b08; }
+    .shift-sub { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #e8e8e8; }
+    .shift-sub-title { font-size: 12px; font-weight: 600; color: rgba(0,0,0,.55); margin-bottom: 6px; }
+    .punch-detail-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid #f0f0f0; border-radius: 6px; margin-bottom: 6px; font-size: 13px; }
+    .punch-detail-item:hover { border-color: #d6e4ff; background: #f8faff; }
+    .pd-time { font-weight: 600; font-size: 14px; min-width: 44px; font-variant-numeric: tabular-nums; }
+    .pd-type { font-size: 11px; padding: 2px 7px; border-radius: 4px; }
+    .pd-type-in { background: #e6f4ff; color: #1677ff; }
+    .pd-type-out { background: #fff0f6; color: #c41d7f; }
+    .pd-cat { font-size: 11px; padding: 2px 7px; border-radius: 4px; }
+    .pd-cat-normal { background: #f5f5f5; color: rgba(0,0,0,.45); }
+    .pd-cat-makeup { background: #fff7e6; color: #d46b08; }
+    .pd-cat-approval { background: #f9f0ff; color: #722ed1; }
+    .pd-device { color: rgba(0,0,0,.4); font-size: 12px; margin-left: auto; }
+    .pd-thumb { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; cursor: pointer; border: 1px solid #e8e8e8; }
+
+    .image-viewer { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 2000; display: none; align-items: center; justify-content: center; cursor: pointer; }
+    .image-viewer.open { display: flex; }
+    .image-viewer img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,.3); }
+    .image-viewer .iv-close { position: absolute; top: 16px; right: 24px; color: #fff; font-size: 28px; cursor: pointer; }
+
+    .empty-state { text-align: center; padding: 60px 0; color: rgba(0,0,0,.2); }
+    .table-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+    .table-scroll::-webkit-scrollbar-track { background: #f5f5f5; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #d9d9d9; border-radius: 4px; }
+    .table-scroll::-webkit-scrollbar-thumb:hover { background: #bbb; }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">Z</div>
+    <span class="logo-text">智灵工</span>
+  </div>
+  <nav class="sidebar-menu">
+    <div class="menu-group">
+      <div class="menu-group-title" onclick="toggleMenu(this)">
+        人事管理
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="menu-group-items">
+        <a class="menu-item active" href="#">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          考勤记录
+        </a>
+      </div>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="main-content">
+<div class="page-header">
+  <h2>考勤记录</h2>
+</div>
+
+<!-- 一级 Tab -->
+<div class="tab-bar" id="mainTabBar">
+  <div class="tab-item active" onclick="switchTab('timeline')">考勤时间记录</div>
+  <div class="tab-item" onclick="switchTab('daily')">日汇总</div>
+  <div class="tab-item" onclick="switchTab('monthly')">月汇总</div>
+</div>
+
+<!-- 二级 Tab -->
+<div class="sub-tab-bar" id="subTabBar" style="display:none;">
+  <div class="sub-tab-item active" id="subTab0" onclick="switchSubTab(0)">概况统计</div>
+  <div class="sub-tab-item" id="subTab1" onclick="switchSubTab(1)">打卡明细</div>
+</div>
+
+<!-- Tab: 考勤时间记录 -->
+<div class="tab-content" id="tabTimeline">
+<div class="filter-bar">
+  <div class="filter-item">
+    <label>日期</label>
+    <div class="date-picker-wrap">
+      <div class="date-picker-trigger" id="dpTrigger" onclick="toggleDatePicker()">
+        <span id="dpText">2026-07-01 ~ 2026-07-31</span>
+        <span class="dp-icon">&#128197;</span>
+      </div>
+      <div class="date-picker-panel" id="dpPanel">
+        <div class="dp-row"><label>开始</label><input type="date" id="dateStart" value="2026-07-01"></div>
+        <div class="dp-row"><label>结束</label><input type="date" id="dateEnd" value="2026-07-31"></div>
+        <div class="dp-actions">
+          <button class="btn" onclick="closeDatePicker()">取消</button>
+          <button class="btn btn-primary" onclick="confirmDatePicker()">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="filter-item">
+    <label>姓名</label>
+    <input type="text" id="searchName" placeholder="输入员工姓名">
+  </div>
+  <div class="filter-item">
+    <label>考勤规则</label>
+    <select id="filterRule">
+      <option value="">全部规则</option>
+      <option value="标准班">标准班</option>
+      <option value="夜班">夜班</option>
+      <option value="弹性工时">弹性工时</option>
+      <option value="休息">休息</option>
+    </select>
+  </div>
+  <div class="filter-item">
+    <label>数据来源</label>
+    <select id="filterSource">
+      <option value="">全部来源</option>
+      <option value="internal">内部系统</option>
+      <option value="wecom">企业微信</option>
+      <option value="hikvision">海康威视</option>
+    </select>
+  </div>
+  <div class="btn-group" style="grid-column: 4;">
+    <button class="btn btn-primary" onclick="applyFilter()">查询</button>
+    <button class="btn" onclick="resetFilter()">重置</button>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <div class="table-scroll" id="tableScroll">
+    <table id="mainTable">
+      <thead id="tableHead"></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+</div><!-- /#tabTimeline -->
+
+<!-- Tab: 占位（日汇总/月汇总） -->
+<div class="tab-content" id="tabPlaceholder" style="display:none;">
+  <div class="tab-placeholder">
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="8" y="12" width="48" height="40" rx="4"/>
+      <line x1="8" y1="24" x2="56" y2="24"/>
+      <line x1="20" y1="12" x2="20" y2="8"/>
+      <line x1="44" y1="12" x2="44" y2="8"/>
+      <rect x="16" y="30" width="8" height="6" rx="1" fill="currentColor" opacity=".15"/>
+      <rect x="28" y="30" width="8" height="6" rx="1" fill="currentColor" opacity=".15"/>
+      <rect x="40" y="30" width="8" height="6" rx="1" fill="currentColor" opacity=".15"/>
+      <rect x="16" y="40" width="8" height="6" rx="1" fill="currentColor" opacity=".15"/>
+      <rect x="28" y="40" width="8" height="6" rx="1" fill="currentColor" opacity=".15"/>
+    </svg>
+    <p class="ph-title" id="phTitle">日报概况统计</p>
+    <p>功能开发中，敬请期待</p>
+  </div>
+</div>
+</div><!-- /.main-content -->
+
+<div class="drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <h3 id="drawerTitle">打卡明细</h3>
+    <button class="drawer-close" onclick="closeDrawer()">&times;</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</div>
+
+<div class="image-viewer" id="imageViewer" onclick="closeImageViewer()">
+  <span class="iv-close">&times;</span>
+  <img id="viewerImg" src="" alt="打卡照片">
+</div>
+
+<script>
+// ===== Menu toggle =====
+function toggleMenu(el) {
+  el.classList.toggle('collapsed');
+  el.nextElementSibling.classList.toggle('collapsed');
+}
+
+// ===== Tab switching =====
+let _currentTab = 'timeline';
+let _currentSubTab = 0;
+
+const SUB_TAB_LABELS = {
+  daily:   ['日报概况统计', '日报打卡明细'],
+  monthly: ['月报概况统计', '月报打卡明细'],
+};
+
+function switchTab(tab) {
+  _currentTab = tab;
+  _currentSubTab = 0;
+  // Update tab active states
+  document.querySelectorAll('#mainTabBar .tab-item').forEach((el, i) => {
+    const tabs = ['timeline','daily','monthly'];
+    el.classList.toggle('active', tabs[i] === tab);
+  });
+  // Show/hide content
+  const timeline = document.getElementById('tabTimeline');
+  const placeholder = document.getElementById('tabPlaceholder');
+  const subBar = document.getElementById('subTabBar');
+  if (tab === 'timeline') {
+    timeline.style.display = 'flex';
+    placeholder.style.display = 'none';
+    subBar.style.display = 'none';
+  } else {
+    timeline.style.display = 'none';
+    placeholder.style.display = 'flex';
+    subBar.style.display = 'flex';
+    // Update sub-tab labels
+    const labels = SUB_TAB_LABELS[tab];
+    document.getElementById('subTab0').textContent = labels[0];
+    document.getElementById('subTab1').textContent = labels[1];
+    updateSubTabActive();
+    updatePlaceholderTitle();
+  }
+}
+
+function switchSubTab(idx) {
+  _currentSubTab = idx;
+  updateSubTabActive();
+  updatePlaceholderTitle();
+}
+
+function updateSubTabActive() {
+  document.getElementById('subTab0').classList.toggle('active', _currentSubTab === 0);
+  document.getElementById('subTab1').classList.toggle('active', _currentSubTab === 1);
+}
+
+function updatePlaceholderTitle() {
+  const labels = SUB_TAB_LABELS[_currentTab] || ['概况统计','打卡明细'];
+  document.getElementById('phTitle').textContent = labels[_currentSubTab];
+}
+
+// ===== Date Picker =====
+function toggleDatePicker() {
+  document.getElementById('dpPanel').classList.toggle('open');
+}
+function closeDatePicker() {
+  document.getElementById('dpPanel').classList.remove('open');
+}
+function confirmDatePicker() {
+  const s = document.getElementById('dateStart').value;
+  const e = document.getElementById('dateEnd').value;
+  document.getElementById('dpText').textContent = `${s} ~ ${e}`;
+  closeDatePicker();
+}
+// Close picker on outside click
+document.addEventListener('click', function(ev) {
+  const wrap = document.querySelector('.date-picker-wrap');
+  if (wrap && !wrap.contains(ev.target)) closeDatePicker();
+});
+
+// ===== Config =====
+const SOURCE_CFG = {
+  internal:  { label: '内部', fullLabel: '内部系统', cls: 'src-internal'  },
+  wecom:     { label: '企微', fullLabel: '企业微信', cls: 'src-wecom'     },
+  hikvision: { label: '海康', fullLabel: '海康威视', cls: 'src-hikvision' },
+};
+const WEEKDAYS = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+const CATEGORY_CFG = {
+  normal:   { label: '正常', short: '',     pdCls: 'pd-cat-normal'   },
+  makeup:   { label: '补卡', short: '补',   cls: 'cat-makeup',   pdCls: 'pd-cat-makeup'   },
+  approval: { label: '审批', short: '审',   cls: 'cat-approval',  pdCls: 'pd-cat-approval' },
+};
+
+// ===== Employees =====
+const employees = [
+  { id:'E001', name:'张福',   phone:'13800138001', rule:'标准班' },
+  { id:'E002', name:'阮仁军', phone:'13800138002', rule:'夜班'   },
+  { id:'E003', name:'李海涛', phone:'13800138003', rule:'标准班' },
+  { id:'E004', name:'何智威', phone:'13800138004', rule:'弹性工时' },
+  { id:'E005', name:'谭方',   phone:'13800138005', rule:'弹性工时' },
+  { id:'E006', name:'黄程义', phone:'13800138006', rule:'标准班' },
+  { id:'E007', name:'黎莲龙', phone:'13800138007', rule:'夜班'   },
+  { id:'E008', name:'田碟碟', phone:'13800138008', rule:'标准班' },
+  { id:'E009', name:'王五',   phone:'13800138009', rule:'标准班' },
+  { id:'E010', name:'赵六',   phone:'13800138010', rule:'休息'   },
+];
+
+// ===== Data helpers =====
+function mkP(time, type, opts) {
+  opts = opts || {};
+  return { time, type, category: opts.category || 'normal', photo: opts.photo || null };
+}
+function mkSource(source, rule, shifts) { return { source, rule, shifts }; }
+function mkShift(name, punches) { return { name, punches }; }
+
+const P = (seed) => `https://picsum.photos/seed/${seed}/200/200`;
+
+// ===== Attendance data =====
+const attendanceData = {
+  'E001': {
+    '2026-07-01': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:52','in',{photo:P('a1')}), mkP('18:05','out',{photo:P('a2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:53','in',{photo:P('a3')}), mkP('18:03','out',{photo:P('a4')}) ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('08:51','in',{photo:P('a5')}), mkP('18:06','out',{photo:P('a6')}) ]) ]),
+    ],
+    '2026-07-02': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:48','in'), mkP('18:10','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:50','in'), mkP('18:08','out') ]) ]),
+    ],
+    '2026-07-06': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:48','in'), mkP('08:50','in',{photo:P('b1')}), mkP('12:30','out'), mkP('13:25','in'), mkP('18:15','out',{photo:P('b2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:50','in'), mkP('18:13','out') ]) ]),
+    ],
+    '2026-07-08': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:51','in',{photo:P('c1')}), mkP('12:30','out'), mkP('13:25','in'), mkP('18:06','out',{photo:P('c2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:53','in'), mkP('18:04','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('08:50','in'), mkP('18:07','out') ]) ]),
+    ],
+    '2026-07-22': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:45','in',{category:'makeup'}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:47','in',{category:'makeup'}) ]) ]),
+    ],
+  },
+  'E002': {
+    '2026-07-01': [
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:17','in',{photo:P('d1')}), mkP('12:00','out',{photo:P('d2')}) ]), mkShift('班次2',[ mkP('18:00','in',{photo:P('d3')}), mkP('22:04','out',{photo:P('d4')}) ]) ]),
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:18','in'), mkP('12:02','out') ]), mkShift('班次2',[ mkP('18:02','in'), mkP('22:02','out') ]) ]),
+    ],
+    '2026-07-03': [
+      mkSource('hikvision','夜班',[ mkShift('班次1',[ mkP('07:27','in',{photo:P('e1')}), mkP('12:00','out',{photo:P('e2')}) ]), mkShift('班次2',[ mkP('18:00','in',{photo:P('e3')}), mkP('23:45','out',{photo:P('e4')}) ]) ]),
+    ],
+    '2026-07-04': [
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:37','in',{category:'makeup'}) ]) ]),
+    ],
+    '2026-07-06': [
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:38','in'), mkP('12:30','out') ]), mkShift('班次2',[ mkP('18:30','in'), mkP('23:53','out') ]) ]),
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:40','in'), mkP('12:28','out') ]), mkShift('班次2',[ mkP('18:28','in'), mkP('23:50','out') ]) ]),
+    ],
+  },
+  'E003': {
+    '2026-07-01': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('07:36','in',{photo:P('f1')}), mkP('18:48','out',{photo:P('f2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('07:38','in'), mkP('18:46','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('07:35','in'), mkP('18:50','out') ]) ]),
+    ],
+    '2026-07-22': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:01','in',{photo:P('g1')}), mkP('18:00','out',{photo:P('g2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:03','in'), mkP('17:58','out') ]) ]),
+    ],
+  },
+  'E004': {
+    '2026-07-06': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in',{category:'approval',photo:P('h1')}), mkP('18:00','out',{category:'approval',photo:P('h2')}) ]) ]) ],
+    '2026-07-13': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('10:00','in',{category:'approval'}), mkP('18:30','out',{category:'approval'}) ]) ]) ],
+  },
+  'E005': {
+    '2026-07-08': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('10:00','in',{category:'approval'}), mkP('18:30','out',{category:'approval'}) ]) ]) ],
+    '2026-07-15': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in',{category:'approval',photo:P('i1')}), mkP('18:00','out',{category:'approval',photo:P('i2')}) ]) ]) ],
+  },
+  'E006': {
+    '2026-07-22': [ mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('07:55','in',{category:'makeup'}) ]) ]) ],
+  },
+  'E007': {
+    '2026-07-01': [
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:20','in',{photo:P('j1')}), mkP('12:00','out',{photo:P('j2')}) ]), mkShift('班次2',[ mkP('18:00','in',{photo:P('j3')}), mkP('22:05','out',{photo:P('j4')}) ]) ]),
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:22','in'), mkP('12:02','out') ]), mkShift('班次2',[ mkP('18:02','in'), mkP('22:03','out') ]) ]),
+      mkSource('hikvision','夜班',[ mkShift('班次1',[ mkP('07:19','in'), mkP('12:01','out') ]), mkShift('班次2',[ mkP('18:01','in'), mkP('22:07','out') ]) ]),
+    ],
+    '2026-07-06': [
+      mkSource('internal','夜班',[ mkShift('班次1',[ mkP('07:28','in',{photo:P('k1')}), mkP('12:00','out',{photo:P('k2')}) ]), mkShift('班次2',[ mkP('18:00','in',{photo:P('k3')}), mkP('22:00','out',{photo:P('k4')}) ]) ]),
+      mkSource('wecom','夜班',[ mkShift('班次1',[ mkP('07:30','in'), mkP('12:02','out') ]), mkShift('班次2',[ mkP('18:02','in'), mkP('21:58','out') ]) ]),
+    ],
+  },
+  'E008': {
+    '2026-07-01': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('07:53','in'), mkP('17:38','out') ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('07:55','in'), mkP('17:36','out') ]) ]),
+    ],
+    '2026-07-07': [
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('07:55','in',{photo:P('l1')}), mkP('17:37','out',{photo:P('l2')}) ]) ]),
+      mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('07:57','in'), mkP('17:35','out') ]) ]),
+      mkSource('hikvision','标准班',[ mkShift('班次1',[ mkP('07:54','in'), mkP('17:38','out') ]) ]),
+    ],
+  },
+  'E009': {
+    '2026-07-01': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:00','in'), mkP('18:00','out') ]) ]) ],
+    '2026-07-03': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:10','in',{category:'makeup'}), mkP('17:50','out',{category:'makeup'}) ]) ]) ],
+    '2026-07-08': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('09:05','in',{category:'approval',photo:P('m1')}), mkP('18:00','out',{category:'approval',photo:P('m2')}) ]) ]) ],
+  },
+  'E010': {
+    '2026-07-01': [ mkSource('hikvision','休息',[ mkShift('班次1',[ mkP('08:30','in'), mkP('17:30','out') ]) ]) ],
+    '2026-07-02': [
+      mkSource('internal','休息',[ mkShift('班次1',[ mkP('08:28','in'), mkP('17:32','out') ]) ]),
+      mkSource('hikvision','休息',[ mkShift('班次1',[ mkP('08:27','in'), mkP('17:33','out') ]) ]),
+    ],
+    '2026-07-07': [
+      mkSource('internal','休息',[ mkShift('班次1',[ mkP('08:27','in',{photo:P('n1')}), mkP('17:33','out',{photo:P('n2')}) ]) ]),
+      mkSource('wecom','休息',[ mkShift('班次1',[ mkP('08:29','in'), mkP('17:31','out') ]) ]),
+      mkSource('hikvision','休息',[ mkShift('班次1',[ mkP('08:26','in'), mkP('17:34','out') ]) ]),
+    ],
+  },
+};
+
+// Device info
+const punchDeviceMap = { internal: ['PC端打卡','移动端打卡'], wecom: ['企业微信WiFi打卡','企业微信GPS打卡'], hikvision: ['东门人脸识别','南门人脸识别','西门人脸识别'] };
+function getDevice(source, idx) { const arr = punchDeviceMap[source] || ['未知设备']; return arr[idx % arr.length]; }
+
+function getDateList(startStr, endStr) {
+  const dates = [];
+  let d = new Date(startStr + 'T00:00:00');
+  const end = new Date(endStr + 'T00:00:00');
+  while (d <= end) {
+    const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+    dates.push({ str: `${y}-${m}-${day}`, num: d.getDate(), week: WEEKDAYS[d.getDay()], isWeekend: d.getDay()===0||d.getDay()===6 });
+    d.setDate(d.getDate()+1);
+  }
+  return dates;
+}
+
+// ===== Render =====
+let _filterSource = '';
+
+function render(dateList, emps) { renderHead(dateList); renderBody(dateList, emps); }
+
+function renderHead(dateList) {
+  document.getElementById('tableHead').innerHTML = `
+    <tr>
+      <th class="sticky-l0" colspan="2" style="text-align:left;padding-left:16px;">基础信息</th>
+      <th colspan="${dateList.length}">打卡时间记录</th>
+    </tr>
+    <tr>
+      <th class="sticky-l0" style="width:var(--col-name);text-align:left;padding-left:16px;">员工姓名</th>
+      <th class="sticky-l1" style="width:var(--col-phone);">手机号</th>
+      ${dateList.map(d => `<th class="${d.isWeekend?'weekend':''}" style="width:var(--col-date);"><span class="day-num">${d.num}</span><span class="day-week">${d.week}</span></th>`).join('')}
+    </tr>
+  `;
+}
+
+// Render only effective (last in + last out) per shift for the list cell
+function renderEffectivePunch(p) {
+  const catCfg = CATEGORY_CFG[p.category || 'normal'];
+  const typeCls = p.type === 'in' ? 'pt-in' : 'pt-out';
+  const typeLabel = p.type === 'in' ? '上' : '下';
+  let html = `<span class="punch-item"><span class="punch-type-mini ${typeCls}">${typeLabel}</span><span class="punch-time">${p.time}</span>`;
+  if (catCfg.short) html += `<span class="cat-tag ${catCfg.cls}">${catCfg.short}</span>`;
+  if (p.photo) html += `<img class="punch-thumb" src="${p.photo}" alt="打卡照片" onclick="event.stopPropagation();openImageViewer('${p.photo}')">`;
+  html += `</span>`;
+  return html;
+}
+
+function renderBody(dateList, emps) {
+  const tbody = document.getElementById('tableBody');
+  if (emps.length === 0) { tbody.innerHTML = `<tr><td colspan="${2+dateList.length}"><div class="empty-state">暂无数据</div></td></tr>`; return; }
+  tbody.innerHTML = emps.map(emp => {
+    const empData = attendanceData[emp.id] || {};
+    const cells = dateList.map(d => {
+      let sources = empData[d.str] || [];
+      if (_filterSource) sources = sources.filter(s => s.source === _filterSource);
+      const weekendCls = d.isWeekend ? 'weekend' : '';
+      if (sources.length === 0) {
+        return `<td class="date-cell empty ${weekendCls}" style="min-width:var(--col-date);"><div class="no-record">--</div></td>`;
+      }
+      const srcHTML = sources.map(src => {
+        const cfg = SOURCE_CFG[src.source];
+        const headerText = src.rule ? `${cfg.label}-${src.rule}` : cfg.label;
+        const shiftLines = src.shifts.map(sh => {
+          // Only show effective: last in + last out
+          const inPunches = sh.punches.filter(p => p.type === 'in');
+          const outPunches = sh.punches.filter(p => p.type === 'out');
+          const lastIn = inPunches.length > 0 ? inPunches[inPunches.length - 1] : null;
+          const lastOut = outPunches.length > 0 ? outPunches[outPunches.length - 1] : null;
+          let html = `<span class="shift-tag">${sh.name}</span>`;
+          if (lastIn) html += renderEffectivePunch(lastIn);
+          if (lastOut) html += renderEffectivePunch(lastOut);
+          return `<div class="shift-line">${html}</div>`;
+        }).join('');
+        return `<div class="source-group"><div class="source-header ${cfg.cls}">${headerText}</div>${shiftLines}</div>`;
+      }).join('');
+      return `<td class="date-cell ${weekendCls}" style="min-width:var(--col-date);" onclick="openDrawer('${emp.id}','${d.str}')">${srcHTML}</td>`;
+    }).join('');
+    return `<tr>
+      <td class="sticky-l0"><div class="emp-name">${emp.name}</div></td>
+      <td class="sticky-l1"><div class="cell-text" style="color:rgba(0,0,0,.55);font-size:12px;">${emp.phone}</div></td>
+      ${cells}
+    </tr>`;
+  }).join('');
+}
+
+// ===== Filter =====
+function applyFilter() {
+  const startVal = document.getElementById('dateStart').value;
+  const endVal = document.getElementById('dateEnd').value;
+  const nameVal = document.getElementById('searchName').value.trim();
+  const ruleVal = document.getElementById('filterRule').value;
+  _filterSource = document.getElementById('filterSource').value;
+  const dateList = getDateList(startVal, endVal);
+  let filtered = employees.filter(e => {
+    if (nameVal && !e.name.includes(nameVal)) return false;
+    if (ruleVal && e.rule !== ruleVal) return false;
+    return true;
+  });
+  render(dateList, filtered);
+}
+function resetFilter() {
+  document.getElementById('dateStart').value = '2026-07-01';
+  document.getElementById('dateEnd').value = '2026-07-31';
+  document.getElementById('searchName').value = '';
+  document.getElementById('filterRule').value = '';
+  document.getElementById('filterSource').value = '';
+  document.getElementById('dpText').textContent = '2026-07-01 ~ 2026-07-31';
+  _filterSource = '';
+  applyFilter();
+}
+
+// ===== Drawer (shows ALL punches) =====
+function openDrawer(empId, dateStr) {
+  const emp = employees.find(e => e.id === empId);
+  if (!emp) return;
+  let sources = (attendanceData[empId] || {})[dateStr] || [];
+  if (_filterSource) sources = sources.filter(s => s.source === _filterSource);
+  const d = new Date(dateStr + 'T00:00:00');
+  const weekLabel = WEEKDAYS[d.getDay()];
+  document.getElementById('drawerTitle').textContent = `${emp.name} · ${dateStr} ${weekLabel}`;
+
+  let totalPunches = sources.reduce((s, src) => s + src.shifts.reduce((ss, sh) => ss + sh.punches.length, 0), 0);
+  let bodyHTML = `
+    <div class="detail-summary">
+      <div class="info-item"><span class="info-label">员工</span><span class="info-value">${emp.name}</span></div>
+      <div class="info-item"><span class="info-label">手机号</span><span class="info-value">${emp.phone}</span></div>
+      <div class="info-item"><span class="info-label">考勤规则</span><span class="info-value">${emp.rule}</span></div>
+      <div class="info-item"><span class="info-label">打卡次数</span><span class="info-value">${totalPunches} 次</span></div>
+    </div>
+    <div class="section-title">打卡明细 <span class="count">${totalPunches} 条</span></div>
+  `;
+
+  if (sources.length === 0) {
+    bodyHTML += `<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,.2);">当天无打卡记录</div>`;
+  } else {
+    sources.forEach(src => {
+      const cfg = SOURCE_CFG[src.source];
+      const titleText = src.rule ? `${cfg.fullLabel} - ${src.rule}` : cfg.fullLabel;
+      bodyHTML += `<div class="source-section"><div class="source-section-title ${cfg.cls}">${titleText}</div>`;
+      src.shifts.forEach(sh => {
+        bodyHTML += `<div class="shift-sub"><div class="shift-sub-title">${sh.name}</div>`;
+        sh.punches.forEach((p, i) => {
+          const catCfg = CATEGORY_CFG[p.category || 'normal'];
+          bodyHTML += `<div class="punch-detail-item"><span class="pd-type ${p.type==='in'?'pd-type-in':'pd-type-out'}">${p.type==='in'?'上班':'下班'}</span><span class="pd-time">${p.time}</span><span class="pd-cat ${catCfg.pdCls}">${catCfg.label}</span>`;
+          if (p.photo) bodyHTML += `<img class="pd-thumb" src="${p.photo}" alt="打卡照片" onclick="openImageViewer('${p.photo}')">`;
+          bodyHTML += `<span class="pd-device">${getDevice(src.source, i)}</span></div>`;
+        });
+        bodyHTML += `</div>`;
+      });
+      bodyHTML += `</div>`;
+    });
+  }
+
+  document.getElementById('drawerBody').innerHTML = bodyHTML;
+  document.getElementById('drawerMask').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+}
+function closeDrawer() { document.getElementById('drawerMask').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); }
+
+// ===== Image Viewer =====
+function openImageViewer(url) { document.getElementById('viewerImg').src = url; document.getElementById('imageViewer').classList.add('open'); }
+function closeImageViewer() { document.getElementById('imageViewer').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeImageViewer(); closeDrawer(); closeDatePicker(); } });
+
+// ===== Init =====
+applyFilter();
+</script>
+</body>
+</html>
