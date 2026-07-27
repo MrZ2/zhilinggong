@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智灵工 - 总管理后台</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; height: 100vh; overflow: hidden; background: #f0f2f5; }
+
+    /* 布局 */
+    .layout { display: flex; height: 100vh; }
+
+    /* 侧边栏 */
+    .sidebar { width: 220px; background: #001529; color: #fff; display: flex; flex-direction: column; transition: width .2s; flex-shrink: 0; }
+    .sidebar.collapsed { width: 64px; }
+    .logo { height: 56px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: #fff; border-bottom: 1px solid rgba(255,255,255,.1); white-space: nowrap; overflow: hidden; }
+    .sidebar.collapsed .logo span { display: none; }
+
+    /* 菜单 */
+    .menu { flex: 1; overflow-y: auto; padding: 8px 0; }
+    .menu::-webkit-scrollbar { width: 4px; }
+    .menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 2px; }
+    .menu-item { position: relative; }
+    .menu-title { display: flex; align-items: center; height: 44px; padding: 0 20px; color: rgba(255,255,255,.65); cursor: pointer; transition: all .2s; font-size: 14px; white-space: nowrap; user-select: none; }
+    .menu-title:hover { color: #fff; background: rgba(255,255,255,.05); }
+    .menu-title.active { color: #fff; background: #1890ff; }
+    .menu-title .icon { width: 16px; height: 16px; margin-right: 10px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .menu-title .arrow { margin-left: auto; font-size: 12px; transition: transform .2s; }
+    .menu-title .arrow.open { transform: rotate(90deg); }
+    .sidebar.collapsed .menu-title .text, .sidebar.collapsed .menu-title .arrow { display: none; }
+    .sidebar.collapsed .menu-title { justify-content: center; padding: 0; }
+    .sidebar.collapsed .menu-title .icon { margin-right: 0; }
+
+    /* 子菜单 */
+    .submenu { overflow: hidden; max-height: 0; transition: max-height .3s ease; background: #000c17; }
+    .submenu.open { max-height: 600px; }
+    .submenu-item { display: block; height: 40px; line-height: 40px; padding: 0 20px 0 50px; color: rgba(255,255,255,.65); font-size: 13px; cursor: pointer; transition: all .2s; white-space: nowrap; text-decoration: none; }
+    .submenu-item:hover { color: #fff; }
+    .submenu-item.active { color: #fff; background: #1890ff; }
+    .sidebar.collapsed .submenu { display: none; }
+
+    /* 主区域 */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* 顶栏 */
+    .header { height: 56px; background: #fff; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); z-index: 10; }
+    .collapse-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 4px; font-size: 18px; color: #333; }
+    .collapse-btn:hover { background: #f5f5f5; }
+    .header-title { margin-left: 16px; font-size: 16px; font-weight: 500; color: #333; }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 16px; color: #666; font-size: 14px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: #1890ff; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+    /* 面包屑 */
+    .breadcrumb { padding: 12px 20px; font-size: 13px; color: #999; }
+    .breadcrumb a { color: #666; text-decoration: none; }
+    .breadcrumb a:hover { color: #1890ff; }
+
+    /* 内容区 */
+    .content { flex: 1; margin: 0 20px 20px; background: #fff; border-radius: 4px; padding: 24px; overflow-y: auto; }
+    .placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #999; }
+    .placeholder .icon-large { font-size: 64px; margin-bottom: 16px; opacity: .4; }
+    .placeholder p { font-size: 14px; }
+
+    /* SVG 图标 */
+    svg { fill: currentColor; }
+
+    /* ===== 法定假日日历 ===== */
+    .holiday-layout { display: flex; gap: 20px; height: 100%; }
+    .calendar-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .holiday-list-panel { width: 260px; flex-shrink: 0; background: #fafafa; border-radius: 8px; padding: 16px; overflow-y: auto; }
+
+    .cal-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+    .cal-title { font-size: 20px; font-weight: 600; color: #1f1f1f; min-width: 120px; }
+    .cal-nav-btn { width: 32px; height: 32px; border: 1px solid #d9d9d9; background: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #555; transition: all .2s; }
+    .cal-nav-btn:hover { color: #1890ff; border-color: #1890ff; }
+    .cal-year-select { height: 32px; padding: 0 8px; border: 1px solid #d9d9d9; border-radius: 6px; font-size: 14px; color: #333; outline: none; cursor: pointer; background: #fff; }
+    .cal-year-select:focus { border-color: #1890ff; }
+    .cal-today-btn { height: 32px; padding: 0 14px; border: 1px solid #d9d9d9; background: #fff; border-radius: 6px; cursor: pointer; font-size: 13px; color: #555; transition: all .2s; }
+    .cal-today-btn:hover { color: #1890ff; border-color: #1890ff; }
+    .cal-hint { margin-left: auto; font-size: 12px; color: #bbb; }
+
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid #f0f0f0; margin-bottom: 6px; }
+    .cal-weekday { text-align: center; padding: 8px 0; font-size: 13px; color: #999; font-weight: 500; }
+    .cal-weekday.weekend { color: #ff7875; }
+
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); grid-auto-rows: 1fr; gap: 6px; flex: 1; }
+    .cal-cell { min-height: 64px; border-radius: 8px; padding: 6px 8px; cursor: pointer; transition: all .18s; border: 1px solid #f0f0f0; background: #fff; display: flex; flex-direction: column; }
+    .cal-cell:hover { border-color: #91caff; background: #f0f7ff; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(24,144,255,.12); }
+    .cal-cell .day-num { font-size: 14px; font-weight: 500; color: #333; }
+    .cal-cell.other-month { opacity: .35; }
+    .cal-cell.today { border-color: #1890ff; box-shadow: inset 0 0 0 1px #1890ff; }
+    .cal-cell.today .day-num { color: #1890ff; font-weight: 700; }
+    .cal-cell.holiday { background: linear-gradient(135deg, #fff1f0, #ffccc7); border-color: #ffa39e; }
+    .cal-cell.holiday:hover { border-color: #ff4d4f; box-shadow: 0 3px 10px rgba(255,77,79,.18); background: linear-gradient(135deg, #fff1f0, #ffd8d4); }
+    .cal-cell .holiday-name { margin-top: auto; font-size: 11px; color: #cf1322; background: rgba(255,77,79,.12); border-radius: 4px; padding: 2px 5px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* 节假日列表 */
+    .hl-title { font-size: 15px; font-weight: 600; color: #1f1f1f; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .hl-title::before { content: ''; width: 3px; height: 14px; background: #ff4d4f; border-radius: 2px; }
+    .hl-group { margin-bottom: 14px; }
+    .hl-group-name { font-size: 13px; font-weight: 600; color: #cf1322; margin-bottom: 4px; }
+    .hl-item { font-size: 12px; color: #666; padding: 5px 8px; border-radius: 6px; cursor: pointer; transition: all .15s; }
+    .hl-item:hover { background: #fff1f0; color: #cf1322; padding-left: 12px; }
+    .hl-empty { font-size: 13px; color: #bbb; text-align: center; padding: 32px 0; line-height: 2; }
+
+    /* 弹窗 */
+    .modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all .2s; }
+    .modal-mask.show { opacity: 1; visibility: visible; }
+    .modal-card { background: #fff; border-radius: 10px; width: 380px; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,.15); transform: translateY(12px) scale(.97); transition: transform .2s; }
+    .modal-mask.show .modal-card { transform: translateY(0) scale(1); }
+    .modal-title { font-size: 16px; font-weight: 600; color: #1f1f1f; margin-bottom: 16px; }
+    .modal-input { width: 100%; height: 36px; border: 1px solid #d9d9d9; border-radius: 6px; padding: 0 10px; font-size: 14px; outline: none; transition: all .2s; }
+    .modal-input:focus { border-color: #1890ff; box-shadow: 0 0 0 2px rgba(24,144,255,.1); }
+    .modal-info { font-size: 14px; color: #555; line-height: 1.8; }
+    .modal-info strong { color: #cf1322; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    .modal-btn { height: 34px; padding: 0 18px; border-radius: 6px; font-size: 14px; cursor: pointer; border: 1px solid #d9d9d9; background: #fff; color: #555; transition: all .2s; }
+    .modal-btn:hover { border-color: #1890ff; color: #1890ff; }
+    .modal-btn.primary { background: #1890ff; border-color: #1890ff; color: #fff; }
+    .modal-btn.primary:hover { background: #40a9ff; border-color: #40a9ff; color: #fff; }
+    .modal-btn.danger { background: #ff4d4f; border-color: #ff4d4f; color: #fff; }
+    .modal-btn.danger:hover { background: #ff7875; border-color: #ff7875; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" style="margin-right:8px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>智灵工管理后台</span>
+      </div>
+      <nav class="menu">
+        <!-- 系统管理 -->
+        <div class="menu-item">
+          <div class="menu-title" onclick="toggleSubmenu(this)">
+            <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.43-2.53c.04-.32.07-.64.07-.97s-.03-.66-.07-.98l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.61-.22l-2.49 1a7.03 7.03 0 0 0-1.69-.98l-.38-2.65A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1a.5.5 0 0 0-.61.22l-2 3.46a.49.49 0 0 0 .12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.39 1.08.73 1.69.98l.38 2.65c.05.24.26.42.49.42h4c.24 0 .44-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46a.5.5 0 0 0-.12-.64l-2.11-1.65z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <span class="text">系统管理</span>
+            <span class="arrow open">▶</span>
+          </div>
+          <div class="submenu open">
+            <a class="submenu-item active" onclick="switchPage(this, '基础配置')">基础配置</a>
+            <a class="submenu-item" onclick="switchPage(this, '日结配置')">日结配置</a>
+            <a class="submenu-item" onclick="switchPage(this, '法定假日')">法定假日</a>
+            <a class="submenu-item" onclick="switchPage(this, '系统菜单')">系统菜单</a>
+            <a class="submenu-item" onclick="switchPage(this, '角色管理')">角色管理</a>
+            <a class="submenu-item" onclick="switchPage(this, '协议管理')">协议管理</a>
+            <a class="submenu-item" onclick="switchPage(this, '版本管理')">版本管理</a>
+            <a class="submenu-item" onclick="switchPage(this, '管理员')">管理员</a>
+            <a class="submenu-item" onclick="switchPage(this, '收款管理')">收款管理</a>
+            <a class="submenu-item" onclick="switchPage(this, '增值服务')">增值服务</a>
+            <a class="submenu-item" onclick="switchPage(this, '付款账户')">付款账户</a>
+            <a class="submenu-item" onclick="switchPage(this, '导出记录')">导出记录</a>
+          </div>
+        </div>
+        <!-- 商户管理 -->
+        <div class="menu-item">
+          <div class="menu-title" onclick="switchPage(this, '商户管理')">
+            <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 22V12h6v10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="text">商户管理</span>
+          </div>
+        </div>
+        <!-- 运营管理 -->
+        <div class="menu-item">
+          <div class="menu-title" onclick="switchPage(this, '运营管理')">
+            <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="text">运营管理</span>
+          </div>
+        </div>
+        <!-- 灵活用工 -->
+        <div class="menu-item">
+          <div class="menu-title" onclick="switchPage(this, '灵活用工')">
+            <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="text">灵活用工</span>
+          </div>
+        </div>
+        <!-- 财务管理 -->
+        <div class="menu-item">
+          <div class="menu-title" onclick="switchPage(this, '财务管理')">
+            <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="text">财务管理</span>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 主区域 -->
+    <div class="main">
+      <header class="header">
+        <div class="collapse-btn" onclick="toggleSidebar()">☰</div>
+        <div class="header-title" id="pageTitle">基础配置</div>
+        <div class="header-right">
+          <span>admin</span>
+          <div class="avatar">A</div>
+        </div>
+      </header>
+      <div class="breadcrumb">
+        <a href="#">首页</a> / <span id="breadcrumbText">系统管理 / 基础配置</span>
+      </div>
+      <div class="content">
+        <!-- 占位页面 -->
+        <div class="placeholder" id="placeholderPage">
+          <div class="icon-large">📋</div>
+          <p id="placeholderText">「基础配置」页面开发中...</p>
+        </div>
+        <!-- 法定假日页面 -->
+        <div id="holidayPage" style="display:none; height:100%;">
+          <div class="holiday-layout">
+            <div class="calendar-panel">
+              <div class="cal-toolbar">
+                <select class="cal-year-select" id="yearSelect" onchange="onYearChange(this.value)"></select>
+                <button class="cal-nav-btn" onclick="changeMonth(-1)">◀</button>
+                <div class="cal-title" id="calTitle"></div>
+                <button class="cal-nav-btn" onclick="changeMonth(1)">▶</button>
+                <button class="cal-today-btn" onclick="goToday()">今天</button>
+                <span class="cal-hint">点击日期可添加 / 移除节假日</span>
+              </div>
+              <div class="cal-weekdays">
+                <div class="cal-weekday">一</div>
+                <div class="cal-weekday">二</div>
+                <div class="cal-weekday">三</div>
+                <div class="cal-weekday">四</div>
+                <div class="cal-weekday">五</div>
+                <div class="cal-weekday weekend">六</div>
+                <div class="cal-weekday weekend">日</div>
+              </div>
+              <div class="cal-grid" id="calGrid"></div>
+            </div>
+            <div class="holiday-list-panel">
+              <div class="hl-title" id="hlTitle"></div>
+              <div id="holidayList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 弹窗 -->
+  <div class="modal-mask" id="modalMask">
+    <div class="modal-card">
+      <div class="modal-title" id="modalTitle"></div>
+      <div id="modalBody"></div>
+      <div class="modal-footer" id="modalFooter"></div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+
+    function toggleSubmenu(el) {
+      const submenu = el.nextElementSibling;
+      const arrow = el.querySelector('.arrow');
+      if (submenu) {
+        submenu.classList.toggle('open');
+        arrow && arrow.classList.toggle('open');
+      }
+    }
+
+    function switchPage(el, name) {
+      // 移除所有 active
+      document.querySelectorAll('.menu-title.active, .submenu-item.active').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+
+      // 更新标题
+      document.getElementById('pageTitle').textContent = name;
+
+      // 页面切换：法定假日显示日历，其余显示占位
+      const isHoliday = (name === '法定假日');
+      document.getElementById('placeholderPage').style.display = isHoliday ? 'none' : 'flex';
+      document.getElementById('holidayPage').style.display = isHoliday ? 'block' : 'none';
+      if (isHoliday) {
+        renderCalendar();
+      } else {
+        document.getElementById('placeholderText').textContent = '「' + name + '」页面开发中...';
+      }
+
+      // 面包屑
+      const parent = el.closest('.menu-item');
+      const parentTitle = parent ? parent.querySelector('.menu-title .text') : null;
+      if (parentTitle && el.classList.contains('submenu-item')) {
+        document.getElementById('breadcrumbText').textContent = parentTitle.textContent + ' / ' + name;
+      } else {
+        document.getElementById('breadcrumbText').textContent = name;
+      }
+    }
+
+    /* ===== 法定假日日历 ===== */
+    // 节假日数据（内存存储，格式：'YYYY-MM-DD': '节日名称'）
+    const holidays = {
+      '2026-01-01': '元旦', '2026-01-02': '元旦', '2026-01-03': '元旦',
+      '2026-02-16': '春节', '2026-02-17': '春节', '2026-02-18': '春节', '2026-02-19': '春节',
+      '2026-02-20': '春节', '2026-02-21': '春节', '2026-02-22': '春节',
+      '2026-04-04': '清明节', '2026-04-05': '清明节', '2026-04-06': '清明节',
+      '2026-05-01': '劳动节', '2026-05-02': '劳动节', '2026-05-03': '劳动节', '2026-05-04': '劳动节', '2026-05-05': '劳动节',
+      '2026-06-19': '端午节', '2026-06-20': '端午节', '2026-06-21': '端午节',
+      '2026-09-25': '中秋节', '2026-09-26': '中秋节', '2026-09-27': '中秋节',
+      '2026-10-01': '国庆节', '2026-10-02': '国庆节', '2026-10-03': '国庆节', '2026-10-04': '国庆节',
+      '2026-10-05': '国庆节', '2026-10-06': '国庆节', '2026-10-07': '国庆节'
+    };
+
+    let calYear = 2026, calMonth = 7;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function dateKey(y, m, d) { return y + '-' + pad(m) + '-' + pad(d); }
+
+    // 初始化年份下拉框 2020-2030
+    (function initYearSelect() {
+      const sel = document.getElementById('yearSelect');
+      for (let y = 2020; y <= 2030; y++) {
+        const opt = document.createElement('option');
+        opt.value = y; opt.textContent = y + '年';
+        sel.appendChild(opt);
+      }
+    })();
+
+    function renderCalendar() {
+      document.getElementById('calTitle').textContent = calYear + '年' + calMonth + '月';
+      document.getElementById('yearSelect').value = calYear;
+      const grid = document.getElementById('calGrid');
+      grid.innerHTML = '';
+
+      const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+      const prevMonthDays = new Date(calYear, calMonth - 1, 0).getDate();
+      let startWeekday = new Date(calYear, calMonth - 1, 1).getDay(); // 0=周日
+      startWeekday = startWeekday === 0 ? 7 : startWeekday; // 转为周一=1
+
+      const today = new Date();
+      const todayKey = dateKey(today.getFullYear(), today.getMonth() + 1, today.getDate());
+      const totalCells = Math.ceil((startWeekday - 1 + daysInMonth) / 7) * 7;
+
+      for (let i = 0; i < totalCells; i++) {
+        let day, month = calMonth, year = calYear, other = false;
+        if (i < startWeekday - 1) {
+          day = prevMonthDays - (startWeekday - 2 - i);
+          month--; if (month < 1) { month = 12; year--; }
+          other = true;
+        } else if (i >= startWeekday - 1 + daysInMonth) {
+          day = i - (startWeekday - 1) - daysInMonth + 1;
+          month++; if (month > 12) { month = 1; year++; }
+          other = true;
+        } else {
+          day = i - startWeekday + 2;
+        }
+        const key = dateKey(year, month, day);
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell' + (other ? ' other-month' : '') + (key === todayKey ? ' today' : '') + (holidays[key] ? ' holiday' : '');
+        cell.innerHTML = '<span class="day-num">' + day + '</span>' +
+          (holidays[key] ? '<span class="holiday-name">' + holidays[key] + '</span>' : '');
+        cell.onclick = (function(k, yy, mm, dd) {
+          return function() { onCellClick(k, yy, mm, dd); };
+        })(key, year, month, day);
+        grid.appendChild(cell);
+      }
+      renderHolidayList();
+    }
+
+    function renderHolidayList() {
+      document.getElementById('hlTitle').textContent = calYear + '年节假日';
+      const groups = {};
+      Object.keys(holidays).sort().forEach(function(k) {
+        if (k.startsWith(calYear + '-')) {
+          const name = holidays[k];
+          if (!groups[name]) groups[name] = [];
+          groups[name].push(k);
+        }
+      });
+      let html = '';
+      const names = Object.keys(groups);
+      if (names.length === 0) {
+        html = '<div class="hl-empty">暂无节假日数据<br>点击日历中的日期添加</div>';
+      } else {
+        names.forEach(function(name) {
+          const dates = groups[name];
+          html += '<div class="hl-group"><div class="hl-group-name">' + name + '（' + dates.length + '天）</div>';
+          dates.forEach(function(d) {
+            html += '<div class="hl-item" onclick="jumpToDate(\'' + d + '\')">' + d + '</div>';
+          });
+          html += '</div>';
+        });
+      }
+      document.getElementById('holidayList').innerHTML = html;
+    }
+
+    function jumpToDate(key) {
+      calYear = parseInt(key.split('-')[0]);
+      calMonth = parseInt(key.split('-')[1]);
+      renderCalendar();
+    }
+
+    function changeMonth(delta) {
+      calMonth += delta;
+      if (calMonth < 1) { calMonth = 12; calYear--; }
+      if (calMonth > 12) { calMonth = 1; calYear++; }
+      renderCalendar();
+    }
+
+    function onYearChange(val) {
+      calYear = parseInt(val);
+      renderCalendar();
+    }
+
+    function goToday() {
+      const now = new Date();
+      calYear = now.getFullYear();
+      calMonth = now.getMonth() + 1;
+      renderCalendar();
+    }
+
+    /* ===== 弹窗 ===== */
+    function showModal(title, bodyHtml, buttons) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = bodyHtml;
+      const footer = document.getElementById('modalFooter');
+      footer.innerHTML = '';
+      buttons.forEach(function(b) {
+        const btn = document.createElement('button');
+        btn.className = 'modal-btn ' + (b.type || '');
+        btn.textContent = b.text;
+        btn.onclick = function() { hideModal(); if (b.action) b.action(); };
+        footer.appendChild(btn);
+      });
+      document.getElementById('modalMask').classList.add('show');
+    }
+
+    function hideModal() {
+      document.getElementById('modalMask').classList.remove('show');
+    }
+
+    function onCellClick(key, y, m, d) {
+      if (holidays[key]) {
+        showModal('移除节假日',
+          '<div class="modal-info">' + y + '年' + m + '月' + d + '日 已标记为 <strong>' + holidays[key] + '</strong><br>确定要移除该日的节假日标记吗？</div>',
+          [
+            { text: '取消' },
+            { text: '移除', type: 'danger', action: function() { delete holidays[key]; renderCalendar(); } }
+          ]);
+      } else {
+        showModal('添加节假日（' + key + '）',
+          '<input class="modal-input" id="holidayNameInput" placeholder="请输入节假日名称，如：元旦" maxlength="10" />',
+          [
+            { text: '取消' },
+            { text: '确定', type: 'primary', action: function() {
+                const name = document.getElementById('holidayNameInput').value.trim();
+                if (name) { holidays[key] = name; renderCalendar(); }
+              }
+            }
+          ]);
+        setTimeout(function() {
+          const input = document.getElementById('holidayNameInput');
+          if (input) input.focus();
+        }, 120);
+      }
+    }
+
+    // 键盘支持：Enter 确认、Esc 关闭
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('modalMask').classList.contains('show')) return;
+      if (e.key === 'Escape') { hideModal(); }
+      if (e.key === 'Enter') {
+        const input = document.getElementById('holidayNameInput');
+        if (input && document.activeElement === input) {
+          const btn = document.querySelector('#modalFooter .modal-btn.primary');
+          if (btn) btn.click();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
