@@ -68,7 +68,6 @@
     /* ===== 法定假日日历 ===== */
     .holiday-layout { display: flex; gap: 20px; height: 100%; }
     .calendar-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .holiday-list-panel { width: 260px; flex-shrink: 0; background: #fafafa; border-radius: 8px; padding: 16px; overflow-y: auto; }
 
     .cal-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
     .cal-title { font-size: 20px; font-weight: 600; color: #1f1f1f; min-width: 120px; }
@@ -78,7 +77,7 @@
     .cal-year-select:focus { border-color: #1890ff; }
     .cal-today-btn { height: 32px; padding: 0 14px; border: 1px solid #d9d9d9; background: #fff; border-radius: 6px; cursor: pointer; font-size: 13px; color: #555; transition: all .2s; }
     .cal-today-btn:hover { color: #1890ff; border-color: #1890ff; }
-    .cal-hint { margin-left: auto; font-size: 12px; color: #bbb; }
+    .cal-hint { font-size: 12px; color: #bbb; }
 
     .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid #f0f0f0; margin-bottom: 6px; }
     .cal-weekday { text-align: center; padding: 8px 0; font-size: 13px; color: #999; font-weight: 500; }
@@ -95,14 +94,18 @@
     .cal-cell.holiday:hover { border-color: #ff4d4f; box-shadow: 0 3px 10px rgba(255,77,79,.18); background: linear-gradient(135deg, #fff1f0, #ffd8d4); }
     .cal-cell .holiday-name { margin-top: auto; font-size: 11px; color: #cf1322; background: rgba(255,77,79,.12); border-radius: 4px; padding: 2px 5px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-    /* 节假日列表 */
-    .hl-title { font-size: 15px; font-weight: 600; color: #1f1f1f; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-    .hl-title::before { content: ''; width: 3px; height: 14px; background: #ff4d4f; border-radius: 2px; }
-    .hl-group { margin-bottom: 14px; }
-    .hl-group-name { font-size: 13px; font-weight: 600; color: #cf1322; margin-bottom: 4px; }
-    .hl-item { font-size: 12px; color: #666; padding: 5px 8px; border-radius: 6px; cursor: pointer; transition: all .15s; }
-    .hl-item:hover { background: #fff1f0; color: #cf1322; padding-left: 12px; }
-    .hl-empty { font-size: 13px; color: #bbb; text-align: center; padding: 32px 0; line-height: 2; }
+    /* 调休上班日 */
+    .cal-cell.workday { background: linear-gradient(135deg, #fffbe6, #fff1b8); border-color: #ffd591; position: relative; }
+    .cal-cell.workday:hover { border-color: #fa8c16; box-shadow: 0 3px 10px rgba(250,140,22,.18); background: linear-gradient(135deg, #fffbe6, #ffe7a3); }
+    .workday-badge { position: absolute; top: 4px; right: 4px; width: 18px; height: 18px; border-radius: 4px; background: #fa8c16; color: #fff; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(250,140,22,.4); }
+    .cal-cell .workday-name { margin-top: auto; font-size: 11px; color: #ad6800; background: rgba(250,140,22,.12); border-radius: 4px; padding: 2px 5px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* 图例 */
+    .cal-legend { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; color: #666; margin-left: auto; }
+    .cal-legend .legend-item { display: inline-flex; align-items: center; gap: 4px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+    .legend-dot.rest { background: linear-gradient(135deg, #ffccc7, #ff7875); border: 1px solid #ffa39e; }
+    .legend-dot.work { background: linear-gradient(135deg, #ffe7ba, #ffc53d); border: 1px solid #ffd591; }
 
     /* 更新按钮 */
     .cal-update-btn { height: 32px; padding: 0 16px; border: none; background: #1890ff; border-radius: 6px; cursor: pointer; font-size: 13px; color: #fff; display: inline-flex; align-items: center; gap: 6px; transition: all .2s; box-shadow: 0 2px 6px rgba(24,144,255,.3); }
@@ -211,7 +214,11 @@
                 <button class="cal-nav-btn" onclick="changeMonth(1)">▶</button>
                 <button class="cal-today-btn" onclick="goToday()">今天</button>
                 <button class="cal-update-btn" id="updateBtn" onclick="syncHolidays()"><span class="refresh-icon">&#8635;</span> 更新</button>
-                <span class="cal-hint">节假日数据通过更新按钮同步</span>
+                <span class="cal-legend">
+                  <span class="legend-item"><i class="legend-dot rest"></i>休</span>
+                  <span class="legend-item"><i class="legend-dot work"></i>班</span>
+                </span>
+                <span class="cal-hint">数据通过更新按钮同步</span>
               </div>
               <div class="cal-weekdays">
                 <div class="cal-weekday">一</div>
@@ -223,10 +230,6 @@
                 <div class="cal-weekday weekend">日</div>
               </div>
               <div class="cal-grid" id="calGrid"></div>
-            </div>
-            <div class="holiday-list-panel">
-              <div class="hl-title" id="hlTitle"></div>
-              <div id="holidayList"></div>
             </div>
           </div>
         </div>
@@ -329,6 +332,19 @@
     // 当前节假日数据（内存存储，格式：'YYYY-MM-DD': '节日名称'）
     const holidays = Object.assign({}, officialHolidays);
 
+    // 官方调休上班数据副本（周末需上班的日期）
+    const officialWorkdays = {
+      '2026-02-14': '春节调休',
+      '2026-02-28': '春节调休',
+      '2026-04-26': '劳动节调休',
+      '2026-05-09': '劳动节调休',
+      '2026-09-20': '国庆节调休',
+      '2026-10-10': '国庆节调休'
+    };
+
+    // 当前调休上班数据
+    const workdays = Object.assign({}, officialWorkdays);
+
     let calYear = 2026, calMonth = 7;
 
     function pad(n) { return String(n).padStart(2, '0'); }
@@ -374,39 +390,15 @@
         }
         const key = dateKey(year, month, day);
         const cell = document.createElement('div');
-        cell.className = 'cal-cell' + (other ? ' other-month' : '') + (key === todayKey ? ' today' : '') + (holidays[key] ? ' holiday' : '');
-        cell.innerHTML = '<span class="day-num">' + day + '</span>' +
-          (holidays[key] ? '<span class="holiday-name">' + holidays[key] + '</span>' : '');
+        const isHoliday = !!holidays[key];
+        const isWorkday = !isHoliday && !!workdays[key];
+        cell.className = 'cal-cell' + (other ? ' other-month' : '') + (key === todayKey ? ' today' : '') + (isHoliday ? ' holiday' : '') + (isWorkday ? ' workday' : '');
+        cell.innerHTML = (isWorkday ? '<span class="workday-badge">班</span>' : '') +
+          '<span class="day-num">' + day + '</span>' +
+          (isHoliday ? '<span class="holiday-name">' + holidays[key] + '</span>' : '') +
+          (isWorkday ? '<span class="workday-name">' + workdays[key] + '</span>' : '');
         grid.appendChild(cell);
       }
-      renderHolidayList();
-    }
-
-    function renderHolidayList() {
-      document.getElementById('hlTitle').textContent = calYear + '年节假日';
-      const groups = {};
-      Object.keys(holidays).sort().forEach(function(k) {
-        if (k.startsWith(calYear + '-')) {
-          const name = holidays[k];
-          if (!groups[name]) groups[name] = [];
-          groups[name].push(k);
-        }
-      });
-      let html = '';
-      const names = Object.keys(groups);
-      if (names.length === 0) {
-        html = '<div class="hl-empty">暂无节假日数据<br>点击更新按钮同步数据</div>';
-      } else {
-        names.forEach(function(name) {
-          const dates = groups[name];
-          html += '<div class="hl-group"><div class="hl-group-name">' + name + '（' + dates.length + '天）</div>';
-          dates.forEach(function(d) {
-            html += '<div class="hl-item" onclick="jumpToDate(\'' + d + '\')">' + d + '</div>';
-          });
-          html += '</div>';
-        });
-      }
-      document.getElementById('holidayList').innerHTML = html;
     }
 
     function jumpToDate(key) {
@@ -445,13 +437,19 @@
         Object.keys(holidays).forEach(function(k) {
           if (k.startsWith(calYear + '-')) delete holidays[k];
         });
+        Object.keys(workdays).forEach(function(k) {
+          if (k.startsWith(calYear + '-')) delete workdays[k];
+        });
         // 从官方数据恢复当前年份
         Object.keys(officialHolidays).forEach(function(k) {
           if (k.startsWith(calYear + '-')) holidays[k] = officialHolidays[k];
         });
+        Object.keys(officialWorkdays).forEach(function(k) {
+          if (k.startsWith(calYear + '-')) workdays[k] = officialWorkdays[k];
+        });
         renderCalendar();
         btn.classList.remove('loading');
-        showToast('已同步 ' + calYear + ' 年官方节假日数据');
+        showToast('已同步 ' + calYear + ' 年官方节假日及调休数据');
       }, 800);
     }
 
