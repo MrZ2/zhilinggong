@@ -50,6 +50,8 @@
     #monthlySection .filter-bar { margin-bottom: 0; }
     #monthlySection .table-wrapper { margin-top: 0; border-radius: 0 0 8px 8px; }
     #monthlyOverviewFilter { grid-template-columns: repeat(4, 1fr); }
+    .mo-stats { padding: 12px 0 4px; }
+    .mo-stats .ov-row1 { margin-bottom: 0; }
     .tab-content { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
     .tab-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(0,0,0,.25); }
     .tab-placeholder svg { width: 64px; height: 64px; opacity: .4; }
@@ -168,6 +170,8 @@
     .cat-tag { font-size: 10px; padding: 0 3px; border-radius: 2px; font-weight: 600; }
     .cat-makeup { background: #fff7e6; color: #d46b08; }
     .cat-approval { background: #f9f0ff; color: #722ed1; }
+    .cat-field { background: #e6fffb; color: #13c2c2; }
+    .missing-tag { font-size: 10px; padding: 0 4px; border-radius: 2px; background: #fff1f0; color: #cf1322; font-weight: 500; }
     .punch-thumb { width: 22px; height: 22px; border-radius: 3px; object-fit: cover; cursor: pointer; border: 1px solid #e8e8e8; flex-shrink: 0; transition: border-color .15s; }
     .punch-thumb:hover { border-color: #1677ff; }
     .no-record { padding: 14px 12px; color: rgba(0,0,0,.2); text-align: center; font-size: 13px; }
@@ -208,6 +212,7 @@
     .pd-cat-normal { background: #f5f5f5; color: rgba(0,0,0,.45); }
     .pd-cat-makeup { background: #fff7e6; color: #d46b08; }
     .pd-cat-approval { background: #f9f0ff; color: #722ed1; }
+    .pd-cat-field { background: #e6fffb; color: #13c2c2; }
     .pd-device { color: rgba(0,0,0,.4); font-size: 12px; margin-left: auto; }
     .pd-thumb { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; cursor: pointer; border: 1px solid #e8e8e8; }
 
@@ -356,7 +361,42 @@
     #monthlyDetailTable thead tr:first-child th { border-top: 1px solid #f0f0f0; }
     #monthlyDetailTable thead th:first-child, #monthlyDetailTable tbody td:first-child { border-left: 1px solid #f0f0f0; }
     #monthlyDetailTable tbody td { border: none; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
+
+    /* ===== Overview Dashboard ===== */
+    #overviewSection { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+    .ov-scroll { flex: 1; overflow-y: auto; padding: 20px 24px 32px; background: #f0f2f5; }
+    .ov-module { margin-bottom: 28px; }
+    .ov-module-title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; color: rgba(0,0,0,.85); margin-bottom: 16px; letter-spacing: .5px; }
+    .ov-module-title::before { content: ''; width: 4px; height: 18px; border-radius: 2px; background: linear-gradient(180deg,#1890ff,#69c0ff); }
+    .ov-row1 { display: grid; grid-template-columns: minmax(320px, 1.1fr) 2fr; gap: 16px; margin-bottom: 16px; }
+    .ov-bigcard { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); display: flex; overflow: hidden; transition: box-shadow .25s, transform .25s; }
+    .ov-bigcard:hover { box-shadow: 0 6px 18px rgba(24,144,255,.12); transform: translateY(-2px); }
+    .ov-bigcard-half { flex: 1; padding: 22px 24px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; position: relative; }
+    .ov-bigcard-half:active { transform: scale(.99); }
+    .ov-bigcard-divider { width: 1px; background: #f0f0f0; margin: 18px 0; }
+    .ov-metric-label { font-size: 13px; color: rgba(0,0,0,.45); }
+    .ov-metric-value { font-size: 34px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .ov-metric-value.blue { color: #1890ff; }
+    .ov-metric-value.red { color: #f5222d; }
+    .ov-smallcards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    .ov-smallcard { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 16px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: box-shadow .25s, transform .25s; }
+    .ov-smallcard:hover { box-shadow: 0 6px 16px rgba(0,0,0,.1); transform: translateY(-3px); }
+    .ov-smallcard:active { transform: translateY(-1px) scale(.98); }
+    .ov-sc-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .ov-sc-body { display: flex; flex-direction: column; min-width: 0; }
+    .ov-sc-value { font-size: 20px; font-weight: 700; line-height: 1.15; color: rgba(0,0,0,.85); font-variant-numeric: tabular-nums; }
+    .ov-sc-label { font-size: 12px; color: rgba(0,0,0,.45); white-space: nowrap; }
+    .ov-charts-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .ov-charts-4grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+    .ov-chart-card { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 16px 18px; transition: box-shadow .25s; }
+    .ov-chart-card:hover { box-shadow: 0 6px 16px rgba(0,0,0,.09); }
+    .ov-chart-title { font-size: 14px; font-weight: 600; color: rgba(0,0,0,.75); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .ov-chart-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #1890ff; flex-shrink: 0; }
+    .ov-chart { width: 100%; height: 280px; }
+    .ov-chart-sm { width: 100%; height: 210px; }
+    .ov-chart-tall { width: 100%; height: 340px; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body>
 
@@ -393,6 +433,7 @@
   <div class="tab-item active" onclick="switchTab('timeline')">考勤时间记录</div>
   <div class="tab-item" onclick="switchTab('daily')">日汇总</div>
   <div class="tab-item" onclick="switchTab('monthly')">月汇总</div>
+  <div class="tab-item" onclick="switchTab('overview')">考勤数据概览</div>
 </div>
 
 
@@ -741,6 +782,29 @@
     </div>
   </div>
 </div>
+<div class="mo-stats" id="monthlyStatsCards">
+  <div class="ov-row1">
+    <div class="ov-bigcard">
+      <div class="ov-bigcard-half">
+        <div class="ov-metric-label">正常人数</div>
+        <div class="ov-metric-value blue" id="moStatNormal">--</div>
+      </div>
+      <div class="ov-bigcard-divider"></div>
+      <div class="ov-bigcard-half">
+        <div class="ov-metric-label">异常人数</div>
+        <div class="ov-metric-value red" id="moStatAbnormal">--</div>
+      </div>
+    </div>
+    <div class="ov-smallcards">
+      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#fff7e6;color:#fa8c16;">&#9200;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatLate">--</div><div class="ov-sc-label">迟到</div></div></div>
+      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#f9f0ff;color:#722ed1;">&#128205;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatMissing">--</div><div class="ov-sc-label">缺卡</div></div></div>
+      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#fff1f0;color:#f5222d;">&#9940;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatAbsent">--</div><div class="ov-sc-label">旷工</div></div></div>
+      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#e6f7ff;color:#1890ff;">&#128682;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatEarly">--</div><div class="ov-sc-label">早退</div></div></div>
+      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#fffbe6;color:#faad14;">&#127759;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatLoc">--</div><div class="ov-sc-label">地点异常</div></div></div>
+      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#f0f5ff;color:#2f54eb;">&#128241;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatDev">--</div><div class="ov-sc-label">设备异常</div></div></div>
+    </div>
+  </div>
+</div>
 <div class="sub-tab-bar" id="monthlySubTabBar">
   <div class="sub-tab-item active" id="monthlySubTab0" onclick="switchMonthlySubTab(0)">月报概况统计</div>
   <div class="sub-tab-item" id="monthlySubTab1" onclick="switchMonthlySubTab(1)">月报打卡明细</div>
@@ -764,6 +828,38 @@
   </div>
 </div>
 </div><!-- /#monthlySection -->
+
+<!-- 考勤数据概览区域 -->
+<div id="overviewSection" style="display:none;">
+  <div class="ov-scroll">
+    <!-- 模块一：上下班打卡统计 -->
+    <div class="ov-module">
+      <div class="ov-module-title">上下班打卡统计</div>
+      <!-- 趋势分析 -->
+      <div class="ov-charts-2col">
+        <div class="ov-chart-card"><div class="ov-chart-title">每月正常人数趋势</div><div id="ovNormalTrend" class="ov-chart"></div></div>
+        <div class="ov-chart-card"><div class="ov-chart-title">每月异常人数趋势</div><div id="ovAbnormalTrend" class="ov-chart"></div></div>
+      </div>
+      <!-- 异常类型月度对比 -->
+      <div class="ov-charts-4grid">
+        <div class="ov-chart-card sm"><div class="ov-chart-title">迟到</div><div id="ovCatLate" class="ov-chart-sm"></div></div>
+        <div class="ov-chart-card sm"><div class="ov-chart-title">早退</div><div id="ovCatEarly" class="ov-chart-sm"></div></div>
+        <div class="ov-chart-card sm"><div class="ov-chart-title">旷工</div><div id="ovCatAbsent" class="ov-chart-sm"></div></div>
+        <div class="ov-chart-card sm"><div class="ov-chart-title">缺卡</div><div id="ovCatMissing" class="ov-chart-sm"></div></div>
+      </div>
+      <!-- 个人异常排名 -->
+      <div class="ov-chart-card"><div class="ov-chart-title">累计打卡异常排名</div><div id="ovRanking" class="ov-chart-tall"></div></div>
+    </div>
+    <!-- 模块二：假勤与加班情况 -->
+    <div class="ov-module">
+      <div class="ov-module-title">假勤与加班情况</div>
+      <div class="ov-charts-2col">
+        <div class="ov-chart-card"><div class="ov-chart-title">累计加班情况分布（小时）</div><div id="ovOvertime" class="ov-chart"></div></div>
+        <div class="ov-chart-card"><div class="ov-chart-title">累计请假情况分布（天）</div><div id="ovLeave" class="ov-chart"></div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /#overviewSection -->
 
 <!-- Tab: 占位（月汇总） -->
 <div class="tab-content" id="tabPlaceholder" style="display:none;">
@@ -845,17 +941,19 @@ function switchTab(tab) {
   _currentSubTab = 0;
   // Update tab active states
   document.querySelectorAll('#mainTabBar .tab-item').forEach((el, i) => {
-    const tabs = ['timeline','daily','monthly'];
+    const tabs = ['timeline','daily','monthly','overview'];
     el.classList.toggle('active', tabs[i] === tab);
   });
   // Hide all sections first
   const timeline    = document.getElementById('tabTimeline');
   const dailySec    = document.getElementById('dailySection');
   const monthlySec  = document.getElementById('monthlySection');
+  const overviewSec = document.getElementById('overviewSection');
   const placeholder = document.getElementById('tabPlaceholder');
   timeline.style.display    = 'none';
   dailySec.style.display    = 'none';
   monthlySec.style.display  = 'none';
+  overviewSec.style.display = 'none';
   placeholder.style.display = 'none';
   if (tab === 'timeline') {
     timeline.style.display = 'flex';
@@ -866,10 +964,13 @@ function switchTab(tab) {
     document.getElementById('subTab1').textContent = labels[1];
     updateSubTabActive();
     showDailyContent(0);
-  } else {
-    // monthly
+  } else if (tab === 'monthly') {
     monthlySec.style.display = 'flex';
     showMonthlyContent(0);
+  } else {
+    // overview dashboard
+    overviewSec.style.display = 'flex';
+    showOverview();
   }
 }
 
@@ -970,6 +1071,7 @@ const CATEGORY_CFG = {
   normal:   { label: '正常', short: '',     pdCls: 'pd-cat-normal'   },
   makeup:   { label: '补卡', short: '补',   cls: 'cat-makeup',   pdCls: 'pd-cat-makeup'   },
   approval: { label: '审批', short: '审',   cls: 'cat-approval',  pdCls: 'pd-cat-approval' },
+  field:    { label: '外勤', short: '外',   cls: 'cat-field',    pdCls: 'pd-cat-field'    },
 };
 
 // ===== Employees =====
@@ -1106,6 +1208,9 @@ const attendanceData = {
       mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:01','in',{photo:P('g1')}), mkP('18:00','out',{photo:P('g2')}) ]) ]),
       mkSource('wecom','标准班',[ mkShift('班次1',[ mkP('08:03','in'), mkP('17:58','out') ]) ]),
     ],
+    '2026-07-23': [ // 外勤打卡
+      mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:50','in',{category:'field'}), mkP('18:10','out',{category:'field'}) ]) ]),
+    ],
   },
   'E004': {
     '2026-07-06': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in',{category:'approval',photo:P('h1')}), mkP('18:00','out',{category:'approval',photo:P('h2')}) ]) ]) ],
@@ -1120,6 +1225,9 @@ const attendanceData = {
     '2026-07-15': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:30','in',{category:'approval',photo:P('i1')}), mkP('18:00','out',{category:'approval',photo:P('i2')}) ]) ]) ],
     '2026-07-17': [ mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('10:30','in'), mkP('20:00','out') ]) ]) ], // 弹性加班
     '2026-07-22': [ mkSource('internal','弹性工时',[ mkShift('班次1',[ mkP('09:45','in') ]) ]) ], // 缺卡
+    '2026-07-23': [ // 外勤打卡
+      mkSource('wecom','弹性工时',[ mkShift('班次1',[ mkP('09:30','in',{category:'field'}), mkP('18:00','out') ]) ]),
+    ],
   },
   'E006': {
     '2026-07-03': [ mkSource('internal','标准班',[ mkShift('班次1',[ mkP('08:40','in'), mkP('18:00','out') ]) ]) ],
@@ -1399,7 +1507,9 @@ function renderPunchBody(bodyId, dateList, emps, sourceFilter) {
           const lastOut = outPunches.length > 0 ? outPunches[outPunches.length - 1] : null;
           let html = `<span class="shift-tag">${sh.name}</span>`;
           if (lastIn) html += renderEffectivePunch(lastIn);
+          else html += `<span class="missing-tag">缺</span>`;
           if (lastOut) html += renderEffectivePunch(lastOut);
+          else html += `<span class="missing-tag">缺</span>`;
           return `<div class="shift-line">${html}</div>`;
         }).join('');
         return `<div class="source-group"><div class="source-header ${cfg.cls}">${headerText}</div>${shiftLines}</div>`;
@@ -1579,7 +1689,7 @@ function computeSingleSourceStats(src) {
   const otHours  = actHours > stdHours ? Math.round((actHours - stdHours)*10)/10 : 0;
   const makeupCount   = allPunches.filter(p => p.category === 'makeup').length;
   const approvalCount = allPunches.filter(p => p.category === 'approval').length;
-  const fieldCount = 0;
+  const fieldCount = allPunches.filter(p => p.category === 'field').length;
   let result = '正常';
   if (abnormalTotal > 0) result = '异常';
   if (src.rule === '休息') result = '休息';
@@ -1778,7 +1888,7 @@ function buildRecordText(src) {
   src.shifts.forEach(sh => sh.punches.forEach(p => punches.push(p)));
   return punches.map(p => {
     const tag    = p.type === 'in' ? '上' : '下';
-    const catTag = p.category === 'makeup' ? '[补]' : p.category === 'approval' ? '[审]' : '';
+    const catTag = p.category === 'makeup' ? '[补]' : p.category === 'approval' ? '[审]' : p.category === 'field' ? '[外]' : '';
     return `${tag}${p.time}${catTag}`;
   }).join(' / ');
 }
@@ -1943,6 +2053,42 @@ function renderMonthlyOverviewHead() {
   `;
 }
 
+function computeMonthlyOverviewStats(dateList, emps, sourceFilter) {
+  let normalPeople = 0, abnormalPeople = 0;
+  let late = 0, missing = 0, absent = 0, early = 0, loc = 0, dev = 0;
+  emps.forEach(emp => {
+    const empData = attendanceData[emp.id] || {};
+    let srcSet = [];
+    dateList.forEach(d => {
+      (empData[d.str] || []).forEach(s => {
+        if (!srcSet.includes(s.source)) srcSet.push(s.source);
+      });
+    });
+    if (sourceFilter) srcSet = srcSet.filter(s => s === sourceFilter);
+    if (srcSet.length === 0) return;
+    let empAbnormalDays = 0;
+    srcSet.forEach(source => {
+      const st = computeMonthlyStats(emp.id, source, dateList);
+      empAbnormalDays += st.abnormalDays;
+      late += st.lateCount; missing += st.missingCard; absent += st.absentCount;
+      early += st.earlyLeave; loc += st.locAbnormal; dev += st.devAbnormal;
+    });
+    if (empAbnormalDays > 0) abnormalPeople++; else normalPeople++;
+  });
+  return { normalPeople, abnormalPeople, late, missing, absent, early, loc, dev };
+}
+
+function updateMonthlyStats(s) {
+  document.getElementById('moStatNormal').textContent   = s.normalPeople;
+  document.getElementById('moStatAbnormal').textContent = s.abnormalPeople;
+  document.getElementById('moStatLate').textContent     = s.late;
+  document.getElementById('moStatMissing').textContent  = s.missing;
+  document.getElementById('moStatAbsent').textContent   = s.absent;
+  document.getElementById('moStatEarly').textContent    = s.early;
+  document.getElementById('moStatLoc').textContent      = s.loc;
+  document.getElementById('moStatDev').textContent      = s.dev;
+}
+
 function renderMonthlyOverviewBody(dateList, emps, sourceFilter) {
   const tbody = document.getElementById('monthlyOverviewBody');
   const rows = [];
@@ -2005,6 +2151,7 @@ function applyMonthlyOverviewFilter() {
   });
   renderMonthlyOverviewHead();
   renderMonthlyOverviewBody(dateList, filtered, sourceFilter);
+  updateMonthlyStats(computeMonthlyOverviewStats(dateList, filtered, sourceFilter));
 }
 
 function resetMonthlyOverviewFilter() {
@@ -2037,6 +2184,7 @@ function applyMonthlyDetailFilter() {
   });
   renderPunchHead('monthlyDetailHead', dateList);
   renderPunchBody('monthlyDetailBody', dateList, filtered, sourceFilter);
+  updateMonthlyStats(computeMonthlyOverviewStats(dateList, filtered, sourceFilter));
 }
 
 // ===== Date Presets =====
@@ -2285,6 +2433,175 @@ function syncColCheckboxes() {
   DAILY_GROUP_ORDER.forEach(g => syncGroupCheckboxes('daily', g));
   MONTHLY_GROUP_ORDER.forEach(g => syncGroupCheckboxes('monthly', g));
 }
+
+// ===== Overview Dashboard =====
+let _overviewInited = false;
+const _ovCharts = {};
+let _ovData = null;
+let _ovSelectedIdx = 6;
+
+// Seeded PRNG for stable demo data across reloads
+let _ovSeed = 20260723;
+function _ovRand() { _ovSeed = (_ovSeed * 9301 + 49297) % 233280; return _ovSeed / 233280; }
+function _ovRandInt(min, max) { return Math.floor(_ovRand() * (max - min + 1)) + min; }
+
+function generateOverviewData() {
+  const months = ['1月','2月','3月','4月','5月','6月','7月'];
+  const m = { normal: [], abnormal: [], late: [], early: [], absent: [], missing: [], loc: [], dev: [] };
+  for (let i = 0; i < 7; i++) {
+    const late    = _ovRandInt(10, 26);
+    const early   = _ovRandInt(5, 14);
+    const absent  = _ovRandInt(1, 6);
+    const missing = _ovRandInt(6, 16);
+    const loc     = _ovRandInt(2, 9);
+    const dev     = _ovRandInt(1, 6);
+    const abnormal = Math.round((late + early + absent + missing) * 0.75);
+    const normal = 340 - abnormal + _ovRandInt(-8, 8);
+    m.late.push(late); m.early.push(early); m.absent.push(absent);
+    m.missing.push(missing); m.loc.push(loc); m.dev.push(dev);
+    m.abnormal.push(abnormal); m.normal.push(normal);
+  }
+  const rankingByMonth = [];
+  for (let i = 0; i < 7; i++) {
+    rankingByMonth.push(
+      employees.map(e => ({ name: e.name, total: _ovRandInt(1, 12) }))
+        .sort((a, b) => b.total - a.total).slice(0, 10)
+    );
+  }
+  const overtime = { wd: [], re: [], ho: [] };
+  for (let i = 0; i < 7; i++) {
+    overtime.wd.push(_ovRandInt(60, 160));
+    overtime.re.push(_ovRandInt(30, 90));
+    overtime.ho.push(_ovRandInt(5, 40));
+  }
+  const leave = employees.slice(0, 8).map(e => ({
+    name: e.name,
+    personal: _ovRandInt(0, 5),
+    annual: _ovRandInt(0, 8),
+    marriage: _ovRandInt(0, 2),
+    maternity: _ovRandInt(0, 3),
+  }));
+  return {
+    months, monthly: m,
+    rankingByMonth, overtime, leave,
+  };
+}
+
+function showOverview() {
+  if (typeof echarts === 'undefined') return;
+  if (!_overviewInited) {
+    requestAnimationFrame(() => { initOverviewDashboard(); _overviewInited = true; });
+  } else {
+    requestAnimationFrame(() => { Object.values(_ovCharts).forEach(c => c.resize()); });
+  }
+}
+
+function initOverviewDashboard() {
+  _ovData = generateOverviewData();
+  const d = _ovData;
+  // Charts
+  _ovCharts.normalTrend = echarts.init(document.getElementById('ovNormalTrend'));
+  _ovCharts.normalTrend.setOption(_ovLineOption(d.months, d.monthly.normal, '#1890ff', '正常人数'));
+  _ovCharts.abnormalTrend = echarts.init(document.getElementById('ovAbnormalTrend'));
+  _ovCharts.abnormalTrend.setOption(_ovLineOption(d.months, d.monthly.abnormal, '#f5222d', '异常人数'));
+  _ovCharts.catLate = echarts.init(document.getElementById('ovCatLate'));
+  _ovCharts.catLate.setOption(_ovHBarOption(d.months, d.monthly.late, '#fa8c16'));
+  _ovCharts.catEarly = echarts.init(document.getElementById('ovCatEarly'));
+  _ovCharts.catEarly.setOption(_ovHBarOption(d.months, d.monthly.early, '#1890ff'));
+  _ovCharts.catAbsent = echarts.init(document.getElementById('ovCatAbsent'));
+  _ovCharts.catAbsent.setOption(_ovHBarOption(d.months, d.monthly.absent, '#f5222d'));
+  _ovCharts.catMissing = echarts.init(document.getElementById('ovCatMissing'));
+  _ovCharts.catMissing.setOption(_ovHBarOption(d.months, d.monthly.missing, '#722ed1'));
+  _ovCharts.ranking = echarts.init(document.getElementById('ovRanking'));
+  _ovCharts.ranking.setOption(_ovRankingOption(d.rankingByMonth[_ovSelectedIdx]));
+  _ovCharts.ranking.on('click', () => drillToMonthly());
+  _ovCharts.overtime = echarts.init(document.getElementById('ovOvertime'));
+  _ovCharts.overtime.setOption(_ovOvertimeOption(d.months, d.overtime));
+  _ovCharts.leave = echarts.init(document.getElementById('ovLeave'));
+  _ovCharts.leave.setOption(_ovLeaveOption(d.leave));
+}
+
+function _ovLineOption(months, data, color, name) {
+  return {
+    tooltip: { trigger: 'axis' },
+    grid: { left: 44, right: 20, top: 24, bottom: 28 },
+    xAxis: { type: 'category', data: months, boundaryGap: false, axisLine: { lineStyle: { color: '#d9d9d9' } }, axisLabel: { color: 'rgba(0,0,0,.55)' } },
+    yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: 'rgba(0,0,0,.45)' } },
+    series: [{
+      name, type: 'line', data, smooth: true, symbol: 'circle', symbolSize: 7,
+      itemStyle: { color }, lineStyle: { width: 3, color },
+      areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: color + '2e' }, { offset: 1, color: color + '05' }] } },
+    }],
+  };
+}
+
+function _ovHBarOption(months, data, color) {
+  return {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: { left: 38, right: 26, top: 8, bottom: 18 },
+    xAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: 'rgba(0,0,0,.45)' } },
+    yAxis: { type: 'category', data: months, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: 'rgba(0,0,0,.55)' } },
+    series: [{ type: 'bar', data, barWidth: 9, itemStyle: { color, borderRadius: [0, 4, 4, 0] } }],
+  };
+}
+
+function _ovRankingOption(ranking) {
+  const names = ranking.map(r => r.name).reverse();
+  const totals = ranking.map(r => r.total).reverse();
+  return {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    grid: { left: 72, right: 44, top: 8, bottom: 18 },
+    xAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: 'rgba(0,0,0,.45)' } },
+    yAxis: { type: 'category', data: names, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: 'rgba(0,0,0,.65)' } },
+    series: [{
+      type: 'bar', data: totals, barWidth: 14,
+      itemStyle: { borderRadius: [0, 6, 6, 0], color: { type: 'linear', x: 0, y: 0, x2: 1, y2: 0, colorStops: [{ offset: 0, color: '#ff9c6e' }, { offset: 1, color: '#f5222d' }] } },
+      label: { show: true, position: 'right', color: 'rgba(0,0,0,.65)', fontWeight: 600 },
+    }],
+  };
+}
+
+function _ovOvertimeOption(months, ot) {
+  const mk = (name, data, color) => ({ name, type: 'bar', stack: 'total', data, barWidth: 22, itemStyle: { color } });
+  return {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['工作日加班','休息日加班','节假日加班'], bottom: 0, textStyle: { color: 'rgba(0,0,0,.65)' } },
+    grid: { left: 40, right: 20, top: 16, bottom: 40 },
+    xAxis: { type: 'category', data: months, axisLabel: { color: 'rgba(0,0,0,.55)' } },
+    yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: 'rgba(0,0,0,.45)' } },
+    series: [
+      mk('工作日加班', ot.wd, '#1890ff'),
+      mk('休息日加班', ot.re, '#69c0ff'),
+      mk('节假日加班', ot.ho, '#bae7ff'),
+    ],
+  };
+}
+
+function _ovLeaveOption(leave) {
+  const names = leave.map(l => l.name);
+  const mk = (name, key, color) => ({ name, type: 'bar', data: leave.map(l => l[key]), barWidth: 7, itemStyle: { color, borderRadius: [3, 3, 0, 0] } });
+  return {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['事假','年假','婚假','产假'], bottom: 0, textStyle: { color: 'rgba(0,0,0,.65)' } },
+    grid: { left: 30, right: 20, top: 16, bottom: 40 },
+    xAxis: { type: 'category', data: names, axisLabel: { color: 'rgba(0,0,0,.55)', interval: 0, rotate: 30 } },
+    yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: 'rgba(0,0,0,.45)' } },
+    series: [
+      mk('事假', 'personal', '#fa8c16'),
+      mk('年假', 'annual', '#52c41a'),
+      mk('婚假', 'marriage', '#eb2f96'),
+      mk('产假', 'maternity', '#722ed1'),
+    ],
+  };
+}
+
+function drillToMonthly() { switchTab('monthly'); }
+
+window.addEventListener('resize', () => {
+  if (_currentTab === 'overview' && _overviewInited) {
+    Object.values(_ovCharts).forEach(c => c.resize());
+  }
+});
 
 // ===== Init =====
 loadColSettings();
