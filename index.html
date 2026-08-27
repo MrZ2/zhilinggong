@@ -228,7 +228,7 @@
     /* Daily Overview Table */
     :root { --do-col-date: 120px; --do-col-name: 80px; --do-col-phone: 110px; --do-col-source: 72px; }
     #dailyOverviewFilter { grid-template-columns: repeat(4, 1fr); }
-    #dailyOverviewTable { border-collapse: separate; border-spacing: 0; min-width: max-content; }
+    #dailyOverviewTable { border-collapse: separate; border-spacing: 0; width: 100%; }
     #dailyOverviewTable thead th { background: #fafafa; padding: 8px 6px; text-align: center; font-weight: 500; font-size: 12px; color: rgba(0,0,0,.75); border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; white-space: nowrap; vertical-align: middle; letter-spacing: .3px; }
     #dailyOverviewTable thead tr:first-child th { font-size: 13px; color: rgba(0,0,0,.65); letter-spacing: .5px; position: sticky; top: 0; z-index: 20; background: #fafafa; border-top: 1px solid #f0f0f0; }
     #dailyOverviewTable thead tr:nth-child(2) th { padding: 7px 6px; line-height: 1.35; position: sticky; top: 36px; z-index: 20; background: #fafafa; font-size: 12px; }
@@ -634,27 +634,15 @@
       <div class="col-group-parent" onclick="toggleColParent('daily','attend')">
         <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('dailyChildrenAttend',this)">&#9654;</span>
         <input type="checkbox" id="dailyChkAttend" checked>
-        <span>考勤概况 (9列)</span>
+        <span>考勤概况 (8列)</span>
       </div>
       <div class="col-children" id="dailyChildrenAttend"></div>
       <div class="col-group-parent" onclick="toggleColParent('daily','abnormal')">
         <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('dailyChildrenAbnormal',this)">&#9654;</span>
         <input type="checkbox" id="dailyChkAbnormal" checked>
-        <span>异常统计 (7列)</span>
+        <span>异常情况 (7列)</span>
       </div>
       <div class="col-children" id="dailyChildrenAbnormal"></div>
-      <div class="col-group-parent" onclick="toggleColParent('daily','outing')">
-        <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('dailyChildrenOuting',this)">&#9654;</span>
-        <input type="checkbox" id="dailyChkOuting" checked>
-        <span>外出打卡 (3列)</span>
-      </div>
-      <div class="col-children" id="dailyChildrenOuting"></div>
-      <div class="col-group-parent" onclick="toggleColParent('daily','overtime')">
-        <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('dailyChildrenOvertime',this)">&#9654;</span>
-        <input type="checkbox" id="dailyChkOvertime" checked>
-        <span>加班统计 (4列)</span>
-      </div>
-      <div class="col-children" id="dailyChildrenOvertime"></div>
     </div>
   </div>
 </div>
@@ -690,21 +678,18 @@
     <label>时间范围</label>
     <div class="date-picker-wrap">
       <div class="date-picker-trigger" id="dpTrigger4" onclick="toggleDatePicker4()">
-        <span id="dpText4">2026-07-01 ~ 2026-07-31</span>
+        <span id="dpText4">2026-07</span>
         <span class="dp-icon">&#128197;</span>
       </div>
       <div class="date-picker-panel" id="dpPanel4">
         <div class="dp-presets">
-          <button class="dp-preset-btn" onclick="setDatePreset4('today')">今天</button>
-          <button class="dp-preset-btn" onclick="setDatePreset4('last7')">最近7天</button>
-          <button class="dp-preset-btn" onclick="setDatePreset4('last30')">最近30天</button>
-          <button class="dp-preset-btn" onclick="setDatePreset4('thisMonth')">本月</button>
+          <button class="dp-preset-btn" onclick="setMonthPreset4('thisMonth')">本月</button>
+          <button class="dp-preset-btn" onclick="setMonthPreset4('lastMonth')">上月</button>
         </div>
-        <div class="dp-row"><label>开始</label><input type="date" id="dateStart4" value="2026-07-01"></div>
-        <div class="dp-row"><label>结束</label><input type="date" id="dateEnd4" value="2026-07-31"></div>
+        <div class="dp-row"><label>月份</label><input type="month" id="monthSelect4" value="2026-07"></div>
         <div class="dp-actions">
           <button class="btn" onclick="closeDatePicker4()">取消</button>
-          <button class="btn btn-primary" onclick="confirmDatePicker4()">确定</button>
+          <button class="btn btn-primary" onclick="confirmMonthPicker4()">确定</button>
         </div>
       </div>
     </div>
@@ -759,12 +744,6 @@
         <span>异常情况 (7列)</span>
       </div>
       <div class="col-children" id="monthlyChildrenAbnormal"></div>
-      <div class="col-group-parent" onclick="toggleColParent('monthly','overtime')">
-        <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('monthlyChildrenOvertime',this)">&#9654;</span>
-        <input type="checkbox" id="monthlyChkOvertime" checked>
-        <span>加班统计 (4列)</span>
-      </div>
-      <div class="col-children" id="monthlyChildrenOvertime"></div>
     </div>
   </div>
 </div>
@@ -968,9 +947,8 @@ function applyMonthlyFilter() {
   else applyMonthlyDetailFilter();
 }
 function resetMonthlyFilter() {
-  document.getElementById('dateStart4').value = '2026-07-01';
-  document.getElementById('dateEnd4').value   = '2026-07-31';
-  document.getElementById('dpText4').textContent = '2026-07-01 ~ 2026-07-31';
+  document.getElementById('monthSelect4').value = '2026-07';
+  document.getElementById('dpText4').textContent = '2026-07';
   document.getElementById('searchName4').value   = '';
   document.getElementById('searchPhone4').value  = '';
   document.getElementById('filterRule4').value   = '';
@@ -1605,19 +1583,15 @@ function renderDailyOverviewHead() {
     <tr>
       <th class="do-sticky-date" rowspan="2" style="width:var(--do-col-date);"><div class="do-sticky-inner-th">日期</div></th>
       <th class="do-sticky-name" colspan="3" style="text-align:left;"><div class="do-sticky-inner-name">基础信息</div></th>
-      <th class="do-group-attend" colspan="9">考勤概况</th>
+      <th class="do-group-attend" colspan="8">考勤概况</th>
       <th class="do-group-abnormal" colspan="7">异常情况</th>
-      <th class="do-group-outing" colspan="3">外出打卡</th>
-      <th class="do-group-overtime" colspan="4">加班统计</th>
     </tr>
     <tr>
       <th class="do-sticky-name" style="width:var(--do-col-name);"><div class="do-sticky-inner-name">员工姓名</div></th>
       <th class="do-sticky-phone" style="width:var(--do-col-phone);"><div class="do-sticky-inner-th">手机号</div></th>
       <th class="do-sticky-source" style="width:var(--do-col-source);"><div class="do-sticky-inner-th">数据来源</div></th>
-      <th>所属规则</th><th>班次</th><th>最早</th><th>最晚</th><th>打卡次数<br>(次)</th><th>标准工作时长<br>(小时)</th><th>实际工作时长<br>(小时)</th><th>假勤申请</th><th>考勤结果</th>
+      <th>所属规则</th><th>班次</th><th>最早</th><th>最晚</th><th>打卡次数<br>(次)</th><th>标准工作时长<br>(小时)</th><th>实际工作时长<br>(小时)</th><th>考勤结果</th>
       <th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>上班缺卡次数<br>(次)</th><th>下班缺卡次数<br>(次)</th><th>旷工天数<br>(天)</th>
-      <th>外出打卡次数<br>(次)</th><th>最早</th><th>最晚</th>
-      <th>加班总时长<br>(小时)</th><th>工作日加班<br>(小时)</th><th>休息日加班<br>(小时)</th><th>节假日加班<br>(小时)</th>
     </tr>
   `;
 }
@@ -1712,17 +1686,15 @@ function renderDailyOverviewBody(dateList, emps, sourceFilter) {
         }
         row += `
           <td class="do-sticky-source"><div class="do-sticky-inner"><span class="do-src-tag ${cfg.cls}">${cfg.label}</span></div></td>
-          <td>${stats.rule}</td><td>${stats.shift}</td><td>${ve(stats.earliest)}</td><td>${ve(stats.latest)}</td><td>${stats.punchCount}</td><td>${stats.stdHours}</td><td>${stats.actHours}</td><td>${stats.leaveApp}</td><td>${renderResultTag(stats.result)}</td>
+          <td>${stats.rule}</td><td>${stats.shift}</td><td>${ve(stats.earliest)}</td><td>${ve(stats.latest)}</td><td>${stats.punchCount}</td><td>${stats.stdHours}</td><td>${stats.actHours}</td><td>${renderResultTag(stats.result)}</td>
           <td>${va(stats.lateCount)}</td><td>${va(stats.lateMin)}</td><td>${va(stats.earlyLeave)}</td><td>${va(stats.earlyMin)}</td><td>${va(stats.missingInCard)}</td><td>${va(stats.missingOutCard)}</td><td>${va(stats.absentDays)}</td>
-          <td>${v(stats.outingCount)}</td><td>${ve(stats.outingEarliest)}</td><td>${ve(stats.outingLatest)}</td>
-          <td>${v(stats.otTotalHours)}</td><td>${v(stats.otWdOtHours)}</td><td>${v(stats.otReOtHours)}</td><td>${v(stats.otHoOtHours)}</td>
         </tr>`;
         rows.push(row);
       });
     });
   });
   if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="27"><div class="empty-state">暂无数据</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="19"><div class="empty-state">暂无数据</div></td></tr>`;
   } else {
     tbody.innerHTML = rows.join('');
   }
@@ -1772,10 +1744,25 @@ function confirmDatePicker3() {
 // ===== Date Picker 4 (Monthly) =====
 function toggleDatePicker4() { document.getElementById('dpPanel4').classList.toggle('open'); }
 function closeDatePicker4() { document.getElementById('dpPanel4').classList.remove('open'); }
-function confirmDatePicker4() {
-  const s = document.getElementById('dateStart4').value;
-  const e = document.getElementById('dateEnd4').value;
-  document.getElementById('dpText4').textContent = `${s} ~ ${e}`;
+function confirmMonthPicker4() {
+  const monthVal = document.getElementById('monthSelect4').value;
+  document.getElementById('dpText4').textContent = monthVal;
+  closeDatePicker4();
+  applyMonthlyFilter();
+}
+function setMonthPreset4(preset) {
+  const today = new Date();
+  let y, m;
+  if (preset === 'thisMonth') {
+    y = today.getFullYear();
+    m = today.getMonth();
+  } else if (preset === 'lastMonth') {
+    y = today.getMonth() === 0 ? today.getFullYear() - 1 : today.getFullYear();
+    m = today.getMonth() === 0 ? 11 : today.getMonth() - 1;
+  }
+  const monthStr = `${y}-${String(m + 1).padStart(2, '0')}`;
+  document.getElementById('monthSelect4').value = monthStr;
+  document.getElementById('dpText4').textContent = monthStr;
   closeDatePicker4();
   applyMonthlyFilter();
 }
@@ -2014,7 +2001,6 @@ function renderMonthlyOverviewHead() {
       <th class="mo-sticky-name" colspan="3" style="text-align:left;"><div class="mo-sticky-inner-name">基础信息</div></th>
       <th class="do-group-attend" colspan="7">考勤概况</th>
       <th class="do-group-abnormal" colspan="7">异常情况</th>
-      <th class="do-group-overtime" colspan="4">加班统计</th>
     </tr>
     <tr>
       <th class="mo-sticky-name" style="width:var(--do-col-name);"><div class="mo-sticky-inner-name">员工姓名</div></th>
@@ -2022,7 +2008,6 @@ function renderMonthlyOverviewHead() {
       <th class="mo-sticky-source" style="width:var(--do-col-source);"><div class="mo-sticky-inner-th">数据来源</div></th>
       <th>应出勤天数<br>(天)</th><th>实际出勤天数<br>(天)</th><th>休息天数<br>(天)</th><th>正常天数<br>(天)</th><th>异常天数<br>(天)</th><th>标准工作时长<br>(小时)</th><th>实际工作时长<br>(小时)</th>
       <th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>上班缺卡次数<br>(次)</th><th>下班缺卡次数<br>(次)</th><th>旷工天数<br>(天)</th>
-      <th>加班总时长<br>(小时)</th><th>工作日加班<br>(小时)</th><th>休息日加班<br>(小时)</th><th>节假日加班<br>(小时)</th>
     </tr>
   `;
 }
@@ -2058,13 +2043,12 @@ function renderMonthlyOverviewBody(dateList, emps, sourceFilter) {
           <td class="mo-sticky-source"><div class="mo-sticky-inner"><span class="do-src-tag ${cfg.cls}">${cfg.label}</span></div></td>
           <td>${st.requiredDays}</td><td>${st.actualDays}</td><td>${st.restDays}</td><td>${st.normalDays}</td><td>${va(st.abnormalDays)}</td><td>${st.stdHours}</td><td>${st.actHours}</td>
           <td>${va(st.lateCount)}</td><td>${va(st.lateMin)}</td><td>${va(st.earlyLeave)}</td><td>${va(st.earlyMin)}</td><td>${va(st.missingInCard)}</td><td>${va(st.missingOutCard)}</td><td>${va(st.absentDays)}</td>
-          <td>${v(st.otTotalHours)}</td><td>${v(st.otWdOtHours)}</td><td>${v(st.otReOtHours)}</td><td>${v(st.otHoOtHours)}</td>
         </tr>`;
       rows.push(row);
     });
   });
   if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="21"><div class="empty-state">暂无数据</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="17"><div class="empty-state">暂无数据</div></td></tr>`;
   } else {
     tbody.innerHTML = rows.join('');
   }
@@ -2073,8 +2057,10 @@ function renderMonthlyOverviewBody(dateList, emps, sourceFilter) {
 }
 
 function applyMonthlyOverviewFilter() {
-  const startVal     = document.getElementById('dateStart4').value || '2026-07-01';
-  const endVal       = document.getElementById('dateEnd4').value || '2026-07-31';
+  const monthVal     = document.getElementById('monthSelect4').value || '2026-07';
+  const [y, m] = monthVal.split('-').map(Number);
+  const startVal = `${y}-${String(m).padStart(2,'0')}-01`;
+  const endVal = `${y}-${String(m).padStart(2,'0')}-${String(new Date(y, m, 0).getDate()).padStart(2,'0')}`;
   const nameVal      = document.getElementById('searchName4').value.trim();
   const phoneVal     = document.getElementById('searchPhone4').value.trim();
   const ruleVal      = document.getElementById('filterRule4').value;
@@ -2105,8 +2091,10 @@ function resetMonthlyOverviewFilter() {
 // Reuses the same rendering as the timeline (考勤时间记录): name+phone sticky, one row per employee,
 // date cells grouped by source. Clicking a cell opens the shared openDrawer.
 function applyMonthlyDetailFilter() {
-  const startVal     = document.getElementById('dateStart4').value || '2026-07-01';
-  const endVal       = document.getElementById('dateEnd4').value || '2026-07-31';
+  const monthVal     = document.getElementById('monthSelect4').value || '2026-07';
+  const [y, m] = monthVal.split('-').map(Number);
+  const startVal = `${y}-${String(m).padStart(2,'0')}-01`;
+  const endVal = `${y}-${String(m).padStart(2,'0')}-${String(new Date(y, m, 0).getDate()).padStart(2,'0')}`;
   const nameVal      = document.getElementById('searchName4').value.trim();
   const phoneVal     = document.getElementById('searchPhone4').value.trim();
   const ruleVal      = document.getElementById('filterRule4').value;
@@ -2168,44 +2156,25 @@ function setDatePreset3(preset) {
   closeDatePicker3();
   applyDailyDetailFilter();
 }
-function setDatePreset4(preset) {
-  const today = new Date();
-  let start, end;
-  if (preset === 'today') { start = end = formatDate(today); }
-  else if (preset === 'last7') { const s = new Date(today); s.setDate(s.getDate()-6); start = formatDate(s); end = formatDate(today); }
-  else if (preset === 'last30') { const s = new Date(today); s.setDate(s.getDate()-29); start = formatDate(s); end = formatDate(today); }
-  else if (preset === 'thisMonth') { const y = today.getFullYear(), m = String(today.getMonth()+1).padStart(2,'0'); const ld = new Date(y, today.getMonth()+1, 0).getDate(); start = `${y}-${m}-01`; end = `${y}-${m}-${String(ld).padStart(2,'0')}`; }
-  document.getElementById('dateStart4').value = start;
-  document.getElementById('dateEnd4').value = end;
-  document.getElementById('dpText4').textContent = `${start} ~ ${end}`;
-  closeDatePicker4();
-  applyMonthlyFilter();
-}
 // ===== Column Visibility =====
 const DAILY_COL_GROUPS = {
-  attend:   { start: 5, end: 13 },
-  abnormal: { start: 14, end: 20 },
-  outing:   { start: 21, end: 23 },
-  overtime: { start: 24, end: 27 },
+  attend:   { start: 5, end: 12 },
+  abnormal: { start: 13, end: 19 },
 };
 const MONTHLY_COL_GROUPS = {
   attend:   { start: 3, end: 9 },
   abnormal: { start: 10, end: 16 },
-  overtime: { start: 17, end: 20 },
 };
 const DAILY_COL_NAMES = {
-  attend:   ['所属规则','班次','最早','最晚','打卡次数','标准工时','实际工时','假勤申请','考勤结果'],
+  attend:   ['所属规则','班次','最早','最晚','打卡次数','标准工时','实际工时','考勤结果'],
   abnormal: ['迟到次数','迟到时长','早退次数','早退时长','上班缺卡次数','下班缺卡次数','旷工天数'],
-  outing:   ['外出次数','外出最早','外出最晚'],
-  overtime: ['加班总时长','工作日加班','休息日加班','节假日加班'],
 };
 const MONTHLY_COL_NAMES = {
   attend:   ['应出勤','实际出勤','休息天数','正常天数','异常天数','标准工时','实际工时'],
   abnormal: ['迟到次数','迟到时长','早退次数','早退时长','上班缺卡次数','下班缺卡次数','旷工天数'],
-  overtime: ['加班总时长','工作日加班','休息日加班','节假日加班'],
 };
-const DAILY_GROUP_ORDER = ['attend','abnormal','outing','overtime'];
-const MONTHLY_GROUP_ORDER = ['attend','abnormal','overtime'];
+const DAILY_GROUP_ORDER = ['attend','abnormal'];
+const MONTHLY_GROUP_ORDER = ['attend','abnormal'];
 
 // Hidden columns stored as individual column indices
 let _hiddenCols = { daily: new Set(), monthly: new Set() };
