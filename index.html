@@ -50,8 +50,6 @@
     #monthlySection .filter-bar { margin-bottom: 0; }
     #monthlySection .table-wrapper { margin-top: 0; border-radius: 0 0 8px 8px; }
     #monthlyOverviewFilter { grid-template-columns: repeat(4, 1fr); }
-    .mo-stats { padding: 12px 0 4px; }
-    .mo-stats .ov-row1 { margin-bottom: 0; }
     .tab-content { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
     .tab-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(0,0,0,.25); }
     .tab-placeholder svg { width: 64px; height: 64px; opacity: .4; }
@@ -642,7 +640,7 @@
       <div class="col-group-parent" onclick="toggleColParent('daily','abnormal')">
         <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('dailyChildrenAbnormal',this)">&#9654;</span>
         <input type="checkbox" id="dailyChkAbnormal" checked>
-        <span>异常统计 (10列)</span>
+        <span>异常统计 (7列)</span>
       </div>
       <div class="col-children" id="dailyChildrenAbnormal"></div>
       <div class="col-group-parent" onclick="toggleColParent('daily','outing')">
@@ -654,15 +652,9 @@
       <div class="col-group-parent" onclick="toggleColParent('daily','overtime')">
         <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('dailyChildrenOvertime',this)">&#9654;</span>
         <input type="checkbox" id="dailyChkOvertime" checked>
-        <span>加班统计 (8列)</span>
+        <span>加班统计 (4列)</span>
       </div>
       <div class="col-children" id="dailyChildrenOvertime"></div>
-      <div class="col-group-parent" onclick="toggleColParent('daily','leave')">
-        <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('dailyChildrenLeave',this)">&#9654;</span>
-        <input type="checkbox" id="dailyChkLeave" checked>
-        <span>假勤统计 (9列)</span>
-      </div>
-      <div class="col-children" id="dailyChildrenLeave"></div>
     </div>
   </div>
 </div>
@@ -764,44 +756,15 @@
       <div class="col-group-parent" onclick="toggleColParent('monthly','abnormal')">
         <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('monthlyChildrenAbnormal',this)">&#9654;</span>
         <input type="checkbox" id="monthlyChkAbnormal" checked>
-        <span>异常统计 (10列)</span>
+        <span>异常情况 (7列)</span>
       </div>
       <div class="col-children" id="monthlyChildrenAbnormal"></div>
-      <div class="col-group-parent" onclick="toggleColParent('monthly','leave')">
-        <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('monthlyChildrenLeave',this)">&#9654;</span>
-        <input type="checkbox" id="monthlyChkLeave" checked>
-        <span>假勤统计 (9列)</span>
-      </div>
-      <div class="col-children" id="monthlyChildrenLeave"></div>
       <div class="col-group-parent" onclick="toggleColParent('monthly','overtime')">
         <span class="col-expand-icon" onclick="event.stopPropagation();toggleColExpand('monthlyChildrenOvertime',this)">&#9654;</span>
         <input type="checkbox" id="monthlyChkOvertime" checked>
-        <span>加班统计 (10列)</span>
+        <span>加班统计 (4列)</span>
       </div>
       <div class="col-children" id="monthlyChildrenOvertime"></div>
-    </div>
-  </div>
-</div>
-<div class="mo-stats" id="monthlyStatsCards">
-  <div class="ov-row1">
-    <div class="ov-bigcard">
-      <div class="ov-bigcard-half">
-        <div class="ov-metric-label">正常人数</div>
-        <div class="ov-metric-value blue" id="moStatNormal">--</div>
-      </div>
-      <div class="ov-bigcard-divider"></div>
-      <div class="ov-bigcard-half">
-        <div class="ov-metric-label">异常人数</div>
-        <div class="ov-metric-value red" id="moStatAbnormal">--</div>
-      </div>
-    </div>
-    <div class="ov-smallcards">
-      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#fff7e6;color:#fa8c16;">&#9200;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatLate">--</div><div class="ov-sc-label">迟到</div></div></div>
-      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#f9f0ff;color:#722ed1;">&#128205;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatMissing">--</div><div class="ov-sc-label">缺卡</div></div></div>
-      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#fff1f0;color:#f5222d;">&#9940;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatAbsent">--</div><div class="ov-sc-label">旷工</div></div></div>
-      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#e6f7ff;color:#1890ff;">&#128682;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatEarly">--</div><div class="ov-sc-label">早退</div></div></div>
-      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#fffbe6;color:#faad14;">&#127759;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatLoc">--</div><div class="ov-sc-label">地点异常</div></div></div>
-      <div class="ov-smallcard"><div class="ov-sc-icon" style="background:#f0f5ff;color:#2f54eb;">&#128241;</div><div class="ov-sc-body"><div class="ov-sc-value" id="moStatDev">--</div><div class="ov-sc-label">设备异常</div></div></div>
     </div>
   </div>
 </div>
@@ -1643,20 +1606,18 @@ function renderDailyOverviewHead() {
       <th class="do-sticky-date" rowspan="2" style="width:var(--do-col-date);"><div class="do-sticky-inner-th">日期</div></th>
       <th class="do-sticky-name" colspan="3" style="text-align:left;"><div class="do-sticky-inner-name">基础信息</div></th>
       <th class="do-group-attend" colspan="9">考勤概况</th>
-      <th class="do-group-abnormal" colspan="10">异常统计</th>
+      <th class="do-group-abnormal" colspan="7">异常情况</th>
       <th class="do-group-outing" colspan="3">外出打卡</th>
-      <th class="do-group-overtime" colspan="8">加班统计</th>
-      <th class="do-group-leave" colspan="9">假勤统计</th>
+      <th class="do-group-overtime" colspan="4">加班统计</th>
     </tr>
     <tr>
       <th class="do-sticky-name" style="width:var(--do-col-name);"><div class="do-sticky-inner-name">员工姓名</div></th>
       <th class="do-sticky-phone" style="width:var(--do-col-phone);"><div class="do-sticky-inner-th">手机号</div></th>
       <th class="do-sticky-source" style="width:var(--do-col-source);"><div class="do-sticky-inner-th">数据来源</div></th>
       <th>所属规则</th><th>班次</th><th>最早</th><th>最晚</th><th>打卡次数<br>(次)</th><th>标准工作时长<br>(小时)</th><th>实际工作时长<br>(小时)</th><th>假勤申请</th><th>考勤结果</th>
-      <th>异常合计<br>(次)</th><th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>旷工次数<br>(次)</th><th>旷工时长<br>(分钟)</th><th>缺卡次数<br>(次)</th><th>地点异常<br>(次)</th><th>设备异常<br>(次)</th>
+      <th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>上班缺卡次数<br>(次)</th><th>下班缺卡次数<br>(次)</th><th>旷工天数<br>(天)</th>
       <th>外出打卡次数<br>(次)</th><th>最早</th><th>最晚</th>
-      <th>加班状态</th><th>加班时长<br>(小时)</th><th>工作日加班<br>计为调休(小时)</th><th>工作日加班<br>计为加班费(小时)</th><th>休息日加班<br>计为调休(小时)</th><th>休息日加班<br>计为加班费(小时)</th><th>节假日加班<br>计为调休(小时)</th><th>节假日加班<br>计为加班费(小时)</th>
-      <th>补卡次数<br>(次)</th><th>审批打卡次数<br>(次)</th><th>外勤次数<br>(次)</th><th>外出<br>(小时)</th><th>出差<br>(天)</th><th>事假<br>(小时)</th><th>年假<br>(天)</th><th>婚假<br>(天)</th><th>产假<br>(天)</th>
+      <th>加班总时长<br>(小时)</th><th>工作日加班<br>(小时)</th><th>休息日加班<br>(小时)</th><th>节假日加班<br>(小时)</th>
     </tr>
   `;
 }
@@ -1682,11 +1643,18 @@ function computeSingleSourceStats(src) {
   const earlyMin   = earlyLeave ? 20 : 0;
   const absentCount = 0, absentMin = 0;
   const missingCard = (inPunches.length === 0 || outPunches.length === 0) ? 1 : 0;
+  const missingInCard  = src.shifts.filter(sh => sh.punches.filter(p => p.type === 'in').length === 0).length;
+  const missingOutCard = src.shifts.filter(sh => sh.punches.filter(p => p.type === 'out').length === 0).length;
+  const absentDays = 0;
   const locAbnormal = 0, devAbnormal = 0;
   const abnormalTotal = lateCount + earlyLeave + absentCount + missingCard + locAbnormal + devAbnormal;
   const outingCount = 0, outingEarliest = '--', outingLatest = '--';
   const otStatus = actHours > stdHours ? '是' : '否';
   const otHours  = actHours > stdHours ? Math.round((actHours - stdHours)*10)/10 : 0;
+  const otTotalHours = otHours;
+  const otWdOtHours = otHours;
+  const otReOtHours = 0;
+  const otHoOtHours = 0;
   const makeupCount   = allPunches.filter(p => p.category === 'makeup').length;
   const approvalCount = allPunches.filter(p => p.category === 'approval').length;
   const fieldCount = allPunches.filter(p => p.category === 'field').length;
@@ -1699,8 +1667,9 @@ function computeSingleSourceStats(src) {
   return {
     rule, shift, earliest, latest, punchCount, stdHours, actHours, leaveApp, result,
     abnormalTotal, lateCount, lateMin, earlyLeave, earlyMin, absentCount, absentMin, missingCard, locAbnormal, devAbnormal,
+    missingInCard, missingOutCard, absentDays,
     outingCount, outingEarliest, outingLatest,
-    otStatus, otHours, otWdRest: 0, otWdPay: 0, otReRest: 0, otRePay: 0, otHoRest: 0, otHoPay: 0,
+    otStatus, otHours, otTotalHours, otWdOtHours, otReOtHours, otHoOtHours, otWdRest: 0, otWdPay: 0, otReRest: 0, otRePay: 0, otHoRest: 0, otHoPay: 0,
     makeupCount, approvalCount, fieldCount, outing: 0, businessTrip: 0, personalLeave: 0, annualLeave: 0, marriageLeave: 0, maternityLeave: 0
   };
 }
@@ -1744,17 +1713,16 @@ function renderDailyOverviewBody(dateList, emps, sourceFilter) {
         row += `
           <td class="do-sticky-source"><div class="do-sticky-inner"><span class="do-src-tag ${cfg.cls}">${cfg.label}</span></div></td>
           <td>${stats.rule}</td><td>${stats.shift}</td><td>${ve(stats.earliest)}</td><td>${ve(stats.latest)}</td><td>${stats.punchCount}</td><td>${stats.stdHours}</td><td>${stats.actHours}</td><td>${stats.leaveApp}</td><td>${renderResultTag(stats.result)}</td>
-          <td>${va(stats.abnormalTotal)}</td><td>${va(stats.lateCount)}</td><td>${va(stats.lateMin)}</td><td>${va(stats.earlyLeave)}</td><td>${va(stats.earlyMin)}</td><td>${va(stats.absentCount)}</td><td>${va(stats.absentMin)}</td><td>${va(stats.missingCard)}</td><td>${va(stats.locAbnormal)}</td><td>${va(stats.devAbnormal)}</td>
+          <td>${va(stats.lateCount)}</td><td>${va(stats.lateMin)}</td><td>${va(stats.earlyLeave)}</td><td>${va(stats.earlyMin)}</td><td>${va(stats.missingInCard)}</td><td>${va(stats.missingOutCard)}</td><td>${va(stats.absentDays)}</td>
           <td>${v(stats.outingCount)}</td><td>${ve(stats.outingEarliest)}</td><td>${ve(stats.outingLatest)}</td>
-          <td>${renderOtStatus(stats.otStatus)}</td><td>${v(stats.otHours)}</td><td>${v(stats.otWdRest)}</td><td>${v(stats.otWdPay)}</td><td>${v(stats.otReRest)}</td><td>${v(stats.otRePay)}</td><td>${v(stats.otHoRest)}</td><td>${v(stats.otHoPay)}</td>
-          <td>${v(stats.makeupCount)}</td><td>${v(stats.approvalCount)}</td><td>${v(stats.fieldCount)}</td><td>${v(stats.outing)}</td><td>${v(stats.businessTrip)}</td><td>${v(stats.personalLeave)}</td><td>${v(stats.annualLeave)}</td><td>${v(stats.marriageLeave)}</td><td>${v(stats.maternityLeave)}</td>
+          <td>${v(stats.otTotalHours)}</td><td>${v(stats.otWdOtHours)}</td><td>${v(stats.otReOtHours)}</td><td>${v(stats.otHoOtHours)}</td>
         </tr>`;
         rows.push(row);
       });
     });
   });
   if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="45"><div class="empty-state">暂无数据</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="27"><div class="empty-state">暂无数据</div></td></tr>`;
   } else {
     tbody.innerHTML = rows.join('');
   }
@@ -1972,10 +1940,12 @@ function computeMonthlyStats(empId, source, dateList) {
     stdHours: 0, actHours: 0,
     abnormalTotal: 0, lateCount: 0, lateMin: 0, earlyLeave: 0, earlyMin: 0,
     absentCount: 0, absentMin: 0, missingCard: 0, locAbnormal: 0, devAbnormal: 0,
+    missingInCard: 0, missingOutCard: 0, absentDays: 0,
     makeupCount: 0, approvalCount: 0, fieldCount: 0, outing: 0, businessTrip: 0,
     personalLeave: 0, annualLeave: 0, marriageLeave: 0, maternityLeave: 0,
     otHours: 0, otWdHours: 0, otWdRest: 0, otWdPay: 0,
     otReHours: 0, otReRest: 0, otRePay: 0, otHoHours: 0, otHoRest: 0, otHoPay: 0,
+    otTotalHours: 0, otWdOtHours: 0, otReOtHours: 0, otHoOtHours: 0,
   };
   const emp = employees.find(e => e.id === empId);
   const isRest = emp && emp.rule === '休息';
@@ -2000,6 +1970,9 @@ function computeMonthlyStats(empId, source, dateList) {
     agg.absentCount += st.absentCount;
     agg.absentMin += st.absentMin;
     agg.missingCard += st.missingCard;
+    agg.missingInCard += st.missingInCard || 0;
+    agg.missingOutCard += st.missingOutCard || 0;
+    agg.absentDays += st.absentDays || 0;
     agg.locAbnormal += st.locAbnormal;
     agg.devAbnormal += st.devAbnormal;
     agg.makeupCount += st.makeupCount;
@@ -2012,21 +1985,24 @@ function computeMonthlyStats(empId, source, dateList) {
     agg.marriageLeave += st.marriageLeave;
     agg.maternityLeave += st.maternityLeave;
     // Overtime: split by day type (weekend -> rest-day OT, else workday OT)
-    const dayOt = st.otHours;
+    const dayOt = st.otTotalHours ?? st.otHours;
     agg.otHours += dayOt;
+    agg.otTotalHours += dayOt;
     if (d.isWeekend) {
       agg.otReHours += dayOt;
+      agg.otReOtHours += dayOt;
       agg.otReRest += dayOt * 0.5;
       agg.otRePay  += dayOt * 0.5;
     } else {
       agg.otWdHours += dayOt;
+      agg.otWdOtHours += dayOt;
       agg.otWdRest += dayOt * 0.5;
       agg.otWdPay  += dayOt * 0.5;
     }
   });
   agg.stdHours = agg.requiredDays * 8;
   // Round hour fields to 0.1
-  ['actHours','otHours','otWdHours','otWdRest','otWdPay','otReHours','otReRest','otRePay','otHoHours','otHoRest','otHoPay'].forEach(k => {
+  ['actHours','otHours','otWdHours','otWdRest','otWdPay','otReHours','otReRest','otRePay','otHoHours','otHoRest','otHoPay','otTotalHours','otWdOtHours','otReOtHours','otHoOtHours'].forEach(k => {
     agg[k] = Math.round(agg[k] * 10) / 10;
   });
   return agg;
@@ -2037,56 +2013,18 @@ function renderMonthlyOverviewHead() {
     <tr>
       <th class="mo-sticky-name" colspan="3" style="text-align:left;"><div class="mo-sticky-inner-name">基础信息</div></th>
       <th class="do-group-attend" colspan="7">考勤概况</th>
-      <th class="do-group-abnormal" colspan="10">异常统计</th>
-      <th class="do-group-leave" colspan="9">假勤统计</th>
-      <th class="do-group-overtime" colspan="10">加班统计</th>
+      <th class="do-group-abnormal" colspan="7">异常情况</th>
+      <th class="do-group-overtime" colspan="4">加班统计</th>
     </tr>
     <tr>
       <th class="mo-sticky-name" style="width:var(--do-col-name);"><div class="mo-sticky-inner-name">员工姓名</div></th>
       <th class="mo-sticky-phone" style="width:var(--do-col-phone);"><div class="mo-sticky-inner-th">手机号</div></th>
       <th class="mo-sticky-source" style="width:var(--do-col-source);"><div class="mo-sticky-inner-th">数据来源</div></th>
       <th>应出勤天数<br>(天)</th><th>实际出勤天数<br>(天)</th><th>休息天数<br>(天)</th><th>正常天数<br>(天)</th><th>异常天数<br>(天)</th><th>标准工作时长<br>(小时)</th><th>实际工作时长<br>(小时)</th>
-      <th>异常合计<br>(次)</th><th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>旷工次数<br>(次)</th><th>旷工时长<br>(分钟)</th><th>缺卡次数<br>(次)</th><th>地点异常<br>(次)</th><th>设备异常<br>(次)</th>
-      <th>补卡次数<br>(次)</th><th>审批打卡次数<br>(次)</th><th>外勤次数<br>(次)</th><th>外出<br>(小时)</th><th>出差<br>(天)</th><th>事假<br>(小时)</th><th>年假<br>(天)</th><th>婚假<br>(天)</th><th>产假<br>(天)</th>
-      <th>加班时长<br>(小时)</th><th>工作日加班<br>时长(小时)</th><th>工作日加班<br>计为调休(小时)</th><th>工作日加班<br>计为加班费(小时)</th><th>休息日加班<br>时长(小时)</th><th>休息日加班<br>计为调休(小时)</th><th>休息日加班<br>计为加班费(小时)</th><th>节假日加班<br>时长(小时)</th><th>节假日加班<br>计为调休(小时)</th><th>节假日加班<br>计为加班费(小时)</th>
+      <th>迟到次数<br>(次)</th><th>迟到时长<br>(分钟)</th><th>早退次数<br>(次)</th><th>早退时长<br>(分钟)</th><th>上班缺卡次数<br>(次)</th><th>下班缺卡次数<br>(次)</th><th>旷工天数<br>(天)</th>
+      <th>加班总时长<br>(小时)</th><th>工作日加班<br>(小时)</th><th>休息日加班<br>(小时)</th><th>节假日加班<br>(小时)</th>
     </tr>
   `;
-}
-
-function computeMonthlyOverviewStats(dateList, emps, sourceFilter) {
-  let normalPeople = 0, abnormalPeople = 0;
-  let late = 0, missing = 0, absent = 0, early = 0, loc = 0, dev = 0;
-  emps.forEach(emp => {
-    const empData = attendanceData[emp.id] || {};
-    let srcSet = [];
-    dateList.forEach(d => {
-      (empData[d.str] || []).forEach(s => {
-        if (!srcSet.includes(s.source)) srcSet.push(s.source);
-      });
-    });
-    if (sourceFilter) srcSet = srcSet.filter(s => s === sourceFilter);
-    if (srcSet.length === 0) return;
-    let empAbnormalDays = 0;
-    srcSet.forEach(source => {
-      const st = computeMonthlyStats(emp.id, source, dateList);
-      empAbnormalDays += st.abnormalDays;
-      late += st.lateCount; missing += st.missingCard; absent += st.absentCount;
-      early += st.earlyLeave; loc += st.locAbnormal; dev += st.devAbnormal;
-    });
-    if (empAbnormalDays > 0) abnormalPeople++; else normalPeople++;
-  });
-  return { normalPeople, abnormalPeople, late, missing, absent, early, loc, dev };
-}
-
-function updateMonthlyStats(s) {
-  document.getElementById('moStatNormal').textContent   = s.normalPeople;
-  document.getElementById('moStatAbnormal').textContent = s.abnormalPeople;
-  document.getElementById('moStatLate').textContent     = s.late;
-  document.getElementById('moStatMissing').textContent  = s.missing;
-  document.getElementById('moStatAbsent').textContent   = s.absent;
-  document.getElementById('moStatEarly').textContent    = s.early;
-  document.getElementById('moStatLoc').textContent      = s.loc;
-  document.getElementById('moStatDev').textContent      = s.dev;
 }
 
 function renderMonthlyOverviewBody(dateList, emps, sourceFilter) {
@@ -2119,15 +2057,14 @@ function renderMonthlyOverviewBody(dateList, emps, sourceFilter) {
       row += `
           <td class="mo-sticky-source"><div class="mo-sticky-inner"><span class="do-src-tag ${cfg.cls}">${cfg.label}</span></div></td>
           <td>${st.requiredDays}</td><td>${st.actualDays}</td><td>${st.restDays}</td><td>${st.normalDays}</td><td>${va(st.abnormalDays)}</td><td>${st.stdHours}</td><td>${st.actHours}</td>
-          <td>${va(st.abnormalTotal)}</td><td>${va(st.lateCount)}</td><td>${va(st.lateMin)}</td><td>${va(st.earlyLeave)}</td><td>${va(st.earlyMin)}</td><td>${va(st.absentCount)}</td><td>${va(st.absentMin)}</td><td>${va(st.missingCard)}</td><td>${va(st.locAbnormal)}</td><td>${va(st.devAbnormal)}</td>
-          <td>${v(st.makeupCount)}</td><td>${v(st.approvalCount)}</td><td>${v(st.fieldCount)}</td><td>${v(st.outing)}</td><td>${v(st.businessTrip)}</td><td>${v(st.personalLeave)}</td><td>${v(st.annualLeave)}</td><td>${v(st.marriageLeave)}</td><td>${v(st.maternityLeave)}</td>
-          <td>${v(st.otHours)}</td><td>${v(st.otWdHours)}</td><td>${v(st.otWdRest)}</td><td>${v(st.otWdPay)}</td><td>${v(st.otReHours)}</td><td>${v(st.otReRest)}</td><td>${v(st.otRePay)}</td><td>${v(st.otHoHours)}</td><td>${v(st.otHoRest)}</td><td>${v(st.otHoPay)}</td>
+          <td>${va(st.lateCount)}</td><td>${va(st.lateMin)}</td><td>${va(st.earlyLeave)}</td><td>${va(st.earlyMin)}</td><td>${va(st.missingInCard)}</td><td>${va(st.missingOutCard)}</td><td>${va(st.absentDays)}</td>
+          <td>${v(st.otTotalHours)}</td><td>${v(st.otWdOtHours)}</td><td>${v(st.otReOtHours)}</td><td>${v(st.otHoOtHours)}</td>
         </tr>`;
       rows.push(row);
     });
   });
   if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="39"><div class="empty-state">暂无数据</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="21"><div class="empty-state">暂无数据</div></td></tr>`;
   } else {
     tbody.innerHTML = rows.join('');
   }
@@ -2151,7 +2088,6 @@ function applyMonthlyOverviewFilter() {
   });
   renderMonthlyOverviewHead();
   renderMonthlyOverviewBody(dateList, filtered, sourceFilter);
-  updateMonthlyStats(computeMonthlyOverviewStats(dateList, filtered, sourceFilter));
 }
 
 function resetMonthlyOverviewFilter() {
@@ -2184,7 +2120,6 @@ function applyMonthlyDetailFilter() {
   });
   renderPunchHead('monthlyDetailHead', dateList);
   renderPunchBody('monthlyDetailBody', dateList, filtered, sourceFilter);
-  updateMonthlyStats(computeMonthlyOverviewStats(dateList, filtered, sourceFilter));
 }
 
 // ===== Date Presets =====
@@ -2249,32 +2184,28 @@ function setDatePreset4(preset) {
 // ===== Column Visibility =====
 const DAILY_COL_GROUPS = {
   attend:   { start: 5, end: 13 },
-  abnormal: { start: 14, end: 23 },
-  outing:   { start: 24, end: 26 },
-  overtime: { start: 27, end: 34 },
-  leave:    { start: 35, end: 43 },
+  abnormal: { start: 14, end: 20 },
+  outing:   { start: 21, end: 23 },
+  overtime: { start: 24, end: 27 },
 };
 const MONTHLY_COL_GROUPS = {
-  attend:   { start: 4, end: 10 },
-  abnormal: { start: 11, end: 20 },
-  leave:    { start: 21, end: 29 },
-  overtime: { start: 30, end: 39 },
+  attend:   { start: 3, end: 9 },
+  abnormal: { start: 10, end: 16 },
+  overtime: { start: 17, end: 20 },
 };
 const DAILY_COL_NAMES = {
   attend:   ['所属规则','班次','最早','最晚','打卡次数','标准工时','实际工时','假勤申请','考勤结果'],
-  abnormal: ['异常合计','迟到次数','迟到时长','早退次数','早退时长','旷工次数','旷工时长','缺卡次数','地点异常','设备异常'],
+  abnormal: ['迟到次数','迟到时长','早退次数','早退时长','上班缺卡次数','下班缺卡次数','旷工天数'],
   outing:   ['外出次数','外出最早','外出最晚'],
-  overtime: ['加班状态','加班时长','工作日转休','工作日转薪','休息日转休','休息日转薪','节假日转休','节假日转薪'],
-  leave:    ['补卡次数','审批次数','外勤次数','外出','出差','事假','年假','婚假','产假'],
+  overtime: ['加班总时长','工作日加班','休息日加班','节假日加班'],
 };
 const MONTHLY_COL_NAMES = {
   attend:   ['应出勤','实际出勤','休息天数','正常天数','异常天数','标准工时','实际工时'],
-  abnormal: ['异常合计','迟到次数','迟到时长','早退次数','早退时长','旷工次数','旷工时长','缺卡次数','地点异常','设备异常'],
-  leave:    ['补卡次数','审批次数','外勤次数','外出','出差','事假','年假','婚假','产假'],
-  overtime: ['加班时长','工作日时长','工作日转休','工作日转薪','休息日时长','休息日转休','休息日转薪','节假日时长','节假日转休','节假日转薪'],
+  abnormal: ['迟到次数','迟到时长','早退次数','早退时长','上班缺卡次数','下班缺卡次数','旷工天数'],
+  overtime: ['加班总时长','工作日加班','休息日加班','节假日加班'],
 };
-const DAILY_GROUP_ORDER = ['attend','abnormal','outing','overtime','leave'];
-const MONTHLY_GROUP_ORDER = ['attend','abnormal','leave','overtime'];
+const DAILY_GROUP_ORDER = ['attend','abnormal','outing','overtime'];
+const MONTHLY_GROUP_ORDER = ['attend','abnormal','overtime'];
 
 // Hidden columns stored as individual column indices
 let _hiddenCols = { daily: new Set(), monthly: new Set() };
