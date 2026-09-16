@@ -508,9 +508,6 @@
     .pc-tier-row .el-input-number { width: 68px; flex-shrink: 0; }
     .pc-tier-row .ti-money { width: 100px; }
     .pc-tier-row .tilde { width: 14px; text-align: center; color: var(--ad-text-3); flex-shrink: 0; }
-    .pc-tier-row .ti-unl { width: 50px; flex-shrink: 0; display: flex; align-items: center; }
-    .pc-tier-row .ti-unl .el-checkbox { margin: 0; }
-    .pc-tier-row .ti-unl .el-checkbox__label { padding-left: 4px; }
     .pc-tier-row .pc-max-none { width: 68px; text-align: center; font-size: 12px; color: var(--ad-text-3); flex-shrink: 0; }
     .pc-tier-row .pc-tier-del { width: 32px; padding: 0; flex-shrink: 0; }
     /* 在职天数提成（仅驻厂）：一行内三个数字框等宽、与标题对齐 */
@@ -519,7 +516,7 @@
     .pc-db-row .db-txt { color: rgba(0,0,0,.65); white-space: nowrap; }
     .pc-db-off { color: rgba(0,0,0,.25); }
     .pc-tier-head { font-size: 12px; color: var(--ad-text-3); margin-bottom: 6px; white-space: nowrap; }
-    .pc-tier-head .th-grp { width: 218px; flex-shrink: 0; }   /* 68+14+68+50 + 组内 3 个 gap */
+    .pc-tier-head .th-grp { width: 162px; flex-shrink: 0; }   /* 68(起) + 6 + 14(~) + 6 + 68(止/不限) + 组内 2 个 gap */
     .pc-tier-head .th-money { width: 100px; flex-shrink: 0; }
     .pc-tier-head .th-op { width: 32px; flex-shrink: 0; }
     .pc-rule-dlg .el-dialog__body { padding: 16px 20px 4px; }
@@ -655,14 +652,19 @@
       #jobPublishPage .preview-col { position: static; grid-column: 1 / -1; }
       #jobPublishPage .phone-frame { max-width: 380px; margin: 0 auto; }
     }
-    #upgradePage { margin: 62px 12px 12px; height: calc(100vh - 74px); overflow-y: auto; padding-bottom: 12px; }
+    #upgradePage { margin: 62px auto 12px; max-width: 1440px; width: calc(100% - 24px); height: calc(100vh - 74px); display: flex; flex-direction: column; overflow: hidden; }
     #upgradePage .up-tabs .el-tabs__header { margin-bottom: 16px; }
     #upgradePage .up-tabs .el-tabs__item { font-size: 14px; }
-    #upgradePage .up-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; }
+    #upgradePage .up-tabs { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    #upgradePage .up-tabs > .el-tabs__header { flex-shrink: 0; }
+    #upgradePage .up-tabs > .el-tabs__content { flex: 1; min-height: 0; }
+    #upgradePage .el-tab-pane { height: 100%; display: flex; flex-direction: column; }
+    #upgradePage .up-pane-body { flex: 1; min-height: 0; overflow-y: auto; }
+    #upgradePage .up-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; flex-shrink:0; }
     #upgradePage .up-title { font-size:18px; font-weight:700; color:var(--ad-text-1); }
     #upgradePage .up-sub { font-size:12.5px; color:var(--ad-text-3); margin-top:4px; }
-    #upgradePage .up-section { background:#fff; border:1px solid var(--ad-border-secondary); border-radius:8px; padding:16px; margin-bottom:16px; }
-    #upgradePage .up-sec-title { font-size:14px; font-weight:700; color:var(--ad-text-1); margin-bottom:16px; }
+    #upgradePage .up-section { background:#fff; border:1px solid var(--ad-border-secondary); border-radius:8px; padding:16px; flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; margin-bottom:0; }
+    #upgradePage .up-sec-title { font-size:14px; font-weight:700; color:var(--ad-text-1); margin-bottom:16px; flex-shrink:0; }
     #upgradePage .up-sec-tip { font-size:12px; color:var(--ad-text-3); font-weight:400; margin-left:8px; }
     #upgradePage .up-ver-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
     #upgradePage .up-ver-card { position:relative; border:1.5px solid var(--ad-border-secondary); border-radius:8px; padding:16px; cursor:pointer; transition:.2s; }
@@ -676,7 +678,7 @@
     #upgradePage .vc-desc { font-size:12px; color:var(--ad-text-3); margin-bottom:8px; min-height:32px; }
     #upgradePage .vc-feats { list-style:none; padding:0; margin:0; font-size:12px; color:var(--ad-text-2); line-height:1.9; }
     #upgradePage .vc-feats li::before { content:'✓'; color:var(--ad-success); margin-right:6px; }
-    #upgradePage .up-svc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    #upgradePage .up-svc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; flex-shrink:0; }
     #upgradePage .up-svc-card { position:relative; border:1.5px solid var(--ad-border-secondary); border-radius:8px; padding:16px 16px 12px; cursor:pointer; transition:.2s; }
     #upgradePage .up-svc-card:hover { border-color:var(--ad-primary); }
     #upgradePage .up-svc-card.active { border-color:var(--ad-primary); background:var(--ad-primary-bg); }
@@ -684,16 +686,17 @@
     #upgradePage .sc-name { font-size:14px; font-weight:700; color:var(--ad-text-1); }
     #upgradePage .sc-price { color:var(--ad-error); font-weight:600; margin:6px 0; }
     #upgradePage .sc-desc { font-size:12px; color:var(--ad-text-3); }
-    #upgradePage .up-svc-list { margin-top:16px; border:1px solid var(--ad-border-secondary); border-radius:8px; overflow:hidden; }
-    #upgradePage .up-svc-list-head, #upgradePage .up-svc-list-row { display:grid; grid-template-columns:1.6fr 130px 110px 110px 56px; align-items:center; gap:12px; padding:8px 16px; }
-    #upgradePage .up-svc-list-head { background:#FAFAFA; font-size:12.5px; color:var(--ad-text-3); }
+    #upgradePage .up-svc-list { margin-top:16px; border:1px solid var(--ad-border-secondary); border-radius:8px; flex:1; min-height:120px; overflow-y:auto; }
+    #upgradePage .up-svc-list-head, #upgradePage .up-svc-list-row { display:grid; grid-template-columns:1.6fr 100px 170px 110px 56px; align-items:center; gap:12px; padding:8px 16px; }
+    #upgradePage .up-svc-list-head { background:#FAFAFA; font-size:12.5px; color:var(--ad-text-3); position:sticky; top:0; z-index:2; }
     #upgradePage .up-svc-list-row { border-top:1px solid #F2F3F5; font-size:13px; color:var(--ad-text-1); }
     #upgradePage .up-svc-list-row .c-name { font-weight:600; }
     #upgradePage .up-svc-list-row .c-unit { font-style:normal; font-weight:400; color:var(--ad-text-3); font-size:12px; margin-left:8px; }
+    #upgradePage .up-svc-list-row .c-na { font-style:normal; color:var(--ad-text-4); }
     #upgradePage .up-svc-list-row .c-amt, #upgradePage .up-svc-list-head .c-amt { text-align:right; }
     #upgradePage .up-svc-list-row .c-amt { color:var(--ad-error); font-weight:700; }
-    #upgradePage .up-svc-empty { margin-top:16px; text-align:center; color:var(--ad-text-4); font-size:13px; padding:18px; border:1px dashed var(--ad-border-secondary); border-radius:8px; }
-    #upgradePage .up-action { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; padding-top:16px; border-top:1px dashed var(--ad-border-secondary); }
+    #upgradePage .up-svc-empty { margin-top:16px; text-align:center; color:var(--ad-text-4); font-size:13px; padding:18px; border:1px dashed var(--ad-border-secondary); border-radius:8px; flex:1; display:flex; align-items:center; justify-content:center; }
+    #upgradePage .up-action { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-shrink:0; margin-top:0; padding:12px 0 2px; border-top:1px solid var(--ad-border-secondary); }
     #upgradePage .up-action-l { display:flex; align-items:center; gap:12px; }
     #upgradePage .up-action-l .dur-label { font-size:13px; color:var(--ad-text-2); }
     #upgradePage .up-sel-info { font-size:12.5px; color:var(--ad-text-3); }
@@ -704,6 +707,11 @@
 
     /* 支付方式弹框 */
     .up-pay-dlg .up-pay-h { font-size:16px; font-weight:700; color:var(--ad-text-1); }
+    .up-pay-dlg .up-pay-body { display:flex; align-items:stretch; }
+    .up-pay-dlg .up-pay-col { min-width:0; }
+    .up-pay-dlg .up-pay-left { flex:1; padding-right:20px; border-right:1px solid var(--ad-border-secondary); }
+    .up-pay-dlg .up-pay-right { width:320px; flex-shrink:0; padding-left:20px; }
+    .up-pay-dlg .up-pay-sec { font-size:13px; font-weight:700; color:var(--ad-text-1); margin-bottom:10px; }
     .up-pay-dlg .up-pay-sub { font-size:12px; color:var(--ad-text-3); font-weight:400; margin-left:8px; }
     .up-pay-dlg .up-pay-items { background:#FAFAFA; border:1px solid var(--ad-border-secondary); border-radius:6px; padding:4px 16px; margin-bottom:16px; max-height:200px; overflow-y:auto; }
     .up-pay-dlg .up-pay-item { padding:8px 0; border-bottom:1px dashed var(--ad-border-secondary); }
@@ -711,9 +719,8 @@
     .up-pay-dlg .up-pay-item-top { display:flex; justify-content:space-between; font-size:13px; color:var(--ad-text-1); font-weight:600; }
     .up-pay-dlg .up-pay-item-amt { color:var(--ad-error); font-weight:700; }
     .up-pay-dlg .up-pay-item-desc { font-size:12px; color:var(--ad-text-3); margin-top:2px; }
-    .up-pay-dlg .up-pay-total { text-align:right; font-size:13px; color:var(--ad-text-2); margin-bottom:16px; }
+    .up-pay-dlg .up-pay-total { text-align:right; font-size:13px; color:var(--ad-text-2); margin-bottom:0; }
     .up-pay-dlg .up-pay-total .amt { font-size:20px; font-weight:700; color:var(--ad-error); margin-left:4px; }
-    .up-pay-dlg .up-pay-method-title { font-size:13px; font-weight:700; color:var(--ad-text-1); margin-bottom:8px; }
     .up-pay-dlg .up-pay-method { margin-bottom:16px; }
     .up-pay-dlg .up-pay-info { min-height:120px; }
     .up-pay-dlg .up-pay-qr { width:150px; height:150px; margin:0 auto 8px; border:1px solid var(--ad-border-secondary); border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--ad-text-3); font-size:12px; background:repeating-conic-gradient(#EEE 0 25%, #fff 0 50%) 0 0/16px 16px; }
@@ -1352,7 +1359,7 @@
       <el-row :gutter="14">
         <el-col :span="6">
           <el-form-item v-if="pcCur.f1 === 'manager'" label="驻厂管理员"><el-select v-model="pcFilter.manager" placeholder="全部" clearable><el-option v-for="o in pcManagers" :key="o" :label="o" :value="o"></el-option></el-select></el-form-item>
-          <el-form-item v-else-if="pcCur.f1 === 'dept'" label="部门"><el-select v-model="pcFilter.dept" placeholder="全部" clearable><el-option v-for="o in pcDepartments" :key="o" :label="o" :value="o"></el-option></el-select></el-form-item>
+          <el-form-item v-else-if="pcCur.f1 === 'dept'" label="门店"><el-select v-model="pcFilter.dept" placeholder="全部" clearable><el-option v-for="o in pcStores" :key="o" :label="o" :value="o"></el-option></el-select></el-form-item>
           <el-form-item v-else label="规则名称"><el-input v-model="pcFilter.name" placeholder="请输入规则名称" clearable @keyup.enter.native="pcSearch"></el-input></el-form-item>
         </el-col>
         <el-col :span="6">
@@ -1414,11 +1421,14 @@
     <el-form-item v-if="payCommTab === 'resident'"><span slot="label"><span class="pc-req">*</span>驻厂管理员</span>
       <el-select v-model="pcRuleForm.managers" multiple collapse-tags placeholder="请选择（可多选）" style="width:100%"><el-option v-for="o in pcManagers" :key="o" :label="o" :value="o"></el-option></el-select>
     </el-form-item>
-    <el-form-item v-if="payCommTab === 'store'"><span slot="label"><span class="pc-req">*</span>部门</span>
-      <el-select v-model="pcRuleForm.depts" multiple collapse-tags placeholder="请选择（可多选）" style="width:100%"><el-option v-for="o in pcDepartments" :key="o" :label="o" :value="o"></el-option></el-select>
+    <el-form-item v-if="payCommTab === 'store'"><span slot="label"><span class="pc-req">*</span>门店</span>
+      <el-select v-model="pcRuleForm.store" placeholder="请选择" style="width:100%"><el-option v-for="o in pcStores" :key="o" :label="o" :value="o"></el-option></el-select>
+    </el-form-item>
+    <el-form-item v-if="payCommTab === 'store'"><span slot="label"><span class="pc-req">*</span>门店负责人</span>
+      <el-select v-model="pcRuleForm.leaders" multiple collapse-tags placeholder="请选择（可多选）" style="width:100%"><el-option v-for="o in pcStoreLeaders" :key="o" :label="o" :value="o"></el-option></el-select>
     </el-form-item>
     <el-form-item><span slot="label"><span class="pc-req">*</span>入职日期</span>
-      <el-input-number v-model="pcRuleForm.baseDay" :min="1" :max="31" :step="1" :controls="false"></el-input-number><span class="pc-unit">日</span>
+      <el-select v-model="pcRuleForm.baseDay" placeholder="请选择" style="width:140px"><el-option v-for="d in pcBaseDays" :key="d" :label="'每月 ' + d + ' 日'" :value="d"></el-option></el-select>
       <div class="pc-tip">以月度基准日为界：上月基准日（含）前入职，享受当月提成；之后入职，自次月起享受。</div>
     </el-form-item>
     <el-form-item label="方案归属"><span slot="label"><span class="pc-req">*</span>方案归属</span>
@@ -1438,7 +1448,7 @@
       <div class="pc-tip">选「人数且工时」时，同一档需同时满足人数与累计工时区间才取该档提成。</div>
     </el-form-item>
     <div class="pc-tier-box">
-      <div class="pc-tier-note">阶梯需首尾相连：首档从{{ pcRuleForm.tierMode === 'workhour' ? '0h' : (pcRuleForm.tierMode === 'both' ? '1人 / 0h' : '1人') }}起，下一档起始值 = 上一档结束值 + 1，由系统自动计算。</div>
+      <div class="pc-tier-note">阶梯需首尾相连：首档从{{ pcRuleForm.tierMode === 'workhour' ? '1h' : (pcRuleForm.tierMode === 'both' ? '1人 / 1h' : '1人') }}起，末档上限固定为「不限」，下一档起始值 = 上一档结束值 + 1，由系统自动计算。</div>
       <div class="pc-tier-row pc-tier-head">
         <span v-if="pcRuleForm.tierMode !== 'workhour'" class="th-grp">人数范围(人)</span>
         <span v-if="pcRuleForm.tierMode !== 'headcount'" class="th-grp">累计工时(h)</span>
@@ -1450,16 +1460,14 @@
         <template v-if="pcRuleForm.tierMode !== 'workhour'">
           <el-input-number v-model="t.hcMin" :min="1" :controls="false" size="small" disabled></el-input-number>
           <span class="tilde">~</span>
-          <el-input-number v-if="!(i === pcRuleForm.tiers.length - 1 && t.hcUnlimited)" v-model="t.hcMax" :min="1" :controls="false" size="small" @change="pcSyncTierMins"></el-input-number>
+          <el-input-number v-if="i !== pcRuleForm.tiers.length - 1" v-model="t.hcMax" :min="1" :controls="false" size="small" @change="pcSyncTierMins"></el-input-number>
           <span v-else class="pc-max-none">不限</span>
-          <span class="ti-unl"><el-checkbox v-if="i === pcRuleForm.tiers.length - 1" v-model="t.hcUnlimited" @change="pcSyncTierMins">不限</el-checkbox></span>
         </template>
         <template v-if="pcRuleForm.tierMode !== 'headcount'">
-          <el-input-number v-model="t.whMin" :min="0" :controls="false" size="small" disabled></el-input-number>
+          <el-input-number v-model="t.whMin" :min="1" :controls="false" size="small" disabled></el-input-number>
           <span class="tilde">~</span>
-          <el-input-number v-if="!(i === pcRuleForm.tiers.length - 1 && t.whUnlimited)" v-model="t.whMax" :min="0" :controls="false" size="small" @change="pcSyncTierMins"></el-input-number>
+          <el-input-number v-if="i !== pcRuleForm.tiers.length - 1" v-model="t.whMax" :min="1" :controls="false" size="small" @change="pcSyncTierMins"></el-input-number>
           <span v-else class="pc-max-none">不限</span>
-          <span class="ti-unl"><el-checkbox v-if="i === pcRuleForm.tiers.length - 1" v-model="t.whUnlimited" @change="pcSyncTierMins">不限</el-checkbox></span>
         </template>
         <el-input-number v-model="t.amount" :min="0" :step="10" :controls="false" size="small" class="ti-money"></el-input-number>
         <el-input-number v-model="t.salary" :min="0" :step="100" :controls="false" size="small" class="ti-money"></el-input-number>
@@ -1824,16 +1832,18 @@
   <div class="up-section">
     <el-tabs v-model="upgradeTab" type="card" class="up-tabs">
       <el-tab-pane label="版本购买" name="version">
-        <div class="up-sec-title">选择版本<span class="up-sec-tip">按年购买</span></div>
-        <div class="up-ver-grid">
-          <div v-for="v in upgradeVersions" :key="v.id" class="up-ver-card"
-               :class="{ active: upgradeVersionId === v.id, current: v.name === upgradeCurrent }"
-               @click="selectUpgradeVersion(v.id)">
-            <span v-if="v.name === upgradeCurrent" class="up-cur-badge">当前版本</span>
-            <div class="vc-name">{{ v.name }}</div>
-            <div class="vc-price"><span class="amt">¥{{ v.pricePerYear }}</span><span class="unit">/年</span></div>
-            <div class="vc-desc">{{ v.desc }}</div>
-            <ul class="vc-feats"><li v-for="f in v.features" :key="f">{{ f }}</li></ul>
+        <div class="up-pane-body">
+          <div class="up-sec-title">选择版本<span class="up-sec-tip">按年购买</span></div>
+          <div class="up-ver-grid">
+            <div v-for="v in upgradeVersions" :key="v.id" class="up-ver-card"
+                 :class="{ active: upgradeVersionId === v.id, current: v.name === upgradeCurrent }"
+                 @click="selectUpgradeVersion(v.id)">
+              <span v-if="v.name === upgradeCurrent" class="up-cur-badge">当前版本</span>
+              <div class="vc-name">{{ v.name }}</div>
+              <div class="vc-price"><span class="amt">¥{{ v.pricePerYear }}</span><span class="unit">/年</span></div>
+              <div class="vc-desc">{{ v.desc }}</div>
+              <ul class="vc-feats"><li v-for="f in v.features" :key="f">{{ f }}</li></ul>
+            </div>
           </div>
         </div>
         <div class="up-action">
@@ -1851,13 +1861,17 @@
       </el-tab-pane>
 
       <el-tab-pane label="增值服务" name="service">
-        <div class="up-sec-title">选择服务<span class="up-sec-tip">可多选，逐项设置时长与数量</span></div>
+        <div class="up-sec-title">选择服务<span class="up-sec-tip">可多选，逐项设置年限、份数或数量</span></div>
         <div class="up-svc-grid">
           <div v-for="s in upgradeServices" :key="s.id" class="up-svc-card"
                :class="{ active: upgradeServiceItems.some(it => it.id === s.id) }" @click="toggleUpgradeService(s.id)">
             <i class="up-svc-check" :class="upgradeServiceItems.some(it => it.id === s.id) ? 'el-icon-check' : 'el-icon-plus'"></i>
             <div class="sc-name">{{ s.name }}</div>
-            <div class="sc-price">¥{{ s.pricePerYear }}<span class="unit">/年</span></div>
+            <div class="sc-price">
+              <template v-if="s.mode === 'pack'">¥{{ s.packs[0].price }}<span class="unit">起 / {{ s.packs[0].qty }}{{ s.unit }}</span></template>
+              <template v-else-if="s.mode === 'yearQty'">¥{{ s.price }}<span class="unit">/份/年</span></template>
+              <template v-else>¥{{ s.price }}<span class="unit">/{{ s.unit }}</span></template>
+            </div>
             <div class="sc-desc">{{ s.desc }}</div>
           </div>
         </div>
@@ -1866,21 +1880,25 @@
           <div class="up-svc-list-head">
             <span class="c-name">服务名称</span>
             <span class="c-years">时长</span>
-            <span class="c-qty">数量</span>
+            <span class="c-qty">数量/份数</span>
             <span class="c-amt">小计</span>
             <span class="c-op"></span>
           </div>
           <div class="up-svc-list-row" v-for="row in upgradeServiceItems" :key="row.id">
-            <span class="c-name">{{ row.name }}<em class="c-unit">¥{{ row.pricePerYear }}/年</em></span>
+            <span class="c-name">{{ row.name }}<em class="c-unit">{{ row.mode === 'pack' ? '¥' + row.packs[0].price + ' 起' : (row.mode === 'yearQty' ? '¥' + row.price + '/份/年' : '¥' + row.price + '/' + row.unit) }}</em></span>
             <span class="c-years">
-              <el-select v-model="row.years" size="mini" style="width:110px">
+              <el-select v-if="row.mode === 'yearQty'" v-model="row.years" size="mini" style="width:90px">
                 <el-option v-for="d in upgradeDurations" :key="d" :label="d + ' 年'" :value="d"></el-option>
               </el-select>
+              <em v-else class="c-na">—</em>
             </span>
             <span class="c-qty">
-              <el-input-number v-model="row.qty" size="mini" :min="1" :max="99" :controls="false" style="width:90px"></el-input-number>
+              <el-select v-if="row.mode === 'pack'" v-model="row.packIdx" size="mini" style="width:150px">
+                <el-option v-for="(p, pi) in row.packs" :key="pi" :label="p.qty + row.unit + '　¥' + p.price" :value="pi"></el-option>
+              </el-select>
+              <el-input-number v-else v-model="row.qty" size="mini" :min="row.min" :max="row.max" :controls="false" style="width:90px"></el-input-number>
             </span>
-            <span class="c-amt">¥{{ row.pricePerYear * row.years * row.qty }}</span>
+            <span class="c-amt">¥{{ serviceRowAmount(row) }}</span>
             <span class="c-op"><el-button type="text" size="mini" class="job-act-del" @click="removeUpgradeService(row.id)">移除</el-button></span>
           </div>
         </div>
@@ -1899,33 +1917,37 @@
 </div>
 
 <!-- ===== 支付方式弹框 ===== -->
-<el-dialog :visible.sync="upgradePayDlg.visible" width="460px" custom-class="up-pay-dlg" append-to-body :close-on-click-modal="false">
+<el-dialog :visible.sync="upgradePayDlg.visible" width="760px" custom-class="up-pay-dlg" append-to-body :close-on-click-modal="false">
   <template slot="title"><span class="up-pay-h">确认订单<span class="up-pay-sub">{{ upgradePayDlg.mode === 'version' ? '版本购买' : '增值服务购买' }}</span></span></template>
   <div class="up-pay-body">
-    <div class="up-pay-items">
-      <div class="up-pay-item" v-for="(it, i) in upgradePayDlg.items" :key="i">
-        <div class="up-pay-item-top"><span class="up-pay-item-name">{{ it.name }}</span><span class="up-pay-item-amt">¥{{ it.amount }}</span></div>
-        <div class="up-pay-item-desc">{{ it.desc }}</div>
+    <div class="up-pay-col up-pay-left">
+      <div class="up-pay-sec">订单信息</div>
+      <div class="up-pay-items">
+        <div class="up-pay-item" v-for="(it, i) in upgradePayDlg.items" :key="i">
+          <div class="up-pay-item-top"><span class="up-pay-item-name">{{ it.name }}</span><span class="up-pay-item-amt">¥{{ it.amount }}</span></div>
+          <div class="up-pay-item-desc">{{ it.desc }}</div>
+        </div>
       </div>
+      <div class="up-pay-total">合计金额 <span class="amt">¥{{ upgradePayDlg.amount }}</span></div>
     </div>
-    <div class="up-pay-total">合计金额 <span class="amt">¥{{ upgradePayDlg.amount }}</span></div>
+    <div class="up-pay-col up-pay-right">
+      <div class="up-pay-sec">付款</div>
+      <el-radio-group v-model="upgradePayDlg.method" class="up-pay-method">
+        <el-radio label="alipay">支付宝</el-radio>
+        <el-radio label="corporate">对公转账</el-radio>
+      </el-radio-group>
 
-    <div class="up-pay-method-title">支付方式</div>
-    <el-radio-group v-model="upgradePayDlg.method" class="up-pay-method">
-      <el-radio label="alipay">支付宝</el-radio>
-      <el-radio label="corporate">对公转账</el-radio>
-    </el-radio-group>
-
-    <div class="up-pay-info" v-if="upgradePayDlg.method === 'alipay'">
-      <div class="up-pay-qr"><i class="el-icon-money"></i><span>支付宝收款码（示例）</span></div>
-      <div class="up-pay-tip">请使用支付宝扫描上方二维码完成支付</div>
-    </div>
-    <div class="up-pay-info up-pay-bank" v-else>
-      <div class="up-pay-line"><span>收款户名</span><span>{{ upgradeBank.payee }}</span></div>
-      <div class="up-pay-line"><span>开户银行</span><span>{{ upgradeBank.bank }}</span></div>
-      <div class="up-pay-line"><span>银行账号</span><span>{{ upgradeBank.account }}</span></div>
-      <div class="up-pay-line"><span>转账金额</span><span class="amt">¥{{ upgradePayDlg.amount }}</span></div>
-      <div class="up-pay-tip">{{ upgradeBank.note }}</div>
+      <div class="up-pay-info" v-if="upgradePayDlg.method === 'alipay'">
+        <div class="up-pay-qr"><i class="el-icon-money"></i><span>支付宝收款码（示例）</span></div>
+        <div class="up-pay-tip">请使用支付宝扫描上方二维码完成支付</div>
+      </div>
+      <div class="up-pay-info up-pay-bank" v-else>
+        <div class="up-pay-line"><span>收款户名</span><span>{{ upgradeBank.payee }}</span></div>
+        <div class="up-pay-line"><span>开户银行</span><span>{{ upgradeBank.bank }}</span></div>
+        <div class="up-pay-line"><span>银行账号</span><span>{{ upgradeBank.account }}</span></div>
+        <div class="up-pay-line"><span>转账金额</span><span class="amt">¥{{ upgradePayDlg.amount }}</span></div>
+        <div class="up-pay-tip">{{ upgradeBank.note }}</div>
+      </div>
     </div>
   </div>
   <span slot="footer">
@@ -2001,14 +2023,14 @@ const UPGRADE_VERSIONS = [
   { id:5, name:'独立部署', pricePerYear:5000, desc:'数据私有化独立部署',             features:['独立服务器部署','数据私有化','专属运维支持'] },
 ];
 const UPGRADE_SERVICES = [
-  { id:1, name:'合同套餐',  pricePerYear:199, desc:'电子合同签署套餐' },
-  { id:2, name:'付款渠道',  pricePerYear:99,  desc:'开通在线付款渠道' },
-  { id:3, name:'简历公海',  pricePerYear:199, desc:'简历共享池' },
-  { id:4, name:'用人单位',  pricePerYear:299, desc:'多用工单位管理' },
-  { id:5, name:'集团管理',  pricePerYear:499, desc:'集团多分公司管理' },
-  { id:6, name:'身份证识别', pricePerYear:99,  desc:'身份证 OCR 识别' },
-  { id:7, name:'宿舍管理',  pricePerYear:149, desc:'宿舍床位管理' },
-  { id:8, name:'简历识别',  pricePerYear:129, desc:'简历智能解析' },
+  { id:1, name:'合同套餐',  mode:'yearQty', price:2,    unit:'份', min:1, max:999, desc:'电子合同签署套餐，按年与份数购买' },
+  { id:2, name:'付款渠道',  mode:'qty',     price:1999, unit:'个', min:1, max:20,  desc:'开通在线付款渠道' },
+  { id:3, name:'简历公海',  mode:'pack',    unit:'份',  packs:[{qty:100,price:199},{qty:500,price:799},{qty:1000,price:1499}], desc:'简历共享池，按固定份数包购买' },
+  { id:4, name:'用人单位',  mode:'qty',     price:999,  unit:'个', min:1, max:50,  desc:'多用工单位管理' },
+  { id:5, name:'集团管理',  mode:'qty',     price:4999, unit:'套', min:1, max:10,  desc:'集团多分公司管理' },
+  { id:6, name:'身份证识别', mode:'pack',    unit:'次',  packs:[{qty:500,price:49},{qty:1000,price:89},{qty:5000,price:399}], desc:'身份证 OCR 识别，按固定次数包购买' },
+  { id:7, name:'宿舍管理',  mode:'qty',     price:599,  unit:'间', min:1, max:100, desc:'宿舍床位管理' },
+  { id:8, name:'简历识别',  mode:'pack',    unit:'份',  packs:[{qty:200,price:99},{qty:500,price:199},{qty:1000,price:349}], desc:'简历智能解析，按固定份数包购买' },
 ];
 const UPGRADE_BANK = { payee:'深圳市智灵工科技有限公司', bank:'招商银行深圳分行营业部', account:'7559 **** **** 8888', note:'请在转账备注中填写订单号' };
 const JOB_RAW = [
@@ -2194,7 +2216,9 @@ const PC_ROWS = [
   { id:72015, name:'奥力组装夜班组', unit:'深圳市奥力精密智造有限公司', archCount:3, commission:PC_NATURE, night:'25元/小时', accom:'8.00元/天', ins:'78元/月', service:'无', meal:'0元/月', hygiene:'无', loan:'支持', penalty:'无', payNote:'次月底发放上个月工资', creator:'朱轩均', created:'2026-05-16', linkCols:['archCount','commission'] },
 ];
 // 驻厂 / 门店提成：专属列与规则数据（共用阶梯模型）
-const PC_DEPARTMENTS = ['生产部', '品质部', '仓储部', '装配部', '行政部', '外发加工部', '注塑部', '冲压部', '电装部', '包装部', '物料部', '设备部', '喷涂部', 'SMT部'];
+// 门店提成：门店与门店负责人（两份独立 mock，不做关联）
+const PC_STORES = ['深圳南山店', '深圳福田店', '深圳宝安店', '深圳龙华店', '广州天河店', '广州番禺店', '东莞万达店', '佛山禅城店'];
+const PC_STORE_LEADERS = ['孙明辉', '钱佳怡', '孔维成', '曹雅雯', '严志刚', '周思远', '林嘉豪', '黄丽珍'];
 const PC_ID_OFFSET = { plan: 100 };
 // 驻厂提成：专属列与规则数据
 const PC_RESIDENT_COLS = [
@@ -2219,54 +2243,55 @@ const PC_RESIDENT_ROWS = [
   { id:72224, unit:'深圳市灿晶电子科技有限公司', managers:['李伟强','陈志明'], scope:'month', month:'2026-08', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:true, days:10, amount:300, months:1 }, creator:'朱轩均', created:'2026-08-24',
     tiers:[ pcT(1, 50, false, null, null, false, 300, 3000), pcT(51, 120, false, null, null, false, 320, 3200), pcT(121, null, true, null, null, false, 350, 3500) ] },
   { id:72223, unit:'新象电器', managers:['陈志明'], scope:'long', month:'', baseDay:10, tierMode:'workhour', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'刘经理', created:'2026-08-22',
-    tiers:[ pcT(null, null, false, 0, 160, false, 240, 2800), pcT(null, null, false, 161, null, true, 320, 3200) ] },
+    tiers:[ pcT(null, null, false, 1, 160, false, 240, 2800), pcT(null, null, false, 161, null, true, 320, 3200) ] },
   { id:72222, unit:'谦早电子科技（深圳）有限公司', managers:['周晓兰'], scope:'month', month:'2026-09', baseDay:20, tierMode:'both', dayBonus:{ enabled:true, days:30, amount:30, months:3 }, creator:'张明远', created:'2026-08-05',
-    tiers:[ pcT(1, 60, false, 0, 180, false, 300, 3100), pcT(61, null, true, 181, null, true, 400, 3400) ] },
+    tiers:[ pcT(1, 60, false, 1, 180, false, 300, 3100), pcT(61, null, true, 181, null, true, 400, 3400) ] },
   { id:72221, unit:'深圳市科敏传感器有限公司', managers:['黄海燕'], scope:'long', month:'', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'朱轩均', created:'2026-07-29',
     tiers:[ pcT(1, 30, false, null, null, false, 280, 2900), pcT(31, 80, false, null, null, false, 320, 3100), pcT(81, null, true, null, null, false, 380, 3400) ] },
   { id:72220, unit:'深圳市嘉得盛智能科技有限公司', managers:['李伟强'], scope:'month', month:'2026-08', baseDay:5, tierMode:'workhour', dayBonus:{ enabled:true, days:30, amount:50, months:6 }, creator:'刘经理', created:'2026-07-21',
-    tiers:[ pcT(null, null, false, 0, 199, false, 240, 2800), pcT(null, null, false, 200, null, true, 360, 3300) ] },
+    tiers:[ pcT(null, null, false, 1, 199, false, 240, 2800), pcT(null, null, false, 200, null, true, 360, 3300) ] },
   { id:72219, unit:'大族激光科技产业集团股份有限公司', managers:['吴建国','郑晓峰'], scope:'month', month:'2026-07', baseDay:25, tierMode:'both', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'张明远', created:'2026-07-08',
-    tiers:[ pcT(1, 40, false, 0, 160, false, 400, 3600), pcT(41, 100, false, 161, 240, false, 460, 3800), pcT(101, null, true, 241, null, true, 520, 4000) ] },
+    tiers:[ pcT(1, 40, false, 1, 160, false, 400, 3600), pcT(41, 100, false, 161, 240, false, 460, 3800), pcT(101, null, true, 241, null, true, 520, 4000) ] },
   { id:72218, unit:'深圳市奥力精密智造有限公司', managers:['周晓兰'], scope:'long', month:'', baseDay:12, tierMode:'headcount', dayBonus:{ enabled:true, days:10, amount:200, months:2 }, creator:'朱轩均', created:'2026-06-26',
     tiers:[ pcT(1, 60, false, null, null, false, 300, 3000), pcT(61, null, true, null, null, false, 340, 3300) ] },
   { id:72217, unit:'深圳市科敏传感器有限公司', managers:['黄海燕'], scope:'month', month:'2026-09', baseDay:18, tierMode:'workhour', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'刘经理', created:'2026-06-12',
-    tiers:[ pcT(null, null, false, 0, 120, false, 260, 2700), pcT(null, null, false, 121, null, true, 310, 3000) ] },
+    tiers:[ pcT(null, null, false, 1, 120, false, 260, 2700), pcT(null, null, false, 121, null, true, 310, 3000) ] },
   { id:72216, unit:'深圳市奥力精密智造有限公司', managers:['李伟强','吴建国'], scope:'month', month:'2026-08', baseDay:8, tierMode:'headcount', dayBonus:{ enabled:true, days:60, amount:80, months:3 }, creator:'张明远', created:'2026-05-30',
     tiers:[ pcT(1, 100, false, null, null, false, 280, 3000) ] },
   { id:72215, unit:'深圳市灿晶电子科技有限公司', managers:['陈志明'], scope:'long', month:'', baseDay:15, tierMode:'both', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'朱轩均', created:'2026-05-16',
-    tiers:[ pcT(1, 50, false, 0, 176, false, 320, 3100), pcT(51, null, true, 177, null, true, 380, 3500) ] },
+    tiers:[ pcT(1, 50, false, 1, 176, false, 320, 3100), pcT(51, null, true, 177, null, true, 380, 3500) ] },
 ];
 const PC_STORE_COLS = [
-  { k:'id', label:'ID', w:78 },
-  { k:'depts', label:'部门', min:170, render:'join' },
-  { k:'period', label:'归属月份', w:96, align:'center', render:'period' },
-  { k:'baseDay', label:'入职日期', w:100, align:'center', render:'day' },
-  { k:'tierMode', label:'阶梯条件', w:100, align:'center', render:'mode' },
-  { k:'tiers', label:'阶梯明细', min:320, render:'detail' },
-  { k:'creator', label:'创建人', w:88 },
-  { k:'created', label:'创建时间', w:100, align:'center' },
+  { k:'id', label:'ID', w:64 },
+  { k:'store', label:'门店', min:120 },
+  { k:'leaders', label:'负责人', min:110, render:'join' },
+  { k:'period', label:'归属月份', w:88, align:'center', render:'period' },
+  { k:'baseDay', label:'入职日期', w:88, align:'center', render:'day' },
+  { k:'tierMode', label:'阶梯条件', w:90, align:'center', render:'mode' },
+  { k:'tiers', label:'阶梯明细', min:260, render:'detail' },
+  { k:'creator', label:'创建人', w:76 },
+  { k:'created', label:'创建时间', w:92, align:'center' },
 ];
 const PC_STORE_ROWS = [
-  { id:72324, depts:['生产部','品质部'], scope:'month', month:'2026-08', baseDay:15, tierMode:'headcount', creator:'朱轩均', created:'2026-08-24',
+  { id:72324, store:'深圳南山店', leaders:['孙明辉','钱佳怡'], scope:'month', month:'2026-08', baseDay:15, tierMode:'headcount', creator:'朱轩均', created:'2026-08-24',
     tiers:[ pcT(1, 30, false, null, null, false, 260, 3000), pcT(31, 80, false, null, null, false, 300, 3200), pcT(81, null, true, null, null, false, 340, 3500) ] },
-  { id:72323, depts:['仓储部'], scope:'long', month:'', baseDay:10, tierMode:'workhour', creator:'刘经理', created:'2026-08-22',
-    tiers:[ pcT(null, null, false, 0, 150, false, 220, 2800), pcT(null, null, false, 151, null, true, 280, 3100) ] },
-  { id:72322, depts:['装配部'], scope:'month', month:'2026-09', baseDay:20, tierMode:'both', creator:'张明远', created:'2026-08-05',
-    tiers:[ pcT(1, 40, false, 0, 170, false, 320, 3200), pcT(41, null, true, 171, null, true, 400, 3600) ] },
-  { id:72321, depts:['生产部'], scope:'long', month:'', baseDay:12, tierMode:'headcount', creator:'朱轩均', created:'2026-07-29',
+  { id:72323, store:'深圳宝安店', leaders:['孔维成'], scope:'long', month:'', baseDay:10, tierMode:'workhour', creator:'刘经理', created:'2026-08-22',
+    tiers:[ pcT(null, null, false, 1, 150, false, 220, 2800), pcT(null, null, false, 151, null, true, 280, 3100) ] },
+  { id:72322, store:'深圳龙华店', leaders:['曹雅雯','严志刚'], scope:'month', month:'2026-09', baseDay:20, tierMode:'both', creator:'张明远', created:'2026-08-05',
+    tiers:[ pcT(1, 40, false, 1, 170, false, 320, 3200), pcT(41, null, true, 171, null, true, 400, 3600) ] },
+  { id:72321, store:'广州天河店', leaders:['周思远'], scope:'long', month:'', baseDay:12, tierMode:'headcount', creator:'朱轩均', created:'2026-07-29',
     tiers:[ pcT(1, 50, false, null, null, false, 280, 3000), pcT(51, 150, false, null, null, false, 330, 3300), pcT(151, null, true, null, null, false, 380, 3600) ] },
-  { id:72320, depts:['外发加工部','注塑部'], scope:'month', month:'2026-08', baseDay:5, tierMode:'workhour', creator:'刘经理', created:'2026-07-21',
-    tiers:[ pcT(null, null, false, 0, 180, false, 250, 2900), pcT(null, null, false, 181, null, true, 350, 3300) ] },
-  { id:72319, depts:['冲压部'], scope:'month', month:'2026-07', baseDay:25, tierMode:'both', creator:'张明远', created:'2026-07-08',
-    tiers:[ pcT(1, 20, false, 0, 160, false, 360, 3400), pcT(21, 60, false, 161, 240, false, 420, 3700), pcT(61, null, true, 241, null, true, 480, 4000) ] },
-  { id:72318, depts:['品质部'], scope:'long', month:'', baseDay:18, tierMode:'headcount', creator:'朱轩均', created:'2026-06-26',
+  { id:72320, store:'东莞万达店', leaders:['林嘉豪'], scope:'month', month:'2026-08', baseDay:5, tierMode:'workhour', creator:'刘经理', created:'2026-07-21',
+    tiers:[ pcT(null, null, false, 1, 180, false, 250, 2900), pcT(null, null, false, 181, null, true, 350, 3300) ] },
+  { id:72319, store:'深圳福田店', leaders:['黄丽珍','孙明辉'], scope:'month', month:'2026-07', baseDay:25, tierMode:'both', creator:'张明远', created:'2026-07-08',
+    tiers:[ pcT(1, 20, false, 1, 160, false, 360, 3400), pcT(21, 60, false, 161, 240, false, 420, 3700), pcT(61, null, true, 241, null, true, 480, 4000) ] },
+  { id:72318, store:'深圳南山店', leaders:['钱佳怡'], scope:'long', month:'', baseDay:18, tierMode:'headcount', creator:'朱轩均', created:'2026-06-26',
     tiers:[ pcT(1, 100, false, null, null, false, 240, 3000) ] },
-  { id:72317, depts:['包装部'], scope:'month', month:'2026-09', baseDay:8, tierMode:'workhour', creator:'刘经理', created:'2026-06-12',
-    tiers:[ pcT(null, null, false, 0, 140, false, 230, 2700), pcT(null, null, false, 141, null, true, 300, 3100) ] },
-  { id:72316, depts:['物料部'], scope:'month', month:'2026-08', baseDay:22, tierMode:'both', creator:'张明远', created:'2026-05-30',
-    tiers:[ pcT(1, 60, false, 0, 176, false, 310, 3100), pcT(61, null, true, 177, null, true, 380, 3400) ] },
-  { id:72315, depts:['装配部'], scope:'long', month:'', baseDay:15, tierMode:'headcount', creator:'朱轩均', created:'2026-05-16',
+  { id:72317, store:'深圳宝安店', leaders:['孔维成'], scope:'month', month:'2026-09', baseDay:8, tierMode:'workhour', creator:'刘经理', created:'2026-06-12',
+    tiers:[ pcT(null, null, false, 1, 140, false, 230, 2700), pcT(null, null, false, 141, null, true, 300, 3100) ] },
+  { id:72316, store:'广州番禺店', leaders:['曹雅雯'], scope:'month', month:'2026-08', baseDay:22, tierMode:'both', creator:'张明远', created:'2026-05-30',
+    tiers:[ pcT(1, 60, false, 1, 176, false, 310, 3100), pcT(61, null, true, 177, null, true, 380, 3400) ] },
+  { id:72315, store:'深圳龙华店', leaders:['严志刚'], scope:'long', month:'', baseDay:15, tierMode:'headcount', creator:'朱轩均', created:'2026-05-16',
     tiers:[ pcT(1, 80, false, null, null, false, 290, 3000), pcT(81, null, true, null, null, false, 350, 3400) ] },
 ];
 function pcCopyRow(r) {
@@ -2274,7 +2299,7 @@ function pcCopyRow(r) {
   if (r.tiers) cp.tiers = r.tiers.map(t => Object.assign({}, t));
   if (Array.isArray(r.linkCols)) cp.linkCols = r.linkCols.slice();
   if (Array.isArray(r.managers)) cp.managers = r.managers.slice();
-  if (Array.isArray(r.depts)) cp.depts = r.depts.slice();
+  if (Array.isArray(r.leaders)) cp.leaders = r.leaders.slice();
   if (r.dayBonus) cp.dayBonus = Object.assign({}, r.dayBonus);
   return cp;
 }
@@ -3573,12 +3598,26 @@ function closeUpgrade() {
   switchPage(p || 'ph', name);
 }
 function selectUpgradeVersion(id) { VM.upgradeVersionId = id; }
+function serviceRowAmount(row) {
+  if (row.mode === 'pack') return row.packs[row.packIdx].price;
+  if (row.mode === 'yearQty') return row.price * row.years * row.qty;
+  return row.price * row.qty;
+}
+function serviceRowDesc(row) {
+  if (row.mode === 'pack') { const p = row.packs[row.packIdx]; return p.qty + row.unit + '包 × ¥' + p.price; }
+  if (row.mode === 'yearQty') return '¥' + row.price + '/份/年 × ' + row.years + '年 × ' + row.qty + '份';
+  return '¥' + row.price + '/' + row.unit + ' × ' + row.qty + row.unit;
+}
 function toggleUpgradeService(id) {
   const arr = VM.upgradeServiceItems;
   const i = arr.findIndex(it => it.id === id);
   if (i > -1) { arr.splice(i, 1); return; }
   const s = VM.upgradeServices.find(x => x.id === id);
-  if (s) arr.push({ id: s.id, name: s.name, pricePerYear: s.pricePerYear, years: 1, qty: 1 });
+  if (!s) return;
+  arr.push({
+    id: s.id, name: s.name, mode: s.mode, price: s.price, unit: s.unit, packs: s.packs || null,
+    min: s.min || 1, max: s.max || 99, years: 1, qty: s.mode === 'yearQty' ? 100 : 1, packIdx: 0,
+  });
 }
 function removeUpgradeService(id) { VM.upgradeServiceItems = VM.upgradeServiceItems.filter(it => it.id !== id); }
 function openUpgradePay(mode) {
@@ -3590,10 +3629,7 @@ function openUpgradePay(mode) {
       desc: '¥' + v.pricePerYear + '/年 × ' + VM.upgradeVersionYears + '年' }];
   } else {
     if (!VM.upgradeServiceItems.length) { VM.$message.warning('请先选择要购买的增值服务'); return; }
-    dlg.items = VM.upgradeServiceItems.map(it => ({
-      name: it.name, amount: it.pricePerYear * it.years * it.qty,
-      desc: '¥' + it.pricePerYear + '/年 × ' + it.years + '年 × ' + it.qty + '份'
-    }));
+    dlg.items = VM.upgradeServiceItems.map(it => ({ name: it.name, amount: serviceRowAmount(it), desc: serviceRowDesc(it) }));
   }
   dlg.mode = mode;
   dlg.amount = dlg.items.reduce((a, it) => a + it.amount, 0);
@@ -3783,35 +3819,42 @@ function pcDayBonusText(db) {
   if (!db || !db.enabled) return '—';
   return '满岗 ' + db.days + ' 天 · ' + db.amount + ' 元/月 × ' + db.months + ' 个月';
 }
-// 起始值由系统推导：首档固定下限，其余档 = 上一档结束值 + 1；同时抬升因切换模式而倒挂的结束值
+// 起始值由系统推导：首档固定下限，其余档 = 上一档结束值 + 1；末档上限固定为「不限」，非末档必须有上限
 function pcSyncTierMins() {
   const f = VM.pcRuleForm; if (!f) return;
   const t = f.tiers || [], mode = f.tierMode;
   const useHc = mode !== 'workhour', useWh = mode !== 'headcount';
   const end = (p, kMax, kMin) => (p[kMax] == null ? (p[kMin] || 0) : p[kMax]);
+  const last = t.length - 1;
   for (let i = 0; i < t.length; i++) {
+    const isLast = i === last;
     if (useHc) {
       t[i].hcMin = i === 0 ? 1 : end(t[i - 1], 'hcMax', 'hcMin') + 1;
-      if (!t[i].hcUnlimited && (t[i].hcMax == null || t[i].hcMax < t[i].hcMin)) t[i].hcMax = t[i].hcMin + 50;
-    }
+      if (isLast) { t[i].hcUnlimited = true; t[i].hcMax = null; }
+      else { t[i].hcUnlimited = false; if (t[i].hcMax == null || t[i].hcMax < t[i].hcMin) t[i].hcMax = t[i].hcMin + 50; }
+    } else { t[i].hcUnlimited = false; }
     if (useWh) {
-      t[i].whMin = i === 0 ? 0 : end(t[i - 1], 'whMax', 'whMin') + 1;
-      if (!t[i].whUnlimited && (t[i].whMax == null || t[i].whMax < t[i].whMin)) t[i].whMax = t[i].whMin + 160;
-    }
+      t[i].whMin = i === 0 ? 1 : end(t[i - 1], 'whMax', 'whMin') + 1;
+      if (isLast) { t[i].whUnlimited = true; t[i].whMax = null; }
+      else { t[i].whUnlimited = false; if (t[i].whMax == null || t[i].whMax < t[i].whMin) t[i].whMax = t[i].whMin + 160; }
+    } else { t[i].whUnlimited = false; }
   }
 }
 function pcBlankRule() {
-  return { id: null, unit: '', managers: [], depts: [], baseDay: 15, scope: 'month', month: todayStr().slice(0, 7),
+  return { id: null, unit: '', managers: [], store: '', leaders: [], baseDay: 15, scope: 'month', month: todayStr().slice(0, 7),
     tierMode: 'headcount',
     dayBonus: { enabled: true, days: 30, amount: 0, months: 1 },
-    tiers: [{ hcMin: 1, hcMax: 50, hcUnlimited: false, whMin: 0, whMax: 160, whUnlimited: false, amount: 0, salary: 3000 }] };
+    tiers: [
+      { hcMin: 1, hcMax: 50, hcUnlimited: false, whMin: 1, whMax: 160, whUnlimited: false, amount: 0, salary: 3000 },
+      { hcMin: 51, hcMax: null, hcUnlimited: true, whMin: 161, whMax: null, whUnlimited: true, amount: 0, salary: 3000 },
+    ] };
 }
 // 行标识：驻厂与门店没有规则名称，退到主体字段
 function pcRowLabel(r) {
   if (!r) return '';
   if (r.name) return r.name;
   if (r.unit) return r.unit;
-  return (r.depts || []).join('、');
+  return r.store || '';
 }
 function openPcRule(row) {
   // 以空白规则为底、行数据覆盖，保证旧行缺失的字段有默认值且数组为副本
@@ -3819,16 +3862,12 @@ function openPcRule(row) {
   pcSyncTierMins();
   VM.pcRuleDlg.visible = true;
 }
-// 新档只填结束值与金额，起始值交给 pcSyncTierMins 统一推导，保证与上一档结束值 +1 衔接
+// 新档只交金额与工资，区间全部交给 pcSyncTierMins 推导：新档为末档置「不限」，原末档自动补出上限
 function addPcTier() {
   const t = VM.pcRuleForm.tiers;
   if (t.length >= 3) { VM.$message.warning('最多设置 3 个阶梯'); return; }
   const prev = t.length ? t[t.length - 1] : null;
-  if (prev) {
-    if (prev.hcUnlimited) { prev.hcUnlimited = false; prev.hcMax = (prev.hcMin || 1) + 50; }
-    if (prev.whUnlimited) { prev.whUnlimited = false; prev.whMax = (prev.whMin || 0) + 160; }
-  }
-  t.push({ hcMin: 1, hcMax: 50, hcUnlimited: false, whMin: 0, whMax: 160, whUnlimited: false, amount: prev ? prev.amount : 0, salary: prev ? prev.salary : 3000 });
+  t.push({ hcMin: 1, hcMax: null, hcUnlimited: true, whMin: 1, whMax: null, whUnlimited: true, amount: prev ? prev.amount : 0, salary: prev ? prev.salary : 3000 });
   pcSyncTierMins();
 }
 function removePcTier(i) {
@@ -3839,7 +3878,7 @@ function removePcTier(i) {
 }
 function savePcRule() {
   const f = VM.pcRuleForm, mode = f.tierMode, miss = [], isStore = VM.payCommTab === 'store';
-  if (isStore) { if (!f.depts || !f.depts.length) miss.push('部门'); }
+  if (isStore) { if (!f.store) miss.push('门店'); if (!f.leaders || !f.leaders.length) miss.push('门店负责人'); }
   else { if (!f.unit) miss.push('用工单位'); if (!f.managers || !f.managers.length) miss.push('驻厂管理员'); }
   if (!(f.baseDay >= 1 && f.baseDay <= 31)) miss.push('入职日期');
   if (f.scope === 'month' && !f.month) miss.push('归属月份');
@@ -3874,31 +3913,25 @@ function savePcRule() {
       if (!t.hcUnlimited && t.hcMax < t.hcMin) { VM.$message.error(tag + '人数范围起止值倒置'); return; }
     }
     if (useWh) {
-      if (!(t.whMin >= 0)) { VM.$message.error(tag + '累计工时起始值不能小于 0'); return; }
+      if (!(t.whMin >= 1)) { VM.$message.error(tag + '累计工时起始值需大于 0'); return; }
       if (t.whUnlimited && i !== lastIdx) { VM.$message.error('累计工时的「不限」只能放在最后一档'); return; }
       if (!t.whUnlimited && t.whMax < t.whMin) { VM.$message.error(tag + '累计工时范围起止值倒置'); return; }
     }
   }
   if (useHc && tiers[0].hcMin !== 1) { VM.$message.error('人数首档需从 1 人起'); return; }
-  if (useWh && tiers[0].whMin !== 0) { VM.$message.error('累计工时首档需从 0h 起'); return; }
+  if (useWh && tiers[0].whMin !== 1) { VM.$message.error('累计工时首档需从 1h 起'); return; }
   for (let i = 1; i < tiers.length; i++) {
     if (useHc && tiers[i].hcMin !== tiers[i - 1].hcMax + 1) { VM.$message.error('第 ' + (i + 1) + ' 档人数起始值应为 ' + (tiers[i - 1].hcMax + 1)); return; }
     if (useWh && tiers[i].whMin !== tiers[i - 1].whMax + 1) { VM.$message.error('第 ' + (i + 1) + ' 档累计工时起始值应为 ' + (tiers[i - 1].whMax + 1)); return; }
   }
-  const subject = isStore ? { depts: f.depts.slice() } : { unit: f.unit, managers: f.managers.slice() };
-  // 单条内去重
-  const picked = Array.from(new Set((isStore ? f.depts : f.managers) || []));
-  if (isStore) subject.depts = picked; else subject.managers = picked;
-  // 归属唯一性：驻厂按 (用工单位 + 月份)，门店按 (部门 + 月份)；长期算单独一档
+  const subject = isStore ? { store: f.store } : { unit: f.unit };
+  // 多选字段单条内去重
+  if (isStore) subject.leaders = Array.from(new Set(f.leaders || [])); else subject.managers = Array.from(new Set(f.managers || []));
+  // 归属唯一性：驻厂按 (用工单位 + 月份)，门店按 (门店 + 月份)；长期算单独一档
   const key = f.scope === 'long' ? '长期' : f.month;
   if (isStore) {
-    const clash = (VM.pcData.store || []).find(r => {
-      if (r.id === f.id) return false;
-      if ((r.scope === 'long' ? '长期' : r.month) !== key) return false;
-      return (r.depts || []).some(d => picked.indexOf(d) > -1);
-    });
-    const dupDept = clash ? (clash.depts || []).filter(d => picked.indexOf(d) > -1)[0] : '';
-    if (clash) { VM.$message.error('部门「' + dupDept + '」已存在' + key + '的提成规则（' + clash.id + '），同一月份不能重复'); return; }
+    const clash = (VM.pcData.store || []).find(r => r.id !== f.id && r.store === f.store && (r.scope === 'long' ? '长期' : r.month) === key);
+    if (clash) { VM.$message.error('门店「' + f.store + '」已存在' + key + '的提成规则（' + clash.id + '），同一月份不能重复'); return; }
   } else {
     const clash = (VM.pcData.resident || []).find(r => r.id !== f.id && r.unit === f.unit && (r.scope === 'long' ? '长期' : r.month) === key);
     if (clash) { VM.$message.error('用工单位「' + f.unit + '」已存在' + key + '的提成规则（' + clash.id + '），同一月份不能重复'); return; }
@@ -3960,6 +3993,7 @@ const FN_BRIDGE = {
   pcSearch, pcReset, pcTabChange, pcAdd, pcRecycle, pcCellClick, pcCopy, pcDel,
   openPcRule, addPcTier, removePcTier, savePcRule, pcSyncTierMins, pcTierLineText, pcDayBonusText, pcRowLabel,
   openUpgrade, closeUpgrade, selectUpgradeVersion, toggleUpgradeService, removeUpgradeService, openUpgradePay, closeUpgradePay, confirmUpgradePay,
+  serviceRowAmount,
 };
 Object.keys(FN_BRIDGE).forEach(k => { Vue.prototype[k] = FN_BRIDGE[k]; });
 Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 };
@@ -4218,12 +4252,13 @@ const VM = new Vue({
       { key: 'method', name: '计薪方式', unitLabel: '用工单位', f1: 'name', f2: 'unit' },
       { key: 'plan', name: '提成方案', unitLabel: '用工单位', f1: 'name', f2: 'unit' },
       { key: 'resident', name: '驻厂提成', unitLabel: '用工单位', f1: 'manager', f2: 'unit' },
-      { key: 'store', name: '门店提成', unitLabel: '部门', f1: 'dept', f2: 'month' },
+      { key: 'store', name: '门店提成', unitLabel: '门店', f1: 'dept', f2: 'month' },
     ],
     pcFilter: { name: '', manager: '', dept: '', unit: '', month: '', creator: '', range: [] },
     pcQuery: { name: '', manager: '', dept: '', unit: '', month: '', creator: '', range: [] },
     pcPage: 1, pcPageSize: 10,
-    pcCols: PC_COLS, pcCreators: ['朱轩均', '刘经理', '张明远'], pcManagers: PC_MANAGERS, pcDepartments: PC_DEPARTMENTS,
+    pcCols: PC_COLS, pcCreators: ['朱轩均', '刘经理', '张明远'], pcManagers: PC_MANAGERS, pcStores: PC_STORES, pcStoreLeaders: PC_STORE_LEADERS,
+    pcBaseDays: Array.from({ length: 31 }, (_, i) => i + 1),
     pcRuleDlg: { visible: false }, pcRuleForm: pcBlankRule(),
     pcData: { method: pcBuildRows('method'), plan: pcBuildRows('plan'), resident: pcBuildRows('resident'), store: pcBuildRows('store') },
     // 岗位
@@ -4255,7 +4290,7 @@ const VM = new Vue({
     },
     upgradeCurVersion() { return this.upgradeVersions.find(v => v.id === this.upgradeVersionId) || this.upgradeVersions[0]; },
     upgradeVersionAmount() { const v = this.upgradeCurVersion; return (v ? v.pricePerYear : 0) * this.upgradeVersionYears; },
-    upgradeServiceAmount() { return this.upgradeServiceItems.reduce((a, it) => a + it.pricePerYear * it.years * it.qty, 0); },
+    upgradeServiceAmount() { return this.upgradeServiceItems.reduce((a, it) => a + serviceRowAmount(it), 0); },
     curTabCfg() { return TAB_CFG[this.curTab]; },
     curTabCols() { return TAB_CFG[this.curTab].cols; },
     visibleEmpCols() { return this.curTabCols.filter(k => !this.hiddenCols.includes(k)); },
@@ -4277,22 +4312,20 @@ const VM = new Vue({
     pcResidentUnits() { return Array.from(new Set(PC_ROWS.map(r => r.unit).concat(PC_RESIDENT_ROWS.map(r => r.unit)))); },
     pcUnitOptions() {
       const list = this.pcData[this.payCommTab] || [];
-      const flat = this.payCommTab === 'store' ? list.reduce((a, r) => a.concat(r.depts || []), []) : list.map(r => r.unit);
+      const flat = this.payCommTab === 'store' ? list.map(r => r.store) : list.map(r => r.unit);
       return Array.from(new Set(flat));
     },
     pcMonthOptions() {
       const list = this.pcData[this.payCommTab] || [];
       return Array.from(new Set(list.map(r => (r.scope === 'long' ? '长期' : r.month))));
     },
-    // 月份选择器置灰已被占用的月份：驻厂看同一用工单位，门店看已选部门（均排除正在编辑的自身）
+    // 月份选择器置灰已被占用的月份：驻厂看同一用工单位，门店看已选门店（均排除正在编辑的自身）
     pcMonthPickerOptions() {
       const f = this.pcRuleForm || {}, used = {};
       const keyOf = r => (r.scope === 'long' ? '长期' : r.month);
       if (this.payCommTab === 'store') {
-        const picked = f.depts || [];
         (this.pcData.store || []).forEach(r => {
-          if (r.id === f.id) return;
-          if (!(r.depts || []).some(d => picked.indexOf(d) > -1)) return;
+          if (r.id === f.id || r.store !== f.store) return;
           used[keyOf(r)] = r.id;
         });
       } else {
@@ -4307,10 +4340,10 @@ const VM = new Vue({
       const q = this.pcQuery, tab = this.payCommTab, list = this.pcData[tab] || [];
       return list.filter(r => {
         if (tab === 'resident') { if (q.manager && (r.managers || []).indexOf(q.manager) < 0) return false; }
-        else if (tab === 'store') { if (q.dept && (r.depts || []).indexOf(q.dept) < 0) return false; }
+        else if (tab === 'store') { if (q.dept && r.store !== q.dept) return false; }
         else if (q.name && String(r.name).indexOf(q.name) < 0) return false;
         if (q.month && (r.scope === 'long' ? '长期' : r.month) !== q.month) return false;
-        if (q.unit) { if (tab === 'store' ? (r.depts || []).indexOf(q.unit) < 0 : r.unit !== q.unit) return false; }
+        if (q.unit) { if (tab === 'store' ? r.store !== q.unit : r.unit !== q.unit) return false; }
         if (q.creator && r.creator !== q.creator) return false;
         if (q.range && q.range.length === 2 && (r.created < q.range[0] || r.created > q.range[1])) return false;
         return true;
