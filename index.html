@@ -510,10 +510,12 @@
     .pc-tier-row .tilde { width: 14px; text-align: center; color: var(--ad-text-3); flex-shrink: 0; }
     .pc-tier-row .pc-max-none { width: 68px; text-align: center; font-size: 12px; color: var(--ad-text-3); flex-shrink: 0; }
     .pc-tier-row .pc-tier-del { width: 32px; padding: 0; flex-shrink: 0; }
-    /* 在职天数提成（仅驻厂）：一行内三个数字框等宽、与标题对齐 */
+    /* 在职月度奖励（驻厂/门店共用）：两个数字框等宽、与标题对齐，持续奖励用同宽占位块 */
     .pc-db-row { display: flex; align-items: center; gap: 6px; }
     .pc-db-row .el-input-number { width: 72px; flex-shrink: 0; }
     .pc-db-row .db-txt { color: rgba(0,0,0,.65); white-space: nowrap; }
+    .pc-db-row .db-unl { width: 72px; text-align: center; font-size: 12px; color: var(--ad-text-3); line-height: 30px; border: 1px solid var(--ad-border); border-radius: 4px; background: #fff; flex-shrink: 0; }
+    .pc-db-row .db-forever { margin-left: 6px; white-space: nowrap; }
     .pc-db-off { color: rgba(0,0,0,.25); }
     .pc-tier-head { font-size: 12px; color: var(--ad-text-3); margin-bottom: 6px; white-space: nowrap; }
     .pc-tier-head .th-grp { width: 162px; flex-shrink: 0; }   /* 68(起) + 6 + 14(~) + 6 + 68(止/不限) + 组内 2 个 gap */
@@ -1475,22 +1477,22 @@
       </div>
       <el-button type="text" size="mini" :disabled="pcRuleForm.tiers.length >= 3" @click="addPcTier"><i class="el-icon-plus"></i>添加阶梯（最多 3 个）</el-button>
     </div>
-    <el-form-item v-if="payCommTab === 'resident'"><span slot="label"><span class="pc-req">*</span>在职天数提成</span>
+    <el-form-item><span slot="label"><span class="pc-req">*</span>在职月度奖励</span>
       <el-radio-group v-model="pcRuleForm.dayBonus.enabled" size="small">
         <el-radio-button :label="true">启用</el-radio-button>
         <el-radio-button :label="false">不启用</el-radio-button>
       </el-radio-group>
-      <div class="pc-tip">与人数/工时阶梯提成相互独立、互不影响，可同时存在；按月度计算，自达标当月起连续发放。</div>
+      <div class="pc-tip">与人数/工时阶梯提成相互独立、互不影响，可同时存在；按月发放，可限定总月数或设为持续奖励。</div>
     </el-form-item>
-    <el-form-item v-if="payCommTab === 'resident' && pcRuleForm.dayBonus.enabled"><span slot="label"><span class="pc-req">*</span>满岗奖励</span>
+    <el-form-item v-if="pcRuleForm.dayBonus.enabled"><span slot="label"><span class="pc-req">*</span>月度奖励</span>
       <div class="pc-db-row">
-        <span class="db-txt">满岗</span>
-        <el-input-number v-model="pcRuleForm.dayBonus.days" :min="1" :max="365" :step="1" :controls="false" size="small"></el-input-number>
-        <span class="db-txt">天，每月奖励</span>
+        <span class="db-txt">每月奖励</span>
         <el-input-number v-model="pcRuleForm.dayBonus.amount" :min="0" :step="10" :controls="false" size="small"></el-input-number>
-        <span class="db-txt">元，连续发放</span>
-        <el-input-number v-model="pcRuleForm.dayBonus.months" :min="1" :max="36" :step="1" :controls="false" size="small"></el-input-number>
-        <span class="db-txt">个月</span>
+        <span class="db-txt">元/月，总奖励月数</span>
+        <el-input-number v-if="!pcRuleForm.dayBonus.forever" v-model="pcRuleForm.dayBonus.months" :min="1" :max="36" :step="1" :controls="false" size="small"></el-input-number>
+        <span v-else class="db-unl">不限</span>
+        <span v-if="!pcRuleForm.dayBonus.forever" class="db-txt">个月</span>
+        <el-checkbox v-model="pcRuleForm.dayBonus.forever" class="db-forever">持续奖励</el-checkbox>
       </div>
     </el-form-item>
   </el-form>
@@ -2229,7 +2231,7 @@ const PC_RESIDENT_COLS = [
   { k:'baseDay', label:'入职日期', w:88, align:'center', render:'day' },
   { k:'tierMode', label:'阶梯条件', w:90, align:'center', render:'mode' },
   { k:'tiers', label:'阶梯明细', min:240, render:'detail' },
-  { k:'dayBonus', label:'在职天数提成', min:160, align:'center', render:'dayBonus' },
+  { k:'dayBonus', label:'在职月度奖励', min:140, align:'center', render:'dayBonus' },
   { k:'creator', label:'创建人', w:76 },
   { k:'created', label:'创建时间', w:92, align:'center' },
 ];
@@ -2240,25 +2242,25 @@ function pcT(hcMin, hcMax, hcUnlimited, whMin, whMax, whUnlimited, amount, salar
   return { hcMin: hcMin, hcMax: hcMax, hcUnlimited: hcUnlimited, whMin: whMin, whMax: whMax, whUnlimited: whUnlimited, amount: amount, salary: salary };
 }
 const PC_RESIDENT_ROWS = [
-  { id:72224, unit:'深圳市灿晶电子科技有限公司', managers:['李伟强','陈志明'], scope:'month', month:'2026-08', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:true, days:10, amount:300, months:1 }, creator:'朱轩均', created:'2026-08-24',
+  { id:72224, unit:'深圳市灿晶电子科技有限公司', managers:['李伟强','陈志明'], scope:'month', month:'2026-08', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:true, amount:300, months:1, forever:false }, creator:'朱轩均', created:'2026-08-24',
     tiers:[ pcT(1, 50, false, null, null, false, 300, 3000), pcT(51, 120, false, null, null, false, 320, 3200), pcT(121, null, true, null, null, false, 350, 3500) ] },
-  { id:72223, unit:'新象电器', managers:['陈志明'], scope:'long', month:'', baseDay:10, tierMode:'workhour', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'刘经理', created:'2026-08-22',
+  { id:72223, unit:'新象电器', managers:['陈志明'], scope:'long', month:'', baseDay:10, tierMode:'workhour', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'刘经理', created:'2026-08-22',
     tiers:[ pcT(null, null, false, 1, 160, false, 240, 2800), pcT(null, null, false, 161, null, true, 320, 3200) ] },
-  { id:72222, unit:'谦早电子科技（深圳）有限公司', managers:['周晓兰'], scope:'month', month:'2026-09', baseDay:20, tierMode:'both', dayBonus:{ enabled:true, days:30, amount:30, months:3 }, creator:'张明远', created:'2026-08-05',
+  { id:72222, unit:'谦早电子科技（深圳）有限公司', managers:['周晓兰'], scope:'month', month:'2026-09', baseDay:20, tierMode:'both', dayBonus:{ enabled:true, amount:30, months:null, forever:true }, creator:'张明远', created:'2026-08-05',
     tiers:[ pcT(1, 60, false, 1, 180, false, 300, 3100), pcT(61, null, true, 181, null, true, 400, 3400) ] },
-  { id:72221, unit:'深圳市科敏传感器有限公司', managers:['黄海燕'], scope:'long', month:'', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'朱轩均', created:'2026-07-29',
+  { id:72221, unit:'深圳市科敏传感器有限公司', managers:['黄海燕'], scope:'long', month:'', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'朱轩均', created:'2026-07-29',
     tiers:[ pcT(1, 30, false, null, null, false, 280, 2900), pcT(31, 80, false, null, null, false, 320, 3100), pcT(81, null, true, null, null, false, 380, 3400) ] },
-  { id:72220, unit:'深圳市嘉得盛智能科技有限公司', managers:['李伟强'], scope:'month', month:'2026-08', baseDay:5, tierMode:'workhour', dayBonus:{ enabled:true, days:30, amount:50, months:6 }, creator:'刘经理', created:'2026-07-21',
+  { id:72220, unit:'深圳市嘉得盛智能科技有限公司', managers:['李伟强'], scope:'month', month:'2026-08', baseDay:5, tierMode:'workhour', dayBonus:{ enabled:true, amount:50, months:6, forever:false }, creator:'刘经理', created:'2026-07-21',
     tiers:[ pcT(null, null, false, 1, 199, false, 240, 2800), pcT(null, null, false, 200, null, true, 360, 3300) ] },
-  { id:72219, unit:'大族激光科技产业集团股份有限公司', managers:['吴建国','郑晓峰'], scope:'month', month:'2026-07', baseDay:25, tierMode:'both', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'张明远', created:'2026-07-08',
+  { id:72219, unit:'大族激光科技产业集团股份有限公司', managers:['吴建国','郑晓峰'], scope:'month', month:'2026-07', baseDay:25, tierMode:'both', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'张明远', created:'2026-07-08',
     tiers:[ pcT(1, 40, false, 1, 160, false, 400, 3600), pcT(41, 100, false, 161, 240, false, 460, 3800), pcT(101, null, true, 241, null, true, 520, 4000) ] },
-  { id:72218, unit:'深圳市奥力精密智造有限公司', managers:['周晓兰'], scope:'long', month:'', baseDay:12, tierMode:'headcount', dayBonus:{ enabled:true, days:10, amount:200, months:2 }, creator:'朱轩均', created:'2026-06-26',
+  { id:72218, unit:'深圳市奥力精密智造有限公司', managers:['周晓兰'], scope:'long', month:'', baseDay:12, tierMode:'headcount', dayBonus:{ enabled:true, amount:200, months:2, forever:false }, creator:'朱轩均', created:'2026-06-26',
     tiers:[ pcT(1, 60, false, null, null, false, 300, 3000), pcT(61, null, true, null, null, false, 340, 3300) ] },
-  { id:72217, unit:'深圳市科敏传感器有限公司', managers:['黄海燕'], scope:'month', month:'2026-09', baseDay:18, tierMode:'workhour', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'刘经理', created:'2026-06-12',
+  { id:72217, unit:'深圳市科敏传感器有限公司', managers:['黄海燕'], scope:'month', month:'2026-09', baseDay:18, tierMode:'workhour', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'刘经理', created:'2026-06-12',
     tiers:[ pcT(null, null, false, 1, 120, false, 260, 2700), pcT(null, null, false, 121, null, true, 310, 3000) ] },
-  { id:72216, unit:'深圳市奥力精密智造有限公司', managers:['李伟强','吴建国'], scope:'month', month:'2026-08', baseDay:8, tierMode:'headcount', dayBonus:{ enabled:true, days:60, amount:80, months:3 }, creator:'张明远', created:'2026-05-30',
+  { id:72216, unit:'深圳市奥力精密智造有限公司', managers:['李伟强','吴建国'], scope:'month', month:'2026-08', baseDay:8, tierMode:'headcount', dayBonus:{ enabled:true, amount:80, months:3, forever:false }, creator:'张明远', created:'2026-05-30',
     tiers:[ pcT(1, 100, false, null, null, false, 280, 3000) ] },
-  { id:72215, unit:'深圳市灿晶电子科技有限公司', managers:['陈志明'], scope:'long', month:'', baseDay:15, tierMode:'both', dayBonus:{ enabled:false, days:30, amount:0, months:1 }, creator:'朱轩均', created:'2026-05-16',
+  { id:72215, unit:'深圳市灿晶电子科技有限公司', managers:['陈志明'], scope:'long', month:'', baseDay:15, tierMode:'both', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'朱轩均', created:'2026-05-16',
     tiers:[ pcT(1, 50, false, 1, 176, false, 320, 3100), pcT(51, null, true, 177, null, true, 380, 3500) ] },
 ];
 const PC_STORE_COLS = [
@@ -2268,30 +2270,31 @@ const PC_STORE_COLS = [
   { k:'period', label:'归属月份', w:88, align:'center', render:'period' },
   { k:'baseDay', label:'入职日期', w:88, align:'center', render:'day' },
   { k:'tierMode', label:'阶梯条件', w:90, align:'center', render:'mode' },
-  { k:'tiers', label:'阶梯明细', min:260, render:'detail' },
+  { k:'tiers', label:'阶梯明细', min:250, render:'detail' },
+  { k:'dayBonus', label:'在职月度奖励', min:140, align:'center', render:'dayBonus' },
   { k:'creator', label:'创建人', w:76 },
   { k:'created', label:'创建时间', w:92, align:'center' },
 ];
 const PC_STORE_ROWS = [
-  { id:72324, store:'深圳南山店', leaders:['孙明辉','钱佳怡'], scope:'month', month:'2026-08', baseDay:15, tierMode:'headcount', creator:'朱轩均', created:'2026-08-24',
+  { id:72324, store:'深圳南山店', leaders:['孙明辉','钱佳怡'], scope:'month', month:'2026-08', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:true, amount:30, months:12, forever:false }, creator:'朱轩均', created:'2026-08-24',
     tiers:[ pcT(1, 30, false, null, null, false, 260, 3000), pcT(31, 80, false, null, null, false, 300, 3200), pcT(81, null, true, null, null, false, 340, 3500) ] },
-  { id:72323, store:'深圳宝安店', leaders:['孔维成'], scope:'long', month:'', baseDay:10, tierMode:'workhour', creator:'刘经理', created:'2026-08-22',
+  { id:72323, store:'深圳宝安店', leaders:['孔维成'], scope:'long', month:'', baseDay:10, tierMode:'workhour', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'刘经理', created:'2026-08-22',
     tiers:[ pcT(null, null, false, 1, 150, false, 220, 2800), pcT(null, null, false, 151, null, true, 280, 3100) ] },
-  { id:72322, store:'深圳龙华店', leaders:['曹雅雯','严志刚'], scope:'month', month:'2026-09', baseDay:20, tierMode:'both', creator:'张明远', created:'2026-08-05',
+  { id:72322, store:'深圳龙华店', leaders:['曹雅雯','严志刚'], scope:'month', month:'2026-09', baseDay:20, tierMode:'both', dayBonus:{ enabled:true, amount:50, months:6, forever:false }, creator:'张明远', created:'2026-08-05',
     tiers:[ pcT(1, 40, false, 1, 170, false, 320, 3200), pcT(41, null, true, 171, null, true, 400, 3600) ] },
-  { id:72321, store:'广州天河店', leaders:['周思远'], scope:'long', month:'', baseDay:12, tierMode:'headcount', creator:'朱轩均', created:'2026-07-29',
+  { id:72321, store:'广州天河店', leaders:['周思远'], scope:'long', month:'', baseDay:12, tierMode:'headcount', dayBonus:{ enabled:true, amount:30, months:null, forever:true }, creator:'朱轩均', created:'2026-07-29',
     tiers:[ pcT(1, 50, false, null, null, false, 280, 3000), pcT(51, 150, false, null, null, false, 330, 3300), pcT(151, null, true, null, null, false, 380, 3600) ] },
-  { id:72320, store:'东莞万达店', leaders:['林嘉豪'], scope:'month', month:'2026-08', baseDay:5, tierMode:'workhour', creator:'刘经理', created:'2026-07-21',
+  { id:72320, store:'东莞万达店', leaders:['林嘉豪'], scope:'month', month:'2026-08', baseDay:5, tierMode:'workhour', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'刘经理', created:'2026-07-21',
     tiers:[ pcT(null, null, false, 1, 180, false, 250, 2900), pcT(null, null, false, 181, null, true, 350, 3300) ] },
-  { id:72319, store:'深圳福田店', leaders:['黄丽珍','孙明辉'], scope:'month', month:'2026-07', baseDay:25, tierMode:'both', creator:'张明远', created:'2026-07-08',
+  { id:72319, store:'深圳福田店', leaders:['黄丽珍','孙明辉'], scope:'month', month:'2026-07', baseDay:25, tierMode:'both', dayBonus:{ enabled:true, amount:200, months:2, forever:false }, creator:'张明远', created:'2026-07-08',
     tiers:[ pcT(1, 20, false, 1, 160, false, 360, 3400), pcT(21, 60, false, 161, 240, false, 420, 3700), pcT(61, null, true, 241, null, true, 480, 4000) ] },
-  { id:72318, store:'深圳南山店', leaders:['钱佳怡'], scope:'long', month:'', baseDay:18, tierMode:'headcount', creator:'朱轩均', created:'2026-06-26',
+  { id:72318, store:'深圳南山店', leaders:['钱佳怡'], scope:'long', month:'', baseDay:18, tierMode:'headcount', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'朱轩均', created:'2026-06-26',
     tiers:[ pcT(1, 100, false, null, null, false, 240, 3000) ] },
-  { id:72317, store:'深圳宝安店', leaders:['孔维成'], scope:'month', month:'2026-09', baseDay:8, tierMode:'workhour', creator:'刘经理', created:'2026-06-12',
+  { id:72317, store:'深圳宝安店', leaders:['孔维成'], scope:'month', month:'2026-09', baseDay:8, tierMode:'workhour', dayBonus:{ enabled:true, amount:80, months:3, forever:false }, creator:'刘经理', created:'2026-06-12',
     tiers:[ pcT(null, null, false, 1, 140, false, 230, 2700), pcT(null, null, false, 141, null, true, 300, 3100) ] },
-  { id:72316, store:'广州番禺店', leaders:['曹雅雯'], scope:'month', month:'2026-08', baseDay:22, tierMode:'both', creator:'张明远', created:'2026-05-30',
+  { id:72316, store:'广州番禺店', leaders:['曹雅雯'], scope:'month', month:'2026-08', baseDay:22, tierMode:'both', dayBonus:{ enabled:false, amount:0, months:1, forever:false }, creator:'张明远', created:'2026-05-30',
     tiers:[ pcT(1, 60, false, 1, 176, false, 310, 3100), pcT(61, null, true, 177, null, true, 380, 3400) ] },
-  { id:72315, store:'深圳龙华店', leaders:['严志刚'], scope:'long', month:'', baseDay:15, tierMode:'headcount', creator:'朱轩均', created:'2026-05-16',
+  { id:72315, store:'深圳龙华店', leaders:['严志刚'], scope:'long', month:'', baseDay:15, tierMode:'headcount', dayBonus:{ enabled:true, amount:100, months:null, forever:true }, creator:'朱轩均', created:'2026-05-16',
     tiers:[ pcT(1, 80, false, null, null, false, 290, 3000), pcT(81, null, true, null, null, false, 350, 3400) ] },
 ];
 function pcCopyRow(r) {
@@ -3814,10 +3817,10 @@ function pcTierLineText(t, mode) {
   const money = (t.amount == null ? '—' : t.amount + ' 元/人') + ' · ' + (t.salary == null ? '—' : t.salary + ' 元/月');
   return pcTierCondText(t, mode) + ' → ' + money;
 }
-// 在职天数提成（仅驻厂）：未启用统一显示占位符
+// 在职月度奖励（驻厂/门店共用）：未启用统一显示占位符
 function pcDayBonusText(db) {
   if (!db || !db.enabled) return '—';
-  return '满岗 ' + db.days + ' 天 · ' + db.amount + ' 元/月 × ' + db.months + ' 个月';
+  return db.amount + ' 元/月 ' + (db.forever ? '持续发放' : '× ' + db.months + ' 个月');
 }
 // 起始值由系统推导：首档固定下限，其余档 = 上一档结束值 + 1；末档上限固定为「不限」，非末档必须有上限
 function pcSyncTierMins() {
@@ -3843,7 +3846,7 @@ function pcSyncTierMins() {
 function pcBlankRule() {
   return { id: null, unit: '', managers: [], store: '', leaders: [], baseDay: 15, scope: 'month', month: todayStr().slice(0, 7),
     tierMode: 'headcount',
-    dayBonus: { enabled: true, days: 30, amount: 0, months: 1 },
+    dayBonus: { enabled: true, amount: 30, months: 12, forever: false },
     tiers: [
       { hcMin: 1, hcMax: 50, hcUnlimited: false, whMin: 1, whMax: 160, whUnlimited: false, amount: 0, salary: 3000 },
       { hcMin: 51, hcMax: null, hcUnlimited: true, whMin: 161, whMax: null, whUnlimited: true, amount: 0, salary: 3000 },
@@ -3882,12 +3885,11 @@ function savePcRule() {
   else { if (!f.unit) miss.push('用工单位'); if (!f.managers || !f.managers.length) miss.push('驻厂管理员'); }
   if (!(f.baseDay >= 1 && f.baseDay <= 31)) miss.push('入职日期');
   if (f.scope === 'month' && !f.month) miss.push('归属月份');
-  // 在职天数提成（仅驻厂）：未启用时完全不校验
+  // 在职月度奖励（驻厂/门店共用）：未启用时完全不校验
   const db = f.dayBonus || { enabled: false };
-  if (!isStore && db.enabled) {
-    if (!(db.days >= 1)) miss.push('满岗天数');
-    if (!(db.amount > 0)) miss.push('奖励金额');
-    if (!(db.months >= 1)) miss.push('发放月数');
+  if (db.enabled) {
+    if (!(db.amount > 0)) miss.push('每月奖励');
+    if (!db.forever && !(db.months >= 1)) miss.push('总奖励月数');
   }
   if (miss.length) { VM.$message.error('请完善：' + miss.join('、')); return; }
   const useHc = mode !== 'workhour', useWh = mode !== 'headcount';
@@ -3937,7 +3939,7 @@ function savePcRule() {
     if (clash) { VM.$message.error('用工单位「' + f.unit + '」已存在' + key + '的提成规则（' + clash.id + '），同一月份不能重复'); return; }
   }
   const payload = Object.assign(subject, { baseDay: f.baseDay, scope: f.scope, month: f.scope === 'month' ? f.month : '', tierMode: mode, tiers: tiers });
-  if (!isStore) payload.dayBonus = { enabled: db.enabled, days: db.days, amount: db.amount, months: db.months };
+  payload.dayBonus = { enabled: db.enabled, amount: db.amount, months: db.forever ? null : db.months, forever: !!db.forever };
   const list = VM.pcData[VM.payCommTab] || [];
   if (f.id) {
     const row = list.find(r => r.id === f.id);
