@@ -1,0 +1,2936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>智灵工商户端 - 招聘数据</title>
+    <style>
+        :root {
+            --blue: #2E6BFF;
+            --blue-dark: #1E52D6;
+            --blue-light: #EAF0FF;
+            --orange: #FF6A1F;
+            --red: #F4382C;
+            --green: #18A058;
+            --text: #1F2329;
+            --sub: #8A8F99;
+            --bg: #F4F5F7;
+            --line: #EEF0F3;
+            --fill: #F7F8FA;
+            --grad: linear-gradient(135deg, #FF8A2A, #FF5722);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: #E4E7EC; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--text); font-size: 14px; line-height: 1.6; }
+
+        /* ===== 视图层：首页 与 团队成员页 ===== */
+        /* 滚动条不占位：否则 .page 会在「视口 - 滚动条」里居中，而吸底栏按视口居中，两者会错开半条滚动条 */
+        .view { position: fixed; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: none; scrollbar-width: none; }
+        .view::-webkit-scrollbar { width: 0; height: 0; }
+        .view.active { display: block; }
+        .view.anim-push { animation: viewFade .22s ease both; }
+        .view.anim-pop { animation: viewFade .22s ease both; }
+        @keyframes viewFade { from { opacity: 0; } to { opacity: 1; } }
+
+        .page { max-width: 480px; margin: 0 auto; background: var(--bg); position: relative; min-height: 100vh; padding-bottom: 84px; }
+
+        /* ===== 顶部头部（首页门店名称固定，不随团队切换变化）===== */
+        .header { background: linear-gradient(135deg, #2E6BFF 0%, #4E86FF 55%, #6BA0FF 100%); padding: calc(14px + env(safe-area-inset-top)) 14px 62px; position: relative; overflow: hidden; }
+        .header::before { content: ""; position: absolute; right: -50px; top: -70px; width: 210px; height: 210px; background: rgba(255,255,255,.09); border-radius: 50%; }
+        .header::after { content: ""; position: absolute; right: 70px; bottom: -95px; width: 180px; height: 180px; background: rgba(255,255,255,.07); border-radius: 50%; }
+        .hd-top { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+        .hd-name { color: #fff; font-size: 20px; font-weight: 800; letter-spacing: .3px; }
+        .hd-sub { color: rgba(255,255,255,.86); font-size: 12.5px; margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .hd-sub .split { width: 1px; height: 10px; background: rgba(255,255,255,.35); }
+        .hd-sub .upd { color: rgba(255,255,255,.72); }
+        .hd-right { text-align: right; flex: none; }
+        .hd-avatar { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.22); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,.3); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-left: auto; }
+        .sb-back { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.3); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 21px; line-height: 1; cursor: pointer; flex: none; margin-top: 4px; }
+
+        /* 时间范围 chips */
+        .ranges { position: relative; z-index: 2; display: flex; gap: 7px; margin-top: 14px; }
+        .rg { flex: 1; text-align: center; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.22); color: rgba(255,255,255,.9); font-size: 12px; font-weight: 600; padding: 7px 0; border-radius: 18px; cursor: pointer; transition: all .18s; white-space: nowrap; }
+        .rg.on { background: #fff; color: var(--blue); border-color: #fff; box-shadow: 0 4px 12px rgba(15,50,140,.18); font-weight: 800; }
+
+        /* ===== 通用卡片 ===== */
+        .card { background: #fff; border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 4px 16px rgba(31,35,41,.05); }
+        .sec { margin: 12px; }
+        .sec-head { display: flex; align-items: center; gap: 7px; padding: 2px 2px 10px; }
+        .sec-head h2 { font-size: 16px; font-weight: 800; }
+        .sec-head .bar { width: 3px; height: 15px; border-radius: 2px; background: var(--blue); }
+        .sec-head .tip { margin-left: auto; font-size: 11.5px; color: var(--sub); font-weight: 400; }
+
+        /* ===== KPI 总览（上浮压在头部下沿）===== */
+        .kpi { margin: -50px 12px 0; position: relative; z-index: 5; padding: 14px 12px 13px; }
+        .kpi-cap { font-size: 11px; color: var(--sub); margin-bottom: 9px; }
+        .kpi-row { display: flex; }
+        .kpi-cell { flex: 1; text-align: center; position: relative; min-width: 0; }
+        .kpi-cell + .kpi-cell::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
+        .kpi-num { font-size: 22px; font-weight: 800; line-height: 1.1; letter-spacing: -.5px; }
+        .kpi-label { font-size: 11px; color: var(--sub); margin-top: 3px; white-space: nowrap; }
+        .kpi-cmp { font-size: 10.5px; font-weight: 700; margin-top: 3px; }
+        .up { color: var(--green); }
+        .down { color: var(--red); }
+        .flat { color: var(--sub); }
+
+        /* 在职人数单独成条，与流量指标分开 */
+        .kpi-on { display: flex; align-items: center; gap: 7px; margin-top: 12px; padding: 10px 12px; background: var(--blue-light); border-radius: 12px; }
+        .kpi-on .t { font-size: 12.5px; font-weight: 700; color: #3A3F47; flex: none; }
+        .kpi-on b { font-size: 22px; font-weight: 800; color: var(--blue); letter-spacing: -.5px; }
+        .kpi-on i { font-style: normal; font-size: 11.5px; color: var(--blue); font-weight: 700; }
+        .kpi-on .d { margin-left: auto; font-size: 10.5px; color: #7A8CA8; text-align: right; line-height: 1.35; }
+
+        /* ===== 漏斗 ===== */
+        .fn-wrap { padding: 8px 14px 4px; }
+        .fn-step { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+        .fn-lab { width: 92px; flex: none; font-size: 12.5px; color: #3A3F47; font-weight: 600; }
+        .fn-track { flex: 1; height: 36px; background: var(--fill); border-radius: 9px; overflow: hidden; }
+        .fn-bar { height: 100%; border-radius: 9px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; min-width: 38px; transition: width .5s cubic-bezier(.2,.7,.3,1); }
+        .fn-bar i { font-style: normal; color: #fff; font-size: 16px; font-weight: 800; letter-spacing: -.4px; }
+        .fn-cv { width: 52px; flex: none; text-align: right; font-size: 11px; font-weight: 700; color: var(--sub); }
+        .fn-cv b { display: block; font-size: 13.5px; color: var(--blue); }
+
+        /* ===== 团队列表 ===== */
+        .tm { position: relative; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); cursor: pointer; transition: background .18s; }
+        .tm:last-child { border-bottom: none; }
+        .tm:active { background: var(--fill); }
+        .tm.on { background: var(--blue-light); }
+        .tm.on::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--blue); }
+        .tm.static { cursor: default; }
+        .tm-av { width: 34px; height: 34px; border-radius: 10px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 16px; background: #fff; border: 1px solid var(--line); }
+        .tm-main { flex: 1; min-width: 0; }
+        .tm-r1 { display: flex; align-items: center; gap: 6px; }
+        .tm-name { font-size: 14.5px; font-weight: 700; }
+        .tm-cnt { font-size: 10.5px; font-weight: 600; color: var(--sub); background: #fff; border: 1px solid var(--line); padding: 0 5px; border-radius: 4px; flex: none; }
+        .tm-cur { font-size: 10px; font-weight: 800; color: #fff; background: var(--blue); padding: 0 5px; border-radius: 4px; flex: none; }
+        .tm-go { flex: none; font-size: 12px; color: #B7BDC6; margin-left: 2px; }
+
+        /* 在职人数徽标：与流量列分开、单独突出 */
+        .on-pill { margin-left: auto; flex: none; display: flex; align-items: baseline; gap: 2px; background: var(--blue); color: #fff; border-radius: 13px; padding: 2px 9px; }
+        .on-pill em { font-style: normal; font-size: 10px; font-weight: 600; opacity: .85; }
+        .on-pill b { font-size: 14px; font-weight: 800; }
+        .on-pill.soft { background: var(--blue-light); color: var(--blue); }
+
+        /* ===== 列表数字列（流量四项）===== */
+        .sorts { display: flex; gap: 7px; padding: 0 2px 12px; flex-wrap: wrap; }
+        .srt { font-size: 12px; font-weight: 600; color: #4A4F58; background: #fff; border: 1px solid var(--line); padding: 3px 11px; border-radius: 15px; cursor: pointer; transition: all .18s; }
+        .srt.on { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 3px 8px rgba(46,107,255,.28); }
+
+        .mb { display: flex; align-items: center; gap: 10px; padding: 12px 13px; border-bottom: 1px solid var(--line); }
+        .mb:last-child { border-bottom: none; }
+        .mb-rank { width: 22px; flex: none; text-align: center; font-size: 13px; font-weight: 800; color: var(--sub); }
+        .mb-rank.top { color: var(--orange); }
+        .mb-av { width: 36px; height: 36px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700; }
+        .mb-main { flex: 1; min-width: 0; }
+        .mb-row1 { display: flex; align-items: center; gap: 6px; }
+        .mb-name { font-size: 14.5px; font-weight: 700; }
+        .mb-role { font-size: 10.5px; font-weight: 600; padding: 1px 6px; border-radius: 4px; background: var(--blue-light); color: var(--blue); flex: none; }
+        .mb-role.store { background: #FFF3E6; color: #E86A10; }
+        .mb-nums { display: flex; gap: 0; margin-top: 6px; }
+        .mb-num { flex: 1; min-width: 0; }
+        .mb-num em { font-style: normal; display: block; font-size: 10px; color: var(--sub); line-height: 1.2; white-space: nowrap; }
+        .mb-num b { font-size: 15px; font-weight: 800; letter-spacing: -.3px; }
+        .mb-num b.hi { color: var(--blue); }
+        .mb-num b.rd { color: var(--red); }
+        .mb-bar { height: 4px; border-radius: 2px; background: var(--fill); margin-top: 8px; overflow: hidden; }
+        .mb-bar i { display: block; height: 100%; border-radius: 2px; background: var(--grad); transition: width .45s ease; }
+
+        /* ===== 自定义时间弹层 ===== */
+        .mask { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 80; }
+        .mask.show { display: block; }
+        .sheet { display: none; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #fff; border-radius: 18px 18px 0 0; z-index: 90; padding-bottom: env(safe-area-inset-bottom); }
+        .sheet.show { display: block; animation: sheetUp .26s cubic-bezier(.2,.7,.3,1) both; }
+        @keyframes sheetUp { from { transform: translate(-50%, 100%); } to { transform: translate(-50%, 0); } }
+        .sh-head { display: flex; align-items: center; padding: 15px 16px 12px; border-bottom: 1px solid var(--line); }
+        .sh-head b { font-size: 16px; font-weight: 800; }
+        .sh-head .x { margin-left: auto; width: 26px; height: 26px; border-radius: 50%; background: var(--fill); color: var(--sub); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; }
+        .sh-body { padding: 16px; }
+        .sh-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .sh-row label { font-size: 13.5px; color: #4A4F58; font-weight: 600; width: 62px; flex: none; }
+        .sh-row input { flex: 1; min-width: 0; border: 1px solid var(--line); background: var(--fill); border-radius: 10px; padding: 9px 11px; font-size: 14.5px; color: var(--text); font-family: inherit; outline: none; }
+        .sh-row input:focus { border-color: var(--blue); background: #fff; }
+        .sh-sum { font-size: 12px; color: var(--sub); background: var(--fill); border-radius: 10px; padding: 9px 11px; }
+        .sh-sum b { color: var(--blue); font-weight: 800; }
+        .sh-err { font-size: 12px; color: var(--red); margin-top: 9px; min-height: 18px; }
+        .sh-foot { display: flex; gap: 10px; padding: 0 16px 18px; }
+        .btn { flex: 1; text-align: center; font-size: 15px; font-weight: 700; padding: 11px 0; border-radius: 24px; cursor: pointer; }
+        .btn.ghost { background: var(--fill); color: #4A4F58; border: 1px solid var(--line); }
+        .btn.primary { background: var(--blue); color: #fff; box-shadow: 0 4px 12px rgba(46,107,255,.3); }
+
+        /* ===== 工作台 ===== */
+        .hd-light { background: linear-gradient(180deg, #D9E9FF 0%, #E6F5EE 55%, var(--bg) 100%); padding: calc(16px + env(safe-area-inset-top)) 14px 66px; margin-bottom: -54px; position: relative; }
+        .wb-title { font-size: 17px; font-weight: 800; color: var(--text); position: relative; z-index: 2; }
+        .entry { display: flex; gap: 10px; margin: 12px 12px 0; position: relative; z-index: 3; }
+        .ent { flex: 1; display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 14px; padding: 13px 11px; border: 1px solid var(--line); box-shadow: 0 4px 14px rgba(31,35,41,.05); cursor: pointer; }
+        .ent .n { margin-left: auto; font-size: 13px; color: var(--sub); font-weight: 700; }
+        .grp { margin: 12px; padding: 14px 12px 4px; }
+        .grp h3 { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px 0; padding-bottom: 12px; }
+        .cell { display: flex; flex-direction: column; align-items: center; gap: 7px; cursor: pointer; transition: transform .12s; }
+        .cell:active { transform: scale(.92); }
+        .cell > span:last-child { font-size: 11.5px; color: #3A3F47; white-space: nowrap; }
+        .ic { width: 42px; height: 42px; border-radius: 13px; display: flex; align-items: center; justify-content: center; flex: none; }
+        .ic svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        .c-blue { background: linear-gradient(135deg, #6B9BFF, #3E6BFF); }
+        .c-purple { background: linear-gradient(135deg, #B098FF, #7C5CE0); }
+        .c-orange { background: linear-gradient(135deg, #FFC53D, #FA8C16); }
+        .c-green { background: linear-gradient(135deg, #5FD69A, #1FA968); }
+        .c-yellow { background: linear-gradient(135deg, #FFD666, #FAAD14); }
+
+        /* ===== 轻提示 ===== */
+        .toast { position: fixed; left: 50%; bottom: 116px; transform: translateX(-50%) translateY(8px); background: rgba(0,0,0,.78); color: #fff; font-size: 13.5px; padding: 9px 18px; border-radius: 22px; z-index: 100; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; max-width: 80%; text-align: center; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ===== 岗位管理：子页顶栏 ===== */
+        .mnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.97); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); padding: calc(10px + env(safe-area-inset-top)) 12px 10px; }
+        .mv-back { width: 28px; height: 28px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 24px; line-height: 1; color: #4A4F58; cursor: pointer; margin-left: -6px; }
+        .mv-title { font-size: 16.5px; font-weight: 800; }
+        .mv-count { margin-left: auto; font-size: 12px; color: var(--blue); font-weight: 700; }
+        .page.pad0 { padding-bottom: 76px; }
+
+        /* 搜索 + 筛选 */
+        .jbar { position: sticky; top: calc(env(safe-area-inset-top)); z-index: 30; display: flex; gap: 8px; align-items: center; background: #fff; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+        .jsearch { flex: 1; display: flex; align-items: center; gap: 6px; background: var(--fill); border-radius: 18px; padding: 8px 12px; }
+        .jsearch input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 13.5px; color: var(--text); font-family: inherit; }
+        .jsearch svg { width: 15px; height: 15px; flex: none; fill: none; stroke: #A6ABB5; stroke-width: 2; }
+        .jflt { flex: none; display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #4A4F58; padding: 8px 12px; background: var(--fill); border-radius: 18px; cursor: pointer; position: relative; }
+        .jflt .bd { position: absolute; top: 2px; right: 4px; min-width: 15px; height: 15px; padding: 0 3px; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; border-radius: 8px; line-height: 15px; text-align: center; }
+        .jsum { font-size: 11.5px; color: var(--sub); padding: 9px 14px 2px; }
+        .jsum b { color: var(--blue); font-weight: 800; }
+
+        /* 岗位卡片 */
+        .jc { margin: 10px 12px; padding: 13px 14px 0; background: #fff; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 3px 12px rgba(31,35,41,.05); overflow: hidden; }
+        .jc-top { display: flex; align-items: flex-start; gap: 8px; }
+        .jc-name { font-size: 16px; font-weight: 800; flex: 1; min-width: 0; line-height: 1.35; }
+        .jc-pay { font-size: 17px; font-weight: 800; color: var(--red); margin-top: 4px; }
+        .jc-pay small { font-size: 11.5px; font-weight: 600; }
+        .jc-meta { margin-top: 7px; }
+        .jc-meta .mi { display: flex; font-size: 12px; line-height: 1.7; color: #3C4149; }
+        .jc-meta .mi > span { flex: none; width: 60px; color: var(--sub); }
+        .jc-meta .mi > b { flex: 1; min-width: 0; font-weight: 500; word-break: break-all; }
+        .jc-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+        .chip { font-size: 11px; padding: 2px 8px; border-radius: 5px; background: var(--blue-light); color: var(--blue); font-weight: 600; }
+        .chip.gray { background: var(--fill); color: var(--sub); }
+        .jc-log { font-size: 11px; color: #A6ABB5; margin-top: 9px; line-height: 1.6; }
+        .jc-log b { color: #6B7078; font-weight: 600; }
+        .jc-foot { display: flex; align-items: center; gap: 14px; margin-top: 11px; padding: 10px 0; border-top: 1px dashed var(--line); }
+        .swg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #4A4F58; font-weight: 600; }
+
+        /* 审核状态 tag */
+        .atag { flex: none; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 5px; }
+        .a-other { background: #F0F5FF; color: #4A6FE0; }
+        .a-late { background: #FFF4E6; color: #E08A1E; }
+        .a-normal { background: #E8F8EE; color: var(--green); }
+        .a-absent { background: #FFECEB; color: var(--red); }
+
+        /* 开关 */
+        .sw { width: 40px; height: 23px; border-radius: 12px; background: #D8DBE0; position: relative; cursor: pointer; transition: background .18s; flex: none; }
+        .sw i { position: absolute; top: 2px; left: 2px; width: 19px; height: 19px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .18s; }
+        .sw.on { background: var(--blue); }
+        .sw.on i { transform: translateX(17px); }
+        .sw.dis { opacity: .45; cursor: not-allowed; }
+
+        /* 分页已改为上拉加载 */
+        .empty { text-align: center; padding: 46px 20px; color: var(--sub); font-size: 13px; }
+        .empty b { display: block; font-size: 30px; margin-bottom: 8px; }
+
+        /* 弹层通用 */
+        .sb-hd { display: flex; align-items: center; padding: 14px 16px 12px; border-bottom: 1px solid var(--line); }
+        .sb-hd b { font-size: 15.5px; font-weight: 800; }
+        .sb-hd .x { margin-left: auto; width: 26px; height: 26px; border-radius: 50%; background: var(--fill); color: var(--sub); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; }
+        .sb-bd { padding: 14px 16px; max-height: 62vh; overflow-y: auto; }
+        .sb-ft { display: flex; gap: 10px; padding: 0 16px 16px; }
+        .fg { margin-bottom: 15px; }
+        .fg > label { display: block; font-size: 12.5px; font-weight: 700; color: #4A4F58; margin-bottom: 8px; }
+        .fcs { display: flex; flex-wrap: wrap; gap: 7px; }
+        .fc { font-size: 12.5px; padding: 5px 12px; border-radius: 15px; background: var(--fill); color: #4A4F58; border: 1px solid transparent; cursor: pointer; }
+        .fc.on { background: var(--blue-light); color: var(--blue); border-color: #C3D6FF; font-weight: 700; }
+
+        /* 详情页 */
+        .dsec { margin: 12px; padding: 13px 14px; background: #fff; border-radius: 14px; border: 1px solid var(--line); }
+        .dsec > h4 { font-size: 14px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .dsec > h4 .req { color: var(--red); }
+        .dsec > h4::before { content: ""; width: 3px; height: 13px; border-radius: 2px; background: var(--blue); }
+        .kv { display: flex; font-size: 13px; padding: 6px 0; line-height: 1.55; }
+        .kv + .kv { border-top: 1px solid #F6F7F9; }
+        .kv .k { color: var(--sub); width: 78px; flex: none; }
+        .kv .v { flex: 1; min-width: 0; color: var(--text); word-break: break-all; }
+        .kv .v .mut { color: #A6ABB5; }
+        .subrow { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; margin-bottom: 8px; background: #FCFCFD; }
+        .subrow .st { font-size: 13px; font-weight: 700; }
+        .subrow .sv { font-size: 12.5px; color: #4A4F58; margin-top: 3px; line-height: 1.5; }
+        .mut { color: #A6ABB5; font-size: 12.5px; }
+
+        /* 时间轴 */
+        .tl { padding-left: 4px; }
+        .tl-i { position: relative; padding: 0 0 16px 18px; border-left: 2px solid var(--line); }
+        .tl-i:last-child { border-left-color: transparent; padding-bottom: 2px; }
+        .tl-i::before { content: ""; position: absolute; left: -6px; top: 3px; width: 10px; height: 10px; border-radius: 50%; background: var(--blue); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--blue-light); }
+        .tl-i .tt { font-size: 13.5px; font-weight: 700; }
+        .tl-i .tm { font-size: 11.5px; color: var(--sub); margin-top: 2px; }
+        .tl-i .td { font-size: 12.5px; color: #4A4F58; margin-top: 3px; }
+
+        /* 表单 */
+        .warnbar { margin: 10px 12px 0; padding: 9px 11px; background: #FFF7E6; border: 1px solid #FFE1A8; border-radius: 10px; font-size: 11.5px; color: #A8620A; line-height: 1.55; }
+        .frow { margin-bottom: 13px; }
+        .frow > label { display: block; font-size: 12.5px; font-weight: 700; color: #4A4F58; margin-bottom: 6px; }
+        .frow > label .req { color: var(--red); margin-right: 2px; }
+        .frow > label .cnt { float: right; font-weight: 400; color: #A6ABB5; font-size: 11px; }
+        .fin, .fsel, .fta { width: 100%; border: 1px solid var(--line); background: var(--fill); border-radius: 10px; padding: 9px 11px; font-size: 14px; color: var(--text); font-family: inherit; outline: none; }
+        .fin:focus, .fsel:focus, .fta:focus { border-color: var(--blue); background: #fff; }
+        .fta { min-height: 76px; resize: none; line-height: 1.6; }
+        .fsel { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, #A6ABB5 50%), linear-gradient(135deg, #A6ABB5 50%, transparent 50%); background-position: calc(100% - 15px) 17px, calc(100% - 10px) 17px; background-size: 5px 5px; background-repeat: no-repeat; }
+        .f2 { display: flex; gap: 8px; align-items: center; }
+        .f2 .fin { flex: 1; min-width: 0; }
+        .f2 .u { flex: none; font-size: 12.5px; color: var(--sub); }
+        .sub-hd { display: flex; align-items: center; margin-bottom: 8px; }
+        .sub-hd .st { font-size: 12.5px; font-weight: 700; color: #4A4F58; }
+        .sub-hd .add { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--blue); cursor: pointer; }
+        .srow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 9px; margin-bottom: 8px; background: #FCFCFD; }
+        .srow .r1 { display: flex; align-items: center; gap: 6px; }
+        .sbtn { flex: none; width: 22px; height: 22px; border-radius: 6px; background: #fff; border: 1px solid var(--line); color: #6B7078; font-size: 12px; line-height: 20px; text-align: center; cursor: pointer; }
+        .sbtn.del { color: var(--red); }
+        /* 子表只读行：内容在弹框里编辑 */
+        .srow.ro { cursor: pointer; }
+        .srow.ro:active { background: var(--fill); }
+        .srow.ro .st { flex: 1; min-width: 0; font-size: 13.5px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .srow.ro .sv { font-size: 12.5px; color: #4A4F58; margin-top: 5px; line-height: 1.5; word-break: break-all; }
+        .srow.ro .sv.empty { color: #A6ABB5; }
+        /* 部门选择弹框：一行一项 */
+        .drow { display: flex; align-items: center; padding: 13px 2px; border-bottom: 1px solid var(--line); cursor: pointer; font-size: 14px; }
+        .drow:last-child { border-bottom: none; }
+        .drow .dl { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .drow .dsub { font-size: 11.5px; color: var(--sub); margin-top: 3px; line-height: 1.45; }
+        .drow .tick { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #CBD1DA; display: flex; align-items: center; justify-content: center; font-size: 12px; color: transparent; flex: none; }
+        .drow.on .tick { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+        /* 部门选择页 */
+        .dp-head { padding: 10px 14px 0; font-size: 12px; color: var(--sub); }
+        .dp-head b { color: var(--blue); font-weight: 800; }
+        .dp-card { margin: 8px 12px 0; overflow: hidden; }
+        .dp-row { display: flex; align-items: center; gap: 10px; padding: 14px; border-bottom: 1px solid var(--line); cursor: pointer; }
+        .dp-row:last-child { border-bottom: none; }
+        .dp-row:active { background: var(--fill); }
+        .dp-name { flex: 1; min-width: 0; font-size: 14px; }
+        .dp-tick { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #CBD1DA; display: flex; align-items: center; justify-content: center; font-size: 12px; color: transparent; flex: none; }
+        .dp-row.on .dp-tick { background: var(--blue); border-color: var(--blue); color: #fff; }
+        .pic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .pic { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--fill); border: 1px solid var(--line); }
+        .pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .pic .del { position: absolute; top: 3px; right: 3px; width: 19px; height: 19px; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; font-size: 12px; line-height: 19px; text-align: center; cursor: pointer; }
+        .pic .cov { position: absolute; left: 0; bottom: 0; padding: 1px 7px; font-size: 10px; background: var(--blue); color: #fff; border-radius: 0 8px 0 0; }
+        .pic-add { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; aspect-ratio: 1; border-radius: 10px; border: 1px dashed #D5D9E0; background: #FCFCFD; color: #A6ABB5; font-size: 11px; cursor: pointer; }
+        .pic-add b { font-size: 22px; font-weight: 400; line-height: 1; }
+        .hint { font-size: 11px; color: #A6ABB5; margin-top: 6px; line-height: 1.5; }
+
+        /* 吸底操作栏（页面级，不随内容滚动） */
+        .actbar { display: none; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: rgba(255,255,255,.98); backdrop-filter: blur(10px); border-top: 1px solid var(--line); padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); gap: 9px; z-index: 55; }
+        .actbar.show { display: flex; }
+        .ab { flex: 1; text-align: center; font-size: 13.5px; font-weight: 700; padding: 10px 0; border-radius: 22px; cursor: pointer; }
+        .ab.ghost { background: var(--fill); color: #4A4F58; border: 1px solid var(--line); }
+        .ab.blue { background: var(--blue); color: #fff; box-shadow: 0 4px 12px rgba(46,107,255,.28); }
+        .ab.red { flex: none; width: 62px; background: #FFF1F0; color: var(--red); border: 1px solid #FFD8D5; }
+
+        /* 卡片上的小操作按钮 */
+        .jbtns { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+        .jbtn { font-size: 12px; font-weight: 700; color: #4A4F58; background: var(--fill); border: 1px solid var(--line); padding: 3px 9px; border-radius: 13px; cursor: pointer; }
+        .jbtn.pri { color: var(--blue); background: var(--blue-light); border-color: #D6E2FF; }
+
+        /* 下拉加载 */
+        .loadmore { text-align: center; font-size: 12px; color: #A6ABB5; padding: 14px 0 10px; }
+        .loadmore:empty { display: none; }
+
+        /* AI 一键填表 */
+        .ai-steps { display: flex; gap: 6px; padding: 12px 14px 2px; }
+        .ai-steps span { flex: 1; text-align: center; font-size: 11.5px; font-weight: 700; color: #A6ABB5; padding: 6px 0; border-radius: 15px; background: #fff; border: 1px solid var(--line); }
+        .ai-steps span.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+        .ai-prog { padding: 6px 4px; }
+        .ai-prog p { font-size: 13px; color: #C4C9D2; padding: 7px 0; display: flex; align-items: center; gap: 7px; }
+        .ai-prog p.done { color: var(--green); }
+        .ai-prog p.now { color: var(--text); font-weight: 700; }
+        .ai-i { display: flex; align-items: flex-start; gap: 9px; padding: 11px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+        .ai-i:active { background: #FAFBFC; }
+        .ai-i:last-child { border-bottom: none; }
+        .cbx { width: 19px; height: 19px; flex: none; border-radius: 5px; border: 1.5px solid #CBD1DA; margin-top: 2px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: transparent; cursor: pointer; }
+        .cbx.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+        .ai-b { flex: 1; min-width: 0; }
+        .ai-b .f { font-size: 12px; color: var(--sub); }
+        .ai-b .val { font-size: 13.5px; color: var(--text); margin-top: 2px; line-height: 1.5; word-break: break-all; }
+        .ai-b .has { font-size: 11.5px; color: #E08A1E; margin-top: 3px; }
+        .ai-b .ai-line { font-size: 12.5px; line-height: 1.6; color: #4A4F58; }
+        .conf { font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; flex: none; }
+        .conf.hi { background: #E8F8EE; color: var(--green); }
+        .conf.lo { background: #FFF4E6; color: #E08A1E; }
+        .ai-tip { margin: 12px 0 0; padding: 10px 12px; background: var(--fill); border-radius: 10px; font-size: 12px; color: #6B7078; line-height: 1.65; }
+        .ai-tip b { color: var(--text); }
+        .ai-tip ul { margin: 5px 0 0 16px; }
+        /* AI 填表入口（表单顶部） */
+        .aibar { display: flex; align-items: center; gap: 10px; margin: 10px 12px 0; padding: 12px 13px; border-radius: 14px; background: linear-gradient(135deg, #EAF0FF, #F4F8FF); border: 1px solid #D6E2FF; cursor: pointer; }
+        .aibar .ai-ic { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #6B9BFF, #3E6BFF); display: flex; align-items: center; justify-content: center; font-size: 17px; flex: none; }
+        .aibar .ai-txt { flex: 1; min-width: 0; }
+        .aibar .ai-txt b { display: block; font-size: 14.5px; font-weight: 800; color: #1E3A8A; }
+        .aibar .ai-txt span { display: block; font-size: 11.5px; color: #5B6B8C; margin-top: 2px; line-height: 1.4; }
+        .aibar .ai-go { flex: none; font-size: 12.5px; font-weight: 800; color: var(--blue); }
+
+        /* ===== 关联客户 / 计薪提成 / 岗位标签 通用 ===== */
+        /* 分段 tab */
+        .segtabs { display: flex; gap: 8px; padding: 12px 12px 2px; }
+        .segtab { flex: 1; text-align: center; font-size: 13.5px; font-weight: 700; padding: 8px 0; border-radius: 20px; background: #fff; border: 1px solid var(--line); color: #4A4F58; cursor: pointer; transition: all .18s; }
+        .segtab.on { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 4px 12px rgba(46,107,255,.24); }
+
+        /* 通用卡片 */
+        .cc { margin: 10px 12px; padding: 13px 14px 0; background: #fff; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 3px 12px rgba(31,35,41,.05); overflow: hidden; }
+        .cc-h { display: flex; align-items: flex-start; gap: 8px; }
+        .cc-name { font-size: 15px; font-weight: 800; flex: 1; min-width: 0; line-height: 1.4; word-break: break-all; }
+        .cc-id { flex: none; font-size: 10.5px; font-weight: 700; color: var(--sub); background: var(--fill); padding: 1px 6px; border-radius: 4px; }
+        .cc-line { font-size: 12px; color: #4A4F58; margin-top: 5px; line-height: 1.55; word-break: break-all; }
+        .cc-line .k { color: var(--sub); }
+        .cc-line b { font-weight: 700; }
+        .cc-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+        .cc-foot { display: flex; align-items: center; gap: 7px; margin-top: 11px; padding: 9px 0; border-top: 1px dashed var(--line); }
+        .cc-foot .meta { flex: 1; min-width: 0; font-size: 10.5px; color: #A6ABB5; line-height: 1.45; }
+
+        /* 标签组卡片 */
+        .tg-name { font-size: 15px; font-weight: 800; }
+        .tg-count { font-size: 11px; color: var(--sub); margin-left: 6px; font-weight: 600; }
+
+        /* chip 输入（联系人等） */
+        .chipin { display: flex; gap: 8px; margin-top: 8px; }
+        .chipin .add-mini { flex: none; padding: 0 14px; background: var(--blue-light); color: var(--blue); border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; }
+
+        /* 费用行 */
+        .fee-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #F6F7F9; }
+        .fee-row:last-child { border-bottom: none; }
+        .fee-row .fl { flex: 1; font-size: 13px; color: #4A4F58; }
+        .fee-row .fin { width: 112px; flex: none; text-align: right; padding: 7px 9px; }
+        .fee-row .fu { flex: none; width: 50px; font-size: 11px; color: var(--sub); }
+
+        /* 调价周期卡 */
+        .pcard { border: 1px solid var(--line); border-radius: 12px; padding: 11px 12px; margin-bottom: 9px; background: #FCFCFD; }
+        .pcard-h { display: flex; align-items: center; font-size: 12.5px; font-weight: 800; margin-bottom: 9px; color: #3A3F47; }
+        .pcard-h .del { margin-left: auto; font-size: 11.5px; color: var(--red); font-weight: 700; cursor: pointer; }
+        .slot-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+        .slot-row .sl { flex: 1; font-size: 12.5px; color: #4A4F58; }
+        .slot-row .fin { width: 108px; flex: none; text-align: right; padding: 7px 9px; }
+        .slot-row .su { flex: none; width: 50px; font-size: 11px; color: var(--sub); }
+        .addp { text-align: center; font-size: 12.5px; font-weight: 700; color: var(--blue); padding: 7px 0; border: 1px dashed #C3D6FF; border-radius: 10px; margin-bottom: 8px; cursor: pointer; }
+
+        /* 选择框（点击弹底部选择器） */
+        .pickfield { display: flex; align-items: center; gap: 8px; width: 100%; border: 1px solid var(--line); background: var(--fill); border-radius: 10px; padding: 10px 11px; font-size: 14px; color: var(--text); cursor: pointer; }
+        .pickfield:active { background: #F1F3F6; }
+        .pickfield .pf-val { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pickfield .pf-val.mut { color: #A6ABB5; }
+        .pickfield .pf-go { flex: none; color: #C4C9D2; font-size: 16px; line-height: 1; }
+
+        /* 确认弹窗 */
+        .cfrm { display: none; position: fixed; inset: 0; z-index: 110; background: rgba(0,0,0,.45); align-items: center; justify-content: center; }
+        .cfrm.show { display: flex; }
+        .cf-box { width: 76%; max-width: 320px; background: #fff; border-radius: 16px; padding: 20px 18px 14px; text-align: center; }
+        .cf-box h5 { font-size: 16px; font-weight: 800; }
+        .cf-box p { font-size: 13px; color: #4A4F58; margin-top: 9px; line-height: 1.6; word-break: break-all; }
+        .cf-btns { display: flex; gap: 10px; margin-top: 18px; }
+        .cf-btns span { flex: 1; font-size: 14.5px; font-weight: 700; padding: 9px 0; border-radius: 22px; cursor: pointer; }
+        .cf-no { background: var(--fill); color: #4A4F58; }
+        .cf-ok { background: var(--red); color: #fff; }
+
+        /* ===== 底部 TabBar（首页与工作台共用）===== */
+        .dock { display: none; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; z-index: 60; }
+        .dock.show { display: block; }
+        .tabbar { background: rgba(255,255,255,.97); backdrop-filter: blur(10px); border-top: 1px solid var(--line); display: flex; align-items: center; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); }
+        .tb-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; position: relative; }
+        .tb-item svg { width: 23px; height: 23px; fill: #9AA0AA; }
+        .tb-item span { font-size: 10.5px; color: #9AA0AA; font-weight: 600; }
+        .tb-item.active svg { fill: var(--blue); }
+        .tb-item.active span { color: var(--blue); }
+        .tb-item.locked { cursor: default; opacity: .6; }
+        .tb-item .tb-lab { display: flex; align-items: center; gap: 3px; }
+        .tb-item .soon { font-size: 8px; font-weight: 700; color: #A6ABB5; background: #F0F1F4; border: 1px solid #E6E8EC; padding: 0 3px; border-radius: 5px; line-height: 1.5; }
+
+        .footnote { text-align: center; font-size: 11px; color: #A6ABB5; padding: 18px 20px 6px; line-height: 1.7; }
+    </style>
+</head>
+<body>
+
+<!-- ================= 视图一：首页（招聘数据统计）================= -->
+<div class="view active" id="view-home">
+<div class="page">
+
+    <div class="header">
+        <div class="hd-top">
+            <div>
+                <div class="hd-name">成都高新区门店</div>
+                <div class="hd-sub">
+                    <span>招聘团队 6 人</span>
+                    <span class="split"></span>
+                    <span class="upd">今日 08:00 更新</span>
+                </div>
+            </div>
+            <div class="hd-right">
+                <div class="hd-avatar">🏢</div>
+            </div>
+        </div>
+        <div class="ranges" id="ranges"></div>
+    </div>
+
+    <!-- KPI：流量四格 + 在职单独一条 -->
+    <div class="card kpi">
+        <div class="kpi-cap" id="kpiCaption"></div>
+        <div class="kpi-row" id="kpiRow"></div>
+        <div class="kpi-on">
+            <span class="t">当前在职人数</span>
+            <b id="onNum">0</b><i>人</i>
+            <span class="d">存量指标 · 截至今日 08:00<br>不随时间筛选变化</span>
+        </div>
+    </div>
+
+    <div class="sec">
+        <div class="sec-head"><span class="bar"></span><h2>招聘漏斗</h2><span class="tip" id="fnRangeTip"></span></div>
+        <div class="card" style="padding-bottom:12px">
+            <div id="funnel"></div>
+        </div>
+    </div>
+
+    <div class="sec">
+        <div class="sec-head"><span class="bar"></span><h2>团队招聘数据</h2><span class="tip" id="teamTip"></span></div>
+        <div class="card" style="overflow:hidden" id="teams"></div>
+    </div>
+
+    <div class="footnote">数据口径与后台「报表中心 - 招聘统计表」一致</div>
+</div>
+</div>
+
+<!-- ================= 视图二：工作台 ================= -->
+<div class="view" id="view-work">
+<div class="page">
+
+    <div class="hd-light">
+        <div class="wb-title">工作台</div>
+    </div>
+
+    <div class="entry">
+        <div class="ent" data-name="系统公告"><span class="ic c-yellow" data-g="bell"></span><span>系统公告</span></div>
+        <div class="ent" data-name="代办事项"><span class="ic c-blue" data-g="todo"></span><span>代办事项</span><span class="n">30</span></div>
+    </div>
+
+    <div id="workGroups"></div>
+
+    <div class="footnote">工作台功能位为原型占位，点击提示暂未开放</div>
+</div>
+</div>
+
+<!-- ================= 视图三：团队成员招聘数据 ================= -->
+<div class="view" id="view-team">
+<div class="page">
+
+    <div class="header">
+        <div class="hd-top">
+            <span class="sb-back" id="navBack">‹</span>
+            <div style="flex:1;min-width:0">
+                <div class="hd-name" id="navName">--</div>
+                <div class="hd-sub" id="navSub"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin:-50px 12px 0;position:relative;z-index:5;overflow:hidden">
+        <div id="teamSum"></div>
+    </div>
+
+    <div class="sec">
+        <div class="sec-head"><span class="bar"></span><h2>团队成员招聘数据</h2><span class="tip" id="memTip"></span></div>
+        <div class="sorts" id="sorts"></div>
+        <div class="card" style="overflow:hidden"><div id="members"></div></div>
+    </div>
+
+    <div class="footnote">点击左上角 ‹ 返回团队招聘数据</div>
+</div>
+</div>
+
+<!-- ================= 岗位管理：列表 ================= -->
+<div class="view" id="view-jobs">
+<div class="page pad0">
+    <div class="mnav">
+        <span class="mv-back" data-back>‹</span>
+        <span class="mv-title">岗位管理</span>
+    </div>
+    <div class="jbar">
+        <div class="jsearch">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
+            <input id="jbKw" placeholder="搜索岗位名称 / 用工单位">
+        </div>
+        <div class="jflt" id="jbFltBtn">筛选<span class="bd" id="jbFltN" style="display:none">0</span></div>
+    </div>
+    <div class="jsum" id="jbSum"></div>
+    <div id="jbList"></div>
+    <div class="loadmore" id="jbMore"></div>
+</div>
+</div>
+
+<!-- ================= 岗位管理：详情 ================= -->
+<div class="view" id="view-job-detail">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title">岗位详情</span></div>
+    <div id="jdBody"></div>
+</div>
+</div>
+
+<!-- ================= 岗位管理：新建 / 编辑 ================= -->
+<div class="view" id="view-job-form">
+<div class="page pad0">
+    <div class="mnav">
+        <span class="mv-back" data-back>‹</span>
+        <span class="mv-title" id="jfTitle">新建岗位</span>
+    </div>
+    <div class="warnbar">⚠️ 请勿在岗位名称、岗位详情、岗位标签中出现「兼职」「日结」「临时工」「短期工」，对外展示时自动屏蔽</div>
+    <div class="aibar" id="jfAi">
+        <span class="ai-ic">✨</span>
+        <div class="ai-txt"><b>AI 一键填表</b><span>粘贴招聘文案，自动识别岗位、薪资、标签与要求</span></div>
+        <span class="ai-go">去填写 ›</span>
+    </div>
+    <div id="jfBody"></div>
+</div>
+</div>
+
+<!-- ================= 岗位：选择招聘部门 ================= -->
+<div class="view" id="view-job-depts">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" id="deptBack">‹</span><span class="mv-title">选择招聘部门</span></div>
+    <div class="jbar">
+        <div class="jsearch">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
+            <input id="dpKw" placeholder="搜索部门">
+        </div>
+    </div>
+    <div id="dpList"></div>
+</div>
+</div>
+
+<!-- ================= 岗位：选择岗位标签 ================= -->
+<div class="view" id="view-job-tags">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" id="tagBack">‹</span><span class="mv-title">选择岗位标签</span><span class="mv-count" id="tgDoneCount">已选 0/5</span></div>
+    <div class="jbar">
+        <div class="jsearch">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
+            <input id="tgKw" placeholder="搜索标签">
+        </div>
+    </div>
+    <div id="tgPickList"></div>
+</div>
+</div>
+
+<!-- ================= 岗位管理：AI 一键填表 ================= -->
+<div class="view" id="view-job-ai">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title">AI 一键填表</span></div>
+    <div class="ai-steps" id="aiSteps"></div>
+    <div id="aiBody"></div>
+</div>
+</div>
+
+<!-- ================= 关联客户：列表 ================= -->
+<div class="view" id="view-customers">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title">关联客户</span></div>
+    <div class="jbar">
+        <div class="jsearch">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
+            <input id="clKw" placeholder="搜索关联客户 / 联系人">
+        </div>
+        <div class="jflt" id="clFltBtn">筛选<span class="bd" id="clFltN" style="display:none">0</span></div>
+    </div>
+    <div id="clList"></div>
+</div>
+</div>
+
+<!-- ================= 关联客户：新增 / 编辑 ================= -->
+<div class="view" id="view-cust-form">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title" id="clfTitle">新增关联客户</span></div>
+    <div id="clfBody"></div>
+</div>
+</div>
+
+<!-- ================= 计薪提成：两个页签 ================= -->
+<div class="view" id="view-pay">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title">计薪提成</span></div>
+    <div class="segtabs" id="payTabs"></div>
+    <div id="payList"></div>
+</div>
+</div>
+
+<!-- ================= 计薪方式：新增 ================= -->
+<div class="view" id="view-pay-method">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title" id="pmTitle">新增计薪方式</span></div>
+    <div id="pmBody"></div>
+</div>
+</div>
+
+<!-- ================= 提成方案：新增 ================= -->
+<div class="view" id="view-pay-plan">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title" id="plTitle">新增提成方案</span></div>
+    <div id="plBody"></div>
+</div>
+</div>
+
+<!-- ================= 岗位标签 ================= -->
+<div class="view" id="view-tags">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title">岗位标签</span></div>
+    <div id="tgList"></div>
+</div>
+</div>
+
+<!-- ================= 岗位标签：新建 / 编辑 ================= -->
+<div class="view" id="view-tag-form">
+<div class="page pad0">
+    <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title" id="tgfTitle">新建标签组</span></div>
+    <div id="tgfBody"></div>
+</div>
+</div>
+
+<!-- ================= 页面级停靠栏与弹层 ================= -->
+<div class="dock show" id="dock">
+    <div class="tabbar">
+        <div class="tb-item active" id="tb-home">
+            <svg viewBox="0 0 24 24"><path d="M12 3.1 4 8.2V21h5.2v-5.6h5.6V21H20V8.2L12 3.1z"/></svg>
+            <span>首页</span>
+        </div>
+        <div class="tb-item" id="tb-work">
+            <svg viewBox="0 0 24 24"><path d="M4.5 4.5h6v6h-6zm9 0h6v6h-6zm-9 9h6v6h-6zm9 0h6v6h-6z"/></svg>
+            <span>工作台</span>
+        </div>
+        <div class="tb-item locked" id="tb-mine">
+            <svg viewBox="0 0 24 24"><path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4zm0 1.9c-3.9 0-7.2 2-7.2 4.6V21h14.4v-2.5c0-2.6-3.3-4.6-7.2-4.6z"/></svg>
+            <span class="tb-lab">我的<i class="soon">待开发</i></span>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ===== 页面级吸底操作栏（挂在视图外，保证不随内容滚动）===== -->
+<div class="actbar" id="bar-jobs" data-view="view-jobs">
+    <div class="ab blue" id="jbNew">＋ 新建岗位</div>
+</div>
+<div class="actbar" id="bar-job-detail" data-view="view-job-detail">
+    <div class="ab ghost" id="jdCopy">复制</div>
+    <div class="ab ghost" id="jdLog">审核记录</div>
+    <div class="ab blue" id="jdEdit">编辑</div>
+</div>
+<div class="actbar" id="bar-job-form" data-view="view-job-form">
+    <div class="ab ghost" id="jfCancel">取消</div>
+    <div class="ab blue" id="jfSubmit">提交</div>
+</div>
+<div class="actbar" id="bar-customers" data-view="view-customers">
+    <div class="ab blue" id="clNew">＋ 新增关联客户</div>
+</div>
+<div class="actbar" id="bar-cust-form" data-view="view-cust-form">
+    <div class="ab blue" id="clfSave">保存</div>
+</div>
+<div class="actbar" id="bar-pay" data-view="view-pay">
+    <div class="ab blue" id="payNew">＋ 新增计薪方式</div>
+</div>
+<div class="actbar" id="bar-pay-method" data-view="view-pay-method">
+    <div class="ab ghost" id="pmCancel">取消</div>
+    <div class="ab blue" id="pmSave">保存</div>
+</div>
+<div class="actbar" id="bar-pay-plan" data-view="view-pay-plan">
+    <div class="ab ghost" id="plCancel">取消</div>
+    <div class="ab blue" id="plSave">保存</div>
+</div>
+<div class="actbar" id="bar-tags" data-view="view-tags">
+    <div class="ab blue" id="tgNew">＋ 新建标签组</div>
+</div>
+<div class="actbar" id="bar-tag-form" data-view="view-tag-form">
+    <div class="ab blue" id="tgfSave">保存</div>
+</div>
+<div class="actbar" id="bar-job-depts" data-view="view-job-depts">
+    <div class="ab blue" id="deptPickDone">保存</div>
+</div>
+<div class="actbar" id="bar-tag-pick" data-view="view-job-tags">
+    <div class="ab blue" id="tagPickDone">确定</div>
+</div>
+
+<div class="mask" id="mask"></div>
+<div class="sheet" id="sheet">
+    <div class="sh-head"><b>选择统计时间</b><span class="x" id="shClose">✕</span></div>
+    <div class="sh-body">
+        <div class="sh-row"><label>开始日期</label><input type="date" id="dtStart"></div>
+        <div class="sh-row"><label>结束日期</label><input type="date" id="dtEnd"></div>
+        <div class="sh-sum" id="shSum"></div>
+        <div class="sh-err" id="shErr"></div>
+    </div>
+    <div class="sh-foot">
+        <span class="btn ghost" id="shCancel">取消</span>
+        <span class="btn primary" id="shOk">确定</span>
+    </div>
+</div>
+
+<!-- ===== 岗位管理相关弹层（内容由 JS 渲染）===== -->
+<div class="mask" id="sheetMask"></div>
+<div class="sheet" id="jbFilter"></div>
+<div class="sheet" id="rowSheet"></div>
+<div class="sheet" id="logSheet"></div>
+<div class="sheet" id="clFilter"></div>
+<div class="sheet" id="pickSheet"></div>
+<div class="cfrm" id="cfrm"></div>
+<input type="file" id="picInput" accept="image/jpeg,image/jpg,image/png" multiple style="display:none">
+<input type="file" id="vidInput" accept="video/*" style="display:none">
+<input type="file" id="cImg" accept="image/jpeg,image/jpg,image/png" multiple style="display:none">
+<input type="file" id="cCert" accept="image/jpeg,image/jpg,image/png" multiple style="display:none">
+
+<script>
+/* ============================================================
+   mock 数据：接后端后替换为 /report/vitae 招聘统计表接口数据
+   漏斗三级：录入/分配数(vitae_count) → 已面试人数(auditioned_count)
+   → 已入职人数(join_count)；离职数取期间离职，在职人数取档案存量
+   ============================================================ */
+
+// 时间范围：f = 相对该团队「近7天」各项流量的倍数；cmp = 较上一周期
+const RANGES = [
+    { key: 'today',   label: '今天',   f: .178,  cmp: { vitae: 4.2,  audition: -6.5, join: 3.8,  quit: -8.3 } },
+    { key: 'week',    label: '近7天',  f: 1,     cmp: { vitae: 12.4, audition: 9.1,  join: 15.1, quit: -3.4 } },
+    { key: 'month',   label: '近30天', f: 4.14,  cmp: { vitae: 8.6,  audition: 5.2,  join: 11.4, quit: 2.1 } },
+    { key: 'quarter', label: '近90天', f: 11.88, cmp: { vitae: 21.3, audition: 14.7, join: 18.9, quit: 6.7 } },
+    { key: 'custom',  label: '自定义', f: null },
+];
+
+// 漏斗三级链路（顺序即转化顺序，rate = 相对上一级的转化率基准）
+const CHAIN = [
+    { key: 'vitae',    label: '录入/分配数' },
+    { key: 'audition', label: '已面试人数', rate: .48 },
+    { key: 'join',     label: '已入职人数', rate: .39 },
+];
+
+// 列表流量列（在职人数是存量，单独用徽标展示，不进这一组）
+const COLS = [
+    { key: 'vitae',    label: '录入/分配' },
+    { key: 'audition', label: '已面试' },
+    { key: 'join',     label: '已入职', hi: true },
+    { key: 'quit',     label: '离职',   rd: true },
+];
+
+// 团队（门店）：week = 该团队近7天录入/分配数基准
+// 成员：share = 录入/分配份额（团队内合计为 1），dev = 转化质量系数，
+//      quit = 近7天离职数（随时间范围缩放），on = 当前在职人数（存量，不随时间变化）
+const TEAMS = [
+    { name: '成都高新区门店', week: 326, members: [
+        { name: '王雨薇', role: '招聘顾问', share: .239, dev: 1.06, quit: 3, on: 32 },
+        { name: '李伟东', role: '招聘专员', share: .203, dev: 1.00, quit: 3, on: 27 },
+        { name: '张梦琪', role: '招聘顾问', share: .178, dev: .96,  quit: 4, on: 24 },
+        { name: '陈浩',   role: '招聘专员', share: .156, dev: .93,  quit: 2, on: 21 },
+        { name: '刘思彤', role: '店员',     share: .144, dev: 1.08, quit: 2, on: 18, store: true },
+        { name: '赵鹏',   role: '招聘专员', share: .080, dev: .85,  quit: 1, on: 12 },
+    ]},
+    { name: '双流航空港门店', week: 202, members: [
+        { name: '周雅琴', role: '招聘顾问', share: .31, dev: 1.02, quit: 2, on: 26 },
+        { name: '吴建国', role: '招聘专员', share: .27, dev: .97,  quit: 3, on: 22 },
+        { name: '孙晓雯', role: '招聘专员', share: .24, dev: 1.05, quit: 2, on: 19 },
+        { name: '马涛',   role: '店员',     share: .18, dev: .90,  quit: 1, on: 14, store: true },
+    ]},
+    { name: '温江科技城门店', week: 147, members: [
+        { name: '黄丽娟', role: '招聘顾问', share: .38, dev: 1.04, quit: 2, on: 23 },
+        { name: '郑凯',   role: '招聘专员', share: .34, dev: .94,  quit: 3, on: 17 },
+        { name: '许静',   role: '招聘专员', share: .28, dev: .99,  quit: 1, on: 15 },
+    ]},
+    { name: '郫都高新西门店', week: 101, members: [
+        { name: '杨帆',   role: '招聘顾问', share: .42, dev: 1.01, quit: 2, on: 19 },
+        { name: '朱敏',   role: '招聘专员', share: .33, dev: .92,  quit: 2, on: 14 },
+        { name: '秦风',   role: '招聘专员', share: .25, dev: .88,  quit: 1, on: 11 },
+    ]},
+];
+
+const PALETTE = ['#2E6BFF', '#4E86FF', '#FF6A1F', '#18A058', '#F4382C', '#7B61FF', '#0FB5A5', '#E86A10'];
+
+const SORTS = [
+    { key: 'join',     label: '按已入职' },
+    { key: 'audition', label: '按已面试' },
+    { key: 'vitae',    label: '按录入/分配' },
+];
+
+const DAY = 864e5;
+
+/* ---------- 自定义区间的按日推导（周末按 .75 折算）---------- */
+function parseDate(s) { const p = s.split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); }
+function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function md(d) { return String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function dayUnit(ms) { const w = new Date(ms).getDay(); return (w === 0 || w === 6) ? .75 : 1.10; }
+function daySum(startMs, days) { let t = 0; for (let i = 0; i < days; i++) t += dayUnit(startMs + i * DAY); return t; }
+
+/* ---------- 渲染状态 ---------- */
+let teamIdx = 0;
+let rangeIdx = 1;   // 默认近7天
+let sortKey = 'join';
+let customSel = null;   // { start:'YYYY-MM-DD', end:'YYYY-MM-DD' }
+
+const curTeam = () => TEAMS[teamIdx];
+
+function rangeInfo() {
+    if (rangeIdx === 4) {
+        const s = parseDate(customSel.start), e = parseDate(customSel.end);
+        const days = Math.round((e - s) / DAY) + 1;
+        return { label: md(s) + ' ~ ' + md(e) + ' · ' + days + '天', days, startMs: s.getTime() };
+    }
+    return { label: RANGES[rangeIdx].label, f: RANGES[rangeIdx].f };
+}
+
+// 当前区间相对「近7天」的倍数：预设区间直接取 f，自定义区间按折算天数/7
+function curScale() {
+    const r = rangeInfo();
+    return r.f != null ? r.f : daySum(r.startMs, r.days) / 7;
+}
+
+// 环比：预设区间用写好的值，自定义区间按上一个等长周期推导
+function rangeCmp() {
+    if (rangeIdx !== 4) return RANGES[rangeIdx].cmp;
+    const r = rangeInfo();
+    const cur = daySum(r.startMs, r.days), prev = daySum(r.startMs - r.days * DAY, r.days);
+    const d0 = (cur - prev) / prev * 100 * .4;   // 只取四成权重：区间里周末天数多寡会把环比拉得过大
+    const j = k => { const x = Math.sin(r.startMs / DAY * 12.9898 + k * 78.233) * 43758.5453; return (x - Math.floor(x) - .5) * 10; };
+    return { vitae: d0 + j(1), audition: d0 + j(2), join: d0 + j(3), quit: d0 + j(4) };
+}
+
+/* ---------- 推导：每位成员在当前时间范围内的数据 ---------- */
+function buildMember(m, week, scale, color) {
+    const s = {};
+    let prev = Math.max(1, Math.round(week * scale * m.share));
+    CHAIN.forEach((c, i) => {
+        if (i === 0) { s[c.key] = prev; return; }
+        prev = Math.round(prev * c.rate * m.dev);
+        s[c.key] = prev;
+    });
+    s.quit = Math.round(m.quit * scale);          // 离职数随时间范围变化
+    s.on = m.on;                                  // 在职人数是存量，不随时间范围变化
+    s.role = m.role; s.name = m.name; s.color = color; s.store = m.store;
+    return s;
+}
+
+function totals(list) {
+    const t = {};
+    COLS.forEach(c => { t[c.key] = list.reduce((a, r) => a + r[c.key], 0); });
+    t.on = list.reduce((a, r) => a + r.on, 0);
+    return t;
+}
+
+function rowsOf(team) { return team.members.map((m, i) => buildMember(m, team.week, curScale(), PALETTE[i % PALETTE.length])); }
+function curTotals(team) { return totals(rowsOf(team)); }
+
+/* ---------- 视图切换 ---------- */
+let curView = 'view-home';
+// 每个视图同步一个 hash，地址栏可单独复制分享；用 replaceState 不累积历史
+function syncHash(id) {
+    const h = '#' + id;
+    if (location.hash === h) return;
+    try { history.replaceState(null, '', h); }
+    catch (e) { location.replace(h); }
+}
+function switchView(id, anim) {
+    curView = id;
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active', 'anim-push', 'anim-pop'));
+    const el = document.getElementById(id);
+    el.classList.add('active', anim);
+    el.scrollTop = 0;
+    document.getElementById('dock').classList.toggle('show', id === 'view-home' || id === 'view-work');
+    document.querySelectorAll('.actbar[data-view]').forEach(b => b.classList.toggle('show', b.dataset.view === id));
+    document.getElementById('tb-home').classList.toggle('active', id === 'view-home');
+    document.getElementById('tb-work').classList.toggle('active', id === 'view-work');
+    syncHash(id);
+}
+
+// 直接用链接打开某个页面（带状态的子页给出合理落点）
+function applyHash() {
+    const id = (location.hash || '').replace(/^#/, '');
+    if (!id || id === curView) return;
+    switch (id) {
+        case 'view-home': goTab('view-home'); break;
+        case 'view-work': goTab('view-work'); break;
+        case 'view-team': render(); viewStack.length = 0; viewStack.push('view-home'); pushView('view-team'); break;
+        case 'view-jobs': openJobs(); break;
+        case 'view-customers': openClients(); break;
+        case 'view-pay': openPay(); break;
+        case 'view-tags': openTags(); break;
+        case 'view-job-form': openJobs(); openForm(null); break;
+        case 'view-job-depts': openJobs(); openForm(null); openDeptPage(); break;
+        case 'view-job-tags': openJobs(); openForm(null); openTagPage(); break;
+        case 'view-cust-form': openClients(); openClientForm(null); break;
+        case 'view-pay-method': openPay(); openMethodForm(); break;
+        case 'view-pay-plan': openPay(); openPlanForm(); break;
+        case 'view-tag-form': openTags(); openTagGroupForm(null); break;
+        case 'view-job-detail': openJobs(); break;
+    }
+}
+
+/* ---------- 时间范围 chips ---------- */
+function renderRanges() {
+    document.getElementById('ranges').innerHTML = RANGES.map((r, i) =>
+        `<span class="rg${i === rangeIdx ? ' on' : ''}" data-i="${i}">${r.label}</span>`).join('');
+    document.querySelectorAll('.rg').forEach(el => el.onclick = () => {
+        if (+el.dataset.i === 4) { openSheet(); return; }
+        rangeIdx = +el.dataset.i;
+        render();
+    });
+}
+
+/* ---------- KPI ---------- */
+function cmpHtml(v) {
+    const cls = v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
+    const arrow = v > 0 ? '▲' : v < 0 ? '▼' : '—';
+    return `<div class="kpi-cmp ${cls}">${arrow} ${Math.abs(v).toFixed(1)}%</div>`;
+}
+
+function renderKpi(T) {
+    const c = rangeCmp();
+    document.getElementById('kpiCaption').textContent = curTeam().name + ' · ' + rangeInfo().label + ' · 较上一周期';
+    document.getElementById('kpiRow').innerHTML = [
+        { n: T.vitae,    l: '录入/分配数', cmp: c.vitae },
+        { n: T.audition, l: '已面试人数', cmp: c.audition },
+        { n: T.join,     l: '已入职人数', cmp: c.join },
+        { n: T.quit,     l: '离职人数',   cmp: c.quit },
+    ].map(x => `<div class="kpi-cell">
+        <div class="kpi-num">${x.n}</div>
+        <div class="kpi-label">${x.l}</div>
+        ${cmpHtml(x.cmp)}
+    </div>`).join('');
+    document.getElementById('onNum').textContent = T.on;
+}
+
+/* ---------- 漏斗 ---------- */
+function renderFunnel(T) {
+    const max = T.vitae || 1;
+    const shade = ['#2E6BFF', '#4E86FF', '#8CB8FF'];
+    const html = CHAIN.map((c, idx) => {
+        const val = T[c.key];
+        const prev = idx > 0 ? T[CHAIN[idx - 1].key] : 0;
+        const cv = idx > 0 && prev ? (val / prev * 100) : null;
+        const width = Math.max(14, val / max * 100);
+        return `
+            <div class="fn-step">
+                <span class="fn-lab">${c.label}</span>
+                <span class="fn-track"><span class="fn-bar" style="width:${width}%;background:${shade[idx]}"><i>${val}</i></span></span>
+                <span class="fn-cv">${cv === null ? '<b>100%</b>基准' : '<b>' + cv.toFixed(0) + '%</b>转化'}</span>
+            </div>`;
+    }).join('');
+    document.getElementById('funnel').innerHTML = `<div class="fn-wrap">${html}</div>`;
+    document.getElementById('fnRangeTip').textContent = rangeInfo().label;
+}
+
+/* ---------- 列表通用片段 ---------- */
+function numsHtml(T) {
+    return COLS.map(c => `<span class="mb-num"><em>${c.label}</em><b${c.hi ? ' class="hi"' : c.rd ? ' class="rd"' : ''}>${T[c.key]}</b></span>`).join('');
+}
+function onPill(n, soft) {
+    return `<span class="on-pill${soft ? ' soft' : ''}"><em>在职</em><b>${n}</b></span>`;
+}
+
+/* ---------- 团队列表（点击跳转到成员页）---------- */
+function renderTeams() {
+    document.getElementById('teamTip').textContent = '共 ' + TEAMS.length + ' 个团队 · 点击查看成员';
+    document.getElementById('teams').innerHTML = TEAMS.map((t, i) => {
+        const T = curTotals(t);
+        return `
+        <div class="tm${i === teamIdx ? ' on' : ''}" data-i="${i}">
+            <span class="tm-av">🏬</span>
+            <div class="tm-main">
+                <div class="tm-r1">
+                    <span class="tm-name">${t.name}</span>
+                    <span class="tm-cnt">${t.members.length} 人</span>
+                    ${i === teamIdx ? '<span class="tm-cur">当前</span>' : ''}
+                    ${onPill(T.on)}
+                    <span class="tm-go">›</span>
+                </div>
+                <div class="mb-nums">${numsHtml(T)}</div>
+            </div>
+        </div>`;
+    }).join('');
+    document.querySelectorAll('#teams .tm').forEach(el => el.onclick = () => {
+        teamIdx = +el.dataset.i;
+        render();
+        pushView('view-team');
+    });
+}
+
+/* ---------- 团队成员页 ---------- */
+function renderTeamPage() {
+    const t = curTeam(), T = curTotals(t);
+    document.getElementById('navName').textContent = t.name;
+    document.getElementById('navSub').innerHTML = `<span>招聘团队 ${t.members.length} 人</span><span class="split"></span><span class="upd">今日 08:00 更新</span>`;
+    document.getElementById('teamSum').innerHTML = `
+        <div class="tm on static">
+            <span class="tm-av">🏬</span>
+            <div class="tm-main">
+                <div class="tm-r1">
+                    <span class="tm-name">${t.name}</span>
+                    <span class="tm-cnt">${t.members.length} 人</span>
+                    ${onPill(T.on)}
+                </div>
+                <div class="mb-nums">${numsHtml(T)}</div>
+            </div>
+        </div>`;
+    document.getElementById('memTip').textContent = rangeInfo().label + ' · 共 ' + t.members.length + ' 人';
+}
+
+function renderMembers(rows) {
+    const key = sortKey;
+    const list = rows.slice().sort((a, b) => b[key] - a[key] || b.vitae - a.vitae);
+    const ref = Math.max(...list.map(r => r[key]), 1);
+
+    document.getElementById('members').innerHTML = list.map((r, i) => `
+        <div class="mb">
+            <span class="mb-rank${i < 3 ? ' top' : ''}">${i < 3 ? ['🥇', '🥈', '\u{1F949}'][i] : i + 1}</span>
+            <span class="mb-av" style="background:${r.color}">${r.name.charAt(0)}</span>
+            <div class="mb-main">
+                <div class="mb-row1">
+                    <span class="mb-name">${r.name}</span>
+                    <span class="mb-role${r.store ? ' store' : ''}">${r.role}</span>
+                    ${onPill(r.on, true)}
+                </div>
+                <div class="mb-nums">${numsHtml(r)}</div>
+                <div class="mb-bar"><i style="width:${Math.min(100, r[key] / ref * 100)}%"></i></div>
+            </div>
+        </div>`).join('');
+}
+
+function renderSorts() {
+    document.getElementById('sorts').innerHTML = SORTS.map(s =>
+        `<span class="srt${s.key === sortKey ? ' on' : ''}" data-k="${s.key}">${s.label}</span>`).join('');
+    document.querySelectorAll('.srt').forEach(el => el.onclick = () => {
+        sortKey = el.dataset.k;
+        renderSorts();
+        renderMembers(rowsOf(curTeam()));
+    });
+}
+
+document.getElementById('navBack').onclick = () => {
+    render();
+    popView();
+};
+
+/* ---------- 轻提示 ---------- */
+let toastTimer;
+function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 1600);
+}
+
+/* ---------- 工作台 ---------- */
+// 线性图标路径（24x24，白色描边）
+const G = {
+    bell: 'M6 10.5a6 6 0 0 1 12 0c0 4.5 1.8 5.8 1.8 5.8H4.2s1.8-1.3 1.8-5.8m4.6 8.6a2.6 2.6 0 0 0 4.8 0',
+    todo: 'M8.5 3.5h7v2.5h-7zM6.5 4.8h-1a1.5 1.5 0 0 0-1.5 1.5v13.2A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V6.3a1.5 1.5 0 0 0-1.5-1.5h-1M8.8 13.5l2.2 2.2 4.4-4.4',
+    users: 'M15.5 19.5v-1.6a3.4 3.4 0 0 0-3.4-3.4H6.9a3.4 3.4 0 0 0-3.4 3.4v1.6M11 11.2a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2m5.6 3.3a3.4 3.4 0 0 1 3.4 3.4v1.6M16.2 4.4a3.2 3.2 0 0 1 0 6.1',
+    case: 'M4.5 8.5h15V19a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19zM8 8.5V6A1.5 1.5 0 0 1 9.5 4.5h5A1.5 1.5 0 0 1 16 6v2.5M4.5 13h15',
+    person: 'M12 11.5a3.8 3.8 0 1 0 0-7.6 3.8 3.8 0 0 0 0 7.6M5.5 20.5a6.5 6.5 0 0 1 13 0',
+    star: 'M12 3.8l2.6 5.2 5.8.9-4.2 4.1 1 5.7-5.2-2.7-5.2 2.7 1-5.7L3.6 9.9l5.8-.9z',
+    list: 'M8.5 6.5h12M8.5 12h12M8.5 17.5h12M4 6.5h.01M4 12h.01M4 17.5h.01',
+    id: 'M3.5 5.5h17v13h-17zM8.5 14.5a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4m-2.8 2.8h5.6M14 10h4m-4 3.5h4',
+    chart: 'M4 20.5h16M7 20.5v-7M12 20.5v-11M17 20.5v-5',
+    tag: 'M12.5 3.5H4v8.5l8 8 8.5-8.5zM7.5 7.6h.01',
+    inbox: 'M3.5 12.5h5l1.5 3h4l1.5-3h5M3.5 12.5 6.5 4.5h11l3 8v7h-17z',
+    docAdd: 'M14 4.5H6.5v15H13M14 4.5l4.5 4.5H14zM18.5 12v5m-2.5-2.5h5',
+    doc: 'M6.5 3.5h7l4.5 4.5v12.5h-11.5zM13.5 3.5V8h4.5M9.5 13h5m-5 3.5h5',
+    docCheck: 'M6.5 3.5h7l4.5 4.5V14M6.5 3.5v17H13M9 13.5l2.2 2.2 4.3-4.3',
+    calCheck: 'M4.5 6.5h15v14h-15zM8 3.5v5m8-5v5M8.5 14l2.2 2.2 4.3-4.3',
+    folder: 'M3.5 6a1.5 1.5 0 0 1 1.5-1.5h4l2 2.5h8a1.5 1.5 0 0 1 1.5 1.5V18a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z',
+    badge: 'M9.5 3.5h5v3h-5zM5.5 6.5h13v13a1.5 1.5 0 0 1-1.5 1.5H7a1.5 1.5 0 0 1-1.5-1.5zM9.5 14a2.5 2.5 0 1 0 5 0 2.5 2.5 0 0 0-5 0m-1.7 4.5h8.4',
+    bed: 'M3.5 18.5v-8h12a4 4 0 0 1 4 4v4M3.5 10.5v-6M3.5 18.5h17M7 10.5h4',
+    ban: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17M6 6l12 12',
+    trophy: 'M8 4.5h8v4.8a4 4 0 0 1-8 0zM8 6.2H5v1.2a3.6 3.6 0 0 0 2.6 3.5M16 6.2h3v1.2a3.6 3.6 0 0 1-2.6 3.5M12 14v3.5M8.5 20h7',
+    out: 'M14 4.5h5.5v15H14M10.5 8.5 6.5 12l4 3.5M6.5 12h8',
+    umbrella: 'M12 3.5a8.5 8.5 0 0 1 8.5 8.5h-17A8.5 8.5 0 0 1 12 3.5m0 8.5v6.2a2.3 2.3 0 0 0 4.6 0',
+    org: 'M9 3.5h6v5H9zM3.5 15.5h5v-4h-5zm12 0h5v-4h-5zM6 11.5V9.5h12v2M12 8.5v3',
+    pie: 'M12 3.5v8.5h8.5A8.5 8.5 0 1 1 12 3.5',
+    chat: 'M20.5 11.8a8 8 0 0 1-11.7 7.1L4 20.5l1.7-4.6A8 8 0 1 1 20.5 11.8M10.2 9.8a1.9 1.9 0 1 1 3.4 1.3c-.8.7-1.6 1-1.6 2.1m0 2.6h.01',
+    clock: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17m0-12.8V12l3 1.9',
+    link: 'M10 13.8a4.6 4.6 0 0 0 6.6 0l2.2-2.2a4.6 4.6 0 0 0-6.5-6.5l-1.2 1.2M13.8 10a4.6 4.6 0 0 0-6.6 0L5 12.2a4.6 4.6 0 0 0 6.5 6.5l1.2-1.2',
+    money: 'M3.5 6.5h17v11h-17zM12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4M6.3 9.5h.01m11.4 5h.01',
+    wallet: 'M3.5 8.5h16a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5zM3.5 8.5V6A1.5 1.5 0 0 1 5 4.5h11M17.5 14h3.5',
+    receipt: 'M6 3.5h12v17l-2.5-1.6-2.5 1.6-2.5-1.6L8 20.5l-2-1.6zM9 8h6m-6 4h6m-6 4h4',
+    swap: 'M4 8.5h13m0 0-3.5-3.5M17 8.5l-3.5 3.5M20 16H7m0 0 3.5-3.5M7 16l3.5 3.5',
+    building: 'M5.5 20.5V5A1.5 1.5 0 0 1 7 3.5h6A1.5 1.5 0 0 1 14.5 5v15.5M14.5 9.5H18a1.5 1.5 0 0 1 1.5 1.5v9.5M3 20.5h18M8 7.5h3M8 11h3M8 14.5h3',
+};
+
+const WORK = [
+    { title: '用工管理', items: [
+        ['关联客户', 'users', 'blue', 'view-customers'], ['岗位管理', 'case', 'purple', 'view-jobs'], ['岗位审核', 'person', 'orange'], ['用工排行', 'star', 'green'],
+        ['岗位展示', 'list', 'orange'], ['关联企业', 'id', 'blue'], ['计薪提成', 'chart', 'purple', 'view-pay'], ['标签管理', 'tag', 'blue', 'view-tags'],
+    ]},
+    { title: '招聘管理', items: [
+        ['接单', 'inbox', 'blue'], ['人员录入', 'docAdd', 'green'], ['录入记录', 'doc', 'purple'], ['面试管理', 'calCheck', 'orange'],
+        ['我的接单', 'inbox', 'green'], ['我的简历库', 'folder', 'orange'], ['简历库', 'folder', 'purple'], ['我的员工', 'badge', 'blue'],
+        ['投递记录', 'doc', 'green'], ['员工报送', 'users', 'blue'],
+    ]},
+    { title: '人事管理', items: [
+        ['项目管理', 'building', 'orange'], ['入职合同', 'docCheck', 'purple'], ['员工档案', 'id', 'blue'], ['宿舍审核', 'bed', 'green'],
+        ['宿舍管理', 'bed', 'purple'], ['黑名单', 'ban', 'purple'], ['招聘排行榜', 'trophy', 'orange'], ['离职审核', 'out', 'blue'],
+        ['离职合同', 'doc', 'green'], ['保险报案', 'umbrella', 'purple'], ['部门管理', 'org', 'green'], ['住宿记录', 'list', 'orange'],
+        ['招聘统计', 'pie', 'purple'], ['来源统计', 'chart', 'green'], ['问题反馈', 'chat', 'orange'], ['考勤审批', 'clock', 'purple'],
+        ['考勤待审', 'clock', 'orange'], ['关联档案', 'link', 'blue'], ['关联合同', 'link', 'blue'],
+    ]},
+    { title: '灵活用工', items: [
+        ['岗位管理', 'case', 'purple'], ['岗位审核', 'docCheck', 'purple'], ['用工记录', 'doc', 'green'],
+    ]},
+    { title: '财务管理', items: [
+        ['发薪记录', 'money', 'orange'], ['发薪明细', 'list', 'green'], ['发薪审核', 'docCheck', 'blue'], ['发薪打款', 'wallet', 'purple'],
+        ['预支审核', 'wallet', 'purple'], ['预支申请', 'money', 'green'], ['预支记录', 'money', 'blue'], ['薪酬变更', 'swap', 'purple'],
+        ['报销申请', 'receipt', 'green'], ['报销记录', 'receipt', 'orange'], ['报销待审', 'receipt', 'purple'], ['关联发薪', 'link', 'orange'],
+    ]},
+];
+
+const icon = g => `<svg viewBox="0 0 24 24"><path d="${G[g]}"/></svg>`;
+
+function renderWork() {
+    document.getElementById('workGroups').innerHTML = WORK.map(grp => `
+        <div class="card grp"><h3>${grp.title}</h3><div class="grid">${
+            grp.items.map(it => `<div class="cell" data-name="${it[0]}" data-jump="${it[3] || ''}"><span class="ic c-${it[2]}">${icon(it[1])}</span><span>${it[0]}</span></div>`).join('')
+        }</div></div>`).join('');
+    document.querySelectorAll('.entry .ic[data-g]').forEach(el => el.innerHTML = icon(el.dataset.g));
+    document.querySelectorAll('#view-work [data-name]').forEach(el => el.onclick = () => {
+        const open = VIEW_OPEN[el.dataset.jump];
+        if (open) open();
+        else toast(el.dataset.name + '暂未开放');
+    });
+}
+
+document.getElementById('tb-home').onclick = () => {
+    if (curView !== 'view-home') { render(); goTab('view-home'); }
+};
+document.getElementById('tb-work').onclick = () => {
+    if (curView !== 'view-work') goTab('view-work');
+};
+
+/* ---------- 自定义时间弹层 ---------- */
+const mask = document.getElementById('mask');
+const sheet = document.getElementById('sheet');
+const iStart = document.getElementById('dtStart');
+const iEnd = document.getElementById('dtEnd');
+
+function openSheet() {
+    const today = new Date();
+    iStart.max = iEnd.max = iso(today);
+    if (customSel) {
+        iStart.value = customSel.start; iEnd.value = customSel.end;
+    } else {
+        iEnd.value = iso(today);
+        iStart.value = iso(new Date(today.getTime() - 6 * DAY));
+    }
+    document.getElementById('shErr').textContent = '';
+    updateSum();
+    mask.classList.add('show');
+    sheet.classList.add('show');
+}
+function closeSheet() { mask.classList.remove('show'); sheet.classList.remove('show'); }
+
+function readSpan() {
+    if (!iStart.value || !iEnd.value) return '请选择开始和结束日期';
+    const days = Math.round((parseDate(iEnd.value) - parseDate(iStart.value)) / DAY) + 1;
+    if (days < 1) return '结束日期需不早于开始日期';
+    if (days > 365) return '最多选择 365 天';
+    return { days };
+}
+function updateSum() {
+    const r = readSpan();
+    const el = document.getElementById('shSum');
+    if (typeof r === 'string') { el.innerHTML = '请先选择完整的日期区间'; return; }
+    const v = Math.round(curTeam().week * daySum(parseDate(iStart.value).getTime(), r.days) / 7);
+    el.innerHTML = `已选 <b>${r.days}</b> 天，该团队这段时间录入/分配数约 <b>${v}</b>`;
+}
+
+iStart.onchange = iEnd.onchange = updateSum;
+document.getElementById('shClose').onclick = closeSheet;
+document.getElementById('shCancel').onclick = closeSheet;
+mask.onclick = closeSheet;
+document.getElementById('shOk').onclick = () => {
+    const r = readSpan();
+    if (typeof r === 'string') { document.getElementById('shErr').textContent = r; return; }
+    customSel = { start: iStart.value, end: iEnd.value };
+    rangeIdx = 4;
+    closeSheet();
+    render();
+};
+
+/* ---------- 主渲染（两个视图一起刷新，切过去就是最新数据）---------- */
+function render() {
+    const rows = rowsOf(curTeam());
+    const T = totals(rows);
+    renderRanges();
+    renderKpi(T);
+    renderFunnel(T);
+    renderTeams();
+    renderTeamPage();
+    renderSorts();
+    renderMembers(rows);
+}
+/* ============================================================
+   岗位管理：对齐商户管理后台「用工管理 · 岗位列表」
+   字段名、枚举值、审核状态与上下架规则、AI 填表逻辑均与后台一致
+   ============================================================ */
+const JOB_EMPLOYERS = ['武汉华星光电技术有限公司', '武汉天马微电子有限公司', '鄂州三安光电有限公司', '武汉联想产业基地'];
+const JOB_WORK_TYPES = ['生产制造', '物流仓储', '建筑装修', '餐饮服务', '家政安保', '其他工种'];
+const JOB_DEPTS = ['招聘一部', '招聘二部', '招聘三部', '驻厂管理部', '门店运营部', '总部直招组'];
+const JOB_POSITIONS = ['普工/操作工', '质检员', '包装工', '焊工', '叉车工', '仓管员', '其他职位'];
+const JOB_POST_TYPES = ['蓝领', '白领', '技术工'];
+const JOB_ADVISORS = ['王顾问', '李顾问', '张顾问'];
+const JOB_AUDITS = ['初审', '复审', '已通过', '已取消'];
+const JOB_SALARY_PRESETS = ['计薪说明', '餐费说明', '保险扣款', '借支反馈', '发薪时间', '住宿扣款', '水电说明'];
+const JOB_ONBOARD_PRESETS = ['所需资料', '体检说明', '入职流程', '离职说明', '住宿安排', '注意事项'];
+const JOB_TAG_GROUPS = [
+    { name: '薪资福利', tags: ['五险一金', '可预支工资', '加班费另算', '绩效奖金', '年终奖', '高温补贴', '夜班补贴'] },
+    { name: '食宿交通', tags: ['包吃', '包住', '餐补', '房补', '免费班车', '当天安排住宿', '宿舍有空调'] },
+    { name: '工作环境', tags: ['坐班', '长白班', '恒温车间', '无尘车间', '不穿无尘服', '可带手机', '工作轻松'] },
+    { name: '入职相关', tags: ['免体检', '当天入职', '可预支', '男女不限', '经验不限', '学历不限'] },
+];
+const TAG_POOL = JOB_TAG_GROUPS.reduce((a, g) => a.concat(g.tags), []);
+const AUDIT_CLS = { '初审': 'a-other', '复审': 'a-late', '已通过': 'a-normal', '已取消': 'a-absent' };
+const ME = '测试2号';                     // 当前账号，发布人固定取它
+const BANNED = ['兼职', '日结', '临时工', '短期工'];
+
+// mock 岗位数据（与后台 JOB_RAW 同一份）
+const JOBS = [
+    { id: 'J001', jobName: '电子厂普工', employer: '武汉华星光电技术有限公司', workType: '生产制造', position: '普工/操作工', postType: '蓝领',
+      salaryMin: '5500', salaryMax: '7500', advisor: '王顾问', audit: '已通过', on: true, full: false, region: '武汉', publisher: '张明远', auditor: '平台审核-王芳', auditTime: '2026-08-03 10:24', deptScope: 'part', depts: ['招聘一部', '招聘二部', '驻厂管理部'], applicants: 128, created: '2026-08-02',
+      tags: ['包吃', '包住', '五险一金', '可预支工资', '加班费另算'], jobReq: '年龄18-45岁，男女不限，身体健康，能接受两班倒。', recruitReq: '学历不限、经验不限，需携带本人身份证原件面试。',
+      salaryRows: [{ id: 1, key: '计薪说明', val: '综合工资5500-7500元/月，含岗位津贴' }, { id: 2, key: '发薪时间', val: '每月15日发放上月工资' }],
+      onboardRows: [{ id: 3, key: '所需资料', val: '身份证原件及复印件4张、一寸照片4张' }],
+      addrs: [{ id: 4, name: '光谷东·华星光电厂区', addr: '湖北省武汉市东湖高新区高新大道669号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-08-03 10:24', actor: '平台审核-王芳', action: '复审通过', remark: '岗位信息合规，可正常上架' }, { time: '2026-08-02 18:05', actor: '平台审核-刘洋', action: '初审通过', remark: '资料完整' }, { time: '2026-08-02 16:40', actor: '张明远', action: '提交审核', remark: '商家提交岗位信息' }] },
+    { id: 'J002', jobName: '仓库打包员', employer: '武汉天马微电子有限公司', workType: '物流仓储', position: '仓管员', postType: '蓝领',
+      salaryMin: '4800', salaryMax: '6000', advisor: '李顾问', audit: '已通过', on: true, full: false, region: '武汉', publisher: '刘经理', auditor: '平台审核-刘洋', auditTime: '2026-08-06 09:12', deptScope: 'all', depts: [], applicants: 64, created: '2026-08-05',
+      tags: ['长白班', '免费班车', '餐补', '坐班'], jobReq: '18-40岁，能吃苦耐劳，有仓储经验优先。', recruitReq: '',
+      salaryRows: [{ id: 5, key: '计薪说明', val: '底薪+计件，多劳多得' }], onboardRows: [],
+      addrs: [{ id: 6, name: '东西湖·天马仓储中心', addr: '湖北省武汉市东西湖区径河街道径河路12号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-08-06 09:12', actor: '平台审核-刘洋', action: '复审通过', remark: '仓储岗位已核实' }, { time: '2026-08-05 17:20', actor: '平台审核-王芳', action: '初审通过', remark: '资料完整' }, { time: '2026-08-05 15:02', actor: '刘经理', action: '提交审核', remark: '商家提交岗位信息' }] },
+    { id: 'J003', jobName: '质检员（夜班）', employer: '鄂州三安光电有限公司', workType: '生产制造', position: '质检员', postType: '技术工',
+      salaryMin: '6000', salaryMax: '8000', advisor: '张顾问', audit: '初审', on: false, full: false, region: '鄂州', publisher: '测试2号', auditor: '', auditTime: '', deptScope: 'all', depts: [], applicants: 0, created: '2026-08-28',
+      tags: ['夜班补贴', '恒温车间', '包住'], jobReq: '有质检经验1年以上，能适应夜班。', recruitReq: '',
+      salaryRows: [{ id: 7, key: '夜班补贴', val: '每班补贴20元' }], onboardRows: [],
+      addrs: [{ id: 8, name: '葛店·三安光电产业园', addr: '湖北省鄂州市葛店镇创业大道3号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-08-28 09:36', actor: '测试2号', action: '提交审核', remark: '商家提交岗位信息' }] },
+    { id: 'J004', jobName: '食堂帮厨', employer: '武汉联想产业基地', workType: '餐饮服务', position: '包装工', postType: '蓝领',
+      salaryMin: '4200', salaryMax: '5000', advisor: '王顾问', audit: '已通过', on: false, full: true, region: '武汉', publisher: '张明远', auditor: '平台审核-王芳', auditTime: '2026-07-13 15:40', deptScope: 'all', depts: [], applicants: 37, created: '2026-07-12',
+      tags: ['包吃', '免体检'], jobReq: '身体健康，有健康证，年龄55岁以下。', recruitReq: '',
+      salaryRows: [], onboardRows: [],
+      addrs: [{ id: 9, name: '光谷·联想基地食堂', addr: '湖北省武汉市东湖高新区光谷大道158号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-07-13 15:40', actor: '平台审核-王芳', action: '复审通过', remark: '帮厨岗位健康证要求已确认' }, { time: '2026-07-13 10:15', actor: '平台审核-刘洋', action: '初审通过', remark: '资料完整' }, { time: '2026-07-12 14:22', actor: '张明远', action: '提交审核', remark: '商家提交岗位信息' }] },
+    { id: 'J005', jobName: '叉车司机', employer: '武汉华星光电技术有限公司', workType: '物流仓储', position: '叉车工', postType: '技术工',
+      salaryMin: '6500', salaryMax: '8500', advisor: '李顾问', audit: '已通过', on: true, full: true, region: '武汉', publisher: '刘经理', auditor: '平台审核-刘洋', auditTime: '2026-08-11 11:02', deptScope: 'part', depts: ['招聘二部', '门店运营部'], applicants: 52, created: '2026-08-10',
+      tags: ['五险一金', '绩效奖金'], jobReq: '持叉车证N1，2年以上厂区叉车经验。', recruitReq: '',
+      salaryRows: [], onboardRows: [],
+      addrs: [{ id: 10, name: '光谷东·华星光电厂区', addr: '湖北省武汉市东湖高新区高新大道669号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-08-11 11:02', actor: '平台审核-刘洋', action: '复审通过', remark: '叉车证信息已核实' }, { time: '2026-08-10 19:40', actor: '平台审核-王芳', action: '初审通过', remark: '资料完整' }, { time: '2026-08-10 16:18', actor: '刘经理', action: '提交审核', remark: '商家提交岗位信息' }] },
+    { id: 'J006', jobName: '流水线包装工', employer: '武汉天马微电子有限公司', workType: '生产制造', position: '包装工', postType: '蓝领',
+      salaryMin: '5000', salaryMax: '6800', advisor: '张顾问', audit: '复审', on: false, full: false, region: '武汉', publisher: '测试2号', auditor: '', auditTime: '', deptScope: 'all', depts: [], applicants: 89, created: '2026-08-15',
+      tags: ['坐班', '可带手机', '当天入职'], jobReq: '16-45岁，男女不限，手脚麻利。', recruitReq: '',
+      salaryRows: [], onboardRows: [],
+      addrs: [{ id: 11, name: '东西湖·天马一厂', addr: '湖北省武汉市东西湖区金山大道288号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-08-16 09:50', actor: '平台审核-王芳', action: '初审通过', remark: '转入复审' }, { time: '2026-08-15 17:12', actor: '测试2号', action: '提交审核', remark: '商家提交岗位信息' }] },
+    { id: 'J007', jobName: '保洁员（写字楼）', employer: '武汉联想产业基地', workType: '家政安保', position: '其他职位', postType: '蓝领',
+      salaryMin: '3500', salaryMax: '4000', advisor: '王顾问', audit: '已取消', on: false, full: false, region: '武汉', publisher: '张明远', auditor: '平台审核-王芳', auditTime: '2026-09-03 14:20', deptScope: 'all', depts: [], applicants: 0, created: '2026-09-02',
+      tags: ['工作轻松', '长白班'], jobReq: '年龄60岁以下，勤快爱干净。', recruitReq: '',
+      salaryRows: [], onboardRows: [],
+      addrs: [{ id: 12, name: '光谷·联想研发楼', addr: '湖北省武汉市东湖高新区光谷一路18号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-09-03 14:20', actor: '平台审核-王芳', action: '审核取消', remark: '商家主动撤回，岗位暂停对外展示' }, { time: '2026-09-02 18:05', actor: '平台审核-刘洋', action: '初审通过', remark: '资料完整' }, { time: '2026-09-02 15:44', actor: '张明远', action: '提交审核', remark: '商家提交岗位信息' }] },
+    { id: 'J008', jobName: '焊工（持证）', employer: '鄂州三安光电有限公司', workType: '建筑装修', position: '焊工', postType: '技术工',
+      salaryMin: '8000', salaryMax: '11000', advisor: '张顾问', audit: '已通过', on: true, full: false, region: '鄂州', publisher: '测试2号', auditor: '平台审核-刘洋', auditTime: '2026-08-21 16:35', deptScope: 'all', depts: [], applicants: 23, created: '2026-08-20',
+      tags: ['高温补贴', '包住', '绩效奖金'], jobReq: '持焊工操作证，5年以上氩弧焊经验。', recruitReq: '',
+      salaryRows: [{ id: 13, key: '岗位津贴', val: '特殊工种津贴300元/月' }], onboardRows: [],
+      addrs: [{ id: 14, name: '葛店·三安光电产业园', addr: '湖北省鄂州市葛店镇创业大道3号' }], images: [], videos: [],
+      auditLogs: [{ time: '2026-08-21 16:35', actor: '平台审核-刘洋', action: '复审通过', remark: '焊工操作证已核实' }, { time: '2026-08-20 20:10', actor: '平台审核-王芳', action: '初审通过', remark: '资料完整' }, { time: '2026-08-20 18:26', actor: '测试2号', action: '提交审核', remark: '商家提交岗位信息' }] },
+];
+let jobIdSeq = 100;
+
+/* ---------- 小工具 ---------- */
+const pad2 = n => String(n).padStart(2, '0');
+function nowStamp() { const d = new Date(); return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
+function todayStr() { return nowStamp().slice(0, 10); }
+function addrCity(a) { const m = /^([\u4e00-\u9fa5]{2,6}?(?:市|州|盟))/.exec(a || ''); return m ? m[1].replace(/[市州盟]$/, '') : ''; }
+function jobSalaryText(j) { return (j.salaryMin || j.salaryMax) ? `${j.salaryMin || '?'}~${j.salaryMax || '?'} <small>元/月</small>` : '面议'; }
+function jobDeptText(j) { return j.deptScope !== 'part' ? '全部部门' : ((j.depts || []).join('、') || '—'); }
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const findJob = id => JOBS.find(j => j.id === id);
+
+/* ---------- 弹层与确认框 ---------- */
+const sheetMask = document.getElementById('sheetMask');
+let openSheetEl = null;
+function showSheet(el) { openSheetEl = el; el.classList.add('show'); sheetMask.classList.add('show'); }
+function hideSheet() { if (openSheetEl) openSheetEl.classList.remove('show'); sheetMask.classList.remove('show'); openSheetEl = null; }
+sheetMask.onclick = hideSheet;
+
+/* ---------- 列表：筛选与上拉加载 ---------- */
+const jobFilter = { kw: '', employer: '', postType: '', workType: '', audit: '', on: '', full: '', dept: '', from: '', to: '' };
+const JOB_BATCH = 5;          // 每次上拉加载的条数
+let jobLimit = JOB_BATCH;
+let hasMore = false;
+
+const JOB_FLTS = [
+    { k: 'employer', label: '用工单位', opts: JOB_EMPLOYERS },
+    { k: 'postType', label: '岗位类型', opts: JOB_POST_TYPES },
+    { k: 'workType', label: '工种', opts: JOB_WORK_TYPES },
+    { k: 'audit', label: '审核状态', opts: JOB_AUDITS },
+    { k: 'on', label: '岗位状态', opts: ['已上架', '未上架'] },
+    { k: 'full', label: '是否满员', opts: ['已满员', '未满员'] },
+    { k: 'dept', label: '招聘部门', opts: ['全部部门'].concat(JOB_DEPTS) },
+];
+function filterCount() { return Object.keys(jobFilter).filter(k => k !== 'kw' && jobFilter[k]).length; }
+
+function matchJobs() {
+    const f = jobFilter;
+    return JOBS.filter(j => {
+        if (f.kw && !(j.jobName.includes(f.kw) || j.employer.includes(f.kw))) return false;
+        if (f.employer && j.employer !== f.employer) return false;
+        if (f.postType && j.postType !== f.postType) return false;
+        if (f.workType && j.workType !== f.workType) return false;
+        if (f.audit && j.audit !== f.audit) return false;
+        if (f.on === '已上架' && !j.on) return false;
+        if (f.on === '未上架' && j.on) return false;
+        if (f.full === '已满员' && !j.full) return false;
+        if (f.full === '未满员' && j.full) return false;
+        if (f.dept) {
+            if (f.dept === '全部部门') { if (j.deptScope !== 'all') return false; }
+            else if (j.deptScope !== 'all' && !(j.depts || []).includes(f.dept)) return false;
+        }
+        if (f.from && j.created < f.from) return false;
+        if (f.to && j.created > f.to) return false;
+        return true;
+    });
+}
+
+function renderJobs() {
+    const all = matchJobs();
+    const list = all.slice(0, jobLimit);
+    hasMore = list.length < all.length;
+
+    document.getElementById('jbSum').innerHTML = `共 <b>${all.length}</b> 个岗位${all.length ? ` · 已显示 ${list.length} 条` : ''}`;
+    const n = filterCount();
+    const badge = document.getElementById('jbFltN');
+    badge.style.display = n ? 'block' : 'none';
+    badge.textContent = n;
+
+    document.getElementById('jbList').innerHTML = list.length ? list.map(j => `
+        <div class="jc" data-id="${j.id}">
+            <div class="jc-top"><div class="jc-name">${esc(j.jobName)}</div><span class="atag ${AUDIT_CLS[j.audit]}">${j.audit}</span></div>
+            <div class="jc-pay">${jobSalaryText(j)}</div>
+            <div class="jc-meta">
+                <div class="mi"><span>用工单位</span><b>${esc(j.employer)}</b></div>
+                <div class="mi"><span>招聘部门</span><b>${esc(jobDeptText(j))}</b></div>
+            </div>
+            ${(j.tags || []).length ? `<div class="jc-tags">${j.tags.map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : ''}
+            <div class="jc-foot">
+                <span class="swg">岗位状态<span class="sw ${j.on ? 'on' : ''}${j.audit !== '已通过' ? ' dis' : ''}" data-sw="on"><i></i></span></span>
+                <span class="swg">是否满员<span class="sw ${j.full ? 'on' : ''}" data-sw="full"><i></i></span></span>
+                <span class="jbtns">
+                    <span class="jbtn" data-log>审核记录</span>
+                    <span class="jbtn" data-copy>复制</span>
+                    <span class="jbtn pri" data-edit>编辑</span>
+                </span>
+            </div>
+        </div>`).join('') : `<div class="empty"><b>🗂</b>没有符合条件的岗位<br>试试清空筛选条件，或新建一个岗位</div>`;
+
+    document.getElementById('jbMore').textContent = all.length ? (hasMore ? '上拉加载更多' : '没有更多了') : '';
+
+    document.querySelectorAll('#jbList .jc').forEach(card => {
+        const j = findJob(card.dataset.id);
+        card.querySelectorAll('[data-sw]').forEach(sw => sw.onclick = e => {
+            e.stopPropagation();
+            const k = sw.dataset.sw;
+            if (k === 'on') {
+                if (j.audit !== '已通过') { toast('岗位未通过审核，不能上架'); return; }
+                j.on = !j.on;
+                toast(`岗位已${j.on ? '上架' : '下架'}：${j.jobName}`);
+            } else {
+                j.full = !j.full;
+                toast(`岗位已标记${j.full ? '满员' : '招聘中'}：${j.jobName}`);
+            }
+            renderJobs();
+        });
+        card.querySelector('[data-log]').onclick = e => { e.stopPropagation(); openLogSheet(j.id); };
+        card.querySelector('[data-copy]').onclick = e => { e.stopPropagation(); copyJob(j); };
+        card.querySelector('[data-edit]').onclick = e => { e.stopPropagation(); openForm(j, j.id); };
+        card.onclick = e => { if (!e.target.closest('[data-sw]') && !e.target.closest('.jbtns')) openDetail(j.id); };
+    });
+}
+
+// 上拉加载：滚到底部附近再追加一批
+function onJobsScroll() {
+    const v = document.getElementById('view-jobs');
+    if (!hasMore || !v || v.scrollTop + v.clientHeight < v.scrollHeight - 100) return;
+    hasMore = false;
+    document.getElementById('jbMore').textContent = '加载中…';
+    setTimeout(() => { jobLimit += JOB_BATCH; renderJobs(); }, 260);
+}
+
+function renderJobFilter() {
+    document.getElementById('jbFilter').innerHTML = `
+        <div class="sb-hd"><b>筛选岗位</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">
+            ${JOB_FLTS.map(g => `<div class="fg"><label>${g.label}</label><div class="fcs">${
+                g.opts.map(o => `<span class="fc ${jobFilter[g.k] === o ? 'on' : ''}" data-k="${g.k}" data-v="${esc(o)}">${o}</span>`).join('')
+            }</div></div>`).join('')}
+            <div class="fg"><label>提交时间</label><div class="f2">
+                <input type="date" class="fin" id="fltFrom" value="${jobFilter.from}">
+                <span class="u">至</span>
+                <input type="date" class="fin" id="fltTo" value="${jobFilter.to}">
+            </div></div>
+        </div>
+        <div class="sb-ft"><span class="btn ghost" data-reset>重置</span><span class="btn primary" data-query>查询</span></div>`;
+    const el = document.getElementById('jbFilter');
+    el.querySelectorAll('.fc').forEach(c => c.onclick = () => {
+        const k = c.dataset.k;
+        jobFilter[k] = jobFilter[k] === c.dataset.v ? '' : c.dataset.v;
+        renderJobFilter();
+    });
+    el.querySelector('[data-close]').onclick = hideSheet;
+    el.querySelector('[data-reset]').onclick = () => {
+        Object.keys(jobFilter).forEach(k => { if (k !== 'kw') jobFilter[k] = ''; });
+        document.getElementById('jbKw').value = jobFilter.kw = '';
+        resetJobs(); renderJobFilter(); hideSheet();
+    };
+    el.querySelector('[data-query]').onclick = () => {
+        jobFilter.from = document.getElementById('fltFrom').value;
+        jobFilter.to = document.getElementById('fltTo').value;
+        if (jobFilter.from && jobFilter.to && jobFilter.from > jobFilter.to) { toast('开始日期需不晚于结束日期'); return; }
+        resetJobs(); hideSheet();
+    };
+}
+
+/* ---------- 详情 ---------- */
+let detailId = null;
+function kv(k, v) { return `<div class="kv"><span class="k">${k}</span><span class="v">${v === '' || v == null ? '<span class="mut">—</span>' : v}</span></div>`; }
+function rowsBlock(rows, two) {
+    if (!rows || !rows.length) return '<div class="mut">暂无内容</div>';
+    return rows.map(r => `<div class="subrow"><div class="st">${esc(r.key || r.name)}</div><div class="sv">${esc(r.val || r.addr)}</div></div>`).join('');
+}
+function openDetail(id) {
+    detailId = id;
+    const j = findJob(id);
+    if (!j) return;
+    document.getElementById('jdBody').innerHTML = `
+        <div class="dsec">
+            <h4>基础信息</h4>
+            ${kv('岗位名称', `<b>${esc(j.jobName)}</b>`)}
+            ${kv('审核状态', `<span class="atag ${AUDIT_CLS[j.audit]}">${j.audit}</span>`)}
+            ${kv('岗位状态', j.on ? '已上架' : '<span class="mut">未上架</span>')}
+            ${kv('是否满员', j.full ? '已满员' : '招聘中')}
+            ${kv('用工单位', esc(j.employer))}
+            ${kv('工作地区', j.region)}
+            ${kv('工种', j.workType)}
+            ${kv('职位类型', `${j.position} · ${j.postType}`)}
+            ${kv('职位薪资', `<b style="color:var(--red)">${jobSalaryText(j)}</b>`)}
+            ${kv('招聘顾问', j.advisor)}
+            ${kv('招聘部门', jobDeptText(j))}
+            ${kv('岗位标签', (j.tags || []).length ? j.tags.map(t => `<span class="chip">${esc(t)}</span>`).join(' ') : '')}
+            ${kv('报名咨询', j.applicants + ' 人')}
+            ${kv('发布人', j.publisher)}
+            ${kv('提交时间', j.created)}
+            ${kv('审核人', j.auditor)}
+            ${kv('审核时间', j.auditTime || '待审核')}
+        </div>
+        <div class="dsec"><h4>岗位要求</h4><div style="font-size:13px;line-height:1.7">${esc(j.jobReq) || '<span class="mut">暂无内容</span>'}</div></div>
+        <div class="dsec"><h4>工资明细</h4>${rowsBlock(j.salaryRows)}</div>
+        <div class="dsec"><h4>入职须知</h4>${rowsBlock(j.onboardRows)}</div>
+        <div class="dsec"><h4>工作地址</h4>${j.addrs && j.addrs.length ? j.addrs.map(a => `<div class="subrow"><div class="st">${esc(a.name)}</div><div class="sv">${esc(a.addr)}</div></div>`).join('') : '<div class="mut">暂无内容</div>'}</div>
+        <div class="dsec"><h4>轮播图</h4>${j.images && j.images.length ? `<div class="pic-grid">${j.images.map(s => `<div class="pic"><img src="${s}"></div>`).join('')}</div>` : '<div class="mut">未上传图片</div>'}</div>
+        <div class="dsec"><h4>招聘要求（仅内部记录）</h4><div style="font-size:13px;line-height:1.7">${esc(j.recruitReq) || '<span class="mut">暂无内容</span>'}</div></div>`;
+    pushView('view-job-detail');
+}
+function copyJob(j) {
+    const c = clone(j);
+    c.jobName = j.jobName + ' - 副本';
+    c.audit = '初审'; c.on = false; c.full = false; c.auditor = ''; c.auditTime = ''; c.applicants = 0;
+    c.publisher = ME; c.created = todayStr(); c.id = 'NEW'; c.auditLogs = [];
+    openForm(c);
+    toast(`已以「${j.jobName}」为模板创建副本`);
+}
+function openLogSheet(id) {
+    const j = findJob(id || detailId);
+    const el = document.getElementById('logSheet');
+    el.innerHTML = `<div class="sb-hd"><b>审核记录 · ${esc(j.jobName)}</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">${(j.auditLogs || []).length ? `<div class="tl">${j.auditLogs.map(l => `
+            <div class="tl-i"><div class="tt">${esc(l.action)}</div><div class="tm">${esc(l.time)} · ${esc(l.actor)}</div><div class="td">${esc(l.remark)}</div></div>`).join('')}</div>` : '<div class="mut">暂无审核记录</div>'}</div>
+        <div class="sb-ft"><span class="btn primary" data-close>关闭</span></div>`;
+    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+    showSheet(el);
+}
+
+/* ---------- 新建 / 编辑表单 ---------- */
+const JOB_REQ_FIELDS = [['employer', '用工单位'], ['jobName', '岗位名称'], ['workType', '工种类型'], ['position', '职位类型'], ['postType', '岗位类型'], ['salaryMin', '职位薪资'], ['tags', '岗位标签'], ['jobReq', '岗位要求']];
+let formJob = null, formEditId = null;
+
+function jobBlankForm() {
+    return { jobName: '', employer: '', workType: '', position: '普工/操作工', postType: '蓝领', salaryMin: '', salaryMax: '', advisor: '',
+        audit: '初审', on: false, full: false, deptScope: 'all', depts: [], applicants: 0, tags: [], jobReq: '', recruitReq: '',
+        salaryRows: [], onboardRows: [], addrs: [], images: [], videos: [], auditLogs: [] };
+}
+const sel = (f, label, opts, ph) => `<div class="frow"><label>${label}</label><select class="fsel" data-f="${f}"><option value="">${ph}</option>${
+    opts.map(o => `<option ${formJob[f] === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>`;
+const inp = (f, label, ph) => `<div class="frow"><label>${label}</label><input class="fin" data-f="${f}" placeholder="${ph || ''}" value="${esc(formJob[f])}"></div>`;
+const bigText = (f, label, ph, hint) => `<div class="dsec"><h4>${label}</h4>
+    <textarea class="fta" data-f="${f}" data-cnt="${f}" maxlength="1000" placeholder="${ph}">${esc(formJob[f])}</textarea>
+    <div class="hint"><span data-cntfor="${f}">${(formJob[f] || '').length}/1000</span>${hint ? ' · ' + hint : ''}</div>
+</div>`;
+
+function subTable(tb, label, presets, two) {
+    const rows = formJob[tb];
+    return `<div class="dsec"><h4>${label}</h4>
+        ${rows.length ? rows.map((r, i) => {
+            const k = r.key !== undefined ? r.key : r.name;
+            const v = r.val !== undefined ? r.val : r.addr;
+            return `<div class="srow ro" data-act="rowedit" data-tb="${tb}" data-i="${i}">
+                <div class="r1">
+                    <span class="st">${k ? esc(k) : '<span class="mut">未命名</span>'}</span>
+                    <span class="sbtn" data-act="up" data-tb="${tb}" data-i="${i}" title="上移">↑</span>
+                    <span class="sbtn" data-act="down" data-tb="${tb}" data-i="${i}" title="下移">↓</span>
+                    <span class="sbtn del" data-act="del" data-tb="${tb}" data-i="${i}">✕</span>
+                </div>
+                <div class="sv${v ? '' : ' empty'}">${v ? esc(v) : '点击填写内容'}</div>
+            </div>`;
+        }).join('') : '<div class="mut" style="margin-bottom:8px">暂无项目</div>'}
+        <div class="sub-hd"><span class="add" data-act="add" data-tb="${tb}">＋ 添加${presets ? '项目' : '地址'}</span></div>
+    </div>`;
+}
+
+/* ---------- 指定部门 / 子表项目：底部弹框 ---------- */
+/* 招聘部门 / 岗位标签：独立选择页（支持搜索） */
+function openDeptPage() {
+    document.getElementById('dpKw').value = '';
+    renderDeptPage('');
+    pushView('view-job-depts');
+}
+function renderDeptPage(kw) {
+    const list = JOB_DEPTS.filter(d => !kw || d.includes(kw));
+    document.getElementById('dpList').innerHTML = `
+        <div class="dp-head">已选 <b>${formJob.depts.length}</b> 个部门</div>
+        ${list.length ? `<div class="card dp-card">${list.map(d => `
+            <div class="dp-row ${formJob.depts.includes(d) ? 'on' : ''}" data-v="${esc(d)}">
+                <span class="dp-name">${esc(d)}</span>
+                <span class="dp-tick">✓</span>
+            </div>`).join('')}</div>`
+        : '<div class="empty" style="padding:34px 0">没有匹配的部门</div>'}`;
+    document.querySelectorAll('#dpList .dp-row').forEach(r => r.onclick = () => {
+        const v = r.dataset.v, i = formJob.depts.indexOf(v);
+        i < 0 ? formJob.depts.push(v) : formJob.depts.splice(i, 1);
+        renderDeptPage(document.getElementById('dpKw').value.trim());
+    });
+}
+
+// 子表内容统一在底部弹框里编辑（新增与修改共用）
+function openRowSheet(tb, idx) {
+    const two = tb === 'addrs';
+    const label = tb === 'salaryRows' ? '工资明细' : tb === 'onboardRows' ? '入职须知' : '工作地址';
+    const presets = tb === 'salaryRows' ? JOB_SALARY_PRESETS : tb === 'onboardRows' ? JOB_ONBOARD_PRESETS : null;
+    const src = idx != null ? formJob[tb][idx] : (two ? { name: '', addr: '' } : { key: '', val: '' });
+    const el = document.getElementById('rowSheet');
+    el.innerHTML = `<div class="sb-hd"><b>${idx != null ? '编辑' : '添加'}${label}${two ? '' : '项目'}</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">
+            ${presets ? `<div class="fg"><label>常用名称（点击自动填入）</label><div class="fcs">${presets.map(p => `<span class="fc" data-fill="${p}">${p}</span>`).join('')}</div></div>` : ''}
+            <div class="frow"><label>${two ? '店名 / 厂区名称' : '名称'}</label>
+                <input class="fin" id="riKey" maxlength="20" placeholder="${two ? '如：光谷东·华星光电厂区' : '如：计薪说明'}" value="${esc(two ? src.name : src.key)}"></div>
+            <div class="frow"><label>${two ? '详细地址' : '说明'}</label>
+                <textarea class="fta" id="riVal" maxlength="100" placeholder="${two ? '省市区 + 详细门牌号' : '50 字以内'}">${esc(two ? src.addr : src.val)}</textarea></div>
+            <div class="sh-err" id="riErr"></div>
+        </div>
+        <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary" data-save>保存</span></div>`;
+    el.querySelectorAll('[data-fill]').forEach(c => c.onclick = () => {
+        document.getElementById('riKey').value = c.dataset.fill;
+        el.querySelectorAll('[data-fill]').forEach(x => x.classList.toggle('on', x === c));
+    });
+    el.querySelector('[data-save]').onclick = () => {
+        const key = document.getElementById('riKey').value.trim();
+        const val = document.getElementById('riVal').value.trim();
+        if (!key) { document.getElementById('riErr').textContent = two ? '请填写店名 / 厂区名称' : '请填写名称'; return; }
+        const item = two ? { id: src.id || ++jobIdSeq, name: key, addr: val } : { id: src.id || ++jobIdSeq, key, val };
+        if (idx != null) formJob[tb][idx] = item; else formJob[tb].push(item);
+        hideSheet();
+        renderForm();
+    };
+    el.querySelectorAll('[data-close]').forEach(b => b.onclick = () => { hideSheet(); renderForm(); });
+    showSheet(el);
+}
+
+function renderForm() {
+    const j = formJob;
+    document.getElementById('jfTitle').textContent = formEditId ? '编辑岗位' : '新建岗位';
+    document.getElementById('jfBody').innerHTML = `
+        <div class="dsec"><h4>基础信息</h4>
+            ${sel('employer', '<span class="req">*</span>用工单位', JOB_EMPLOYERS, '请选择用工单位')}
+            ${inp('jobName', '<span class="req">*</span>岗位名称', '如：电子厂普工')}
+            ${sel('workType', '<span class="req">*</span>工种类型', JOB_WORK_TYPES, '请选择工种')}
+            ${sel('position', '<span class="req">*</span>职位类型', JOB_POSITIONS, '请选择职位')}
+            ${sel('postType', '<span class="req">*</span>岗位类型', JOB_POST_TYPES, '请选择岗位类型')}
+            <div class="frow"><label><span class="req">*</span>职位薪资</label>
+                <div class="f2"><input class="fin" data-f="salaryMin" inputmode="numeric" placeholder="最低" value="${esc(j.salaryMin)}">
+                <span class="u">~</span>
+                <input class="fin" data-f="salaryMax" inputmode="numeric" placeholder="最高" value="${esc(j.salaryMax)}">
+                <span class="u">元/月</span></div>
+                <div class="hint">两项都留空则对外显示「面议」</div>
+            </div>
+            ${sel('advisor', '招聘顾问', JOB_ADVISORS, '不指定')}
+            <div class="frow"><label><span class="req">*</span>招聘部门</label>
+                <div class="fcs">
+                    <span class="fc ${j.deptScope === 'all' ? 'on' : ''}" data-act="scope" data-v="all">全部部门</span>
+                    <span class="fc ${j.deptScope === 'part' ? 'on' : ''}" data-act="scope" data-v="part">指定部门</span>
+                </div>
+                ${j.deptScope === 'part' ? `<div class="pickfield" style="margin-top:8px" data-act="depts"><span class="pf-val${j.depts.length ? '' : ' mut'}">${j.depts.length ? esc(j.depts.join('、')) : '请选择部门'}</span><span class="pf-go">›</span></div>` : ''}
+            </div>
+            <div class="frow"><label><span class="req">*</span>岗位标签<span class="cnt">${j.tags.length}/5</span></label>
+                <div class="pickfield" data-act="tags"><span class="pf-val${j.tags.length ? '' : ' mut'}">${j.tags.length ? esc(j.tags.join('、')) : '请选择岗位标签'}</span><span class="pf-go">›</span></div>
+            </div>
+        </div>
+        ${subTable('salaryRows', '工资明细', JOB_SALARY_PRESETS, false)}
+        ${bigText('jobReq', '岗位要求 <span class="req">*</span>', '年龄、经验、身体条件等')}
+        <div class="dsec"><h4>轮播图</h4>
+            <div class="pic-grid">
+                ${j.images.map((s, i) => `<div class="pic"><img src="${s}"><span class="del" data-act="pdel" data-i="${i}">✕</span>${i === 0 ? '<span class="cov">封面</span>' : ''}</div>`).join('')}
+                ${j.images.length < 6 ? `<div class="pic-add" data-act="padd"><b>＋</b>图片</div>` : ''}
+            </div>
+            <div class="hint">jpg / jpeg / png，最多 6 张，第一张默认为封面</div>
+            <div class="pic-grid" style="margin-top:10px">
+                ${j.videos.map((v, i) => `<div class="pic"><div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:22px">🎬</div><span class="del" data-act="vdel" data-i="${i}">✕</span></div>`).join('')}
+                ${!j.videos.length ? `<div class="pic-add" data-act="vadd"><b>＋</b>视频</div>` : ''}
+            </div>
+            <div class="hint">视频最多 1 个，不超过 30MB</div>
+        </div>
+        ${bigText('recruitReq', '招聘要求', '补充说明，仅做内部记录', '仅做内部记录，不对外展示')}
+        ${subTable('onboardRows', '入职须知', JOB_ONBOARD_PRESETS, false)}
+        ${subTable('addrs', '工作地址', null, true)}`;
+}
+
+function openForm(src, editId) {
+    formEditId = editId || null;
+    formJob = src ? clone(src) : jobBlankForm();
+    if (!src) formJob.id = 'NEW';
+    renderForm();
+    pushView('view-job-form');
+}
+
+function bindFormOnce() {
+    const body = document.getElementById('jfBody');
+    body.oninput = e => {
+        const t = e.target, f = t.dataset.f;
+        if (!f) return;
+        formJob[f] = t.value;
+        if (t.dataset.cnt) body.querySelector(`[data-cntfor="${f}"]`).textContent = t.value.length + '/1000';
+    };
+    body.onchange = e => { if (e.target.tagName === 'SELECT') formJob[e.target.dataset.f] = e.target.value; };
+    body.onclick = e => {
+        const el = e.target.closest('[data-act]');
+        if (!el) return;
+        const act = el.dataset.act, tb = el.dataset.tb, i = +el.dataset.i;
+        if (act === 'scope') { formJob.deptScope = el.dataset.v; renderForm(); if (el.dataset.v === 'part') openDeptPage(); }
+        else if (act === 'depts') openDeptPage();
+        else if (act === 'tags') openTagPage();
+        else if (act === 'rowedit') openRowSheet(tb, i);
+        else if (act === 'add') openRowSheet(tb, null);
+        else if (act === 'del') { formJob[tb].splice(i, 1); renderForm(); }
+        else if (act === 'up' && i > 0) { const a = formJob[tb]; a.splice(i - 1, 0, a.splice(i, 1)[0]); renderForm(); }
+        else if (act === 'down' && i < formJob[tb].length - 1) { const a = formJob[tb]; a.splice(i + 1, 0, a.splice(i, 1)[0]); renderForm(); }
+        else if (act === 'padd') document.getElementById('picInput').click();
+        else if (act === 'pdel') { formJob.images.splice(i, 1); renderForm(); }
+        else if (act === 'vadd') document.getElementById('vidInput').click();
+        else if (act === 'vdel') { formJob.videos.splice(i, 1); renderForm(); }
+    };
+
+    document.getElementById('picInput').onchange = e => {
+        const files = [...e.target.files];
+        let left = 6 - formJob.images.length;
+        files.forEach(f => {
+            if (left-- <= 0) return;
+            const r = new FileReader();
+            r.onload = () => { formJob.images.push(r.result); renderForm(); };
+            r.readAsDataURL(f);
+        });
+        e.target.value = '';
+        if (files.length > 6) toast('轮播图最多 6 张，多余的已忽略');
+    };
+    document.getElementById('vidInput').onchange = e => {
+        const f = e.target.files[0];
+        e.target.value = '';
+        if (!f) return;
+        if (f.size > 30 * 1024 * 1024) { toast('视频不能超过 30MB'); return; }
+        formJob.videos = [f.name];
+        renderForm();
+    };
+
+    document.getElementById('jbNew').onclick = () => openForm(null);
+    document.getElementById('jfCancel').onclick = () => popView();
+    document.getElementById('jfSubmit').onclick = submitJob;
+    document.getElementById('jfAi').onclick = startAi;
+    document.getElementById('jdEdit').onclick = () => { const j = findJob(detailId); openForm(j, j.id); };
+    document.getElementById('jdLog').onclick = () => openLogSheet(detailId);
+    document.getElementById('jdCopy').onclick = () => copyJob(findJob(detailId));
+}
+
+function openTagPage() {
+    document.getElementById('tgKw').value = '';
+    renderTagPage('');
+    pushView('view-job-tags');
+}
+function renderTagPage(kw) {
+    const sel = formJob.tags;
+    document.getElementById('tgDoneCount').textContent = `已选 ${sel.length}/5`;
+    const done = document.getElementById('tagPickDone');
+    if (done) done.textContent = `确定（已选 ${sel.length}/5）`;
+    const groups = JOB_TAG_GROUPS.map(g => ({ name: g.name, tags: g.tags.filter(t => !kw || t.includes(kw)) })).filter(g => g.tags.length);
+    document.getElementById('tgPickList').innerHTML = groups.length ? groups.map(g => `
+        <div class="dsec"><h4>${esc(g.name)}</h4>
+            <div class="fcs">${g.tags.map(t => `<span class="fc ${sel.includes(t) ? 'on' : ''}" data-v="${esc(t)}">${esc(t)}</span>`).join('')}</div>
+        </div>`).join('') : '<div class="empty" style="padding:34px 0">没有匹配的标签</div>';
+    document.querySelectorAll('#tgPickList .fc').forEach(c => c.onclick = () => {
+        const v = c.dataset.v, i = sel.indexOf(v);
+        if (i < 0) {
+            if (sel.length >= 5) { toast('岗位标签最多选 5 个'); return; }
+            sel.push(v);
+        } else sel.splice(i, 1);
+        renderTagPage(document.getElementById('tgKw').value.trim());
+    });
+}
+
+function submitJob() {
+    const miss = JOB_REQ_FIELDS.filter(r => {
+        const v = formJob[r[0]];
+        return !v || (Array.isArray(v) && !v.length);
+    }).map(r => r[1]);
+    if (formJob.deptScope === 'part' && !formJob.depts.length) miss.push('招聘部门');
+    if (miss.length) { toast('请完善：' + miss.join('、')); return; }
+
+    const hit = BANNED.filter(w => (formJob.jobName + formJob.jobReq + formJob.tags.join('')).includes(w));
+    if (formEditId) {
+        const j = findJob(formEditId);
+        Object.assign(j, clone(formJob), { id: j.id, audit: j.audit, auditor: j.auditor, auditTime: j.auditTime, publisher: j.publisher, created: j.created, applicants: j.applicants });
+        j.auditLogs = [{ time: nowStamp(), actor: ME, action: '编辑保存', remark: '商家修改岗位信息' }].concat(j.auditLogs || []);
+        toast('岗位已保存：' + j.jobName);
+    } else {
+        const j = clone(formJob);
+        j.id = 'J' + (++jobIdSeq);
+        j.audit = '初审'; j.on = false; j.full = false; j.applicants = 0;
+        j.publisher = ME; j.auditor = ''; j.auditTime = ''; j.created = todayStr();
+        j.region = addrCity((j.addrs[0] || {}).addr || '');
+        j.auditLogs = [{ time: nowStamp(), actor: ME, action: '提交审核', remark: '商家提交岗位信息' }];
+        JOBS.unshift(j);
+        toast(hit.length ? `已提交，含禁用词「${hit.join('、')}」，对外展示将自动屏蔽` : '已提交：' + j.jobName);
+    }
+    formJob = null;
+    popView();
+    renderJobs();
+}
+
+/* ---------- AI 一键填表 ---------- */
+const AI_STEPS = ['粘贴文案', '识别中', '确认填入'];
+const AI_SAMPLE = '急招电子厂普工50名，武汉华星光电技术有限公司，月薪5500-7500元，包吃包住，五险一金，免费班车，长白班不穿无尘服。要求年龄18-45岁，男女不限，经验不限，身体健康，能接受两班倒。面试需携带身份证原件、一寸照片4张，当天可安排住宿。工作地址：湖北省武汉市东湖高新区高新大道669号。每月15日发放上月工资，底薪+计件，多劳多得。可预支工资。';
+let aiStep = 1, aiText = '', aiEmployer = '', aiItems = [], aiTips = [], aiMiss = [];
+
+function startAi() { aiStep = 1; aiItems = []; renderAi(); pushView('view-job-ai'); }
+
+function renderAi() {
+    document.getElementById('aiSteps').innerHTML = AI_STEPS.map((s, i) => `<span class="${i + 1 === aiStep ? 'on' : ''}">${i + 1} ${s}</span>`).join('');
+    const body = document.getElementById('aiBody');
+    if (aiStep === 1) {
+        body.innerHTML = `<div class="dsec">
+            <h4>粘贴招聘文案</h4>
+            <div class="frow"><label><span class="req">*</span>用工单位</label><select class="fsel" id="aiEmp"><option value="">请选择用工单位</option>${
+                JOB_EMPLOYERS.map(o => `<option ${aiEmployer === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
+            <div class="frow"><textarea class="fta" id="aiTa" style="min-height:150px" maxlength="2000" placeholder="把朋友圈 / 微信群里的招聘文案整段粘进来，至少 20 字">${esc(aiText)}</textarea>
+                <div class="hint"><span id="aiCnt">${aiText.length}</span>/2000 · 至少 20 字</div></div>
+            <div class="fcs"><span class="fc" id="aiSample">填入示例文案</span></div>
+        </div>
+        <div class="actbar show"><span class="ab ghost" data-back2>返回</span><span class="ab blue" id="aiRun">开始识别</span></div>`;
+        const taEl = document.getElementById('aiTa');
+        taEl.oninput = () => { aiText = taEl.value; document.getElementById('aiCnt').textContent = aiText.length; };
+        document.getElementById('aiEmp').onchange = e => { aiEmployer = e.target.value; };
+        document.getElementById('aiSample').onclick = () => { aiText = AI_SAMPLE; renderAi(); };
+        document.getElementById('aiRun').onclick = () => {
+            if (!aiEmployer) { toast('请先选择用工单位'); return; }
+            if (aiText.trim().length < 20) { toast('文案至少 20 字'); return; }
+            aiStep = 2; renderAi(); runAiProgress();
+        };
+        body.querySelectorAll('[data-back2]').forEach(b => b.onclick = () => popView());
+    } else if (aiStep === 3) {
+        body.innerHTML = `<div class="dsec"><h4>识别结果（勾选要填入的项）</h4>
+            ${aiItems.map((it, i) => {
+                const cnt = it.rows ? it.rows.length : (it.vals && it.f !== 'salary' ? it.vals.length : 0);
+                const inner = it.rows
+                    ? it.rows.map(r => `<div class="ai-line"><b>${esc(r.key)}</b>：${esc(r.val)}</div>`).join('')
+                    : it.vals
+                        ? (it.f === 'tags' ? it.vals.map(v => `<span class="chip">${esc(v)}</span>`).join(' ')
+                            : it.f === 'salary' ? `<b>${esc(it.vals[0] || '?')} ~ ${esc(it.vals[1] || '?')} 元/月</b>`
+                            : it.vals.map(v => `<div class="ai-line">· ${esc(v)}</div>`).join(''))
+                        : esc(it.show || it.val);
+                return `<div class="ai-i" data-i="${i}">
+                    <span class="cbx ${it.checked ? 'on' : ''}">✓</span>
+                    <div class="ai-b"><div class="f">${it.label}${cnt ? '（' + cnt + '）' : ''}</div><div class="val">${inner}</div>
+                    ${it.has ? `<div class="has">表单已有：${esc(it.has)}</div>` : ''}</div>
+                    <span class="conf ${it.conf < .7 ? 'lo' : 'hi'}">${it.conf < .7 ? '需确认' : '建议采用'}</span>
+                </div>`;
+            }).join('')}
+        </div>
+        <div class="dsec"><div class="ai-tip">
+            ${aiMiss.length ? `<b>未识别到的必填项：</b>${aiMiss.join('、')}<br>` : ''}
+            ${aiTips.length ? `<b>文案优化建议：</b><ul>${aiTips.map(t => `<li>${t}</li>`).join('')}</ul>` : ''}
+            <div style="margin-top:6px">图片、视频需人工上传，AI 不代填</div>
+        </div></div>
+        <div class="actbar show"><span class="ab ghost" data-back2>返回</span><span class="ab blue" id="aiApply">应用所选 0 项</span></div>`;
+        const sync = () => {
+            const n = aiItems.filter(i => i.checked).reduce((a, i) => a + (i.rows ? i.rows.length : i.vals ? i.vals.length : 1), 0);
+            document.getElementById('aiApply').textContent = `应用所选 ${n} 项`;
+        };
+        body.querySelectorAll('.ai-i').forEach(row => row.onclick = () => {
+            const it = aiItems[+row.dataset.i];
+            it.checked = !it.checked;
+            row.querySelector('.cbx').classList.toggle('on', it.checked);
+            sync();
+        });
+        document.getElementById('aiApply').onclick = applyAi;
+        body.querySelectorAll('[data-back2]').forEach(b => b.onclick = () => popView());
+        sync();
+    } else {
+        body.innerHTML = `<div class="dsec"><div class="ai-prog" id="aiProg">${
+            ['识别岗位与用工单位…', '提取薪资与福利…', '拆分要求与入职须知…', '生成优化建议…'].map((s, i) => `<p data-p="${i}">⏳ ${s}</p>`).join('')
+        }</div></div>`;
+    }
+}
+
+function runAiProgress() {
+    const ps = [...document.querySelectorAll('#aiProg p')];
+    let i = 0;
+    const tick = () => {
+        ps.forEach((p, k) => { p.className = k < i ? 'done' : k === i ? 'now' : ''; p.innerHTML = (k < i ? '✅ ' : '⏳ ') + p.textContent.replace(/^[^ ]+\s/, ''); });
+        if (i >= ps.length) { aiStep = 3; aiItems = aiParse(aiText); renderAi(); return; }
+        i++;
+        setTimeout(tick, 420);
+    };
+    tick();
+}
+
+function aiParse(text) {
+    // 公司名里常带「技术」「光电」等词，推断工种/岗位类型前先剔除，避免误判
+    let probe = text;
+    JOB_EMPLOYERS.concat(aiEmployer ? [aiEmployer] : []).forEach(e => { probe = probe.split(e).join(''); });
+    const items = [], add = (f, label, val, conf, extra) => {
+        if (val == null || val === '') return;
+        const cur = formJob[f];
+        const has = !extra && cur && !Array.isArray(cur) && String(cur) !== '' && String(cur) !== String(val) ? String(cur) : (Array.isArray(cur) && cur.length && f === 'tags' ? cur.join('、') : '');
+        items.push({ f, label, val, show: extra && extra.show, conf, checked: !has, has });
+    };
+    const nm = /(?:急招|招聘|诚聘|招)\s*([\u4e00-\u9fa5A-Za-z（）()]{2,14}?)(?:\d|$|[,，。；;\s])/m.exec(text);
+    add('jobName', '岗位名称', nm && nm[1], nm ? .9 : 0);
+    const sal = /(\d{3,6})\s*[-~－至]\s*(\d{3,6})\s*(?:元|块)?/.exec(text);
+    if (sal) {
+        items.push({ f: 'salaryMin', label: '职位薪资（最低）', val: sal[1], show: `${sal[1]} ~ ${sal[2]} 元/月`, conf: .92, checked: !formJob.salaryMin });
+        items.push({ f: 'salaryMax', label: '职位薪资（最高）', val: sal[2], show: `${sal[1]} ~ ${sal[2]} 元/月`, conf: .92, checked: !formJob.salaryMax });
+    }
+    const emp = aiEmployer || JOB_EMPLOYERS.find(e => text.includes(e)) || '';
+    add('employer', '用工单位', emp, emp ? .95 : 0);
+    const pos = JOB_POSITIONS.find(p => text.includes(p)) || (/普工|操作工/.test(text) ? '普工/操作工' : '');
+    add('position', '职位类型', pos, .9);
+    const wt = /仓库|仓储|分拣|打包/.test(probe) ? '物流仓储' : /保洁|保安|家政/.test(probe) ? '家政安保' : /厨|餐/.test(probe) ? '餐饮服务' : /焊|装修|建筑/.test(probe) ? '建筑装修' : (/电子厂|普工|流水线|质检/.test(probe) ? '生产制造' : '');
+    add('workType', '工种类型', wt, .6);
+    const pt = /质检|焊工|叉车|技术|电工|维修/.test(probe) ? '技术工' : /客服|文员|会计|设计|运营/.test(probe) ? '白领' : /普工|包装|打包|分拣|保洁|帮厨/.test(probe) ? '蓝领' : '';
+    add('postType', '岗位类型', pt, .6);
+    const adv = JOB_ADVISORS.find(a => text.includes(a));
+    add('advisor', '招聘顾问', adv, .75);
+    const tags = TAG_POOL.filter(t => text.includes(t));
+    tags.forEach(t => { if (!formJob.tags.includes(t)) items.push({ f: 'tags', label: '岗位标签', val: t, show: t, conf: .9, checked: true }); });
+    const req = (text.match(/[^。；\n]*(?:年龄|经验|学历|身体健康|能适应|持证|手脚麻利|吃苦)[^。；\n]*/g) || []).join('；');
+    add('jobReq', '岗位要求', req, .85);
+    const rc = (text.match(/[^。；\n]*(?:携带|原件|照片|面试)[^。；\n]*/g) || []).join('；');
+    add('recruitReq', '招聘要求（内部记录）', rc, .7);
+    const addr = /([\u4e00-\u9fa5]{2,8}(?:省|市|区|县)[\u4e00-\u9fa5A-Za-z0-9]{0,20}?(?:路|街|道|号|大道|产业园|厂区|中心))/.exec(text);
+    if (addr && !formJob.addrs.length) items.push({ f: 'addrs', label: '工作地址', val: addr[1], show: addr[1], conf: .86, checked: true });
+    const srows = (text.match(/[^。；\n]*(?:底薪|计件|发放|工资|计薪|津贴|补贴|扣)[^。；\n]*/g) || []).slice(0, 3);
+    srows.forEach(s => items.push({ f: 'salaryRows', label: '工资明细', val: s.trim(), show: s.trim(), conf: .65, checked: true }));
+    const orows = (text.match(/[^。；\n]*(?:身份证|照片|体检|住宿|入职流程|资料)[^。；\n]*/g) || []).slice(0, 3);
+    orows.forEach(s => items.push({ f: 'onboardRows', label: '入职须知', val: s.trim(), show: s.trim(), conf: .65, checked: true }));
+
+    aiMiss = JOB_REQ_FIELDS.filter(r => !items.some(i => i.f === r[0]) && !formJob[r[0]]).map(r => r[1]);
+    aiTips = [];
+    const bad = ['急招', '高薪', '日结'].filter(w => text.includes(w));
+    bad.forEach(w => aiTips.push(`命中「${w}」，建议改为「长期招聘」「综合薪资」「月结」，对外展示更稳`));
+    if (!sal) aiTips.push('没识别到薪资区间，建议补上「月薪X-Y元」');
+    if (!addr) aiTips.push('没识别到工作地址，建议补充省市区 + 门牌号');
+    if (tags.length < 2) aiTips.push('福利标签偏少，补充「包吃包住」等标签能提升报名率');
+    aiTips = aiTips.slice(0, 5);
+    return mergeAiItems(items);
+}
+
+// 同一字段的多值项合并成一条（标签 / 工资明细 / 入职须知）
+// 子表条目：按关键词猜项目名称，剩下的话作为说明
+const AI_SALARY_HINTS = [
+    ['发薪时间', /发薪|发放|每月\s*\d+\s*日|工资日/],
+    ['计薪说明', /底薪|计件|综合工资|时薪|月薪/],
+    ['餐费说明', /餐/],
+    ['住宿扣款', /住宿/],
+    ['水电说明', /水电/],
+    ['保险扣款', /保险/],
+    ['借支反馈', /预支|借支/],
+];
+const AI_ONBOARD_HINTS = [
+    ['所需资料', /身份证|照片|资料|携带/],
+    ['体检说明', /体检/],
+    ['入职流程', /入职|流程/],
+    ['离职说明', /离职/],
+    ['住宿安排', /住宿/],
+    ['注意事项', /注意/],
+];
+function splitAiRow(f, text) {
+    const hints = f === 'salaryRows' ? AI_SALARY_HINTS : AI_ONBOARD_HINTS;
+    const hit = hints.find(([, re]) => re.test(text));
+    const val = text.replace(/^[^，,。；;：:]{1,6}[：:]\s*/, '');
+    return { key: hit ? hit[0] : '其他', val: val || text };
+}
+
+function mergeAiItems(items) {
+    const multi = ['tags', 'salaryRows', 'onboardRows'];
+    const out = [];
+    const byField = {};
+    items.forEach(it => {
+        // 薪资最低/最高合成一条「职位薪资」
+        if (it.f === 'salaryMin' || it.f === 'salaryMax') {
+            if (!byField.salary) {
+                byField.salary = { f: 'salary', label: '职位薪资', vals: [], conf: it.conf, checked: it.checked, has: it.has };
+                out.push(byField.salary);
+            }
+            byField.salary.vals.push(it.val);
+            byField.salary.conf = Math.min(byField.salary.conf, it.conf);
+            byField.salary.checked = byField.salary.checked && it.checked;
+            return;
+        }
+        if (!multi.includes(it.f)) { out.push(it); return; }
+        if (!byField[it.f]) {
+            byField[it.f] = { f: it.f, label: it.label, vals: [], conf: it.conf, checked: it.checked, has: it.has };
+            if (it.f === 'salaryRows' || it.f === 'onboardRows') { byField[it.f].rows = []; delete byField[it.f].vals; }
+            out.push(byField[it.f]);
+        }
+        if (it.f === 'salaryRows' || it.f === 'onboardRows') byField[it.f].rows.push(splitAiRow(it.f, it.val));
+        else byField[it.f].vals.push(it.val);
+        byField[it.f].conf = Math.min(byField[it.f].conf, it.conf);
+        byField[it.f].checked = byField[it.f].checked && it.checked;
+    });
+    return out;
+}
+
+function applyAi() {
+    const picked = aiItems.filter(i => i.checked);
+    if (!picked.length) { toast('请先勾选要填入的项'); return; }
+    const applyOne = (f, val) => {
+        if (f === 'tags') { if (!formJob.tags.includes(val) && formJob.tags.length < 5) formJob.tags.push(val); }
+        else if (f === 'addrs') { if (!formJob.addrs.some(a => a.addr === val)) formJob.addrs.push({ id: ++jobIdSeq, name: val.slice(0, 12), addr: val }); }
+        else if (f === 'salaryRows' || f === 'onboardRows') { if (!formJob[f].some(a => a.val === val)) formJob[f].push({ id: ++jobIdSeq, key: f === 'salaryRows' ? '识别项目' : '入职事项', val }); }
+        else formJob[f] = val;
+    };
+    let n = 0;
+    picked.forEach(it => {
+        if (it.f === 'salary') { formJob.salaryMin = it.vals[0] || ''; formJob.salaryMax = it.vals[1] || ''; n += 2; return; }
+        if (it.rows) { it.rows.forEach(r => { formJob[it.f].push({ id: ++jobIdSeq, key: r.key, val: r.val }); n++; }); return; }
+        (it.vals || [it.val]).forEach(v => { applyOne(it.f, v); n++; });
+    });
+    popView();
+    renderForm();
+    toast(`已填入 ${n} 项`);
+}
+
+/* ---------- 导航栈 ---------- */
+const viewStack = ['view-home'];
+function pushView(id) { if (viewStack[viewStack.length - 1] !== id) viewStack.push(id); switchView(id, 'anim-push'); }
+function popView() { if (viewStack.length > 1) viewStack.pop(); switchView(viewStack[viewStack.length - 1], 'anim-pop'); }
+function goTab(id) { viewStack.length = 1; viewStack[0] = id; switchView(id, id === 'view-home' ? 'anim-pop' : 'anim-push'); }
+
+function resetJobs() {
+    jobLimit = JOB_BATCH;
+    const v = document.getElementById('view-jobs');
+    if (v) v.scrollTop = 0;
+    renderJobs();
+}
+renderJobs();
+renderJobFilter();
+bindFormOnce();
+document.querySelectorAll('.mv-back').forEach(b => b.onclick = () => popView());
+document.getElementById('deptBack').onclick = () => { popView(); renderForm(); };
+document.getElementById('tagBack').onclick = () => { popView(); renderForm(); };
+document.getElementById('tagPickDone').onclick = () => { popView(); renderForm(); };
+document.getElementById('deptPickDone').onclick = () => { popView(); renderForm(); };
+document.getElementById('dpKw').oninput = e => renderDeptPage(e.target.value.trim());
+document.getElementById('tgKw').oninput = e => renderTagPage(e.target.value.trim());
+document.getElementById('jbKw').oninput = e => { jobFilter.kw = e.target.value.trim(); resetJobs(); };
+document.getElementById('jbFltBtn').onclick = () => { renderJobFilter(); showSheet(document.getElementById('jbFilter')); };
+document.getElementById('view-jobs').onscroll = onJobsScroll;
+
+/* ============================================================
+   关联客户 / 岗位标签
+   ============================================================ */
+
+/* ---------- 通用确认弹窗 ---------- */
+function confirmBox(title, text, okText, onOk) {
+    const el = document.getElementById('cfrm');
+    el.innerHTML = `<div class="cf-box"><h5>${title}</h5><p>${text}</p>
+        <div class="cf-btns"><span class="cf-no">取消</span><span class="cf-ok">${okText}</span></div></div>`;
+    el.classList.add('show');
+    el.querySelector('.cf-no').onclick = () => el.classList.remove('show');
+    el.querySelector('.cf-ok').onclick = () => { el.classList.remove('show'); onOk(); };
+}
+
+/* ================= 关联客户 ================= */
+const CLIENT_REGIONS = [
+    { v: '湖北省', cities: [['武汉市', ['东湖高新区', '洪山区', '武昌区', '江夏区']], ['鄂州市', ['葛店开发区', '华容区']], ['黄石市', ['西塞山区', '大冶市']]] },
+    { v: '广东省', cities: [['深圳市', ['南山区', '宝安区', '龙华区', '龙岗区']], ['广州市', ['天河区', '番禺区', '黄埔区']], ['东莞市', ['长安镇', '南城街道']]] },
+    { v: '江苏省', cities: [['苏州市', ['工业园区', '吴中区', '昆山市']], ['南京市', ['江宁区', '雨花台区']]] },
+    { v: '浙江省', cities: [['杭州市', ['余杭区', '滨江区', '萧山区']], ['宁波市', ['鄞州区', '北仑区']]] },
+    { v: '四川省', cities: [['成都市', ['高新区', '武侯区', '双流区']], ['绵阳市', ['涪城区', '游仙区']]] },
+    { v: '河南省', cities: [['郑州市', ['金水区', '中原区', '航空港区']], ['洛阳市', ['涧西区', '洛龙区']]] },
+];
+const CLIENT_REGISTRY = {
+    '武汉华星光电技术有限公司': { creditCode: '91420100MA4K3XXX1A', addr: '湖北省武汉市东湖高新区高新大道 666 号' },
+    '武汉天马微电子有限公司': { creditCode: '914201006854XXXX2B', addr: '湖北省武汉市东湖高新区左岭大道 8 号' },
+    '鄂州三安光电有限公司': { creditCode: '91420700MA49XXXX3C', addr: '湖北省鄂州市葛店开发区高新大道 18 号' },
+    '武汉联想产业基地': { creditCode: '914201005749XXXX4D', addr: '湖北省武汉市东湖高新区光谷大道 77 号' },
+    '深圳市智灵工科技有限公司': { creditCode: '91440300MA5FXXXX5E', addr: '广东省深圳市南山区科技园科苑路 15 号' },
+    '深圳南山智造有限公司': { creditCode: '91440300MA5GXXXX6F', addr: '广东省深圳市南山区西丽街道留仙大道 3288 号' },
+};
+const CLIENTS = [
+    { id: 12, name: '武汉华星光电技术有限公司', creditCode: '91420100MA4K3XXX1A', region: ['湖北省', '武汉市', '东湖高新区'], addrDetail: '高新大道 666 号', employers: ['武汉华星光电技术有限公司'], contacts: ['陈志明', '吴建国'], payDay: 15, phone: '027-8765 4321', intro: '光电显示面板制造，长期用工，招聘普工与质检。', images: [], certs: [], creator: '张明远', created: '2026-08-01 10:22:33' },
+    { id: 11, name: '武汉天马微电子有限公司', creditCode: '914201006854XXXX2B', region: ['湖北省', '武汉市', '东湖高新区'], addrDetail: '左岭大道 8 号', employers: ['武汉天马微电子有限公司'], contacts: ['周正'], payDay: 10, phone: '027-6789 1234', intro: '中小尺寸显示面板，仓储与产线岗位需求稳定。', images: [], certs: [], creator: '刘经理', created: '2026-08-05 09:14:02' },
+    { id: 10, name: '鄂州三安光电有限公司', creditCode: '91420700MA49XXXX3C', region: ['湖北省', '鄂州市', '葛店开发区'], addrDetail: '高新大道 18 号', employers: ['鄂州三安光电有限公司'], contacts: ['李海涛'], payDay: 15, phone: '0711-3890 220', intro: '化合物半导体，夜班岗位较多。', images: [], certs: [], creator: '测试2号', created: '2026-08-10 16:40:11' },
+    { id: 9, name: '武汉联想产业基地', creditCode: '914201005749XXXX4D', region: ['湖北省', '武汉市', '东湖高新区'], addrDetail: '光谷大道 77 号', employers: ['武汉联想产业基地'], contacts: ['吴敏'], payDay: 20, phone: '027-8755 6688', intro: '整机组装与食堂后勤外包。', images: [], certs: [], creator: '张明远', created: '2026-07-28 11:05:47' },
+    { id: 8, name: '深圳市智灵工科技有限公司', creditCode: '91440300MA5FXXXX5E', region: ['广东省', '深圳市', '南山区'], addrDetail: '科技园科苑路 15 号', employers: ['武汉华星光电技术有限公司', '武汉联想产业基地'], contacts: ['林嘉怡'], payDay: 15, phone: '0755-8633 2710', intro: '平台合作方，负责多个用工单位的人员输送。', images: [], certs: [], creator: '刘经理', created: '2026-07-20 14:30:08' },
+    { id: 7, name: '深圳南山智造有限公司', creditCode: '91440300MA5GXXXX6F', region: ['广东省', '深圳市', '南山区'], addrDetail: '留仙大道 3288 号', employers: ['武汉天马微电子有限公司'], contacts: ['黄志强'], payDay: 25, phone: '0755-2665 8899', intro: '精密结构件制造。', images: [], certs: [], creator: '测试2号', created: '2026-07-11 10:12:55' },
+    { id: 6, name: '东莞立讯精密工业有限公司', creditCode: '', region: ['广东省', '东莞市', '长安镇'], addrDetail: '乌沙工业区兴发路 6 号', employers: ['武汉联想产业基地', '武汉华星光电技术有限公司'], contacts: ['王丽'], payDay: 12, phone: '0769-8123 4567', intro: '连接器与线束代工。', images: [], certs: [], creator: '张明远', created: '2026-06-30 09:41:20' },
+    { id: 5, name: '苏州华硕电子科技有限公司', creditCode: '', region: ['江苏省', '苏州市', '工业园区'], addrDetail: '星湖街 328 号', employers: ['鄂州三安光电有限公司'], contacts: ['高俊杰'], payDay: 18, phone: '0512-6288 3311', intro: '电子产品代工，旺季用工量大。', images: [], certs: [], creator: '刘经理', created: '2026-06-18 15:22:39' },
+];
+let clFilter = { name: '', contact: '', employer: '', payDay: '', from: '', to: '' };
+let clEditId = null, clForm = null;
+
+const clRegionText = c => (c.region || []).join('') + (c.addrDetail || '');
+const clContacts = () => [...new Set(CLIENTS.flatMap(c => c.contacts || []))];
+const clPayDays = Array.from({ length: 31 }, (_, i) => i + 1);
+const clFilterCount = () => Object.keys(clFilter).filter(k => k !== 'name' && clFilter[k]).length;
+
+function matchClients() {
+    const f = clFilter;
+    return CLIENTS.filter(c => {
+        if (f.name && !(c.name.includes(f.name) || (c.contacts || []).some(x => x.includes(f.name)))) return false;
+        if (f.contact && !(c.contacts || []).includes(f.contact)) return false;
+        if (f.employer && !(c.employers || []).includes(f.employer)) return false;
+        if (f.payDay && String(c.payDay) !== String(f.payDay)) return false;
+        if (f.from && c.created.slice(0, 10) < f.from) return false;
+        if (f.to && c.created.slice(0, 10) > f.to) return false;
+        return true;
+    });
+}
+
+function renderClients() {
+    const list = matchClients();
+    const n = clFilterCount();
+    const badge = document.getElementById('clFltN');
+    badge.style.display = n ? 'block' : 'none';
+    badge.textContent = n;
+    document.getElementById('clList').innerHTML = list.length ? list.map(c => `
+        <div class="cc" data-id="${c.id}">
+            <div class="cc-h"><div class="cc-name">${esc(c.name)}</div><span class="cc-id">ID ${c.id}</span></div>
+            <div class="cc-line"><span class="k">经营地址：</span>${esc(clRegionText(c)) || '—'}</div>
+            <div class="cc-line"><span class="k">用人单位：</span>${esc((c.employers || []).join('、')) || '—'}</div>
+            <div class="cc-line"><span class="k">联系人：</span>${esc((c.contacts || []).join('、')) || '—'}${c.payDay ? ` · 每月 ${c.payDay} 日发薪` : ''}</div>
+            <div class="cc-line"><span class="k">联系电话：</span>${esc(c.phone) || '—'}</div>
+            <div class="cc-foot"><span class="meta">创建人 ${esc(c.creator || '—')} · ${esc(c.created)}</span>
+                <span class="jbtn" data-act="edit">编辑</span>
+                <span class="jbtn" style="color:var(--red);background:#FFF1F0;border-color:#FFD8D5" data-act="del">删除</span>
+            </div>
+        </div>`).join('') : `<div class="empty"><b>🏢</b>还没有关联客户<br>点下方按钮新增一个</div>`;
+    document.querySelectorAll('#clList .cc').forEach(card => {
+        const c = CLIENTS.find(x => x.id === +card.dataset.id);
+        card.querySelector('[data-act="edit"]').onclick = () => openClientForm(c);
+        card.querySelector('[data-act="del"]').onclick = () => confirmBox('删除关联客户', `确认删除「${esc(c.name)}」？`, '确认删除', () => {
+            CLIENTS.splice(CLIENTS.indexOf(c), 1);
+            renderClients();
+            toast('已删除：' + c.name);
+        });
+    });
+}
+
+function renderClientFilter() {
+    const el = document.getElementById('clFilter');
+    el.innerHTML = `<div class="sb-hd"><b>筛选关联客户</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">
+            <div class="frow"><label>关联客户 / 联系人</label><input class="fin" id="clFName" value="${esc(clFilter.name)}" placeholder="输入名称或联系人"></div>
+            <div class="fg"><label>联系人</label><div class="fcs">${clContacts().map(x => `<span class="fc ${clFilter.contact === x ? 'on' : ''}" data-k="contact" data-v="${esc(x)}">${esc(x)}</span>`).join('')}</div></div>
+            <div class="fg"><label>用人单位</label><div class="fcs">${JOB_EMPLOYERS.map(x => `<span class="fc ${clFilter.employer === x ? 'on' : ''}" data-k="employer" data-v="${esc(x)}">${esc(x)}</span>`).join('')}</div></div>
+            <div class="fg"><label>发薪日</label><div class="fcs">${clPayDays.map(d => `<span class="fc ${String(clFilter.payDay) === String(d) ? 'on' : ''}" data-k="payDay" data-v="${d}">每月 ${d} 日</span>`).join('')}</div></div>
+            <div class="fg"><label>创建时间</label><div class="f2">
+                <input type="date" class="fin" id="clFFrom" value="${clFilter.from}"><span class="u">至</span><input type="date" class="fin" id="clFTo" value="${clFilter.to}">
+            </div></div>
+        </div>
+        <div class="sb-ft"><span class="btn ghost" data-reset>重置</span><span class="btn primary" data-query>查询</span></div>`;
+    el.querySelectorAll('.fc').forEach(c => c.onclick = () => {
+        const k = c.dataset.k;
+        clFilter[k] = String(clFilter[k]) === c.dataset.v ? '' : c.dataset.v;
+        renderClientFilter();
+    });
+    el.querySelector('[data-close]').onclick = hideSheet;
+    el.querySelector('[data-reset]').onclick = () => {
+        clFilter = { name: '', contact: '', employer: '', payDay: '', from: '', to: '' };
+        document.getElementById('clKw').value = '';
+        renderClientFilter(); renderClients(); hideSheet();
+    };
+    el.querySelector('[data-query]').onclick = () => {
+        clFilter.name = document.getElementById('clFName').value.trim();
+        clFilter.from = document.getElementById('clFFrom').value;
+        clFilter.to = document.getElementById('clFTo').value;
+        if (clFilter.from && clFilter.to && clFilter.from > clFilter.to) { toast('开始日期需不晚于结束日期'); return; }
+        renderClients(); hideSheet();
+    };
+}
+
+function openClientForm(src) {
+    clEditId = src ? src.id : null;
+    clForm = src ? clone(src) : { id: null, name: '', creditCode: '', region: [], addrDetail: '', employers: [], contacts: [], payDay: 15, phone: '', intro: '', images: [], certs: [] };
+    renderClientForm();
+    pushView('view-cust-form');
+}
+
+function renderClientForm() {
+    const c = clForm;
+    const prov = CLIENT_REGIONS.find(r => r.v === c.region[0]);
+    const city = prov && prov.cities.find(x => x[0] === c.region[1]);
+    document.getElementById('clfTitle').textContent = clEditId ? '编辑关联客户' : '新增关联客户';
+    document.getElementById('clfBody').innerHTML = `
+        <div class="dsec"><h4>基本信息</h4>
+            <div class="frow"><label><span class="req">*</span>关联客户</label>
+                <div class="f2"><input class="fin" id="clName" maxlength="50" placeholder="请输入企业全称" value="${esc(c.name)}">
+                <span class="add-mini" id="clVerify" style="padding:0 12px;background:var(--blue-light);color:var(--blue);border-radius:10px;font-size:12.5px;font-weight:700;cursor:pointer;display:flex;align-items:center">校验</span></div>
+                <div class="hint">统一社会信用代码：${c.creditCode || '未校验'}</div>
+            </div>
+            <div class="frow"><label><span class="req">*</span>经营地址</label>
+                <div class="f2">
+                    <select class="fsel" id="clProv"><option value="">省份</option>${CLIENT_REGIONS.map(r => `<option ${c.region[0] === r.v ? 'selected' : ''}>${r.v}</option>`).join('')}</select>
+                    <select class="fsel" id="clCity"><option value="">城市</option>${(prov ? prov.cities : []).map(x => `<option ${c.region[1] === x[0] ? 'selected' : ''}>${x[0]}</option>`).join('')}</select>
+                    <select class="fsel" id="clDist"><option value="">区县</option>${(city ? city[1] : []).map(x => `<option ${c.region[2] === x ? 'selected' : ''}>${x}</option>`).join('')}</select>
+                </div>
+                <input class="fin" id="clAddr" maxlength="80" style="margin-top:8px" placeholder="详细地址" value="${esc(c.addrDetail)}">
+            </div>
+            <div class="frow"><label><span class="req">*</span>关联客户介绍</label>
+                <textarea class="fta" id="clIntro" maxlength="500" placeholder="主营业务、用工规模等">${esc(c.intro)}</textarea>
+                <div class="hint"><span id="clIntroCnt">${(c.intro || '').length}</span>/500</div>
+            </div>
+        </div>
+        <div class="dsec"><h4>联系与结算</h4>
+            <div class="frow"><label>联系人</label>
+                <div class="pickfield" data-act="contacts"><span class="pf-val${c.contacts.length ? '' : ' mut'}">${c.contacts.length ? esc(c.contacts.join('、')) : '请选择联系人'}</span><span class="pf-go">›</span></div>
+            </div>
+            <div class="frow"><label>联系电话</label><input class="fin" id="clPhone" maxlength="20" placeholder="如 027-8765 4321" value="${esc(c.phone)}"></div>
+            <div class="frow"><label>用人单位</label>
+                <div class="pickfield" data-act="employers"><span class="pf-val${c.employers.length ? '' : ' mut'}">${c.employers.length ? esc(c.employers.join('、')) : '请选择用人单位'}</span><span class="pf-go">›</span></div>
+            </div>
+            <div class="frow"><label>发薪日</label>
+                <select class="fsel" id="clPayDay">${clPayDays.map(d => `<option value="${d}" ${+c.payDay === d ? 'selected' : ''}>每月 ${d} 日</option>`).join('')}</select>
+            </div>
+        </div>
+        <div class="dsec"><h4>图片与资质</h4>
+            <div class="hint" style="margin:0 0 8px">企业图片（最多 6 张）</div>
+            <div class="pic-grid">
+                ${c.images.map((s, i) => `<div class="pic"><img src="${s}"><span class="del" data-act="imgdel" data-i="${i}">✕</span></div>`).join('')}
+                ${c.images.length < 6 ? `<div class="pic-add" data-act="imgadd"><b>＋</b>图片</div>` : ''}
+            </div>
+            <div class="hint" style="margin:10px 0 8px">资质证明（最多 5 张）</div>
+            <div class="pic-grid">
+                ${c.certs.map((s, i) => `<div class="pic"><img src="${s}"><span class="del" data-act="certdel" data-i="${i}">✕</span></div>`).join('')}
+                ${c.certs.length < 5 ? `<div class="pic-add" data-act="certadd"><b>＋</b>资质</div>` : ''}
+            </div>
+        </div>`;
+    bindClientForm();
+}
+
+function bindClientForm() {
+    const c = clForm;
+    const body = document.getElementById('clfBody');
+    const sync = () => { c.name = document.getElementById('clName').value; c.addrDetail = document.getElementById('clAddr').value; c.intro = document.getElementById('clIntro').value; };
+    ['clName', 'clAddr', 'clPhone', 'clIntro'].forEach(id => { const el = document.getElementById(id); if (el) el.oninput = () => { sync(); if (id === 'clIntro') document.getElementById('clIntroCnt').textContent = el.value.length; }; });
+    document.getElementById('clIntroCnt').textContent = (c.intro || '').length;
+    document.getElementById('clVerify').onclick = () => {
+        sync();
+        const hit = CLIENT_REGISTRY[c.name.trim()];
+        if (hit) { c.creditCode = hit.creditCode; toast('工商校验通过，已回填统一社会信用代码'); renderClientForm(); }
+        else toast('未查询到该企业工商信息，可继续手工填写');
+    };
+    const prov = document.getElementById('clProv'), city = document.getElementById('clCity'), dist = document.getElementById('clDist');
+    prov.onchange = () => { c.region = prov.value ? [prov.value] : []; renderClientForm(); };
+    city.onchange = () => { c.region = [c.region[0], city.value].filter(Boolean); renderClientForm(); };
+    dist.onchange = () => { c.region = [c.region[0], c.region[1], dist.value].filter(Boolean); renderClientForm(); };
+    document.getElementById('clPayDay').onchange = e => { c.payDay = +e.target.value; };
+    body.querySelectorAll('[data-act="contacts"]').forEach(b => b.onclick = openContactSheet);
+    body.querySelectorAll('[data-act="employers"]').forEach(b => b.onclick = openEmployerSheet);
+    body.querySelectorAll('[data-act="imgadd"]').forEach(b => b.onclick = () => document.getElementById('cImg').click());
+    body.querySelectorAll('[data-act="certadd"]').forEach(b => b.onclick = () => document.getElementById('cCert').click());
+    body.querySelectorAll('[data-act="imgdel"]').forEach(b => b.onclick = () => { c.images.splice(+b.dataset.i, 1); renderClientForm(); });
+    body.querySelectorAll('[data-act="certdel"]').forEach(b => b.onclick = () => { c.certs.splice(+b.dataset.i, 1); renderClientForm(); });
+}
+
+/* ---------- 通用底部选择弹框（单选/多选）---------- */
+function openPickSheet(opts) {
+    const el = document.getElementById('pickSheet');
+    let sel = (opts.selected || []).slice();
+    const paint = () => {
+        el.innerHTML = `<div class="sb-hd"><b>${opts.title}</b><span class="x" data-close>✕</span></div>
+            <div class="sb-bd">${opts.extra ? opts.extra(sel) : ''}${opts.items.map(it => `
+                <div class="drow ${sel.includes(it.v) ? 'on' : ''}" data-v="${esc(it.v)}">
+                    <span class="dl"><span>${esc(it.label)}</span>${it.desc ? `<span class="dsub">${esc(it.desc)}</span>` : ''}</span>
+                    <span class="tick">✓</span>
+                </div>`).join('')}</div>
+            <div class="sb-ft"><span class="btn primary" data-done>${opts.multi ? `完成（已选 ${sel.length}）` : '完成'}</span></div>`;
+        el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+        el.querySelectorAll('.drow').forEach(r => r.onclick = () => {
+            const v = r.dataset.v;
+            if (!opts.multi) { sel = [v]; hideSheet(); opts.onDone(sel); return; }
+            const i = sel.indexOf(v);
+            i < 0 ? sel.push(v) : sel.splice(i, 1);
+            paint();
+        });
+        el.querySelector('[data-done]').onclick = () => { hideSheet(); opts.onDone(sel); };
+        if (opts.after) opts.after(el, sel);
+    };
+    paint();
+    showSheet(el);
+}
+
+function openEmployerSheet() {
+    openPickSheet({ title: '选择用人单位', multi: true, items: JOB_EMPLOYERS.map(v => ({ v, label: v })), selected: clForm.employers,
+        onDone: sel => { clForm.employers = sel.slice(); renderClientForm(); } });
+}
+
+function openContactSheet() {
+    const all = [...new Set(clContacts().concat(clForm.contacts))];
+    let sel = clForm.contacts.slice();
+    let kw = '';
+    const el = document.getElementById('pickSheet');
+    el.innerHTML = `<div class="sb-hd"><b>选择联系人</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">
+            <div class="jsearch" style="margin-bottom:10px">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
+                <input id="pkKw" placeholder="搜索姓名">
+            </div>
+            <div id="pkList"></div>
+        </div>
+        <div class="sb-ft"><span class="btn primary" id="pkDone">完成（已选 0）</span></div>`;
+    const listEl = el.querySelector('#pkList');
+    const doneEl = el.querySelector('#pkDone');
+    const paint = () => {
+        const shown = all.filter(v => !kw || v.includes(kw));
+        listEl.innerHTML = shown.length
+            ? shown.map(v => `<div class="drow ${sel.includes(v) ? 'on' : ''}" data-v="${esc(v)}"><span class="dl"><span>${esc(v)}</span></span><span class="tick">✓</span></div>`).join('')
+            : '<div class="empty" style="padding:26px 0">没有匹配的联系人</div>';
+        listEl.querySelectorAll('.drow').forEach(r => r.onclick = () => {
+            const v = r.dataset.v, i = sel.indexOf(v);
+            i < 0 ? sel.push(v) : sel.splice(i, 1);
+            paint();
+        });
+        doneEl.textContent = `完成（已选 ${sel.length}）`;
+    };
+    el.querySelector('#pkKw').oninput = e => { kw = e.target.value.trim(); paint(); };
+    doneEl.onclick = () => { hideSheet(); clForm.contacts = sel.slice(); renderClientForm(); };
+    el.querySelector('[data-close]').onclick = hideSheet;
+    paint();
+    showSheet(el);
+}
+
+document.getElementById('cImg').onchange = e => {
+    if (!clForm) { e.target.value = ''; return; }
+    const files = [...e.target.files];
+    let left = 6 - clForm.images.length;
+    files.forEach(f => {
+        if (left-- <= 0) return;
+        const r = new FileReader();
+        r.onload = () => { if (clForm) { clForm.images.push(r.result); renderClientForm(); } };
+        r.readAsDataURL(f);
+    });
+    e.target.value = '';
+};
+document.getElementById('cCert').onchange = e => {
+    if (!clForm) { e.target.value = ''; return; }
+    const files = [...e.target.files];
+    let left = 5 - clForm.certs.length;
+    files.forEach(f => {
+        if (left-- <= 0) return;
+        const r = new FileReader();
+        r.onload = () => { if (clForm) { clForm.certs.push(r.result); renderClientForm(); } };
+        r.readAsDataURL(f);
+    });
+    e.target.value = '';
+    if (files.length > 5) toast('资质证明最多 5 张');
+};
+
+function saveClient() {
+    const c = clForm;
+    c.name = document.getElementById('clName').value.trim();
+    c.addrDetail = document.getElementById('clAddr').value.trim();
+    c.intro = document.getElementById('clIntro').value.trim();
+    const miss = [];
+    if (!c.name) miss.push('关联客户');
+    if (!c.region[0] || !c.region[1] || !c.region[2]) miss.push('经营地址（省市区）');
+    if (!c.intro) miss.push('关联客户介绍');
+    if (miss.length) { toast('请完善：' + miss.join('、')); return; }
+    if (clEditId) {
+        const old = CLIENTS.find(x => x.id === clEditId);
+        Object.assign(old, c, { id: clEditId });
+    } else {
+        CLIENTS.unshift(Object.assign(clone(c), { id: Math.max(0, ...CLIENTS.map(x => x.id)) + 1, creator: ME, created: nowStamp() }));
+    }
+    toast(clEditId ? '已保存：' + c.name : '已新增：' + c.name);
+    clForm = null;
+    popView();
+    renderClients();
+}
+
+/* ================= 岗位标签 ================= */
+const tgSeed = () => { JOB_TAG_GROUPS.forEach((g, i) => { if (!g.id) g.id = i + 1; }); };
+
+function renderTags() {
+    tgSeed();
+    document.getElementById('tgList').innerHTML = JOB_TAG_GROUPS.map(g => `
+        <div class="cc" data-id="${g.id}">
+            <div class="cc-h"><div class="tg-name">${esc(g.name)}</div><span class="tg-count">${g.tags.length}/100</span></div>
+            <div class="cc-tags">${g.tags.length ? g.tags.slice(0, 8).map(t => `<span class="chip">${esc(t)}</span>`).join('') + (g.tags.length > 8 ? `<span class="chip gray">+${g.tags.length - 8}</span>` : '') : '<span class="mut">暂无标签</span>'}</div>
+            <div class="cc-foot"><span class="meta"></span>
+                <span class="jbtn" data-act="edit">编辑</span>
+                <span class="jbtn" style="color:var(--red);background:#FFF1F0;border-color:#FFD8D5" data-act="del">删除</span>
+            </div>
+        </div>`).join('');
+    document.querySelectorAll('#tgList .cc').forEach(card => {
+        const g = JOB_TAG_GROUPS.find(x => x.id === +card.dataset.id);
+        card.querySelector('[data-act="edit"]').onclick = () => openTagGroupForm(g.id);
+        card.querySelector('[data-act="del"]').onclick = () => confirmBox('删除标签组', `确认删除「${esc(g.name)}」？岗位上已使用的标签不会自动清除。`, '确认删除', () => {
+            JOB_TAG_GROUPS.splice(JOB_TAG_GROUPS.indexOf(g), 1);
+            renderTags();
+            toast('已删除标签组：' + g.name);
+        });
+    });
+}
+
+let tgGroupId = null, tgForm = null;
+function openTagGroupForm(id) {
+    tgGroupId = id || null;
+    const g = id ? JOB_TAG_GROUPS.find(x => x.id === id) : { name: '', tags: [] };
+    tgForm = { name: g.name, tags: g.tags.slice() };
+    renderTagForm();
+    pushView('view-tag-form');
+}
+function renderTagForm() {
+    document.getElementById('tgfTitle').textContent = tgGroupId ? '编辑标签组' : '新建标签组';
+    document.getElementById('tgfBody').innerHTML = `
+        <div class="dsec"><h4>标签组</h4>
+            <div class="frow"><label><span class="req">*</span>标签组名称</label>
+                <input class="fin" id="tgfName" maxlength="6" placeholder="最多 6 个字" value="${esc(tgForm.name)}"></div>
+            <div class="frow"><label>标签<span class="cnt" id="tgfCnt">${tgForm.tags.length}/100</span></label>
+                <div class="jc-tags" style="margin-top:0" id="tgfChips">${tgForm.tags.length ? tgForm.tags.map(t => `<span class="chip">${esc(t)} <b data-v="${esc(t)}" style="cursor:pointer">✕</b></span>`).join('') : '<span class="mut">还没有标签</span>'}</div>
+                <div class="chipin"><input class="fin" id="tgfIn" maxlength="10" placeholder="单个标签最多 10 字"><span class="add-mini" id="tgfAdd">添加</span></div>
+                <div class="sh-err" id="tgfErr"></div>
+            </div>
+        </div>`;
+    bindTagForm();
+}
+function bindTagForm() {
+    document.getElementById('tgfName').oninput = e => { tgForm.name = e.target.value; };
+    document.getElementById('tgfAdd').onclick = () => {
+        const inp = document.getElementById('tgfIn');
+        const v = inp.value.trim();
+        const err = document.getElementById('tgfErr');
+        if (!v) { err.textContent = '请输入标签名称'; return; }
+        if (tgForm.tags.includes(v)) { err.textContent = '同一组内标签不能重复'; return; }
+        if (tgForm.tags.length >= 100) { err.textContent = '每组最多 100 个标签'; return; }
+        tgForm.tags.push(v);
+        renderTagForm();
+    };
+    document.querySelectorAll('#tgfChips b').forEach(b => b.onclick = () => {
+        tgForm.tags = tgForm.tags.filter(x => x !== b.dataset.v);
+        renderTagForm();
+    });
+}
+function saveTagGroup() {
+    const name = document.getElementById('tgfName').value.trim();
+    const err = document.getElementById('tgfErr');
+    if (!name) { err.textContent = '请填写标签组名称'; return; }
+    if (!tgGroupId && JOB_TAG_GROUPS.length >= 20) { err.textContent = '最多 20 组标签'; return; }
+    if (tgGroupId) { const t = JOB_TAG_GROUPS.find(x => x.id === tgGroupId); t.name = name; t.tags = tgForm.tags.slice(); }
+    else JOB_TAG_GROUPS.push({ id: Math.max(0, ...JOB_TAG_GROUPS.map(x => x.id || 0)) + 1, name, tags: tgForm.tags.slice() });
+    toast((tgGroupId ? '已保存：' : '已新建：') + name);
+    tgForm = null;
+    popView();
+    renderTags();
+}
+
+/* ================= 计薪提成（计薪方式 / 提成方案）================= */
+const PC_UNITS = ['深圳市灿晶电子科技有限公司', '新象电器', '谦早电子科技（深圳）有限公司', '深圳市科敏传感器有限公司', '深圳市嘉得盛智能科技有限公司', '大族激光科技产业集团股份有限公司', '深圳市奥力精密智造有限公司', '武汉华星光电技术有限公司', '武汉天马微电子有限公司', '鄂州三安光电有限公司', '武汉联想产业基地'];
+const PC_COMM_TYPES = [
+    { v: 'fixSame', label: '固定佣金-男女同价' },
+    { v: 'fixDiff', label: '固定佣金-男女异价' },
+    { v: 'onSame', label: '在离职佣金-男女同价' },
+    { v: 'onDiff', label: '在离职佣金-男女异价' },
+    { v: 'labor', label: '劳动法' },
+    { v: 'none', label: '不设置' },
+];
+const PC_PRICE_SLOTS = {
+    fixSame: [['p1', '单价']], fixDiff: [['p1', '男工单价'], ['p2', '女工单价']],
+    onSame: [['p1', '在职单价'], ['p2', '离职单价']],
+    onDiff: [['p1', '在职男工'], ['p2', '在子女工'], ['p3', '离职男工'], ['p4', '离职女工']],
+    labor: [], none: [],
+};
+const PC_SUBSIDY_TYPES = [
+    { v: 'dayOnce', label: '固定时长-单次结算', dur: 'days', money: '元', moneyLabel: '奖励金额' },
+    { v: 'dayHour', label: '固定时长-小时结算', dur: 'days', money: '元/小时', moneyLabel: '奖励单价' },
+    { v: 'dueOnce', label: '到期日-单次结算', dur: 'date', money: '元', moneyLabel: '奖励金额' },
+    { v: 'dueHour', label: '到期日-小时结算', dur: 'date', money: '元/小时', moneyLabel: '奖励单价' },
+    { v: 'none', label: '不设置', dur: '', money: '', moneyLabel: '' },
+];
+const PC_PENALTY_TYPES = [{ v: 'day', label: '固定时长' }, { v: 'due', label: '到期日' }, { v: 'none', label: '不设置' }];
+const PC_FEE_DEFS = [
+    { k: 'night', label: '夜班佣金', unit: '元/小时' }, { k: 'accom', label: '住宿水电', unit: '元/天' },
+    { k: 'ins', label: '商业险', unit: '元/月' }, { k: 'service', label: '服务费', unit: '元/月' },
+    { k: 'meal', label: '餐补', unit: '元/月' }, { k: 'hygiene', label: '卫生费', unit: '元/月' },
+];
+const PC_PLAN_TYPES = [
+    { v: 'hour', label: '小时提成' }, { v: 'once', label: '单次结算' },
+    { v: 'day', label: '天数结算' }, { v: 'month', label: '月度结算' }, { v: 'none', label: '不设置' },
+];
+const PC_PLAN_COMM_UNITS = ['元/小时', '元/天', '元/月'];
+const PAY_METHODS = [
+    { id: 72023, name: '生产部Qc1', unitScope: 'part', units: ['新象电器'], archCount: 17, commType: 'onSame', adjust: false, laborSalary: '', periods: [{ start: '', end: '', p1: '21', p2: '20', subsidy: { type: 'dayOnce', days: '30', amount: '200', date: '' } }], fees: { night: '0', accom: '0.00', ins: '78', service: '0', meal: '0', hygiene: '0' }, canLoan: false, penalty: { type: 'day', days: '90', amount: '500', date: '' }, payNote: '12发工资', creator: '刘经理', created: '2026-08-22' },
+    { id: 72024, name: '灿晶电子-小时工', unitScope: 'all', units: [], archCount: 46, commType: 'fixDiff', adjust: false, laborSalary: '', periods: [{ start: '', end: '', p1: '22', p2: '21', subsidy: { type: 'none', days: '', amount: '', date: '' } }], fees: { night: '2', accom: '10.00', ins: '78', service: '0', meal: '0', hygiene: '0' }, canLoan: true, penalty: { type: 'none', days: '', amount: '', date: '' }, payNote: '每月 10 日结算上月', creator: '朱轩均', created: '2026-08-18' },
+    { id: 72025, name: '嘉得盛-调价规则', unitScope: 'part', units: ['深圳市嘉得盛智能科技有限公司'], archCount: 8, commType: 'onDiff', adjust: true, laborSalary: '', periods: [
+        { start: '2026-07-01', end: '2026-09-30', p1: '24', p2: '23', p3: '22', p4: '21', subsidy: { type: 'dueOnce', days: '', amount: '300', date: '2026-09-30' } },
+        { start: '2026-10-01', end: '2026-12-31', p1: '25', p2: '24', p3: '23', p4: '22', subsidy: { type: 'dueHour', days: '', amount: '1', date: '2026-12-31' } },
+    ], fees: { night: '0', accom: '0.00', ins: '78', service: '2', meal: '0', hygiene: '0' }, canLoan: false, penalty: { type: 'due', days: '', amount: '600', date: '2026-12-31' }, payNote: '按调价周期结算', creator: '张明远', created: '2026-08-12' },
+    { id: 72026, name: '劳动法-南京项目', unitScope: 'part', units: ['深圳市科敏传感器有限公司'], archCount: 3, commType: 'labor', adjust: false, laborSalary: '5200', periods: [], fees: { night: '0', accom: '0.00', ins: '78', service: '0', meal: '0', hygiene: '0' }, canLoan: false, penalty: { type: 'none', days: '', amount: '', date: '' }, payNote: '按劳动法缴纳社保', creator: '刘经理', created: '2026-08-06' },
+];
+const PAY_PLANS = [
+    { id: 73001, name: '华星光电-招聘提成', unitScope: 'part', units: ['武汉华星光电技术有限公司'], ent: { val: '8', unit: '元/小时' }, rec: { type: 'day', amount: '15', days: '60', months: '', condition: '', warranty: '' }, sup: { type: 'month', amount: '150', months: '0', days: '' }, creator: '朱轩均', created: '2026-08-20' },
+    { id: 73002, name: '天马-企业佣金', unitScope: 'all', units: [], ent: { val: '12', unit: '元/月' }, rec: { type: 'once', amount: '1000', condition: '30', warranty: '45', days: '', months: '' }, sup: { type: 'none', amount: '', days: '', months: '' }, creator: '刘经理', created: '2026-08-15' },
+    { id: 73003, name: '三安-小时提成', unitScope: 'part', units: ['鄂州三安光电有限公司'], ent: { val: '6', unit: '元/小时' }, rec: { type: 'hour', amount: '3', days: '', months: '', condition: '', warranty: '' }, sup: { type: 'hour', amount: '2', days: '', months: '' }, creator: '张明远', created: '2026-08-09' },
+];
+const PC_COMM_DESC = {
+    fixSame: '男女员工按同一个单价结算，不分在职离职。',
+    fixDiff: '男工、女工分别设置单价，适用于同岗不同酬。',
+    onSame: '在职、离职分别设置单价，男女同价。',
+    onDiff: '在职/离职 × 男/女 共四个单价，口径最细。',
+    labor: '按员工月薪结算，不配置单价与稳岗津贴。',
+    none: '只记录补贴扣费与违约金，不配置佣金。',
+};
+let payTab = 'method';
+let pmForm = null, plForm = null;
+let pcSeq = 73010;
+
+const commLabel = v => (PC_COMM_TYPES.find(t => t.v === v) || {}).label || '—';
+const pcUnitsText = (r, allLabel) => r.unitScope === 'all' ? allLabel : ((r.units || []).join('、') || '—');
+const pcMoney = n => (n === '' || n == null) ? '—' : n;
+const pcFeeText = r => PC_FEE_DEFS.map(d => `${d.label} ${pcMoney(r.fees[d.k])}${d.unit}`).join(' · ');
+const pcPriceText = r => {
+    const slots = PC_PRICE_SLOTS[r.commType] || [];
+    if (!slots.length) return r.commType === 'labor' ? `员工月薪 ${pcMoney(r.laborSalary)} 元/月` : '—';
+    const p = r.periods[0] || {};
+    return slots.map(([k, label]) => `${label} ${pcMoney(p[k])}`).join(' / ') + ' 元/小时';
+};
+const pcPenaltyText = r => r.penalty && r.penalty.type === 'day' ? `不满 ${r.penalty.days || 0} 天扣 ${r.penalty.amount || 0} 元`
+    : r.penalty && r.penalty.type === 'due' ? `须在 ${r.penalty.date || '—'} 前在职，离职扣 ${r.penalty.amount || 0} 元` : '不设置';
+const pcPlanSideText = s => {
+    if (!s || s.type === 'none') return '不设置';
+    if (s.type === 'hour') return `小时提成 · ${pcMoney(s.amount)}元/小时`;
+    if (s.type === 'once') return `单次结算 · ${pcMoney(s.amount)}元${s.warranty ? ` · 质保 ${s.warranty} 天` : ''}`;
+    if (s.type === 'day') return `天数结算 · ${pcMoney(s.amount)}元/天 · 共 ${pcMoney(s.days)} 天`;
+    return `月度结算 · ${pcMoney(s.amount)}元/月 · ${s.months === '0' ? '永久' : '共 ' + pcMoney(s.months) + ' 个月'}`;
+};
+
+function renderPay() {
+    document.getElementById('payTabs').innerHTML = [['method', '计薪方式'], ['plan', '提成方案']].map(([k, l]) =>
+        `<span class="segtab ${payTab === k ? 'on' : ''}" data-tab="${k}">${l}</span>`).join('');
+    document.querySelectorAll('#payTabs .segtab').forEach(t => t.onclick = () => { payTab = t.dataset.tab; renderPay(); });
+    document.getElementById('payNew').textContent = '＋ 新增' + (payTab === 'method' ? '计薪方式' : '提成方案');
+
+    const list = payTab === 'method' ? PAY_METHODS : PAY_PLANS;
+    const html = !list.length ? `<div class="empty"><b>📋</b>暂无${payTab === 'method' ? '计薪方式' : '提成方案'}</div>`
+        : payTab === 'method' ? PAY_METHODS.map(r => `
+        <div class="cc" data-id="${r.id}">
+            <div class="cc-h"><div class="cc-name">${esc(r.name)}</div><span class="cc-id">ID ${r.id}</span></div>
+            <div class="cc-line"><span class="k">关联单位：</span>${esc(pcUnitsText(r, '全部关联单位'))}</div>
+            <div class="cc-line"><span class="k">佣金性质：</span>${commLabel(r.commType)}${r.archCount ? ` · 关联档案 ${r.archCount}` : ''}</div>
+            <div class="cc-line"><span class="k">单价：</span>${pcPriceText(r)}</div>
+            <div class="cc-line"><span class="k">补贴扣费：</span>${pcFeeText(r)}</div>
+            <div class="cc-line"><span class="k">借支：</span>${r.canLoan ? '支持' : '不支持'} · <span class="k">违约金：</span>${pcPenaltyText(r)}</div>
+            <div class="cc-foot"><span class="meta">创建人 ${esc(r.creator)} · ${esc(r.created)}</span>
+                <span class="jbtn" data-act="copy">复制</span>
+                <span class="jbtn" style="color:var(--red);background:#FFF1F0;border-color:#FFD8D5" data-act="del">删除</span>
+            </div>
+        </div>`).join('') : PAY_PLANS.map(r => `
+        <div class="cc" data-id="${r.id}">
+            <div class="cc-h"><div class="cc-name">${esc(r.name)}</div><span class="cc-id">ID ${r.id}</span></div>
+            <div class="cc-line"><span class="k">用工单位：</span>${esc(pcUnitsText(r, '全部用工单位'))}</div>
+            <div class="cc-line"><span class="k">企业佣金：</span>${pcMoney(r.ent.val)} ${esc(r.ent.unit)}</div>
+            <div class="cc-line"><span class="k">招聘提成：</span>${pcPlanSideText(r.rec)}</div>
+            <div class="cc-line"><span class="k">供应商提成：</span>${pcPlanSideText(r.sup)}</div>
+            <div class="cc-foot"><span class="meta">创建人 ${esc(r.creator)} · ${esc(r.created)}</span>
+                <span class="jbtn" data-act="copy">复制</span>
+                <span class="jbtn" style="color:var(--red);background:#FFF1F0;border-color:#FFD8D5" data-act="del">删除</span>
+            </div>
+        </div>`).join('');
+    document.getElementById('payList').innerHTML = html;
+
+    document.querySelectorAll('#payList .cc').forEach(card => {
+        const arr = payTab === 'method' ? PAY_METHODS : PAY_PLANS;
+        const r = arr.find(x => x.id === +card.dataset.id);
+        card.querySelector('[data-act="copy"]').onclick = () => {
+            const c = clone(r);
+            c.name = r.name + ' - 副本';
+            if (payTab === 'method') { c.archCount = 0; openMethodForm(c); }
+            else openPlanForm(c);
+        };
+        card.querySelector('[data-act="del"]').onclick = () => confirmBox('删除规则', `确认删除「${esc(r.name)}」？`, '确认删除', () => {
+            arr.splice(arr.indexOf(r), 1); renderPay(); toast('已删除：' + r.name);
+        });
+    });
+}
+
+/* ---------- 计薪方式：表单 ---------- */
+function blankMethod() {
+    return {
+        name: '', unitScope: 'all', units: [], commType: 'fixSame', adjust: false, laborSalary: '',
+        periods: [{ start: '', end: '', p1: '', p2: '', p3: '', p4: '', subsidy: { type: 'none', days: '', amount: '', date: '' } }],
+        fees: { night: '0', accom: '0', ins: '78', service: '0', meal: '0', hygiene: '0' },
+        canLoan: false, penalty: { type: 'none', days: '', amount: '', date: '' }, payNote: '',
+    };
+}
+function openMethodForm(src) {
+    pmForm = src ? clone(src) : blankMethod();
+    document.getElementById('pmTitle').textContent = src ? '复制计薪方式' : '新增计薪方式';
+    renderMethodForm();
+    pushView('view-pay-method');
+}
+
+function subsidyOpts(cur, adjust) {
+    return PC_SUBSIDY_TYPES.filter(t => !adjust || t.dur !== 'days' || t.v === 'none')
+        .map(t => `<option value="${t.v}" ${cur === t.v ? 'selected' : ''}>${t.label}</option>`).join('');
+}
+function subsidyParams(p, i) {
+    const def = PC_SUBSIDY_TYPES.find(t => t.v === p.subsidy.type) || {};
+    if (!def.dur) return '';
+    if (def.dur === 'days') return `<div class="f2" style="margin-top:8px">
+        <input class="fin" data-p="${i}" data-sk="days" inputmode="numeric" placeholder="在职天数" value="${esc(p.subsidy.days)}"><span class="u">天</span>
+        <input class="fin" data-p="${i}" data-sk="amount" inputmode="decimal" placeholder="${def.moneyLabel}" value="${esc(p.subsidy.amount)}"><span class="u">${def.money}</span></div>`;
+    return `<div class="f2" style="margin-top:8px">
+        <input type="date" class="fin" data-p="${i}" data-sk="date" value="${esc(p.subsidy.date)}">
+        <input class="fin" data-p="${i}" data-sk="amount" inputmode="decimal" placeholder="${def.moneyLabel}" value="${esc(p.subsidy.amount)}"><span class="u">${def.money}</span></div>`;
+}
+function periodCard(p, i, slots) {
+    return `<div class="pcard">
+        <div class="pcard-h">第 ${i + 1} 周期${pmForm.adjust ? `<span class="del" data-act="pdel" data-i="${i}">删除</span>` : ''}</div>
+        ${pmForm.adjust ? `<div class="f2" style="margin-bottom:8px">
+            <input type="date" class="fin" data-p="${i}" data-k="start" value="${esc(p.start)}"><span class="u">至</span>
+            <input type="date" class="fin" data-p="${i}" data-k="end" value="${esc(p.end)}"></div>` : ''}
+        ${slots.map(([k, label]) => `<div class="slot-row"><span class="sl">${label}</span>
+            <input class="fin" data-p="${i}" data-k="${k}" inputmode="decimal" placeholder="0" value="${esc(p[k] || '')}"><span class="su">元/小时</span></div>`).join('')}
+        <div class="frow" style="margin:10px 0 0">
+            <label style="font-size:12px">稳岗津贴</label>
+            <select class="fsel" data-p="${i}" data-k="subType">${subsidyOpts(p.subsidy.type, pmForm.adjust)}</select>
+            ${subsidyParams(p, i)}
+        </div>
+    </div>`;
+}
+function renderMethodForm() {
+    const f = pmForm;
+    const slots = PC_PRICE_SLOTS[f.commType] || [];
+    const hasPrice = slots.length > 0;
+    document.getElementById('pmBody').innerHTML = `
+        <div class="dsec"><h4>规则信息</h4>
+            <div class="frow"><label><span class="req">*</span>规则名称</label><input class="fin" data-f="name" maxlength="30" placeholder="如：生产部Qc1" value="${esc(f.name)}"></div>
+            <div class="frow"><label><span class="req">*</span>关联单位</label>
+                <div class="fcs"><span class="fc ${f.unitScope === 'all' ? 'on' : ''}" data-act="scope" data-v="all">全部关联单位</span>
+                <span class="fc ${f.unitScope === 'part' ? 'on' : ''}" data-act="scope" data-v="part">指定关联单位</span></div>
+                ${f.unitScope === 'part' ? `<div class="pickfield" style="margin-top:8px" data-act="units"><span class="pf-val${f.units[0] ? '' : ' mut'}">${f.units[0] ? esc(f.units[0]) : '请选择关联单位'}</span><span class="pf-go">›</span></div>` : ''}
+            </div>
+        </div>
+        <div class="dsec"><h4>佣金性质</h4>
+            <div class="pickfield" data-act="ctype"><span class="pf-val">${commLabel(f.commType)}</span><span class="pf-go">›</span></div>
+            ${f.commType === 'labor' ? `<div class="frow" style="margin-top:12px"><label><span class="req">*</span>员工月薪</label>
+                <div class="f2"><input class="fin" data-f="laborSalary" inputmode="decimal" placeholder="0" value="${esc(f.laborSalary)}"><span class="u">元/月</span></div></div>` : ''}
+            ${f.commType === 'none' ? '<div class="hint">不设置佣金，只记录费用与违约金</div>' : ''}
+            ${hasPrice ? `<div class="frow" style="margin-top:12px"><label>调价方式</label>
+                <div class="fcs"><span class="fc ${!f.adjust ? 'on' : ''}" data-act="adjust" data-v="0">不调价</span>
+                <span class="fc ${f.adjust ? 'on' : ''}" data-act="adjust" data-v="1">调价</span></div></div>` : ''}
+        </div>
+        ${hasPrice ? `<div class="dsec"><h4>单价与稳岗津贴</h4>
+            ${f.periods.map((p, i) => periodCard(p, i, slots)).join('')}
+            ${f.adjust && f.periods.length < 3 ? '<div class="addp" data-act="padd">＋ 添加调价周期</div>' : ''}
+        </div>` : ''}
+        <div class="dsec"><h4>补贴与扣费</h4>
+            ${PC_FEE_DEFS.map(d => `<div class="fee-row"><span class="fl">${d.label}</span>
+                <input class="fin" data-fee="${d.k}" inputmode="decimal" value="${esc(f.fees[d.k])}"><span class="fu">${d.unit}</span></div>`).join('')}
+            <div class="hint">金额必填，0 表示不收取</div>
+        </div>
+        <div class="dsec"><h4>预支与违约金</h4>
+            <div class="frow"><label>是否可预支</label>
+                <div class="fcs"><span class="fc ${f.canLoan ? 'on' : ''}" data-act="loan" data-v="1">支持</span>
+                <span class="fc ${!f.canLoan ? 'on' : ''}" data-act="loan" data-v="0">不支持</span></div></div>
+            <div class="frow"><label><span class="req">*</span>违约金</label>
+                <div class="fcs">${PC_PENALTY_TYPES.map(t => `<span class="fc ${f.penalty.type === t.v ? 'on' : ''}" data-act="pen" data-v="${t.v}">${t.label}</span>`).join('')}</div>
+                ${f.penalty.type === 'day' ? `<div class="f2" style="margin-top:8px">
+                    <input class="fin" data-pen="days" inputmode="numeric" placeholder="在职天数" value="${esc(f.penalty.days)}"><span class="u">天</span>
+                    <input class="fin" data-pen="amount" inputmode="decimal" placeholder="扣款金额" value="${esc(f.penalty.amount)}"><span class="u">元</span></div>` : ''}
+                ${f.penalty.type === 'due' ? `<div class="f2" style="margin-top:8px">
+                    <input type="date" class="fin" data-pen="date" value="${esc(f.penalty.date)}">
+                    <input class="fin" data-pen="amount" inputmode="decimal" placeholder="扣款金额" value="${esc(f.penalty.amount)}"><span class="u">元</span></div>` : ''}
+            </div>
+            <div class="frow"><label>发薪说明</label><textarea class="fta" data-f="payNote" maxlength="200" placeholder="如：12 发工资">${esc(f.payNote)}</textarea></div>
+        </div>`;
+    bindMethodForm();
+}
+
+function bindMethodForm() {
+    const f = pmForm, body = document.getElementById('pmBody');
+    body.oninput = e => {
+        const t = e.target;
+        if (t.dataset.f) f[t.dataset.f] = t.value;
+        else if (t.dataset.fee) f.fees[t.dataset.fee] = t.value;
+        else if (t.dataset.pen) f.penalty[t.dataset.pen] = t.value;
+        else if (t.dataset.p != null) {
+            const p = f.periods[+t.dataset.p];
+            if (t.dataset.sk) p.subsidy[t.dataset.sk] = t.value;
+            else if (t.dataset.k && t.dataset.k !== 'subType') p[t.dataset.k] = t.value;
+        }
+    };
+    body.onchange = e => {
+        const t = e.target;
+        if (t.dataset.k === 'subType') {
+            f.periods[+t.dataset.p].subsidy.type = t.value;
+            renderMethodForm();
+        }
+    };
+    body.onclick = e => {
+        const el = e.target.closest('[data-act]');
+        if (!el) return;
+        const act = el.dataset.act;
+        if (act === 'scope') { f.unitScope = el.dataset.v; renderMethodForm(); }
+        else if (act === 'units') openUnitSheet();
+        else if (act === 'ctype') openCommSheet();
+        else if (act === 'adjust') {
+            f.adjust = el.dataset.v === '1';
+            if (f.adjust && f.periods.length < 2) f.periods.push(JSON.parse(JSON.stringify(f.periods[0])));
+            if (!f.adjust && f.periods.length > 1) f.periods = f.periods.slice(0, 1);
+            f.periods.forEach(p => { if (f.adjust && ['dayOnce', 'dayHour'].includes(p.subsidy.type)) p.subsidy.type = p.subsidy.type === 'dayOnce' ? 'dueOnce' : 'dueHour'; });
+            renderMethodForm();
+        }
+        else if (act === 'padd') { f.periods.push({ start: '', end: '', p1: '', p2: '', p3: '', p4: '', subsidy: { type: 'none', days: '', amount: '', date: '' } }); renderMethodForm(); }
+        else if (act === 'pdel') { f.periods.splice(+el.dataset.i, 1); renderMethodForm(); }
+        else if (act === 'loan') { f.canLoan = el.dataset.v === '1'; renderMethodForm(); }
+        else if (act === 'pen') { f.penalty.type = el.dataset.v; renderMethodForm(); }
+    };
+}
+
+function openUnitSheet() {
+    openPickSheet({
+        title: '选择关联单位', multi: false,
+        items: PC_UNITS.map(v => ({ v, label: v })),
+        selected: pmForm.units,
+        onDone: sel => { pmForm.units = sel.slice(0, 1); renderMethodForm(); }
+    });
+}
+function openCommSheet() {
+    openPickSheet({
+        title: '选择佣金类型', multi: false,
+        items: PC_COMM_TYPES.map(t => ({ v: t.v, label: t.label, desc: PC_COMM_DESC[t.v] })),
+        selected: [pmForm.commType],
+        onDone: sel => {
+            pmForm.commType = sel[0];
+            if (!PC_PRICE_SLOTS[pmForm.commType].length) pmForm.adjust = false;
+            if (pmForm.adjust && pmForm.periods.length < 2) pmForm.periods.push(JSON.parse(JSON.stringify(pmForm.periods[0])));
+            renderMethodForm();
+        }
+    });
+}
+
+function saveMethod() {
+    const f = pmForm;
+    const slots = PC_PRICE_SLOTS[f.commType] || [];
+    const miss = [];
+    if (!f.name.trim()) miss.push('规则名称');
+    if (f.unitScope === 'part' && !f.units.length) miss.push('指定关联单位');
+    if (!f.commType) miss.push('佣金类型');
+    if (f.commType === 'labor' && !(+f.laborSalary > 0)) miss.push('员工月薪');
+    if (slots.length) {
+        f.periods.forEach((p, i) => {
+            slots.forEach(([k, label]) => { if (!(+p[k] > 0)) miss.push(`第${i + 1}周期${label}`); });
+            if (f.adjust) {
+                if (!p.start || !p.end) miss.push(`第${i + 1}周期起止日期`);
+                else if (p.start > p.end) miss.push(`第${i + 1}周期日期`);
+            }
+            const def = PC_SUBSIDY_TYPES.find(t => t.v === p.subsidy.type) || {};
+            if (def.dur === 'days' && (!(+p.subsidy.days > 0) || !(+p.subsidy.amount > 0))) miss.push(`第${i + 1}周期稳岗津贴`);
+            if (def.dur === 'date' && (!p.subsidy.date || !(+p.subsidy.amount > 0))) miss.push(`第${i + 1}周期稳岗津贴`);
+        });
+    }
+    PC_FEE_DEFS.forEach(d => { if (f.fees[d.k] === '' || !(+f.fees[d.k] >= 0)) miss.push(d.label); });
+    if (f.penalty.type === 'day' && (!(+f.penalty.days > 0) || !(+f.penalty.amount > 0))) miss.push('违约金');
+    if (f.penalty.type === 'due' && (!f.penalty.date || !(+f.penalty.amount > 0))) miss.push('违约金');
+    if (miss.length) { toast('请完善：' + [...new Set(miss)].join('、')); return; }
+    if (PAY_METHODS.some(r => r.name === f.name.trim())) { toast('规则名称已存在'); return; }
+
+    const out = clone(f);
+    out.name = f.name.trim();
+    if (!PC_PRICE_SLOTS[out.commType].length) out.periods = [];
+    PAY_METHODS.unshift(Object.assign(out, { id: ++pcSeq, archCount: 0, creator: ME, created: todayStr() }));
+    toast('已新增计薪方式：' + out.name);
+    pmForm = null;
+    popView();
+    renderPay();
+}
+
+/* ---------- 提成方案：表单 ---------- */
+function blankPlan() {
+    return { name: '', unitScope: 'all', units: [], ent: { val: '', unit: '元/小时' }, rec: { type: 'once', amount: '', condition: '', warranty: '', days: '', months: '' }, sup: { type: 'month', amount: '', days: '', months: '' } };
+}
+function openPlanForm(src) {
+    plForm = src ? clone(src) : blankPlan();
+    document.getElementById('plTitle').textContent = src ? '复制提成方案' : '新增提成方案';
+    renderPlanForm();
+    pushView('view-pay-plan');
+}
+
+function planSideHtml(side, key, isRec) {
+    const t = side.type;
+    const label = isRec ? '招聘提成' : '供应商提成';
+    const tLabel = (PC_PLAN_TYPES.find(x => x.v === side.type) || {}).label || '';
+    let html = `<div class="frow"><label><span class="req">*</span>${label}</label>
+        <div class="pickfield" data-picktype="${key}"><span class="pf-val">${tLabel}</span><span class="pf-go">›</span></div></div>`;
+    if (t === 'none') return html + '<div class="hint">不设置提成</div>';
+    const money = { hour: ['每小时提成金额', '元/小时'], once: ['提成金额', '元'], day: ['每天提成金额', '元/天'], month: ['每月提成金额', '元/月'] }[t];
+    html += `<div class="frow"><label>${money[0]}</label><div class="f2">
+        <input class="fin" data-side="${key}" data-sk="amount" inputmode="decimal" placeholder="0" value="${esc(side.amount)}"><span class="u">${money[1]}</span></div></div>`;
+    if (isRec && t === 'once') html += `<div class="f2">
+        <input class="fin" data-side="${key}" data-sk="condition" inputmode="numeric" placeholder="提成条件（天）" value="${esc(side.condition)}"><span class="u">天</span>
+        <input class="fin" data-side="${key}" data-sk="warranty" inputmode="numeric" placeholder="质保期（天）" value="${esc(side.warranty)}"><span class="u">天</span></div>
+        <div class="hint">提成条件与质保期可空，填了须为正整数</div>`;
+    if (t === 'day') html += `<div class="frow"><label>总享受天数</label><div class="f2">
+        <input class="fin" data-side="${key}" data-sk="days" inputmode="numeric" placeholder="0" value="${esc(side.days)}"><span class="u">天</span></div></div>`;
+    if (t === 'month') html += `<div class="frow"><label>总享受月数</label><div class="f2">
+        <input class="fin" data-side="${key}" data-sk="months" inputmode="numeric" placeholder="0" value="${esc(side.months)}"><span class="u">个月</span></div>
+        <div class="hint">0 表示永久</div></div>`;
+    return html;
+}
+
+function renderPlanForm() {
+    const f = plForm;
+    document.getElementById('plBody').innerHTML = `
+        <div class="dsec"><h4>规则信息</h4>
+            <div class="frow"><label><span class="req">*</span>规则名称</label><input class="fin" data-f="name" maxlength="30" placeholder="如：华星光电-招聘提成" value="${esc(f.name)}"></div>
+            <div class="frow"><label><span class="req">*</span>用工单位</label>
+                <div class="fcs"><span class="fc ${f.unitScope === 'all' ? 'on' : ''}" data-act="scope" data-v="all">全部用工单位</span>
+                <span class="fc ${f.unitScope === 'part' ? 'on' : ''}" data-act="scope" data-v="part">指定用工单位</span></div>
+                ${f.unitScope === 'part' ? `<div class="pickfield" style="margin-top:8px" data-act="punits"><span class="pf-val${f.units.length ? '' : ' mut'}">${f.units.length ? esc(f.units.join('、')) : '请选择用工单位'}</span><span class="pf-go">›</span></div>` : ''}
+            </div>
+        </div>
+        <div class="dsec"><h4>企业佣金</h4>
+            <div class="f2"><input class="fin" data-f="entVal" inputmode="decimal" placeholder="0" value="${esc(f.ent.val)}">
+                <select class="fsel" id="plEntUnit" style="flex:none;width:110px">${PC_PLAN_COMM_UNITS.map(u => `<option ${f.ent.unit === u ? 'selected' : ''}>${u}</option>`).join('')}</select></div>
+        </div>
+        <div class="dsec">${planSideHtml(f.rec, 'rec', true)}</div>
+        <div class="dsec">${planSideHtml(f.sup, 'sup', false)}</div>`;
+    bindPlanForm();
+}
+
+function bindPlanForm() {
+    const f = plForm, body = document.getElementById('plBody');
+    body.oninput = e => {
+        const t = e.target;
+        if (t.dataset.f === 'name') f.name = t.value;
+        else if (t.dataset.f === 'entVal') f.ent.val = t.value;
+        else if (t.dataset.side && t.dataset.sk) f[t.dataset.side][t.dataset.sk] = t.value;
+    };
+    const unitSel = document.getElementById('plEntUnit');
+    if (unitSel) unitSel.onchange = e => { f.ent.unit = e.target.value; };
+    body.onclick = e => {
+        const el = e.target.closest('[data-act], [data-picktype]');
+        if (!el) return;
+        if (el.dataset.picktype) { openPlanTypeSheet(el.dataset.picktype); return; }
+        if (el.dataset.act === 'scope') { f.unitScope = el.dataset.v; renderPlanForm(); }
+        else if (el.dataset.act === 'punits') openPlanUnitSheet();
+    };
+}
+
+function openPlanUnitSheet() {
+    openPickSheet({ title: '选择用工单位', multi: false, items: JOB_EMPLOYERS.map(v => ({ v, label: v })),
+        selected: plForm.units, onDone: sel => { plForm.units = sel.slice(0, 1); renderPlanForm(); } });
+}
+function openPlanTypeSheet(key) {
+    openPickSheet({ title: key === 'rec' ? '选择招聘提成类型' : '选择供应商提成类型', multi: false,
+        items: PC_PLAN_TYPES.map(t => ({ v: t.v, label: t.label })),
+        selected: [plForm[key].type],
+        onDone: sel => {
+            plForm[key].type = sel[0];
+            ['amount', 'condition', 'warranty', 'days', 'months'].forEach(k => { if (plForm[key][k] === undefined) plForm[key][k] = ''; });
+            renderPlanForm();
+        } });
+}
+
+function savePlan() {
+    const f = plForm;
+    const miss = [];
+    if (!f.name.trim()) miss.push('规则名称');
+    if (f.unitScope === 'part' && !f.units.length) miss.push('指定用工单位');
+    if (!(+f.ent.val >= 0) || f.ent.val === '') miss.push('企业佣金');
+    [['rec', '招聘提成'], ['sup', '供应商提成']].forEach(([k, label]) => {
+        const s = f[k];
+        if (s.type === 'none') return;
+        if (!(+s.amount > 0)) miss.push(label + '金额');
+        if (s.type === 'day' && !(+s.days > 0)) miss.push(label + '总享受天数');
+        if (s.type === 'month' && (s.months === '' || !(+s.months >= 0))) miss.push(label + '总享受月数');
+        if (k === 'rec' && s.type === 'once') {
+            if (s.condition !== '' && !(+s.condition > 0)) miss.push('提成条件');
+            if (s.warranty !== '' && !(+s.warranty > 0)) miss.push('质保期');
+        }
+    });
+    if (miss.length) { toast('请完善：' + [...new Set(miss)].join('、')); return; }
+    if (PAY_PLANS.some(r => r.name === f.name.trim())) { toast('规则名称已存在'); return; }
+    const out = clone(f);
+    out.name = f.name.trim();
+    PAY_PLANS.unshift(Object.assign(out, { id: ++pcSeq, creator: ME, created: todayStr() }));
+    toast('已新增提成方案：' + out.name);
+    plForm = null;
+    popView();
+    renderPay();
+}
+
+function openJobs() { renderJobFilter(); resetJobs(); pushView('view-jobs'); }
+
+/* ---------- 三个新模块：入口、绑定与初始化 ---------- */
+function openClients() { renderClients(); pushView('view-customers'); }
+function openPay() { renderPay(); pushView('view-pay'); }
+function openTags() { renderTags(); pushView('view-tags'); }
+const VIEW_OPEN = { 'view-jobs': openJobs, 'view-customers': openClients, 'view-pay': openPay, 'view-tags': openTags };
+
+document.getElementById('clNew').onclick = () => openClientForm(null);
+document.getElementById('clfSave').onclick = saveClient;
+document.getElementById('clKw').oninput = e => { clFilter.name = e.target.value.trim(); renderClients(); };
+document.getElementById('clFltBtn').onclick = () => { renderClientFilter(); showSheet(document.getElementById('clFilter')); };
+
+document.getElementById('payNew').onclick = () => payTab === 'method' ? openMethodForm() : openPlanForm();
+document.getElementById('pmCancel').onclick = () => popView();
+document.getElementById('pmSave').onclick = saveMethod;
+document.getElementById('plCancel').onclick = () => popView();
+document.getElementById('plSave').onclick = savePlan;
+
+document.getElementById('tgNew').onclick = () => openTagGroupForm(null);
+document.getElementById('tgfSave').onclick = saveTagGroup;
+
+renderClients();
+renderClientFilter();
+renderPay();
+renderTags();
+
+renderWork();
+render();
+
+// 地址栏路由：无 hash 时补上首页，有 hash 时直接打开对应页面
+if (!location.hash) syncHash('view-home');
+else applyHash();
+window.addEventListener('hashchange', applyHash);
+</script>
+</body>
+</html>
