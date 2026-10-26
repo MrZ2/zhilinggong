@@ -17,7 +17,6 @@
             --bg: #F4F5F7;
             --line: #EEF0F3;
             --fill: #F7F8FA;
-            --grad: linear-gradient(135deg, #FF8A2A, #FF5722);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: #E4E7EC; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--text); font-size: 14px; line-height: 1.6; }
@@ -40,6 +39,14 @@
         .hd-top { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
         .hd-name { color: #fff; font-size: 20px; font-weight: 800; letter-spacing: .3px; }
         .hd-sub { color: rgba(255,255,255,.86); font-size: 12.5px; margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .hd-sub .path { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sibs { position: relative; z-index: 2; display: flex; gap: 6px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+        .sibs::-webkit-scrollbar { display: none; }
+        .sib { flex: none; font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.9); background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.22); padding: 2px 10px; border-radius: 12px; cursor: pointer; white-space: nowrap; }
+        .sib.on { background: #fff; color: var(--blue); border-color: #fff; font-weight: 800; }
+        .seg { display: flex; gap: 3px; margin: 12px 12px 0; padding: 3px; background: var(--fill); border-radius: 11px; }
+        .sg { flex: 1; text-align: center; font-size: 12.5px; font-weight: 700; color: var(--sub); padding: 6px 0; border-radius: 8px; cursor: pointer; }
+        .sg.on { background: #fff; color: var(--blue); box-shadow: 0 2px 6px rgba(31,35,41,.08); }
         .hd-sub .split { width: 1px; height: 10px; background: rgba(255,255,255,.35); }
         .hd-sub .upd { color: rgba(255,255,255,.72); }
         .hd-right { text-align: right; flex: none; }
@@ -50,6 +57,7 @@
         .ranges { position: relative; z-index: 2; display: flex; gap: 7px; margin-top: 14px; }
         .rg { flex: 1; text-align: center; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.22); color: rgba(255,255,255,.9); font-size: 12px; font-weight: 600; padding: 7px 0; border-radius: 18px; cursor: pointer; transition: all .18s; white-space: nowrap; }
         .rg.on { background: #fff; color: var(--blue); border-color: #fff; box-shadow: 0 4px 12px rgba(15,50,140,.18); font-weight: 800; }
+        .rg.custom { font-size: 10.5px; letter-spacing: -.3px; padding-left: 0; padding-right: 0; }
 
         /* ===== 通用卡片 ===== */
         .card { background: #fff; border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 4px 16px rgba(31,35,41,.05); }
@@ -63,55 +71,54 @@
         .kpi { margin: -50px 12px 0; position: relative; z-index: 5; padding: 14px 12px 13px; }
         .kpi-cap { font-size: 11px; color: var(--sub); margin-bottom: 9px; }
         .kpi-row { display: flex; }
-        .kpi-cell { flex: 1; text-align: center; position: relative; min-width: 0; }
+        .kpi-cell { flex: 1; text-align: center; position: relative; min-width: 0; padding: 7px 1px 5px; }
         .kpi-cell + .kpi-cell::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
+        .kpi-cell.pri .kpi-num { color: var(--blue); font-size: 25px; }
+        .kpi-cell.pri .kpi-label { color: #3A3F47; font-weight: 700; }
         .kpi-num { font-size: 22px; font-weight: 800; line-height: 1.1; letter-spacing: -.5px; }
         .kpi-label { font-size: 11px; color: var(--sub); margin-top: 3px; white-space: nowrap; }
-        .kpi-cmp { font-size: 10.5px; font-weight: 700; margin-top: 3px; }
-        .up { color: var(--green); }
-        .down { color: var(--red); }
-        .flat { color: var(--sub); }
 
         /* 在职人数单独成条，与流量指标分开 */
-        .kpi-on { display: flex; align-items: center; gap: 7px; margin-top: 12px; padding: 10px 12px; background: var(--blue-light); border-radius: 12px; }
-        .kpi-on .t { font-size: 12.5px; font-weight: 700; color: #3A3F47; flex: none; }
+        .kpi-on { display: flex; align-items: baseline; gap: 7px; margin-top: 12px; padding-top: 11px; border-top: 1px dashed var(--line); }
+        .kpi-on .t { font-size: 12.5px; font-weight: 700; color: #3A3F47; }
+        .kpi-on .v { margin-left: auto; display: flex; align-items: baseline; gap: 3px; }
         .kpi-on b { font-size: 22px; font-weight: 800; color: var(--blue); letter-spacing: -.5px; }
         .kpi-on i { font-style: normal; font-size: 11.5px; color: var(--blue); font-weight: 700; }
-        .kpi-on .d { margin-left: auto; font-size: 10.5px; color: #7A8CA8; text-align: right; line-height: 1.35; }
 
         /* ===== 漏斗 ===== */
         .fn-wrap { padding: 8px 14px 4px; }
+        .fn-sum { display: flex; align-items: baseline; gap: 6px; margin: 2px 0 6px; padding-bottom: 8px; border-bottom: 1px dashed var(--line); font-size: 11.5px; color: var(--sub); }
+        .fn-sum em { font-style: normal; }
+        .fn-sum b { margin-left: auto; font-size: 17px; font-weight: 800; color: var(--blue); letter-spacing: -.4px; }
         .fn-step { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
         .fn-lab { width: 92px; flex: none; font-size: 12.5px; color: #3A3F47; font-weight: 600; }
         .fn-track { flex: 1; height: 36px; background: var(--fill); border-radius: 9px; overflow: hidden; }
         .fn-bar { height: 100%; border-radius: 9px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; min-width: 38px; transition: width .5s cubic-bezier(.2,.7,.3,1); }
         .fn-bar i { font-style: normal; color: #fff; font-size: 16px; font-weight: 800; letter-spacing: -.4px; }
-        .fn-cv { width: 52px; flex: none; text-align: right; font-size: 11px; font-weight: 700; color: var(--sub); }
+        .fn-cv { width: 76px; flex: none; text-align: right; font-size: 10px; line-height: 1.35; font-weight: 600; color: var(--sub); }
         .fn-cv b { display: block; font-size: 13.5px; color: var(--blue); }
 
         /* ===== 团队列表 ===== */
         .tm { position: relative; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); cursor: pointer; transition: background .18s; }
         .tm:last-child { border-bottom: none; }
         .tm:active { background: var(--fill); }
-        .tm.on { background: var(--blue-light); }
-        .tm.on::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--blue); }
-        .tm.static { cursor: default; }
-        .tm-av { width: 34px; height: 34px; border-radius: 10px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 16px; background: #fff; border: 1px solid var(--line); }
         .tm-main { flex: 1; min-width: 0; }
         .tm-r1 { display: flex; align-items: center; gap: 6px; }
         .tm-name { font-size: 14.5px; font-weight: 700; }
         .tm-cnt { font-size: 10.5px; font-weight: 600; color: var(--sub); background: #fff; border: 1px solid var(--line); padding: 0 5px; border-radius: 4px; flex: none; }
-        .tm-cur { font-size: 10px; font-weight: 800; color: #fff; background: var(--blue); padding: 0 5px; border-radius: 4px; flex: none; }
-        .tm-go { flex: none; font-size: 12px; color: #B7BDC6; margin-left: 2px; }
+        .tm-sub { font-size: 10px; font-weight: 700; color: var(--blue); background: var(--blue-light); padding: 1px 6px; border-radius: 4px; flex: none; white-space: nowrap; }
+        .tm-x { width: 18px; flex: none; text-align: center; font-size: 11px; color: #A6ABB5; cursor: pointer; }
+        .tm-go { flex: none; font-size: 12px; color: #B7BDC6; margin-left: auto; }
 
         /* 在职人数徽标：与流量列分开、单独突出 */
-        .on-pill { margin-left: auto; flex: none; display: flex; align-items: baseline; gap: 2px; background: var(--blue); color: #fff; border-radius: 13px; padding: 2px 9px; }
+        .on-pill { margin-left: auto; flex: none; align-self: center; display: flex; align-items: baseline; gap: 2px; background: var(--blue); color: #fff; border-radius: 13px; padding: 2px 9px; }
         .on-pill em { font-style: normal; font-size: 10px; font-weight: 600; opacity: .85; }
         .on-pill b { font-size: 14px; font-weight: 800; }
         .on-pill.soft { background: var(--blue-light); color: var(--blue); }
 
         /* ===== 列表数字列（流量四项）===== */
         .sorts { display: flex; gap: 7px; padding: 0 2px 12px; flex-wrap: wrap; }
+        .sorts.solo { padding: 12px 14px 0; }
         .srt { font-size: 12px; font-weight: 600; color: #4A4F58; background: #fff; border: 1px solid var(--line); padding: 3px 11px; border-radius: 15px; cursor: pointer; transition: all .18s; }
         .srt.on { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 3px 8px rgba(46,107,255,.28); }
 
@@ -131,8 +138,6 @@
         .mb-num b { font-size: 15px; font-weight: 800; letter-spacing: -.3px; }
         .mb-num b.hi { color: var(--blue); }
         .mb-num b.rd { color: var(--red); }
-        .mb-bar { height: 4px; border-radius: 2px; background: var(--fill); margin-top: 8px; overflow: hidden; }
-        .mb-bar i { display: block; height: 100%; border-radius: 2px; background: var(--grad); transition: width .45s ease; }
 
         /* ===== 自定义时间弹层 ===== */
         .mask { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 80; }
@@ -457,9 +462,9 @@
     <div class="header">
         <div class="hd-top">
             <div>
-                <div class="hd-name">成都高新区门店</div>
+                <div class="hd-name">智灵工</div>
                 <div class="hd-sub">
-                    <span>招聘团队 6 人</span>
+                    <span id="hdCount">招聘团队 16 人</span>
                     <span class="split"></span>
                     <span class="upd">今日 08:00 更新</span>
                 </div>
@@ -477,8 +482,7 @@
         <div class="kpi-row" id="kpiRow"></div>
         <div class="kpi-on">
             <span class="t">当前在职人数</span>
-            <b id="onNum">0</b><i>人</i>
-            <span class="d">存量指标 · 截至今日 08:00<br>不随时间筛选变化</span>
+            <span class="v"><b id="onNum">0</b><i>人</i></span>
         </div>
     </div>
 
@@ -529,19 +533,30 @@
                 <div class="hd-sub" id="navSub"></div>
             </div>
         </div>
+        <div class="sibs" id="sibs"></div>
+        <div class="ranges" id="teamRanges"></div>
     </div>
 
-    <div class="card" style="margin:-50px 12px 0;position:relative;z-index:5;overflow:hidden">
-        <div id="teamSum"></div>
+    <div class="card kpi" id="teamSum"></div>
+
+    <div class="seg" id="teamSeg">
+        <span class="sg" data-tab="children" id="sgChildren">下级门店</span>
+        <span class="sg" data-tab="members" id="sgMembers">直属团队</span>
     </div>
 
-    <div class="sec">
-        <div class="sec-head"><span class="bar"></span><h2>团队成员招聘数据</h2><span class="tip" id="memTip"></span></div>
-        <div class="sorts" id="sorts"></div>
+    <div class="sorts solo" id="sorts"></div>
+
+    <div class="sec" id="teamChildSec">
+        <div class="sec-head"><span class="bar"></span><h2>下级门店</h2><span class="tip" id="childTip"></span></div>
+        <div class="card" style="overflow:hidden"><div id="childStores"></div></div>
+    </div>
+
+    <div class="sec" id="teamMemSec">
+        <div class="sec-head"><span class="bar"></span><h2 id="memHead">招聘团队</h2><span class="tip" id="memTip"></span></div>
         <div class="card" style="overflow:hidden"><div id="members"></div></div>
     </div>
 
-    <div class="footnote">点击左上角 ‹ 返回团队招聘数据</div>
+    <div class="footnote">点击左上角 ‹ 返回上一级</div>
 </div>
 </div>
 
@@ -789,12 +804,12 @@
    → 已入职人数(join_count)；离职数取期间离职，在职人数取档案存量
    ============================================================ */
 
-// 时间范围：f = 相对该团队「近7天」各项流量的倍数；cmp = 较上一周期
+// 时间范围：f = 相对「近7天」各项流量的倍数
 const RANGES = [
-    { key: 'today',   label: '今天',   f: .178,  cmp: { vitae: 4.2,  audition: -6.5, join: 3.8,  quit: -8.3 } },
-    { key: 'week',    label: '近7天',  f: 1,     cmp: { vitae: 12.4, audition: 9.1,  join: 15.1, quit: -3.4 } },
-    { key: 'month',   label: '近30天', f: 4.14,  cmp: { vitae: 8.6,  audition: 5.2,  join: 11.4, quit: 2.1 } },
-    { key: 'quarter', label: '近90天', f: 11.88, cmp: { vitae: 21.3, audition: 14.7, join: 18.9, quit: 6.7 } },
+    { key: 'today',   label: '今天',   f: .178 },
+    { key: 'week',    label: '近7天',  f: 1 },
+    { key: 'month',   label: '近30天', f: 4.14 },
+    { key: 'quarter', label: '近90天', f: 11.88 },
     { key: 'custom',  label: '自定义', f: null },
 ];
 
@@ -816,8 +831,14 @@ const COLS = [
 // 团队（门店）：week = 该团队近7天录入/分配数基准
 // 成员：share = 录入/分配份额（团队内合计为 1），dev = 转化质量系数，
 //      quit = 近7天离职数（随时间范围缩放），on = 当前在职人数（存量，不随时间变化）
-const TEAMS = [
-    { name: '成都高新区门店', week: 326, members: [
+// 门店树：parent = 上级门店 id（null = 顶级门店），week = 该店直属团队的近 7 天录入/分配基准
+// 任一节点的统计 = 本店直属团队 + 所有下级门店（递归）
+const STORES = [
+    { id: 'D1', name: '成都大区', parent: null, week: 60, members: [
+        { name: '林一舟', role: '招聘顾问', share: .58, dev: 1.03, quit: 2, on: 16 },
+        { name: '何佳',   role: '招聘专员', share: .42, dev: .95,  quit: 1, on: 11 },
+    ]},
+    { id: 'S1', name: '成都高新区门店', parent: 'D1', week: 326, members: [
         { name: '王雨薇', role: '招聘顾问', share: .239, dev: 1.06, quit: 3, on: 32 },
         { name: '李伟东', role: '招聘专员', share: .203, dev: 1.00, quit: 3, on: 27 },
         { name: '张梦琪', role: '招聘顾问', share: .178, dev: .96,  quit: 4, on: 24 },
@@ -825,18 +846,22 @@ const TEAMS = [
         { name: '刘思彤', role: '店员',     share: .144, dev: 1.08, quit: 2, on: 18, store: true },
         { name: '赵鹏',   role: '招聘专员', share: .080, dev: .85,  quit: 1, on: 12 },
     ]},
-    { name: '双流航空港门店', week: 202, members: [
+    { id: 'S2', name: '高新西区招募点', parent: 'S1', week: 70, members: [
+        { name: '邓可', role: '招聘顾问', share: .55, dev: 1.01, quit: 1, on: 9 },
+        { name: '罗鑫', role: '招聘专员', share: .45, dev: .92,  quit: 1, on: 7 },
+    ]},
+    { id: 'S3', name: '双流航空港门店', parent: 'D1', week: 202, members: [
         { name: '周雅琴', role: '招聘顾问', share: .31, dev: 1.02, quit: 2, on: 26 },
         { name: '吴建国', role: '招聘专员', share: .27, dev: .97,  quit: 3, on: 22 },
         { name: '孙晓雯', role: '招聘专员', share: .24, dev: 1.05, quit: 2, on: 19 },
         { name: '马涛',   role: '店员',     share: .18, dev: .90,  quit: 1, on: 14, store: true },
     ]},
-    { name: '温江科技城门店', week: 147, members: [
+    { id: 'S4', name: '温江科技城门店', parent: null, week: 147, members: [
         { name: '黄丽娟', role: '招聘顾问', share: .38, dev: 1.04, quit: 2, on: 23 },
         { name: '郑凯',   role: '招聘专员', share: .34, dev: .94,  quit: 3, on: 17 },
         { name: '许静',   role: '招聘专员', share: .28, dev: .99,  quit: 1, on: 15 },
     ]},
-    { name: '郫都高新西门店', week: 101, members: [
+    { id: 'S5', name: '郫都高新西门店', parent: null, week: 101, members: [
         { name: '杨帆',   role: '招聘顾问', share: .42, dev: 1.01, quit: 2, on: 19 },
         { name: '朱敏',   role: '招聘专员', share: .33, dev: .92,  quit: 2, on: 14 },
         { name: '秦风',   role: '招聘专员', share: .25, dev: .88,  quit: 1, on: 11 },
@@ -861,12 +886,38 @@ function dayUnit(ms) { const w = new Date(ms).getDay(); return (w === 0 || w ===
 function daySum(startMs, days) { let t = 0; for (let i = 0; i < days; i++) t += dayUnit(startMs + i * DAY); return t; }
 
 /* ---------- 渲染状态 ---------- */
-let teamIdx = 0;
+let storeId = 'D1';        // 门店详情页当前节点
+let storePath = [];        // 详情页的下钻路径（用于逐级返回）
+let homeExpanded = new Set();   // 首页树当前展开的节点（同一时间只展开一条路径）
+let teamTab = 'children';       // 详情页分段：children（下级门店）/ members（直属团队）
+let teamTabStore = null;        // 分段当前归属的节点，换店时重置
 let rangeIdx = 1;   // 默认近7天
 let sortKey = 'join';
 let customSel = null;   // { start:'YYYY-MM-DD', end:'YYYY-MM-DD' }
 
-const curTeam = () => TEAMS[teamIdx];
+const storeById = id => STORES.find(s => s.id === id);
+const childrenOf = id => STORES.filter(s => s.parent === id);
+const rootStores = () => STORES.filter(s => !s.parent);
+function descendantStores(id) {
+    const out = [];
+    const walk = pid => childrenOf(pid).forEach(c => { out.push(c); walk(c.id); });
+    walk(id);
+    return out;
+}
+function storePathNames(id) {
+    const names = [];
+    let s = storeById(id);
+    while (s && s.parent) { s = storeById(s.parent); names.unshift(s.name); }
+    return ['全部门店'].concat(names).join(' / ');
+}
+function ancestorChain(id) {
+    const chain = [];
+    let s = storeById(id);
+    while (s) { chain.unshift(s.id); s = s.parent ? storeById(s.parent) : null; }
+    return chain;
+}
+const allWeek = () => STORES.reduce((a, s) => a + s.week, 0);
+const allMemberCount = () => STORES.reduce((a, s) => a + s.members.length, 0);
 
 function rangeInfo() {
     if (rangeIdx === 4) {
@@ -881,16 +932,6 @@ function rangeInfo() {
 function curScale() {
     const r = rangeInfo();
     return r.f != null ? r.f : daySum(r.startMs, r.days) / 7;
-}
-
-// 环比：预设区间用写好的值，自定义区间按上一个等长周期推导
-function rangeCmp() {
-    if (rangeIdx !== 4) return RANGES[rangeIdx].cmp;
-    const r = rangeInfo();
-    const cur = daySum(r.startMs, r.days), prev = daySum(r.startMs - r.days * DAY, r.days);
-    const d0 = (cur - prev) / prev * 100 * .4;   // 只取四成权重：区间里周末天数多寡会把环比拉得过大
-    const j = k => { const x = Math.sin(r.startMs / DAY * 12.9898 + k * 78.233) * 43758.5453; return (x - Math.floor(x) - .5) * 10; };
-    return { vitae: d0 + j(1), audition: d0 + j(2), join: d0 + j(3), quit: d0 + j(4) };
 }
 
 /* ---------- 推导：每位成员在当前时间范围内的数据 ---------- */
@@ -915,14 +956,20 @@ function totals(list) {
     return t;
 }
 
-function rowsOf(team) { return team.members.map((m, i) => buildMember(m, team.week, curScale(), PALETTE[i % PALETTE.length])); }
-function curTotals(team) { return totals(rowsOf(team)); }
+function rowsOf(store) { return store.members.map((m, i) => buildMember(m, store.week, curScale(), PALETTE[i % PALETTE.length])); }
+function allRows() { return STORES.reduce((a, s) => a.concat(rowsOf(s)), []); }
+function storeRows(id) {
+    const s = storeById(id);
+    if (!s) return [];
+    return descendantStores(id).reduce((a, c) => a.concat(rowsOf(c)), rowsOf(s));
+}
+const storeTotals = id => totals(storeRows(id));
 
 /* ---------- 视图切换 ---------- */
 let curView = 'view-home';
 // 每个视图同步一个 hash，地址栏可单独复制分享；用 replaceState 不累积历史
 function syncHash(id) {
-    const h = '#' + id;
+    const h = '#' + id + (id === 'view-team' ? '/' + storeId : '');
     if (location.hash === h) return;
     try { history.replaceState(null, '', h); }
     catch (e) { location.replace(h); }
@@ -942,12 +989,25 @@ function switchView(id, anim) {
 
 // 直接用链接打开某个页面（带状态的子页给出合理落点）
 function applyHash() {
-    const id = (location.hash || '').replace(/^#/, '');
-    if (!id || id === curView) return;
+    const raw = (location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    const [id, param] = raw.split('/');
+    const cur = curView + (curView === 'view-team' ? '/' + storeId : '');
+    if (raw === cur) return;
     switch (id) {
         case 'view-home': goTab('view-home'); break;
         case 'view-work': goTab('view-work'); break;
-        case 'view-team': render(); viewStack.length = 0; viewStack.push('view-home'); pushView('view-team'); break;
+        case 'view-team': {
+            const sid = param && storeById(param) ? param : rootStores()[0].id;
+            storePath = ancestorChain(sid);
+            storeId = sid;
+            render();
+            viewStack.length = 0;
+            viewStack.push('view-home');
+            storePath.forEach(() => viewStack.push('view-team'));
+            switchView('view-team', 'anim-push');
+            break;
+        }
         case 'view-jobs': openJobs(); break;
         case 'view-customers': openClients(); break;
         case 'view-pay': openPay(); break;
@@ -965,8 +1025,15 @@ function applyHash() {
 
 /* ---------- 时间范围 chips ---------- */
 function renderRanges() {
-    document.getElementById('ranges').innerHTML = RANGES.map((r, i) =>
-        `<span class="rg${i === rangeIdx ? ' on' : ''}" data-i="${i}">${r.label}</span>`).join('');
+    const html = RANGES.map((r, i) => {
+        const isCustom = i === 4 && rangeIdx === 4 && customSel;
+        const label = isCustom ? md(parseDate(customSel.start)) + '~' + md(parseDate(customSel.end)) : r.label;
+        return `<span class="rg${i === rangeIdx ? ' on' : ''}${isCustom ? ' custom' : ''}" data-i="${i}">${label}</span>`;
+    }).join('');
+    ['ranges', 'teamRanges'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+    });
     document.querySelectorAll('.rg').forEach(el => el.onclick = () => {
         if (+el.dataset.i === 4) { openSheet(); return; }
         rangeIdx = +el.dataset.i;
@@ -975,25 +1042,20 @@ function renderRanges() {
 }
 
 /* ---------- KPI ---------- */
-function cmpHtml(v) {
-    const cls = v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
-    const arrow = v > 0 ? '▲' : v < 0 ? '▼' : '—';
-    return `<div class="kpi-cmp ${cls}">${arrow} ${Math.abs(v).toFixed(1)}%</div>`;
-}
-
-function renderKpi(T) {
-    const c = rangeCmp();
-    document.getElementById('kpiCaption').textContent = curTeam().name + ' · ' + rangeInfo().label + ' · 较上一周期';
-    document.getElementById('kpiRow').innerHTML = [
-        { n: T.vitae,    l: '录入/分配数', cmp: c.vitae },
-        { n: T.audition, l: '已面试人数', cmp: c.audition },
-        { n: T.join,     l: '已入职人数', cmp: c.join },
-        { n: T.quit,     l: '离职人数',   cmp: c.quit },
-    ].map(x => `<div class="kpi-cell">
+function kpiCellsHtml(T) {
+    return [
+        { n: T.join,     l: '已入职人数', pri: true },
+        { n: T.vitae,    l: '录入/分配数' },
+        { n: T.audition, l: '已面试人数' },
+        { n: T.quit,     l: '离职人数' },
+    ].map(x => `<div class="kpi-cell${x.pri ? ' pri' : ''}">
         <div class="kpi-num">${x.n}</div>
         <div class="kpi-label">${x.l}</div>
-        ${cmpHtml(x.cmp)}
     </div>`).join('');
+}
+function renderKpi(T) {
+    document.getElementById('kpiCaption').textContent = '全部门店 · ' + rangeInfo().label;
+    document.getElementById('kpiRow').innerHTML = kpiCellsHtml(T);
     document.getElementById('onNum').textContent = T.on;
 }
 
@@ -1001,19 +1063,24 @@ function renderKpi(T) {
 function renderFunnel(T) {
     const max = T.vitae || 1;
     const shade = ['#2E6BFF', '#4E86FF', '#8CB8FF'];
+    const overall = T.vitae ? (T.join / T.vitae * 100) : 0;
     const html = CHAIN.map((c, idx) => {
         const val = T[c.key];
         const prev = idx > 0 ? T[CHAIN[idx - 1].key] : 0;
         const cv = idx > 0 && prev ? (val / prev * 100) : null;
+        const lost = idx > 0 ? Math.max(0, prev - val) : 0;
         const width = Math.max(14, val / max * 100);
+        const right = cv === null ? '<b>100%</b>基准' : `<b>${cv.toFixed(0)}%</b>流失 ${lost} 人`;
         return `
             <div class="fn-step">
                 <span class="fn-lab">${c.label}</span>
                 <span class="fn-track"><span class="fn-bar" style="width:${width}%;background:${shade[idx]}"><i>${val}</i></span></span>
-                <span class="fn-cv">${cv === null ? '<b>100%</b>基准' : '<b>' + cv.toFixed(0) + '%</b>转化'}</span>
+                <span class="fn-cv">${right}</span>
             </div>`;
     }).join('');
-    document.getElementById('funnel').innerHTML = `<div class="fn-wrap">${html}</div>`;
+    document.getElementById('funnel').innerHTML = `<div class="fn-wrap">
+        <div class="fn-sum"><span>整体转化</span><em>录入/分配 → 已入职</em><b>${overall.toFixed(1)}%</b></div>
+        ${html}</div>`;
     document.getElementById('fnRangeTip').textContent = rangeInfo().label;
 }
 
@@ -1025,57 +1092,147 @@ function onPill(n, soft) {
     return `<span class="on-pill${soft ? ' soft' : ''}"><em>在职</em><b>${n}</b></span>`;
 }
 
-/* ---------- 团队列表（点击跳转到成员页）---------- */
-function renderTeams() {
-    document.getElementById('teamTip').textContent = '共 ' + TEAMS.length + ' 个团队 · 点击查看成员';
-    document.getElementById('teams').innerHTML = TEAMS.map((t, i) => {
-        const T = curTotals(t);
+/* ---------- 首页门店树：只列顶级门店，可逐级展开 ---------- */
+function treeRowsHtml(nodes, depth) {
+    return nodes.map(s => {
+        const kids = childrenOf(s.id);
+        const open = kids.length > 0 && homeExpanded.has(s.id);
+        const T = storeTotals(s.id);
         return `
-        <div class="tm${i === teamIdx ? ' on' : ''}" data-i="${i}">
-            <span class="tm-av">🏬</span>
+        <div class="tm" data-id="${s.id}" style="padding-left:${14 + depth * 16}px">
+            <span class="tm-x" data-x="${s.id}">${kids.length ? (open ? '▾' : '▸') : ''}</span>
             <div class="tm-main">
                 <div class="tm-r1">
-                    <span class="tm-name">${t.name}</span>
-                    <span class="tm-cnt">${t.members.length} 人</span>
-                    ${i === teamIdx ? '<span class="tm-cur">当前</span>' : ''}
-                    ${onPill(T.on)}
+                    <span class="tm-name">${esc(s.name)}</span>
+                    <span class="tm-cnt">${storeRows(s.id).length} 人</span>
+                    ${kids.length ? `<span class="tm-sub">下级 ${kids.length} 家</span>` : ''}
                     <span class="tm-go">›</span>
                 </div>
-                <div class="mb-nums">${numsHtml(T)}</div>
+                <div class="mb-nums">${numsHtml(T)}${onPill(T.on)}</div>
             </div>
-        </div>`;
+        </div>` + (open ? treeRowsHtml(kids, depth + 1) : '');
     }).join('');
-    document.querySelectorAll('#teams .tm').forEach(el => el.onclick = () => {
-        teamIdx = +el.dataset.i;
-        render();
-        pushView('view-team');
+}
+
+function renderTeams() {
+    const roots = rootStores();
+    document.getElementById('teamTip').textContent = '共 ' + roots.length + ' 家顶级门店 · 点箭头展开下级';
+    const box = document.getElementById('teams');
+    box.innerHTML = treeRowsHtml(roots, 0);
+    box.querySelectorAll('.tm').forEach(el => el.onclick = () => openStore(el.dataset.id));
+    box.querySelectorAll('.tm-x').forEach(el => {
+        if (!el.textContent) return;
+        el.onclick = e => { e.stopPropagation(); toggleHomeTree(el.dataset.x); };
     });
 }
 
-/* ---------- 团队成员页 ---------- */
-function renderTeamPage() {
-    const t = curTeam(), T = curTotals(t);
-    document.getElementById('navName').textContent = t.name;
-    document.getElementById('navSub').innerHTML = `<span>招聘团队 ${t.members.length} 人</span><span class="split"></span><span class="upd">今日 08:00 更新</span>`;
-    document.getElementById('teamSum').innerHTML = `
-        <div class="tm on static">
-            <span class="tm-av">🏬</span>
-            <div class="tm-main">
-                <div class="tm-r1">
-                    <span class="tm-name">${t.name}</span>
-                    <span class="tm-cnt">${t.members.length} 人</span>
-                    ${onPill(T.on)}
-                </div>
-                <div class="mb-nums">${numsHtml(T)}</div>
-            </div>
-        </div>`;
-    document.getElementById('memTip').textContent = rangeInfo().label + ' · 共 ' + t.members.length + ' 人';
+function toggleHomeTree(id) {
+    if (homeExpanded.has(id)) {
+        [id].concat(descendantStores(id).map(s => s.id)).forEach(x => homeExpanded.delete(x));
+    } else {
+        homeExpanded = new Set(ancestorChain(id));
+    }
+    renderTeams();
 }
 
-function renderMembers(rows) {
+/* ---------- 门店详情页：父店/叶子共用，可逐级下钻与同级切换 ---------- */
+function openStore(id, fromStore) {
+    if (!storeById(id)) return;
+    storeId = id;
+    if (fromStore) storePath.push(id); else storePath = [id];
+    renderTeamPage();
+    pushView('view-team', true);
+}
+
+function switchSibling(id) {
+    if (!storeById(id) || id === storeId) return;
+    storeId = id;
+    storePath[storePath.length - 1] = id;
+    renderTeamPage();
+    document.getElementById('view-team').scrollTop = 0;
+    syncHash('view-team');
+}
+
+function renderTeamPage() {
+    const s = storeById(storeId);
+    if (!s) return;
+    const T = storeTotals(storeId);
+    const kids = childrenOf(storeId);
+    const own = rowsOf(s);
+    const total = storeRows(storeId).length;
+    const sLabel = ((SORTS.find(x => x.key === sortKey) || {}).label || '').replace('按', '');
+
+    if (teamTabStore !== storeId) {
+        teamTab = kids.length ? 'children' : 'members';
+        teamTabStore = storeId;
+    }
+    if (!kids.length) teamTab = 'members';
+    if (!own.length) teamTab = 'children';
+
+    // 同级切换
+    const sibs = s.parent ? childrenOf(s.parent) : rootStores();
+    const sibEl = document.getElementById('sibs');
+    if (sibs.length > 1) {
+        sibEl.style.display = '';
+        sibEl.innerHTML = sibs.map(x => `<span class="sib${x.id === storeId ? ' on' : ''}" data-id="${x.id}">${esc(x.name)}</span>`).join('');
+        sibEl.querySelectorAll('.sib').forEach(b => b.onclick = () => switchSibling(b.dataset.id));
+    } else {
+        sibEl.style.display = 'none';
+        sibEl.innerHTML = '';
+    }
+
+    document.getElementById('navName').textContent = s.name;
+    document.getElementById('navSub').innerHTML = `<span class="path">${esc(storePathNames(storeId))}</span><span class="split"></span><span>共 ${total} 人${kids.length ? '（含下级）' : ''}</span>`;
+    document.getElementById('teamSum').innerHTML = `
+        <div class="kpi-cap">${rangeInfo().label} · ${kids.length ? '含下级合计' : '全店合计'}</div>
+        <div class="kpi-row">${kpiCellsHtml(T)}</div>
+        <div class="kpi-on"><span class="t">当前在职人数</span><span class="v"><b>${T.on}</b><i>人</i></span></div>`;
+
+    // 分段切换（两段都有才显示）
+    const segEl = document.getElementById('teamSeg');
+    segEl.style.display = (kids.length && own.length) ? '' : 'none';
+    document.getElementById('sgChildren').textContent = `下级门店 ${kids.length}`;
+    document.getElementById('sgMembers').textContent = `直属团队 ${own.length}`;
+    segEl.querySelectorAll('.sg').forEach(b => {
+        b.classList.toggle('on', b.dataset.tab === teamTab);
+        b.onclick = () => { teamTab = b.dataset.tab; renderTeamPage(); };
+    });
+
+    const childSec = document.getElementById('teamChildSec');
+    childSec.style.display = (kids.length && teamTab === 'children') ? '' : 'none';
+    if (kids.length) {
+        document.getElementById('childTip').textContent = '共 ' + kids.length + ' 家 · 按' + sLabel + '排序';
+        const list = kids.map(c => ({ s: c, T: storeTotals(c.id), subs: childrenOf(c.id).length }))
+            .sort((a, b) => b.T[sortKey] - a.T[sortKey] || b.T.join - a.T.join);
+        document.getElementById('childStores').innerHTML = list.map(x => `
+            <div class="tm" data-id="${x.s.id}">
+                <div class="tm-main">
+                    <div class="tm-r1">
+                        <span class="tm-name">${esc(x.s.name)}</span>
+                        <span class="tm-cnt">${storeRows(x.s.id).length} 人</span>
+                        ${x.subs ? `<span class="tm-sub">下级 ${x.subs} 家</span>` : ''}
+                        <span class="tm-go">›</span>
+                    </div>
+                    <div class="mb-nums">${numsHtml(x.T)}${onPill(x.T.on)}</div>
+                </div>
+            </div>`).join('');
+        document.querySelectorAll('#childStores .tm').forEach(el => el.onclick = () => openStore(el.dataset.id, true));
+    }
+
+    const memSec = document.getElementById('teamMemSec');
+    memSec.style.display = (own.length && teamTab === 'members') ? '' : 'none';
+    if (own.length) {
+        document.getElementById('memHead').textContent = kids.length ? '本店直属团队' : '招聘团队';
+        renderMembers(own, kids.length > 0);
+    }
+    renderSorts();
+}
+
+function renderMembers(rows, hasKids) {
     const key = sortKey;
     const list = rows.slice().sort((a, b) => b[key] - a[key] || b.vitae - a.vitae);
-    const ref = Math.max(...list.map(r => r[key]), 1);
+    const sLabel = ((SORTS.find(s => s.key === key) || {}).label || '').replace('按', '');
+    document.getElementById('memTip').textContent = rangeInfo().label + ' · 按' + sLabel + '排序 · ' + (hasKids ? '直属 ' : '共 ') + rows.length + ' 人';
 
     document.getElementById('members').innerHTML = list.map((r, i) => `
         <div class="mb">
@@ -1085,10 +1242,8 @@ function renderMembers(rows) {
                 <div class="mb-row1">
                     <span class="mb-name">${r.name}</span>
                     <span class="mb-role${r.store ? ' store' : ''}">${r.role}</span>
-                    ${onPill(r.on, true)}
                 </div>
-                <div class="mb-nums">${numsHtml(r)}</div>
-                <div class="mb-bar"><i style="width:${Math.min(100, r[key] / ref * 100)}%"></i></div>
+                <div class="mb-nums">${numsHtml(r)}${onPill(r.on, true)}</div>
             </div>
         </div>`).join('');
 }
@@ -1098,12 +1253,19 @@ function renderSorts() {
         `<span class="srt${s.key === sortKey ? ' on' : ''}" data-k="${s.key}">${s.label}</span>`).join('');
     document.querySelectorAll('.srt').forEach(el => el.onclick = () => {
         sortKey = el.dataset.k;
-        renderSorts();
-        renderMembers(rowsOf(curTeam()));
+        renderTeamPage();
     });
 }
 
 document.getElementById('navBack').onclick = () => {
+    if (storePath.length > 1) {
+        storePath.pop();
+        storeId = storePath[storePath.length - 1];
+        renderTeamPage();
+        popView();
+        return;
+    }
+    storePath = [];
     render();
     popView();
 };
@@ -1237,8 +1399,8 @@ function updateSum() {
     const r = readSpan();
     const el = document.getElementById('shSum');
     if (typeof r === 'string') { el.innerHTML = '请先选择完整的日期区间'; return; }
-    const v = Math.round(curTeam().week * daySum(parseDate(iStart.value).getTime(), r.days) / 7);
-    el.innerHTML = `已选 <b>${r.days}</b> 天，该团队这段时间录入/分配数约 <b>${v}</b>`;
+    const v = Math.round(allWeek() * daySum(parseDate(iStart.value).getTime(), r.days) / 7);
+    el.innerHTML = `已选 <b>${r.days}</b> 天，该范围录入/分配数约 <b>${v}</b>`;
 }
 
 iStart.onchange = iEnd.onchange = updateSum;
@@ -1255,16 +1417,18 @@ document.getElementById('shOk').onclick = () => {
 };
 
 /* ---------- 主渲染（两个视图一起刷新，切过去就是最新数据）---------- */
+function renderHeader() {
+    document.getElementById('hdCount').textContent = '招聘团队 ' + allMemberCount() + ' 人';
+}
 function render() {
-    const rows = rowsOf(curTeam());
+    const rows = allRows();
     const T = totals(rows);
+    renderHeader();
     renderRanges();
     renderKpi(T);
     renderFunnel(T);
     renderTeams();
     renderTeamPage();
-    renderSorts();
-    renderMembers(rows);
 }
 /* ============================================================
    岗位管理：对齐商户管理后台「用工管理 · 岗位列表」
@@ -2036,7 +2200,7 @@ function applyAi() {
 
 /* ---------- 导航栈 ---------- */
 const viewStack = ['view-home'];
-function pushView(id) { if (viewStack[viewStack.length - 1] !== id) viewStack.push(id); switchView(id, 'anim-push'); }
+function pushView(id, force) { if (force || viewStack[viewStack.length - 1] !== id) viewStack.push(id); switchView(id, 'anim-push'); }
 function popView() { if (viewStack.length > 1) viewStack.pop(); switchView(viewStack[viewStack.length - 1], 'anim-pop'); }
 function goTab(id) { viewStack.length = 1; viewStack[0] = id; switchView(id, id === 'view-home' ? 'anim-pop' : 'anim-push'); }
 

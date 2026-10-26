@@ -7412,9 +7412,11 @@ function payrollFieldVal(name, base) {
   if (/服务费|住宿|水电|保险|餐补|津贴|险/.test(name)) return 180;
   return 100;
 }
-// 工时/天数不是金额，别加 ¥
+// 计算项是取数（单价、工时、天数…），不加 ¥；只有结果项是金额
 function payrollValText(name, v) {
-  return /工时|天数/.test(name) ? String(Number(v || 0)) : fmtInviteMoney(v);
+  const f = stplFieldOf(name);
+  if (f && f.group === 'compute') return String(Number(v || 0));
+  return fmtInviteMoney(v);
 }
 function payrollEmpAt(i) {
   const sn = '赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜';
