@@ -752,8 +752,6 @@
     .ai-fill-dlg { max-width: calc(100vw - 24px); }
     .ai-fill-dlg .el-dialog__body { max-height: 70vh; overflow-y: auto; }
     .ai-tip { margin-bottom: 10px; font-size: 12px; line-height: 1.7; color: var(--ad-text-2); }
-    .ai-emp { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .ai-emp-label { font-size: 13px; color: var(--ad-text-1); }
     .ai-input-foot { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
     .ai-parsing { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 46px 0 30px; }
     .ai-orbit { display: flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 50%; background: var(--ad-primary-bg); color: var(--ad-primary); font-size: 24px; }
@@ -839,6 +837,14 @@
     #jobPublishPage .job-footer { position:sticky; bottom:0; background:#fff; border-radius:12px; padding:12px 20px; display:flex; justify-content:flex-end; align-items:center; gap:10px; box-shadow:0 -2px 10px rgba(0,0,0,.06); margin-top:12px; z-index:5; }
     #jobPublishPage .tag-empty { text-align:center; color:var(--ad-text-4); font-size:13px; padding:30px 0; }
     #jobPublishPage .tag-search { padding:8px 4px 0; }
+    #jobPublishPage .tag-custom { margin-top: 4px; padding: 12px 4px 0; border-top: 1px dashed var(--jborder); }
+    #jobPublishPage .tag-custom .tc-head { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+    #jobPublishPage .tag-custom .tc-tip { font-weight: 400; font-size: 12px; color: var(--ad-text-4); }
+    #jobPublishPage .tag-custom .tc-body { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    #jobPublishPage .tag-custom .el-input { width: 150px; }
+    #jobPublishPage .chip.custom { border-style: dashed; }
+    #jobPublishPage .chip.custom .cx { margin-left: 5px; font-style: normal; opacity: .6; }
+    #jobPublishPage .chip.custom .cx:hover { opacity: 1; color: var(--ad-error); }
     /* ===== 岗位标签管理页 ===== */
     #jobTagPage .tag-count-tip { font-size:12px; color:var(--ad-text-3); margin-left:4px; }
     #jobTagPage .job-tag-mini { margin:0 6px 4px 0; }
@@ -2558,7 +2564,7 @@
       <el-form :model="stplFilter" class="pc-filter search-form" size="small" label-width="76px" @submit.native.prevent>
         <el-row :gutter="14">
           <el-col :span="8"><el-form-item label="模板名称"><el-input v-model="stplFilter.name" placeholder="请输入模板名称" clearable @keyup.enter.native="stplSearch"></el-input></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="关联客户"><el-select v-model="stplFilter.client" placeholder="全部" clearable filterable><el-option v-for="c in stplTplClients()" :key="c" :label="c" :value="c"></el-option></el-select></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="用工单位"><el-select v-model="stplFilter.client" placeholder="全部" clearable filterable><el-option v-for="c in stplTplClients()" :key="c" :label="c" :value="c"></el-option></el-select></el-form-item></el-col>
           <el-col :span="8"><el-form-item label="计算对象"><el-select v-model="stplFilter.target" placeholder="全部" clearable><el-option v-for="t in stplTargets" :key="t" :label="t" :value="t"></el-option></el-select></el-form-item></el-col>
         </el-row>
         <div class="search-foot pc-filter-foot">
@@ -2574,7 +2580,7 @@
 
       <el-table :data="stplPageRows" border size="mini" row-key="id" :height="stplTableHeight" style="width:100%;">
         <template slot="empty">
-          <el-empty description="还没有结算模板，先按关联客户建一个" :image-size="72">
+          <el-empty description="还没有结算模板，先按用工单位建一个" :image-size="72">
             <el-button type="primary" size="small" @click="openStplModeDlg()">新建模板</el-button>
           </el-empty>
         </template>
@@ -2582,7 +2588,7 @@
         <el-table-column label="模板名称" min-width="168" show-overflow-tooltip>
           <template slot-scope="{ row }"><span class="pc-link" @click="openStplEdit(row.id)">{{ row.name }}</span></template>
         </el-table-column>
-        <el-table-column label="关联客户" min-width="180" show-overflow-tooltip>
+        <el-table-column label="用工单位" min-width="180" show-overflow-tooltip>
           <template slot-scope="{ row }">{{ row.client }}</template>
         </el-table-column>
         <el-table-column label="计算对象" width="100" align="center">
@@ -2727,11 +2733,11 @@
         <el-col :span="11"><el-form-item><span slot="label"><span class="pc-req">*</span>模板名称</span>
           <el-input v-model="stplForm.name" maxlength="30" show-word-limit placeholder="如：华星产线普工月结"></el-input>
         </el-form-item></el-col>
-        <el-col :span="13"><el-form-item><span slot="label"><span class="pc-req">*</span>关联客户</span>
-          <el-select v-model="stplForm.client" filterable clearable placeholder="请选择关联客户" style="width:100%">
+        <el-col :span="13"><el-form-item><span slot="label"><span class="pc-req">*</span>用工单位</span>
+          <el-select v-model="stplForm.client" filterable clearable placeholder="请选择用工单位" style="width:100%">
             <el-option v-for="c in stplTplClients()" :key="c" :label="c" :value="c"></el-option>
           </el-select>
-          <div class="pc-tip">一个模板只服务一个关联客户；切换客户会自动带出该客户的发薪日。</div>
+          <div class="pc-tip">一个模板只服务一个用工单位；切换单位会自动带出该单位的发薪日。</div>
         </el-form-item></el-col>
       </el-row>
       <el-row :gutter="16">
@@ -3229,7 +3235,7 @@
         <div class="payroll-preview-h">结算模板字段（只读）</div>
         <template v-if="payrollTpl">
           <div class="payroll-preview-t">{{ payrollTpl.name }}</div>
-          <div class="payroll-preview-meta">关联客户 {{ payrollTpl.client }} · 计算对象 {{ payrollTpl.target }} · {{ payrollTpl.fields.length }} 个字段</div>
+          <div class="payroll-preview-meta">用工单位 {{ payrollTpl.client }} · 计算对象 {{ payrollTpl.target }} · {{ payrollTpl.fields.length }} 个字段</div>
           <div class="payroll-preview-sec">计算项 · {{ payrollTplCompute.length }}</div>
           <div class="payroll-preview-row" v-for="n in payrollTplCompute" :key="'c' + n">
             <span class="payroll-preview-name">{{ n }}</span>
@@ -3884,13 +3890,23 @@
       <el-input v-model="jobTagSearch" size="small" clearable prefix-icon="el-icon-search" placeholder="输入关键字搜索标签"></el-input>
     </div>
     <div class="tag-groups">
-      <div v-if="!jobTagGroups.length" class="tag-empty">暂无标签，请先在「用工管理 · 岗位标签」中维护</div>
+      <div v-if="!jobTagGroups.length" class="tag-empty">暂无可选标签，可在下方创建自定义标签</div>
       <div v-else-if="!jobTagFilteredGroups.length" class="tag-empty">未找到匹配的标签</div>
       <div v-for="g in jobTagFilteredGroups" :key="g.id" class="tag-group">
         <h3>{{ g.name }}</h3>
         <div class="chips">
           <span v-for="tag in g.tags" :key="tag" class="chip" :class="{ active: jobTagSelection.includes(tag) }" @click="toggleJobTag(tag)">{{ tag }}</span>
         </div>
+      </div>
+    </div>
+    <div class="tag-custom">
+      <div class="tc-head">自定义标签<span class="tc-tip">仅本岗位使用，不进入岗位标签管理</span></div>
+      <div class="tc-body">
+        <span v-for="t in jobTagCustomTags" :key="t" class="chip custom" :class="{ active: jobTagSelection.includes(t) }"
+              @click="toggleJobTag(t)">{{ t }}<i class="cx" @click.stop="removeCustomJobTag(t)">✕</i></span>
+        <el-input v-model="jobTagCustom" size="mini" maxlength="12" placeholder="输入自定义标签"
+                  @keyup.enter.native="addCustomJobTag"></el-input>
+        <el-button size="mini" @click="addCustomJobTag">添加</el-button>
       </div>
     </div>
     <span slot="footer">
@@ -3903,16 +3919,9 @@
 <!-- ===== AI 一键填表（新建岗位） ===== -->
 <el-dialog title="AI 一键填表" :visible.sync="aiFill.visible" width="760px" top="5vh" :close-on-click-modal="false" append-to-body custom-class="ai-fill-dlg">
   <div v-if="aiFill.step === 'input'">
-    <div class="ai-emp">
-      <span class="ai-emp-label"><span class="pc-req">*</span>用工单位</span>
-      <el-select v-model="aiFill.employer" filterable placeholder="请选择这次招聘的用工单位" style="width:300px">
-        <el-option v-for="e in jobEmployers" :key="e" :label="e" :value="e"></el-option>
-      </el-select>
-      <span class="iv-none">先选单位；文案里识别到的单位只用于校对</span>
-    </div>
-    <div class="ai-tip">把招聘网站上的整段文案粘进来，会拆成岗位名称、薪资、标签、要求、入职须知与工作地址。识别结果逐条确认后才会写入表单。</div>
-    <el-input v-model="aiFill.text" type="textarea" :rows="9" maxlength="2000" show-word-limit
-              placeholder="粘贴招聘文案，例如：急招 电子厂普工 50 人，22 元/小时，包吃住，工作地址：湖北省武汉市……"></el-input>
+    <div class="ai-tip">复制或编辑招聘文案，自动识别岗位名称、薪资、标签、要求、入职须知与工作地址，填充到对应的表单字段；识别结果可逐条修改或取消勾选，确认后才写入。</div>
+    <el-input v-model="aiFill.text" type="textarea" :rows="10" maxlength="1000" show-word-limit
+              placeholder="复制或编辑招聘文案，例如：急招 电子厂普工 50 人，22 元/小时，包吃住，工作地址：湖北省武汉市……"></el-input>
     <div class="ai-input-foot">
       <el-button size="mini" @click="aiUseSample">填入示例文案</el-button>
       <span class="iv-none">本地规则解析，不联网；示例仅用于演示</span>
@@ -6177,7 +6186,14 @@ function handleJobVideoChange(file, fileList) {
   fileList.forEach(f => { if (f.raw && !f.url) f.url = URL.createObjectURL(f.raw); });
   VM.jobForm.videos = fileList;
 }
-function openJobTagDialog() { VM.jobTagSelection = VM.jobForm.tags.slice(); VM.jobTagSearch = ''; VM.jobTagDialogVisible = true; }
+function openJobTagDialog() {
+  const s = VM.jobForm.tags.slice();
+  VM.jobTagSelection = s;
+  VM.jobTagSearch = ''; VM.jobTagCustom = '';
+  VM.jobTagCustomTags = s.filter(t => !jobTagManaged(t));
+  VM.jobTagDialogVisible = true;
+}
+function jobTagManaged(tag) { return VM.jobTagGroups.some(g => g.tags.indexOf(tag) > -1); }
 function toggleJobTag(tag) {
   const s = VM.jobTagSelection, i = s.indexOf(tag);
   if (i >= 0) s.splice(i, 1);
@@ -6187,6 +6203,24 @@ function toggleJobTag(tag) {
   }
 }
 function confirmJobTags() { VM.jobForm.tags = VM.jobTagSelection.slice(); VM.jobTagDialogVisible = false; }
+// 自定义标签只挂在本岗位 jobForm.tags 上，不写回 jobTagGroups（岗位标签管理页看不到）
+function addCustomJobTag() {
+  const t = (VM.jobTagCustom || '').trim();
+  if (!t) return;
+  if (jobTagManaged(t)) {
+    if (VM.jobTagSelection.indexOf(t) < 0) toggleJobTag(t);
+    VM.jobTagCustom = '';
+    return;
+  }
+  if (VM.jobTagCustomTags.indexOf(t) < 0) VM.jobTagCustomTags.push(t);
+  VM.jobTagCustom = '';
+  if (VM.jobTagSelection.indexOf(t) < 0) toggleJobTag(t);
+}
+function removeCustomJobTag(t) {
+  VM.jobTagCustomTags = VM.jobTagCustomTags.filter(x => x !== t);
+  const i = VM.jobTagSelection.indexOf(t);
+  if (i >= 0) VM.jobTagSelection.splice(i, 1);
+}
 function openJobTagGroupDialog(id) {
   const d = VM.jobTagGroupDlg;
   if (id === -1) {
@@ -8129,7 +8163,7 @@ function onStplTplSrcChange(name, src) { VM.$set(VM.stplForm.srcMap, name, src);
 function saveStplTpl() {
   const f = VM.stplForm, miss = [], name = (f.name || '').trim();
   if (!name) miss.push('模板名称');
-  if (!f.client) miss.push('关联客户');
+  if (!f.client) miss.push('用工单位');
   if (!f.target) miss.push('计算对象');
   if (!(f.fields || []).length) miss.push('使用字段');
   if (miss.length) { VM.$message.error('请完善：' + miss.join('、')); return; }
@@ -8373,9 +8407,9 @@ function aiParseJobText(raw, employer) {
   const empHit = aiPickEmployer(text);
   if (empChoice) {
     push({ key: 'employer', label: '用工单位', kind: 'select', value: empChoice, conf: 1,
-      reason: '使用你在弹框里选择的用工单位。' + (empHit ? (empHit.v === empChoice ? '文案里也提到了这个名字，已核对一致。' : '文案里提到的是「' + empHit.v + '」，请确认是否需要更换。') : ''),
+      reason: '沿用表单里已选的用工单位。' + (empHit ? (empHit.v === empChoice ? '文案里也提到了这个名字，已核对一致。' : '文案里提到的是「' + empHit.v + '」，请确认是否需要更换。') : ''),
       cur: curText('employer') });
-    if (empHit && empHit.v !== empChoice) warnings.push('文案里提到的用工单位是「' + empHit.v + '」，与你选择的「' + empChoice + '」不一致。');
+    if (empHit && empHit.v !== empChoice) warnings.push('文案里提到的用工单位是「' + empHit.v + '」，与表单已选的「' + empChoice + '」不一致。');
   } else if (empHit) {
     push({ key: 'employer', label: '用工单位', kind: 'select', value: empHit.v, conf: empHit.conf, reason: empHit.reason, cur: curText('employer') });
   } else missing.push('用工单位');
@@ -8450,14 +8484,13 @@ function aiParseJobText(raw, employer) {
 // ---------- AI 填表弹框 ----------
 function openAiFillDlg() {
   VM.aiFill.token++;
-  Object.assign(VM.aiFill, { visible: true, step: 'input', text: '', employer: VM.jobForm.employer || '', items: [], missing: [], warnings: [], progress: 0, stageText: '', timer: null });
+  Object.assign(VM.aiFill, { visible: true, step: 'input', text: '', items: [], missing: [], warnings: [], progress: 0, stageText: '', timer: null });
 }
 function aiUseSample() { VM.aiFill.text = AI_JOB_SAMPLE; }
 function aiStartParse() {
-  if (!VM.aiFill.employer) { VM.$message.warning('请先选择用工单位'); return; }
   const text = String(VM.aiFill.text || '').trim();
-  if (text.length < 20) { VM.$message.warning('请先粘贴一段完整的招聘文案（至少 20 个字）'); return; }
-  const employer = VM.aiFill.employer;
+  if (text.length < 20) { VM.$message.warning('请先复制或粘贴一段完整的招聘文案（至少 20 个字）'); return; }
+  const employer = VM.jobForm.employer || '';
   const token = ++VM.aiFill.token;
   const stages = ['识别岗位与用工单位…', '提取薪资与福利…', '拆分要求与入职须知…', '生成优化建议…'];
   let i = 0;
@@ -8537,7 +8570,7 @@ const FN_BRIDGE = {
   attGroupAll, attGroupIndet, attToggleGroup,
   applyJobFilter, resetJobFilter, openJobPublish, closeJobPublish, submitJob,
   addJobSalaryRow, addJobOnboardRow, removeJobSalary, removeJobOnboard, removeJobAddr,
-  confirmJobAddr, handleJobImageRemove, handleJobImageChange, handleJobVideoRemove, handleJobVideoChange, openJobTagDialog, toggleJobTag, confirmJobTags,
+  confirmJobAddr, handleJobImageRemove, handleJobImageChange, handleJobVideoRemove, handleJobVideoChange, openJobTagDialog, toggleJobTag, confirmJobTags, addCustomJobTag, removeCustomJobTag,
   openJobTagGroupDialog, addJobTagFromInput, removeJobTagFromInput, saveJobTagGroup, deleteJobTagGroup,
   initJobSortables, deleteJob, jobAuditCls, toggleJobOn, toggleJobFull, jobSalaryText, jobDeptText,
   openJobDetail, openJobAuditLog, copyJob, addrCity, nowTimeStr,
@@ -9005,7 +9038,7 @@ const VM = new Vue({
     jobDetail: { visible: false, row: {}, tags: '', depts: '' }, jobAuditDlg: { visible: false, row: {} },
     jobDepts: JOB_DEPTS, jobForm: jobBlankForm(),
     jobAddrDialogVisible: false, jobAddrForm: { name: '', addr: '' },
-    jobTagDialogVisible: false, jobTagSelection: [], jobSortables: [], jobTagSearch: '',
+    jobTagDialogVisible: false, jobTagSelection: [], jobSortables: [], jobTagSearch: '', jobTagCustom: '', jobTagCustomTags: [],
     jobTagGroupDlg: { visible: false, isEdit: false, idx: -1, name: '', tags: [], newTag: '' }, jobTagNextId: 5,
     jobEmployers: JOB_EMPLOYERS, jobPositions: JOB_POSITIONS, jobPostTypes: JOB_POST_TYPES, jobAdvisors: JOB_ADVISORS,
     jobSalaryPresets: JOB_SALARY_PRESETS, jobOnboardPresets: JOB_ONBOARD_PRESETS,
@@ -9081,7 +9114,7 @@ const VM = new Vue({
     payrollAuditDlg: { visible: false, rows: [], bulk: false, mode: 'pass', remark: '' },
     payrollLogDlg: { visible: false, name: '', logs: [] },
     // AI 一键填表（新建岗位）
-    aiFill: { visible: false, step: 'input', text: '', employer: '', items: [], missing: [], warnings: [], progress: 0, stageText: '', token: 0, timer: null, snapshot: null, undoVisible: false, applied: 0 },
+    aiFill: { visible: false, step: 'input', text: '', items: [], missing: [], warnings: [], progress: 0, stageText: '', token: 0, timer: null, snapshot: null, undoVisible: false, applied: 0 },
     // 版本升级 / 增值服务
     upgradeCurrent: '高级版', upgradeTab: 'version',
     upgradeVersions: UPGRADE_VERSIONS, upgradeServices: UPGRADE_SERVICES, upgradeDurations: UPGRADE_DURATIONS,
