@@ -197,13 +197,11 @@
         .jsearch { flex: 1; display: flex; align-items: center; gap: 6px; background: var(--fill); border-radius: 18px; padding: 8px 12px; }
         .jsearch input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 13.5px; color: var(--text); font-family: inherit; }
         .jsearch svg { width: 15px; height: 15px; flex: none; fill: none; stroke: #A6ABB5; stroke-width: 2; }
-        .tagcustom { margin: 10px 12px 2px; padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+        .tagsel { margin: 10px 12px 2px; padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
         .tc-head { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
         .tc-head b { font-size: 13.5px; font-weight: 800; }
         .tc-head span { font-size: 10.5px; color: var(--sub); }
-        .tagcustom .fcs { margin-bottom: 8px; }
-        .fc.custom { background: #FFF8EC; color: #A9660A; border: 1px dashed #F0C98A; }
-        .fc.custom.on { background: var(--blue-light); color: var(--blue); border: 1px solid #C3D6FF; font-weight: 700; }
+        .tagsel .fcs { margin-bottom: 8px; }
         .fc .cx { font-style: normal; margin-left: 5px; font-size: 10px; opacity: .7; cursor: pointer; }
         .tagadd { display: flex; gap: 8px; }
         .tagadd input { flex: 1; min-width: 0; height: 36px; border: 1px solid var(--line); border-radius: 10px; background: var(--fill); padding: 0 12px; font-size: 13px; outline: none; font-family: inherit; }
@@ -635,9 +633,9 @@
             <input id="tgKw" placeholder="搜索标签">
         </div>
     </div>
-    <div class="tagcustom">
-        <div class="tc-head"><b>自定义标签</b><span>仅本岗位使用，不进入标签管理</span></div>
-        <div class="fcs" id="tgCustomChips"></div>
+    <div class="tagsel">
+        <div class="tc-head"><b id="tgSelTitle">已选择 0/5</b><span>可添加自定义标签，仅本岗位使用</span></div>
+        <div class="fcs" id="tgSelectedChips"></div>
         <div class="tagadd">
             <input id="tgAddIn" maxlength="12" placeholder="输入自定义标签（最多 12 字）">
             <span class="tagadd-btn" id="tgAddBtn">添加</span>
@@ -1964,16 +1962,19 @@ function toggleTag(v) {
     renderTagPage(document.getElementById('tgKw').value.trim());
 }
 
-function renderTagCustom(kw) {
+function renderTagSelected() {
     const sel = formJob.tags;
-    const list = jobTagCustomTags.filter(t => !kw || t.includes(kw));
-    document.getElementById('tgCustomChips').innerHTML = list.length
-        ? list.map(t => `<span class="fc custom ${sel.includes(t) ? 'on' : ''}" data-cv="${esc(t)}">${esc(t)}<b class="cx" data-del="${esc(t)}">✕</b></span>`).join('')
-        : `<span class="mut" style="font-size:11.5px">${jobTagCustomTags.length ? '没有匹配的自定义标签' : '暂无自定义标签'}</span>`;
-    document.querySelectorAll('#tgCustomChips .fc').forEach(c => {
-        c.onclick = () => toggleTag(c.dataset.cv);
-        const del = c.querySelector('.cx');
-        if (del) del.onclick = e => { e.stopPropagation(); removeCustomTag(c.dataset.cv); };
+    document.getElementById('tgSelTitle').textContent = `已选择 ${sel.length}/5`;
+    document.getElementById('tgSelectedChips').innerHTML = sel.length
+        ? sel.map(t => `<span class="fc on" data-sv="${esc(t)}">${esc(t)}<b class="cx" data-del="${esc(t)}">✕</b></span>`).join('')
+        : '<span class="mut" style="font-size:11.5px">暂未选择标签</span>';
+    document.querySelectorAll('#tgSelectedChips .cx').forEach(del => {
+        del.onclick = e => {
+            e.stopPropagation();
+            const v = del.dataset.del;
+            if (isManagedTag(v)) toggleTag(v);
+            else removeCustomTag(v);
+        };
     });
 }
 
@@ -1988,33 +1989,30 @@ function renderTagPage(kw) {
             <div class="fcs">${g.tags.map(t => `<span class="fc ${sel.includes(t) ? 'on' : ''}" data-v="${esc(t)}">${esc(t)}</span>`).join('')}</div>
         </div>`).join('') : '<div class="empty" style="padding:34px 0">没有匹配的标签</div>';
     document.querySelectorAll('#tgPickList .fc').forEach(c => c.onclick = () => toggleTag(c.dataset.v));
-    renderTagCustom(kw);
+    renderTagSelected();
 }
 
-// 与后台一致：自定义标签只进本岗位的 formJob.tags，不写回标签库
+// 自定义标签只进本岗位的 formJob.tags，不写回标签库
 function addCustomJobTag() {
     const inp = document.getElementById('tgAddIn');
     const v = inp.value.trim();
     if (!v) { toast('请输入标签名称'); return; }
     if (v.length > 12) { toast('标签最多 12 个字'); return; }
+    if (formJob.tags.includes(v)) { inp.value = ''; toast('该标签已选中'); return; }
+    if (formJob.tags.length >= 5) { toast('岗位标签最多选 5 个'); return; }
     inp.value = '';
     document.getElementById('tgKw').value = '';
 
     if (isManagedTag(v)) {
-        if (formJob.tags.includes(v)) toast('该标签已选中');
-        else { toggleTag(v); if (formJob.tags.includes(v)) toast(`已选中「${v}」`); }
+        formJob.tags.push(v);
         renderTagPage('');
+        toast(`已选中「${v}」`);
         return;
     }
-    const existed = jobTagCustomTags.includes(v);
-    if (!existed) jobTagCustomTags.push(v);
-    if (formJob.tags.includes(v)) { toast('该标签已选中'); renderTagPage(''); return; }
-    if (formJob.tags.length >= 5) { toast('自定义标签已添加，已选已满 5 个'); renderTagPage(''); return; }
+    if (!jobTagCustomTags.includes(v)) jobTagCustomTags.push(v);
     formJob.tags.push(v);
     renderTagPage('');
-    const chip = [...document.querySelectorAll('#tgCustomChips .fc')].find(c => c.dataset.cv === v);
-    if (chip) chip.scrollIntoView({ block: 'center' });
-    toast(existed ? `已选中「${v}」` : `已添加自定义标签「${v}」`);
+    toast(`已添加自定义标签「${v}」`);
 }
 
 function removeCustomTag(v) {
