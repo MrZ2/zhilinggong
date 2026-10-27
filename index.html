@@ -765,7 +765,6 @@
     .ai-item-main { flex: 1; min-width: 0; }
     .ai-item-h { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 13px; }
     .ai-item-label { font-weight: 600; color: var(--ad-text-1); }
-    .ai-item-reason { margin-top: 5px; font-size: 12px; line-height: 1.6; color: var(--ad-text-3); }
     .ai-salary { display: flex; align-items: center; gap: 8px; max-width: 360px; }
     .ai-salary .tilde { color: var(--ad-text-3); }
     .ai-salary .unit { font-size: 12px; color: var(--ad-text-3); }
@@ -776,8 +775,6 @@
     .ai-value { font-size: 13px; color: var(--ad-text-1); }
     .ai-empty { padding: 20px 0; text-align: center; font-size: 13px; color: var(--ad-text-3); }
     .ai-missing { margin-top: 10px; padding: 8px 12px; border-radius: 6px; background: var(--ad-warning-bg); font-size: 12px; line-height: 1.7; color: var(--ad-warning-text); }
-    .ai-warn-box { margin-top: 10px; padding: 8px 12px; border-radius: 6px; background: var(--ad-fill); font-size: 12px; line-height: 1.8; color: var(--ad-text-2); }
-    .ai-warn-box ul { margin: 4px 0 0; padding-left: 18px; }
 
     #jobPublishPage { margin: 96px 12px 12px 236px; height: calc(100vh - 108px); overflow-y: auto; padding-bottom: 4px;
       --primary:var(--ad-primary); --primary-light:var(--ad-primary-bg);
@@ -3919,9 +3916,9 @@
 <!-- ===== AI 一键填表（新建岗位） ===== -->
 <el-dialog title="AI 一键填表" :visible.sync="aiFill.visible" width="760px" top="5vh" :close-on-click-modal="false" append-to-body custom-class="ai-fill-dlg">
   <div v-if="aiFill.step === 'input'">
-    <div class="ai-tip">复制或编辑招聘文案，自动识别岗位名称、薪资、标签、要求、入职须知与工作地址，填充到对应的表单字段；识别结果可逐条修改或取消勾选，确认后才写入。</div>
+    <div class="ai-tip">复制或编辑招聘文案，自动识别岗位名称、薪资、标签、工资明细、岗位详情与入职须知，填充到对应的表单字段；识别结果可逐条修改或取消勾选，确认后才写入。</div>
     <el-input v-model="aiFill.text" type="textarea" :rows="10" maxlength="1000" show-word-limit
-              placeholder="复制或编辑招聘文案，例如：急招 电子厂普工 50 人，22 元/小时，包吃住，工作地址：湖北省武汉市……"></el-input>
+              placeholder="复制或编辑招聘文案，例如：急招 电子厂普工 50 人，22 元/小时，包吃住，岗位要求：18-45 岁……"></el-input>
     <div class="ai-input-foot">
       <el-button size="mini" @click="aiUseSample">填入示例文案</el-button>
       <span class="iv-none">本地规则解析，不联网；示例仅用于演示</span>
@@ -3946,8 +3943,6 @@
         <div class="ai-item-main">
           <div class="ai-item-h">
             <span class="ai-item-label">{{ it.label }}</span>
-            <el-tag v-if="it.conf < 0.7" class="dd-tag s-approval" size="mini" disable-transitions>需确认</el-tag>
-            <el-tag v-else class="dd-tag s-normal" size="mini" disable-transitions>建议采用</el-tag>
             <span v-if="it.cur" class="iv-none">表单已有：{{ it.cur }}</span>
           </div>
           <div v-if="it.kind === 'text'"><el-input v-model="it.value" size="small" maxlength="30"></el-input></div>
@@ -3965,16 +3960,11 @@
             <div v-for="(r, i) in it.value" :key="i"><b>{{ r.key || r.name }}</b><span>{{ r.val || r.addr }}</span></div>
           </div>
           <div v-else class="ai-value">{{ it.value }}</div>
-          <div class="ai-item-reason">{{ it.reason }}</div>
         </div>
       </div>
-      <div v-if="!aiFill.items.length" class="ai-empty">没能识别出结构化字段，试着把「岗位、薪资、地址」等信息分行写清楚再解析一次。</div>
+      <div v-if="!aiFill.items.length" class="ai-empty">没能识别出结构化字段，试着把「岗位名称、薪资、要求」等信息分行写清楚再解析一次。</div>
     </div>
     <div v-if="aiFill.missing.length" class="ai-missing"><b>未识别到的必填项：</b>{{ aiFill.missing.join('、') }}</div>
-    <div v-if="aiFill.warnings.length" class="ai-warn-box">
-      <b>文案优化建议</b>
-      <ul><li v-for="(w, i) in aiFill.warnings" :key="i">{{ w }}</li></ul>
-    </div>
   </div>
 
   <span slot="footer">
@@ -8264,8 +8254,8 @@ function initStplSortables() {
 function destroyStplSortables() { VM.stplSortables.forEach(s => s.destroy()); VM.stplSortables = []; }
 
 // ===== 新建岗位：AI 一键填表（本地规则模拟，输出结构与真实模型对齐） =====
-// 接真实模型时只替换 aiParseJobText 的函数体，返回结构保持 { items, missing, warnings }；
-// item = { id,key,label,kind:'text|textarea|select|salary|chips|rows', value|min/max, conf, reason, cur, pick }
+// 接真实模型时只替换 aiParseJobText 的函数体，返回结构保持 { items, missing }；
+// item = { id,key,label,kind:'text|textarea|salary|chips|rows', value|min/max, conf, cur, pick }
 const AI_JOB_SAMPLE = [
   '【急招】武汉华星光电电子厂普工 50 名',
   '薪资：22元/小时，综合月薪 6000-8000 元，管吃管住',
@@ -8277,22 +8267,6 @@ const AI_JOB_SAMPLE = [
   '工作地址：湖北省武汉市东湖高新区高新大道666号',
   '联系人：王顾问',
 ].join('\n');
-const AI_BANNED_WORDS = ['日结', '秒到账', '包过', '保证入职', '月入过万', '高薪', '急招', '临时工', '兼职', '短期工'];
-const AI_POS_RULES = [
-  { re: /普工|操作工|作业员/, pos: '普工/操作工' },
-  { re: /质检|品检|检验/, pos: '质检员' },
-  { re: /包装/, pos: '包装工' },
-  { re: /焊工|焊接/, pos: '焊工' },
-  { re: /叉车/, pos: '叉车工' },
-  { re: /仓管|库管/, pos: '仓管员' },
-];
-const AI_WORK_RULES = [
-  { re: /电子厂|车间|产线|组装|包装|普工|操作工|质检|焊工|叉车/, v: '生产制造' },
-  { re: /仓库|仓储|分拣|打包|物流|快递/, v: '物流仓储' },
-  { re: /工地|建筑|装修|泥工|木工|钢筋/, v: '建筑装修' },
-  { re: /餐饮|餐厅|食堂|后厨|服务员|洗碗/, v: '餐饮服务' },
-  { re: /保洁|保安|家政|物业/, v: '家政安保' },
-];
 const AI_TAG_HINTS = [
   { re: /包吃|管吃|免费工作餐/, tag: '包吃' },
   { re: /包住|管住|免费住宿|提供住宿/, tag: '包住' },
@@ -8335,33 +8309,18 @@ function aiPickSection(lines, startRe, stopRe, maxLines) {
 }
 function aiPickSalary(text) {
   let m = text.match(/(\d{3,5})\s*[~\-—至到]\s*(\d{3,5})\s*(?:元)?\s*\/?\s*(?:月|month)/i) || text.match(/(\d{3,5})\s*[~\-—至到]\s*(\d{3,5})\s*元/);
-  if (m) return { min: m[1], max: m[2], conf: 0.9, reason: '识别到月薪区间 ' + m[1] + '~' + m[2] + ' 元。' };
+  if (m) return { min: m[1], max: m[2], conf: 0.9 };
   m = text.match(/(\d(?:\.\d)?)\s*千\s*[~\-—至到]\s*(\d(?:\.\d)?)\s*千/);
-  if (m) return { min: String(Math.round(m[1] * 1000)), max: String(Math.round(m[2] * 1000)), conf: 0.88, reason: '按「千」为单位换算成 ' + (m[1] * 1000) + '~' + (m[2] * 1000) + ' 元。' };
+  if (m) return { min: String(Math.round(m[1] * 1000)), max: String(Math.round(m[2] * 1000)), conf: 0.88 };
   m = text.match(/(\d{1,3}(?:\.\d)?)\s*元?\s*\/\s*(?:小时|h|时)/i);
   if (m) {
     const hourly = Number(m[1]);
     const mon = Math.round(hourly * 8 * 26 / 100) * 100;
-    return { min: String(mon), max: String(Math.round(mon * 1.2 / 100) * 100), conf: 0.55, reason: '只识别到 ' + hourly + ' 元/小时，按 8 小时 × 26 天折算约 ' + mon + ' 元/月，请确认。' };
+    return { min: String(mon), max: String(Math.round(mon * 1.2 / 100) * 100), conf: 0.55 };
   }
   m = text.match(/(?:月|综合|到手)[^0-9]{0,6}(\d(?:\.\d)?)\s*[千kK]/);
-  if (m) { const v = Math.round(m[1] * 1000); return { min: String(v), max: String(Math.round(v * 1.2 / 100) * 100), conf: 0.55, reason: '识别到「' + m[0] + '」，上下限按 ±20% 估算，请确认。' }; }
+  if (m) { const v = Math.round(m[1] * 1000); return { min: String(v), max: String(Math.round(v * 1.2 / 100) * 100), conf: 0.55 }; }
   return null;
-}
-function aiPickEmployer(text) {
-  for (const e of JOB_EMPLOYERS) if (text.indexOf(e) > -1) return { v: e, conf: 0.95, reason: '文案里出现了该用工单位的全称。' };
-  for (const e of JOB_EMPLOYERS) {
-    const key = e.replace(/(有限公司|股份|科技|技术|集团|产业基地)/g, '').slice(0, 6);
-    if (key && text.indexOf(key) > -1) return { v: e, conf: 0.62, reason: '按「' + key + '」模糊匹配到该用工单位，请确认。' };
-  }
-  return null;
-}
-function aiPickAddrs(text, employer) {
-  const line = aiFindLine(aiTextLines(text), /(?:工作地址|上班地址|地址|厂址)\s*[：:]/);
-  const addr = line ? aiStripLabel(line) : aiPhrase(text, /[\u4e00-\u9fa5]{2,8}(?:省|市)[^\n，,。；;]{4,40}(?:号|路|街|道|园区)/, 60);
-  if (!addr) return [];
-  const venue = aiPhrase(addr, /[\u4e00-\u9fa5A-Za-z0-9]{2,12}(?:厂区|工业园|园区|基地|大厦|门店)/, 20) || String(employer || '主厂区').replace(/(有限公司|股份有限公司)$/, '');
-  return [{ id: aiRowId(), name: venue, addr: addr }];
 }
 function aiPickRows(lines, kind) {
   const out = [];
@@ -8389,10 +8348,10 @@ function aiPickRows(lines, kind) {
   if (loan) add('借支反馈', loan);
   return out;
 }
-function aiParseJobText(raw, employer) {
+function aiParseJobText(raw) {
   const text = String(raw || '').replace(/\r/g, '');
   const lines = aiTextLines(text);
-  const items = [], warnings = [], missing = [];
+  const items = [], missing = [];
   const curText = (k) => aiClean(VM.jobForm[k] || '');
   const push = (it) => {
     const rowsLen = it.kind === 'rows' ? (VM.jobForm[it.key] || []).length : 0;
@@ -8403,46 +8362,21 @@ function aiParseJobText(raw, employer) {
     items.push(Object.assign({ id: aiRowId(), conf: 0.8, cur: (conflict || rowsLen) ? cur : '', pick: pick }, it));
   };
 
-  const empChoice = employer || '';
-  const empHit = aiPickEmployer(text);
-  if (empChoice) {
-    push({ key: 'employer', label: '用工单位', kind: 'select', value: empChoice, conf: 1,
-      reason: '沿用表单里已选的用工单位。' + (empHit ? (empHit.v === empChoice ? '文案里也提到了这个名字，已核对一致。' : '文案里提到的是「' + empHit.v + '」，请确认是否需要更换。') : ''),
-      cur: curText('employer') });
-    if (empHit && empHit.v !== empChoice) warnings.push('文案里提到的用工单位是「' + empHit.v + '」，与表单已选的「' + empChoice + '」不一致。');
-  } else if (empHit) {
-    push({ key: 'employer', label: '用工单位', kind: 'select', value: empHit.v, conf: empHit.conf, reason: empHit.reason, cur: curText('employer') });
-  } else missing.push('用工单位');
-
   const posHit = (text.match(/普工|操作工|作业员|包装工|质检员|焊工|叉车工|仓管员|分拣员|服务员|保安|保洁/) || [])[0] || '';
   const venueHit = (text.match(/电子厂|五金厂|食品厂|玩具厂|服装厂|化工厂|物流园|工业园|科技园/) || [])[0] || '';
   const jobName = (venueHit + posHit).trim();
   if (jobName) {
-    push({ key: 'jobName', label: '岗位名称', kind: 'text', value: jobName, conf: 0.86, reason: '由「' + (venueHit || '岗位') + ' + ' + posHit + '」组合并去掉营销词得到。', cur: curText('jobName') });
+    push({ key: 'jobName', label: '岗位名称', kind: 'text', value: jobName, conf: 0.86, cur: curText('jobName') });
   } else {
     const first = aiClean((lines[0] || '').replace(/^[【\[][^】\]]*[】\]]/, '').replace(/[\d]+\s*名?/g, '').replace(/(急招|急聘|诚聘|招聘|招工|高薪)/g, ' '));
-    if (first) push({ key: 'jobName', label: '岗位名称', kind: 'text', value: aiClip(first, 16), conf: 0.45, reason: '没识别到标准职位词，暂用首行标题，请确认。', cur: curText('jobName') });
+    if (first) push({ key: 'jobName', label: '岗位名称', kind: 'text', value: aiClip(first, 16), conf: 0.45, cur: curText('jobName') });
     else missing.push('岗位名称');
   }
-
-  const work = AI_WORK_RULES.find(r => r.re.test(text));
-  if (work) push({ key: 'workType', label: '工种类型', kind: 'select', value: work.v, conf: 0.84, reason: '按文案里的岗位关键词归类。', cur: curText('workType') });
-  else missing.push('工种类型');
-
-  const posRule = AI_POS_RULES.find(r => r.re.test(text));
-  if (posRule) push({ key: 'position', label: '职位类型', kind: 'select', value: posRule.pos, conf: 0.86, reason: '按职位关键词映射到表单选项。', cur: curText('position') });
-  else missing.push('职位类型');
-
-  const postType = /焊工|叉车|电工|钳工|技工/.test(text) ? '技术工' : '蓝领';
-  push({ key: 'postType', label: '岗位类型', kind: 'select', value: postType, conf: 0.78, reason: /技术工/.test(postType) ? '出现持证/技工类关键词，判为技术工。' : '普工类岗位默认蓝领。', cur: curText('postType') });
-
-  const adv = JOB_ADVISORS.find(a => text.indexOf(a) > -1);
-  if (adv) push({ key: 'advisor', label: '招聘顾问', kind: 'select', value: adv, conf: 0.92, reason: '文案里出现了该顾问姓名。', cur: curText('advisor') });
 
   const sal = aiPickSalary(text);
   if (sal) {
     const curSal = (curText('salaryMin') || curText('salaryMax')) ? (curText('salaryMin') + '~' + curText('salaryMax')) : '';
-    push({ key: 'salary', label: '职位薪资（元/月）', kind: 'salary', min: sal.min, max: sal.max, value: sal.min + '~' + sal.max, conf: sal.conf, reason: sal.reason, cur: curSal });
+    push({ key: 'salary', label: '职位薪资（元/月）', kind: 'salary', min: sal.min, max: sal.max, value: sal.min + '~' + sal.max, conf: sal.conf, cur: curSal });
   } else missing.push('职位薪资');
 
   const tagPool = JOB_TAG_GROUPS.reduce((a, g) => a.concat(g.tags), []);
@@ -8450,49 +8384,36 @@ function aiParseJobText(raw, employer) {
   const uniqTags = [];
   hitTags.forEach(t => { if (uniqTags.indexOf(t) < 0) uniqTags.push(t); });
   const pickedTags = uniqTags.slice(0, 5);
-  if (pickedTags.length) {
-    if (uniqTags.length > 5) warnings.push('文案命中 ' + uniqTags.length + ' 个已有标签，岗位标签上限 5 个，已按命中顺序取前 5 个。');
-    push({ key: 'tags', label: '岗位标签', kind: 'chips', value: pickedTags, conf: 0.82, reason: '把「包吃住 / 班车 / 空调」等描述映射到已登记的标签。', cur: (VM.jobForm.tags || []).join('、') });
-  } else missing.push('岗位标签');
+  if (pickedTags.length) push({ key: 'tags', label: '岗位标签', kind: 'chips', value: pickedTags, conf: 0.82, cur: (VM.jobForm.tags || []).join('、') });
+  else missing.push('岗位标签');
+
+  const salRows = aiPickRows(lines, 'salary');
+  if (salRows.length) push({ key: 'salaryRows', label: '工资明细', kind: 'rows', value: salRows, conf: 0.8 });
 
   const jobReq = aiPickSection(lines, /^[^：:]{0,6}(?:岗位要求|任职要求|招聘要求|任职条件|要求)[：:]/, /福利|待遇|薪资|入职|宿舍|住宿|地址|联系人|工作内容/, 4)
     || aiPickSection(lines, /岗位要求|任职要求|任职条件/, /福利|待遇|薪资|入职|宿舍|地址|联系人/, 4);
   const contentLine = aiFindLine(lines, /工作内容|岗位职责/);
   const jobReqText = [jobReq, contentLine].filter(Boolean).join('\n').slice(0, 1000);
-  if (jobReqText) push({ key: 'jobReq', label: '岗位要求', kind: 'textarea', value: jobReqText, conf: 0.82, reason: '取「岗位要求 / 工作内容」段落，按原文换行保留。', cur: curText('jobReq') });
-  else missing.push('岗位要求');
+  if (jobReqText) push({ key: 'jobReq', label: '岗位详情', kind: 'textarea', value: jobReqText, conf: 0.82, cur: curText('jobReq') });
+  else missing.push('岗位详情');
 
-  const recruit = aiPickSection(lines, /^[^：:]{0,6}(?:入职资料|所需资料|面试资料|携带资料)[：:]/, /宿舍|住宿|地址|联系人|福利|薪资|薪资/, 3);
-  if (recruit) push({ key: 'recruitReq', label: '招聘要求（内部）', kind: 'textarea', value: recruit, conf: 0.74, reason: '取入职资料段落，仅做内部记录。', cur: curText('recruitReq') });
-
-  const salRows = aiPickRows(lines, 'salary');
-  if (salRows.length) push({ key: 'salaryRows', label: '工资明细', kind: 'rows', value: salRows, conf: 0.8, reason: '把计薪说明 / 餐费 / 水电 / 保险等短句拆成明细行。' });
   const onRows = aiPickRows(lines, 'onboard');
-  if (onRows.length) push({ key: 'onboardRows', label: '入职须知', kind: 'rows', value: onRows, conf: 0.8, reason: '把住宿 / 入职资料等段落拆成须知行。' });
-  const addrs = aiPickAddrs(text, empChoice || (empHit ? empHit.v : ''));
-  if (addrs.length) push({ key: 'addrs', label: '工作地址', kind: 'rows', value: addrs, conf: 0.86, reason: '按「地址：」与省市区路号匹配，厂区名取文案或用工单位。' });
+  if (onRows.length) push({ key: 'onboardRows', label: '入职须知', kind: 'rows', value: onRows, conf: 0.8 });
 
-  const hitBanned = AI_BANNED_WORDS.filter(w => text.indexOf(w) > -1).slice(0, 3);
-  hitBanned.forEach(w => warnings.push('文案里的「' + w + '」属于对外展示会被屏蔽的词，建议换成具体信息（如班次、时薪、住宿条件）。'));
-  if (!items.some(i => i.key === 'jobName')) warnings.push('没识别出岗位名称，建议按「厂名 + 职位」补一句标题。');
-  if (!text.match(/[\d]{2,}/)) warnings.push('文案里没有明确的薪资数字，建议补充时薪或月薪区间。');
-  warnings.push('图片和视频无法从文案生成，请人工上传车间 / 宿舍实拍图。');
-
-  return { items: items, missing: missing, warnings: warnings.slice(0, 5) };
+  return { items: items, missing: missing };
 }
 
 // ---------- AI 填表弹框 ----------
 function openAiFillDlg() {
   VM.aiFill.token++;
-  Object.assign(VM.aiFill, { visible: true, step: 'input', text: '', items: [], missing: [], warnings: [], progress: 0, stageText: '', timer: null });
+  Object.assign(VM.aiFill, { visible: true, step: 'input', text: '', items: [], missing: [], progress: 0, stageText: '', timer: null });
 }
 function aiUseSample() { VM.aiFill.text = AI_JOB_SAMPLE; }
 function aiStartParse() {
   const text = String(VM.aiFill.text || '').trim();
   if (text.length < 20) { VM.$message.warning('请先复制或粘贴一段完整的招聘文案（至少 20 个字）'); return; }
-  const employer = VM.jobForm.employer || '';
   const token = ++VM.aiFill.token;
-  const stages = ['识别岗位与用工单位…', '提取薪资与福利…', '拆分要求与入职须知…', '生成优化建议…'];
+  const stages = ['识别岗位名称与薪资…', '提取岗位标签与工资明细…', '整理岗位详情与入职须知…', '生成填表结果…'];
   let i = 0;
   VM.aiFill.step = 'parsing'; VM.aiFill.progress = 0; VM.aiFill.stageText = stages[0];
   const tick = () => {
@@ -8503,8 +8424,8 @@ function aiStartParse() {
     if (i < stages.length) VM.aiFill.timer = setTimeout(tick, 220);
     else VM.aiFill.timer = setTimeout(() => {
       if (token !== VM.aiFill.token) return;
-      const r = aiParseJobText(text, employer);
-      VM.aiFill.items = r.items; VM.aiFill.missing = r.missing; VM.aiFill.warnings = r.warnings;
+      const r = aiParseJobText(text);
+      VM.aiFill.items = r.items; VM.aiFill.missing = r.missing;
       VM.aiFill.step = 'result'; VM.aiFill.timer = null;
     }, 260);
   };
@@ -9114,7 +9035,7 @@ const VM = new Vue({
     payrollAuditDlg: { visible: false, rows: [], bulk: false, mode: 'pass', remark: '' },
     payrollLogDlg: { visible: false, name: '', logs: [] },
     // AI 一键填表（新建岗位）
-    aiFill: { visible: false, step: 'input', text: '', items: [], missing: [], warnings: [], progress: 0, stageText: '', token: 0, timer: null, snapshot: null, undoVisible: false, applied: 0 },
+    aiFill: { visible: false, step: 'input', text: '', items: [], missing: [], progress: 0, stageText: '', token: 0, timer: null, snapshot: null, undoVisible: false, applied: 0 },
     // 版本升级 / 增值服务
     upgradeCurrent: '高级版', upgradeTab: 'version',
     upgradeVersions: UPGRADE_VERSIONS, upgradeServices: UPGRADE_SERVICES, upgradeDurations: UPGRADE_DURATIONS,
