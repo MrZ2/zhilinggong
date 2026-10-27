@@ -197,6 +197,18 @@
         .jsearch { flex: 1; display: flex; align-items: center; gap: 6px; background: var(--fill); border-radius: 18px; padding: 8px 12px; }
         .jsearch input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 13.5px; color: var(--text); font-family: inherit; }
         .jsearch svg { width: 15px; height: 15px; flex: none; fill: none; stroke: #A6ABB5; stroke-width: 2; }
+        .tagcustom { margin: 10px 12px 2px; padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+        .tc-head { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+        .tc-head b { font-size: 13.5px; font-weight: 800; }
+        .tc-head span { font-size: 10.5px; color: var(--sub); }
+        .tagcustom .fcs { margin-bottom: 8px; }
+        .fc.custom { background: #FFF8EC; color: #A9660A; border: 1px dashed #F0C98A; }
+        .fc.custom.on { background: var(--blue-light); color: var(--blue); border: 1px solid #C3D6FF; font-weight: 700; }
+        .fc .cx { font-style: normal; margin-left: 5px; font-size: 10px; opacity: .7; cursor: pointer; }
+        .tagadd { display: flex; gap: 8px; }
+        .tagadd input { flex: 1; min-width: 0; height: 36px; border: 1px solid var(--line); border-radius: 10px; background: var(--fill); padding: 0 12px; font-size: 13px; outline: none; font-family: inherit; }
+        .tagadd input:focus { border-color: var(--blue); background: #fff; }
+        .tagadd-btn { flex: none; display: flex; align-items: center; padding: 0 16px; border-radius: 10px; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
         .jflt { flex: none; display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #4A4F58; padding: 8px 12px; background: var(--fill); border-radius: 18px; cursor: pointer; position: relative; }
         .jflt .bd { position: absolute; top: 2px; right: 4px; min-width: 15px; height: 15px; padding: 0 3px; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; border-radius: 8px; line-height: 15px; text-align: center; }
         .jsum { font-size: 11.5px; color: var(--sub); padding: 9px 14px 2px; }
@@ -362,12 +374,6 @@
         .ai-b .val { font-size: 13.5px; color: var(--text); margin-top: 2px; line-height: 1.5; word-break: break-all; }
         .ai-b .has { font-size: 11.5px; color: #E08A1E; margin-top: 3px; }
         .ai-b .ai-line { font-size: 12.5px; line-height: 1.6; color: #4A4F58; }
-        .conf { font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; flex: none; }
-        .conf.hi { background: #E8F8EE; color: var(--green); }
-        .conf.lo { background: #FFF4E6; color: #E08A1E; }
-        .ai-tip { margin: 12px 0 0; padding: 10px 12px; background: var(--fill); border-radius: 10px; font-size: 12px; color: #6B7078; line-height: 1.65; }
-        .ai-tip b { color: var(--text); }
-        .ai-tip ul { margin: 5px 0 0 16px; }
         /* AI 填表入口（表单顶部） */
         .aibar { display: flex; align-items: center; gap: 10px; margin: 10px 12px 0; padding: 12px 13px; border-radius: 14px; background: linear-gradient(135deg, #EAF0FF, #F4F8FF); border: 1px solid #D6E2FF; cursor: pointer; }
         .aibar .ai-ic { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #6B9BFF, #3E6BFF); display: flex; align-items: center; justify-content: center; font-size: 17px; flex: none; }
@@ -627,6 +633,14 @@
         <div class="jsearch">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
             <input id="tgKw" placeholder="搜索标签">
+        </div>
+    </div>
+    <div class="tagcustom">
+        <div class="tc-head"><b>自定义标签</b><span>仅本岗位使用，不进入标签管理</span></div>
+        <div class="fcs" id="tgCustomChips"></div>
+        <div class="tagadd">
+            <input id="tgAddIn" maxlength="12" placeholder="输入自定义标签（最多 12 字）">
+            <span class="tagadd-btn" id="tgAddBtn">添加</span>
         </div>
     </div>
     <div id="tgPickList"></div>
@@ -1930,11 +1944,39 @@ function bindFormOnce() {
     document.getElementById('jdCopy').onclick = () => copyJob(findJob(detailId));
 }
 
+let jobTagCustomTags = [];   // 自定义标签只挂在本岗位，不写回 JOB_TAG_GROUPS
+
+function isManagedTag(t) { return JOB_TAG_GROUPS.some(g => g.tags.indexOf(t) > -1); }
+
 function openTagPage() {
     document.getElementById('tgKw').value = '';
+    jobTagCustomTags = formJob.tags.filter(t => !isManagedTag(t));
     renderTagPage('');
     pushView('view-job-tags');
 }
+
+function toggleTag(v) {
+    const sel = formJob.tags, i = sel.indexOf(v);
+    if (i < 0) {
+        if (sel.length >= 5) { toast('岗位标签最多选 5 个'); return; }
+        sel.push(v);
+    } else sel.splice(i, 1);
+    renderTagPage(document.getElementById('tgKw').value.trim());
+}
+
+function renderTagCustom(kw) {
+    const sel = formJob.tags;
+    const list = jobTagCustomTags.filter(t => !kw || t.includes(kw));
+    document.getElementById('tgCustomChips').innerHTML = list.length
+        ? list.map(t => `<span class="fc custom ${sel.includes(t) ? 'on' : ''}" data-cv="${esc(t)}">${esc(t)}<b class="cx" data-del="${esc(t)}">✕</b></span>`).join('')
+        : `<span class="mut" style="font-size:11.5px">${jobTagCustomTags.length ? '没有匹配的自定义标签' : '暂无自定义标签'}</span>`;
+    document.querySelectorAll('#tgCustomChips .fc').forEach(c => {
+        c.onclick = () => toggleTag(c.dataset.cv);
+        const del = c.querySelector('.cx');
+        if (del) del.onclick = e => { e.stopPropagation(); removeCustomTag(c.dataset.cv); };
+    });
+}
+
 function renderTagPage(kw) {
     const sel = formJob.tags;
     document.getElementById('tgDoneCount').textContent = `已选 ${sel.length}/5`;
@@ -1945,15 +1987,48 @@ function renderTagPage(kw) {
         <div class="dsec"><h4>${esc(g.name)}</h4>
             <div class="fcs">${g.tags.map(t => `<span class="fc ${sel.includes(t) ? 'on' : ''}" data-v="${esc(t)}">${esc(t)}</span>`).join('')}</div>
         </div>`).join('') : '<div class="empty" style="padding:34px 0">没有匹配的标签</div>';
-    document.querySelectorAll('#tgPickList .fc').forEach(c => c.onclick = () => {
-        const v = c.dataset.v, i = sel.indexOf(v);
-        if (i < 0) {
-            if (sel.length >= 5) { toast('岗位标签最多选 5 个'); return; }
-            sel.push(v);
-        } else sel.splice(i, 1);
-        renderTagPage(document.getElementById('tgKw').value.trim());
-    });
+    document.querySelectorAll('#tgPickList .fc').forEach(c => c.onclick = () => toggleTag(c.dataset.v));
+    renderTagCustom(kw);
 }
+
+// 与后台一致：自定义标签只进本岗位的 formJob.tags，不写回标签库
+function addCustomJobTag() {
+    const inp = document.getElementById('tgAddIn');
+    const v = inp.value.trim();
+    if (!v) { toast('请输入标签名称'); return; }
+    if (v.length > 12) { toast('标签最多 12 个字'); return; }
+    inp.value = '';
+    document.getElementById('tgKw').value = '';
+
+    if (isManagedTag(v)) {
+        if (formJob.tags.includes(v)) toast('该标签已选中');
+        else { toggleTag(v); if (formJob.tags.includes(v)) toast(`已选中「${v}」`); }
+        renderTagPage('');
+        return;
+    }
+    const existed = jobTagCustomTags.includes(v);
+    if (!existed) jobTagCustomTags.push(v);
+    if (formJob.tags.includes(v)) { toast('该标签已选中'); renderTagPage(''); return; }
+    if (formJob.tags.length >= 5) { toast('自定义标签已添加，已选已满 5 个'); renderTagPage(''); return; }
+    formJob.tags.push(v);
+    renderTagPage('');
+    const chip = [...document.querySelectorAll('#tgCustomChips .fc')].find(c => c.dataset.cv === v);
+    if (chip) chip.scrollIntoView({ block: 'center' });
+    toast(existed ? `已选中「${v}」` : `已添加自定义标签「${v}」`);
+}
+
+function removeCustomTag(v) {
+    jobTagCustomTags = jobTagCustomTags.filter(x => x !== v);
+    const i = formJob.tags.indexOf(v);
+    if (i >= 0) formJob.tags.splice(i, 1);
+    renderTagPage(document.getElementById('tgKw').value.trim());
+    toast(`已删除自定义标签「${v}」`);
+}
+
+document.getElementById('tgAddBtn').onclick = addCustomJobTag;
+document.getElementById('tgAddIn').onkeydown = e => {
+    if (e.key === 'Enter') { e.preventDefault(); addCustomJobTag(); }
+};
 
 function submitJob() {
     const miss = JOB_REQ_FIELDS.filter(r => {
@@ -1986,8 +2061,18 @@ function submitJob() {
 
 /* ---------- AI 一键填表 ---------- */
 const AI_STEPS = ['粘贴文案', '识别中', '确认填入'];
-const AI_SAMPLE = '急招电子厂普工50名，武汉华星光电技术有限公司，月薪5500-7500元，包吃包住，五险一金，免费班车，长白班不穿无尘服。要求年龄18-45岁，男女不限，经验不限，身体健康，能接受两班倒。面试需携带身份证原件、一寸照片4张，当天可安排住宿。工作地址：湖北省武汉市东湖高新区高新大道669号。每月15日发放上月工资，底薪+计件，多劳多得。可预支工资。';
-let aiStep = 1, aiText = '', aiEmployer = '', aiItems = [], aiTips = [], aiMiss = [];
+const AI_SAMPLE = [
+    '【急招】武汉华星光电电子厂普工 50 名',
+    '薪资：22元/小时，综合月薪 6000-8000 元，管吃管住',
+    '岗位要求：18-45岁，男女不限，身体健康，能接受两班倒，无需经验',
+    '工作内容：组装、包装、质检辅助',
+    '福利：包吃包住、免费班车、夜班补贴、入职即买商业险',
+    '入职资料：身份证原件、一寸照片2张',
+    '宿舍：6人间，有空调热水，水电平摊',
+    '工作地址：湖北省武汉市东湖高新区高新大道666号',
+    '联系人：王顾问',
+].join('\n');
+let aiStep = 1, aiText = '', aiItems = [];
 
 function startAi() { aiStep = 1; aiItems = []; renderAi(); pushView('view-job-ai'); }
 
@@ -1997,20 +2082,17 @@ function renderAi() {
     if (aiStep === 1) {
         body.innerHTML = `<div class="dsec">
             <h4>粘贴招聘文案</h4>
-            <div class="frow"><label><span class="req">*</span>用工单位</label><select class="fsel" id="aiEmp"><option value="">请选择用工单位</option>${
-                JOB_EMPLOYERS.map(o => `<option ${aiEmployer === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
-            <div class="frow"><textarea class="fta" id="aiTa" style="min-height:150px" maxlength="2000" placeholder="把朋友圈 / 微信群里的招聘文案整段粘进来，至少 20 字">${esc(aiText)}</textarea>
-                <div class="hint"><span id="aiCnt">${aiText.length}</span>/2000 · 至少 20 字</div></div>
+            <div class="hint" style="margin-bottom:8px">自动识别：岗位名称、标签、工资明细、岗位详情、入职须知、职位薪资</div>
+            <div class="frow"><textarea class="fta" id="aiTa" style="min-height:170px" maxlength="1000" placeholder="复制或编辑招聘文案，至少 20 字">${esc(aiText)}</textarea>
+                <div class="hint"><span id="aiCnt">${aiText.length}</span>/1000 · 至少 20 字</div></div>
             <div class="fcs"><span class="fc" id="aiSample">填入示例文案</span></div>
         </div>
         <div class="actbar show"><span class="ab ghost" data-back2>返回</span><span class="ab blue" id="aiRun">开始识别</span></div>`;
         const taEl = document.getElementById('aiTa');
         taEl.oninput = () => { aiText = taEl.value; document.getElementById('aiCnt').textContent = aiText.length; };
-        document.getElementById('aiEmp').onchange = e => { aiEmployer = e.target.value; };
         document.getElementById('aiSample').onclick = () => { aiText = AI_SAMPLE; renderAi(); };
         document.getElementById('aiRun').onclick = () => {
-            if (!aiEmployer) { toast('请先选择用工单位'); return; }
-            if (aiText.trim().length < 20) { toast('文案至少 20 字'); return; }
+            if (aiText.trim().length < 20) { toast('请先粘贴一段完整的招聘文案（至少 20 字）'); return; }
             aiStep = 2; renderAi(); runAiProgress();
         };
         body.querySelectorAll('[data-back2]').forEach(b => b.onclick = () => popView());
@@ -2029,15 +2111,9 @@ function renderAi() {
                     <span class="cbx ${it.checked ? 'on' : ''}">✓</span>
                     <div class="ai-b"><div class="f">${it.label}${cnt ? '（' + cnt + '）' : ''}</div><div class="val">${inner}</div>
                     ${it.has ? `<div class="has">表单已有：${esc(it.has)}</div>` : ''}</div>
-                    <span class="conf ${it.conf < .7 ? 'lo' : 'hi'}">${it.conf < .7 ? '需确认' : '建议采用'}</span>
                 </div>`;
             }).join('')}
         </div>
-        <div class="dsec"><div class="ai-tip">
-            ${aiMiss.length ? `<b>未识别到的必填项：</b>${aiMiss.join('、')}<br>` : ''}
-            ${aiTips.length ? `<b>文案优化建议：</b><ul>${aiTips.map(t => `<li>${t}</li>`).join('')}</ul>` : ''}
-            <div style="margin-top:6px">图片、视频需人工上传，AI 不代填</div>
-        </div></div>
         <div class="actbar show"><span class="ab ghost" data-back2>返回</span><span class="ab blue" id="aiApply">应用所选 0 项</span></div>`;
         const sync = () => {
             const n = aiItems.filter(i => i.checked).reduce((a, i) => a + (i.rows ? i.rows.length : i.vals ? i.vals.length : 1), 0);
@@ -2054,7 +2130,7 @@ function renderAi() {
         sync();
     } else {
         body.innerHTML = `<div class="dsec"><div class="ai-prog" id="aiProg">${
-            ['识别岗位与用工单位…', '提取薪资与福利…', '拆分要求与入职须知…', '生成优化建议…'].map((s, i) => `<p data-p="${i}">⏳ ${s}</p>`).join('')
+            ['识别岗位与薪资…', '提取标签与福利…', '拆分详情与入职须知…', '整理识别结果…'].map((s, i) => `<p data-p="${i}">⏳ ${s}</p>`).join('')
         }</div></div>`;
     }
 }
@@ -2071,127 +2147,173 @@ function runAiProgress() {
     tick();
 }
 
+/* ---------- AI 解析规则 ---------- */
+const AI_TAG_HINTS = [
+    { re: /包吃|管吃|免费工作餐/, tag: '包吃' },
+    { re: /包住|管住|免费住宿|提供住宿/, tag: '包住' },
+    { re: /餐补/, tag: '餐补' },
+    { re: /班车|厂车/, tag: '免费班车' },
+    { re: /空调/, tag: '宿舍有空调' },
+    { re: /长白班/, tag: '长白班' },
+    { re: /坐班/, tag: '坐班' },
+    { re: /无尘/, tag: '无尘车间' },
+    { re: /可带手机/, tag: '可带手机' },
+    { re: /五险一金|五险/, tag: '五险一金' },
+    { re: /预支/, tag: '可预支工资' },
+    { re: /夜班补贴|夜班津贴/, tag: '夜班补贴' },
+    { re: /高温/, tag: '高温补贴' },
+    { re: /免体检/, tag: '免体检' },
+    { re: /当天入职|当天安排/, tag: '当天入职' },
+    { re: /男女不限/, tag: '男女不限' },
+    { re: /经验不限|无需经验|不限经验/, tag: '经验不限' },
+    { re: /学历不限/, tag: '学历不限' },
+];
+
 function aiParse(text) {
-    // 公司名里常带「技术」「光电」等词，推断工种/岗位类型前先剔除，避免误判
-    let probe = text;
-    JOB_EMPLOYERS.concat(aiEmployer ? [aiEmployer] : []).forEach(e => { probe = probe.split(e).join(''); });
-    const items = [], add = (f, label, val, conf, extra) => {
-        if (val == null || val === '') return;
-        const cur = formJob[f];
-        const has = !extra && cur && !Array.isArray(cur) && String(cur) !== '' && String(cur) !== String(val) ? String(cur) : (Array.isArray(cur) && cur.length && f === 'tags' ? cur.join('、') : '');
-        items.push({ f, label, val, show: extra && extra.show, conf, checked: !has, has });
+    const lines = aiTextLines(text);
+    const items = [];
+    const addItem = (f, label, val, conf, opts) => {
+        opts = opts || {};
+        let has = '', conflict = false;
+        if (opts.rows) {
+            const len = Array.isArray(formJob[f]) ? formJob[f].length : 0;
+            if (len) { has = len + ' 条'; conflict = true; }
+        } else if (f === 'tags') {
+            const existing = formJob.tags || [];
+            has = existing.join('、');
+            if (!(val || []).some(t => existing.indexOf(t) < 0)) conflict = true;
+        } else if (f === 'salary') {
+            const cur = (formJob.salaryMin || formJob.salaryMax) ? formJob.salaryMin + '~' + formJob.salaryMax : '';
+            has = cur; conflict = !!cur;
+        } else {
+            const cur = formJob[f];
+            conflict = !!cur && String(cur) !== String(val);
+            has = conflict ? String(cur) : '';
+        }
+        items.push(Object.assign({ f, label, val, conf, has, checked: conf >= .7 && !conflict }, opts));
     };
-    const nm = /(?:急招|招聘|诚聘|招)\s*([\u4e00-\u9fa5A-Za-z（）()]{2,14}?)(?:\d|$|[,，。；;\s])/m.exec(text);
-    add('jobName', '岗位名称', nm && nm[1], nm ? .9 : 0);
-    const sal = /(\d{3,6})\s*[-~－至]\s*(\d{3,6})\s*(?:元|块)?/.exec(text);
-    if (sal) {
-        items.push({ f: 'salaryMin', label: '职位薪资（最低）', val: sal[1], show: `${sal[1]} ~ ${sal[2]} 元/月`, conf: .92, checked: !formJob.salaryMin });
-        items.push({ f: 'salaryMax', label: '职位薪资（最高）', val: sal[2], show: `${sal[1]} ~ ${sal[2]} 元/月`, conf: .92, checked: !formJob.salaryMax });
+
+    // 岗位名称
+    const posHit = (text.match(/普工|操作工|作业员|包装工|质检员|焊工|叉车工|仓管员|分拣员|服务员|保安|保洁/) || [])[0] || '';
+    const venueHit = (text.match(/电子厂|五金厂|食品厂|玩具厂|服装厂|化工厂|物流园|工业园|科技园/) || [])[0] || '';
+    const jobName = (venueHit + posHit).trim();
+    if (jobName) {
+        addItem('jobName', '岗位名称', jobName, .86);
+    } else {
+        const first = aiClean((lines[0] || '').replace(/^[【\[][^】\]]*[】\]]/, '').replace(/[\d]+\s*名?/g, '').replace(/(急招|急聘|诚聘|招聘|招工|高薪)/g, ' '));
+        if (first) addItem('jobName', '岗位名称', aiClip(first, 16), .45);
     }
-    const emp = aiEmployer || JOB_EMPLOYERS.find(e => text.includes(e)) || '';
-    add('employer', '用工单位', emp, emp ? .95 : 0);
-    const pos = JOB_POSITIONS.find(p => text.includes(p)) || (/普工|操作工/.test(text) ? '普工/操作工' : '');
-    add('position', '职位类型', pos, .9);
-    const wt = /仓库|仓储|分拣|打包/.test(probe) ? '物流仓储' : /保洁|保安|家政/.test(probe) ? '家政安保' : /厨|餐/.test(probe) ? '餐饮服务' : /焊|装修|建筑/.test(probe) ? '建筑装修' : (/电子厂|普工|流水线|质检/.test(probe) ? '生产制造' : '');
-    add('workType', '工种类型', wt, .6);
-    const pt = /质检|焊工|叉车|技术|电工|维修/.test(probe) ? '技术工' : /客服|文员|会计|设计|运营/.test(probe) ? '白领' : /普工|包装|打包|分拣|保洁|帮厨/.test(probe) ? '蓝领' : '';
-    add('postType', '岗位类型', pt, .6);
-    const adv = JOB_ADVISORS.find(a => text.includes(a));
-    add('advisor', '招聘顾问', adv, .75);
-    const tags = TAG_POOL.filter(t => text.includes(t));
-    tags.forEach(t => { if (!formJob.tags.includes(t)) items.push({ f: 'tags', label: '岗位标签', val: t, show: t, conf: .9, checked: true }); });
-    const req = (text.match(/[^。；\n]*(?:年龄|经验|学历|身体健康|能适应|持证|手脚麻利|吃苦)[^。；\n]*/g) || []).join('；');
-    add('jobReq', '岗位要求', req, .85);
-    const rc = (text.match(/[^。；\n]*(?:携带|原件|照片|面试)[^。；\n]*/g) || []).join('；');
-    add('recruitReq', '招聘要求（内部记录）', rc, .7);
-    const addr = /([\u4e00-\u9fa5]{2,8}(?:省|市|区|县)[\u4e00-\u9fa5A-Za-z0-9]{0,20}?(?:路|街|道|号|大道|产业园|厂区|中心))/.exec(text);
-    if (addr && !formJob.addrs.length) items.push({ f: 'addrs', label: '工作地址', val: addr[1], show: addr[1], conf: .86, checked: true });
-    const srows = (text.match(/[^。；\n]*(?:底薪|计件|发放|工资|计薪|津贴|补贴|扣)[^。；\n]*/g) || []).slice(0, 3);
-    srows.forEach(s => items.push({ f: 'salaryRows', label: '工资明细', val: s.trim(), show: s.trim(), conf: .65, checked: true }));
-    const orows = (text.match(/[^。；\n]*(?:身份证|照片|体检|住宿|入职流程|资料)[^。；\n]*/g) || []).slice(0, 3);
-    orows.forEach(s => items.push({ f: 'onboardRows', label: '入职须知', val: s.trim(), show: s.trim(), conf: .65, checked: true }));
 
-    aiMiss = JOB_REQ_FIELDS.filter(r => !items.some(i => i.f === r[0]) && !formJob[r[0]]).map(r => r[1]);
-    aiTips = [];
-    const bad = ['急招', '高薪', '日结'].filter(w => text.includes(w));
-    bad.forEach(w => aiTips.push(`命中「${w}」，建议改为「长期招聘」「综合薪资」「月结」，对外展示更稳`));
-    if (!sal) aiTips.push('没识别到薪资区间，建议补上「月薪X-Y元」');
-    if (!addr) aiTips.push('没识别到工作地址，建议补充省市区 + 门牌号');
-    if (tags.length < 2) aiTips.push('福利标签偏少，补充「包吃包住」等标签能提升报名率');
-    aiTips = aiTips.slice(0, 5);
-    return mergeAiItems(items);
+    // 岗位标签
+    const hitTags = AI_TAG_HINTS.filter(h => h.re.test(text)).map(h => h.tag).filter(t => TAG_POOL.indexOf(t) > -1);
+    const uniqTags = [];
+    hitTags.forEach(t => { if (uniqTags.indexOf(t) < 0) uniqTags.push(t); });
+    const pickedTags = uniqTags.slice(0, 5);
+    if (pickedTags.length) addItem('tags', '岗位标签', pickedTags, .82, { vals: pickedTags });
+
+    // 工资明细
+    const salRows = aiPickRows(lines, 'salary');
+    if (salRows.length) addItem('salaryRows', '工资明细', salRows, .8, { rows: salRows });
+
+    // 岗位详情
+    const jobReq = aiPickSection(lines, /^[^：:]{0,6}(?:岗位要求|任职要求|招聘要求|任职条件|要求)[：:]/, /福利|待遇|薪资|入职|宿舍|住宿|地址|联系人|工作内容/, 4)
+        || aiPickSection(lines, /岗位要求|任职要求|任职条件/, /福利|待遇|薪资|入职|宿舍|地址|联系人/, 4);
+    const contentLine = aiFindLine(lines, /工作内容|岗位职责/);
+    const jobReqText = [jobReq, contentLine].filter(Boolean).join('\n').slice(0, 1000);
+    if (jobReqText) addItem('jobReq', '岗位详情', jobReqText, .82);
+
+    // 入职须知
+    const onRows = aiPickRows(lines, 'onboard');
+    if (onRows.length) addItem('onboardRows', '入职须知', onRows, .8, { rows: onRows });
+
+    // 职位薪资
+    const sal = aiPickSalary(text);
+    if (sal) addItem('salary', '职位薪资', sal.min + '~' + sal.max, sal.conf, { vals: [sal.min, sal.max] });
+
+    return items;
 }
 
-// 同一字段的多值项合并成一条（标签 / 工资明细 / 入职须知）
-// 子表条目：按关键词猜项目名称，剩下的话作为说明
-const AI_SALARY_HINTS = [
-    ['发薪时间', /发薪|发放|每月\s*\d+\s*日|工资日/],
-    ['计薪说明', /底薪|计件|综合工资|时薪|月薪/],
-    ['餐费说明', /餐/],
-    ['住宿扣款', /住宿/],
-    ['水电说明', /水电/],
-    ['保险扣款', /保险/],
-    ['借支反馈', /预支|借支/],
-];
-const AI_ONBOARD_HINTS = [
-    ['所需资料', /身份证|照片|资料|携带/],
-    ['体检说明', /体检/],
-    ['入职流程', /入职|流程/],
-    ['离职说明', /离职/],
-    ['住宿安排', /住宿/],
-    ['注意事项', /注意/],
-];
-function splitAiRow(f, text) {
-    const hints = f === 'salaryRows' ? AI_SALARY_HINTS : AI_ONBOARD_HINTS;
-    const hit = hints.find(([, re]) => re.test(text));
-    const val = text.replace(/^[^，,。；;：:]{1,6}[：:]\s*/, '');
-    return { key: hit ? hit[0] : '其他', val: val || text };
+/* ---------- 解析辅助（与后台同一套规则） ---------- */
+function aiTextLines(s) { return String(s || '').replace(/\r/g, '').split('\n').map(x => x.trim()).filter(Boolean); }
+function aiClean(s) { return String(s || '').replace(/\s+/g, ' ').trim(); }
+function aiClip(s, n) { const t = aiClean(s); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+function aiPhrase(text, re, n) { const m = String(text).match(re); return m ? aiClip(m[0], n || 20) : ''; }
+function aiStripLabel(s) { return aiClean(String(s || '').replace(/^[^：:]{1,10}[：:]\s*/, '')); }
+function aiFindLine(lines, re) { return lines.find(l => re.test(l)) || ''; }
+function aiPickSection(lines, startRe, stopRe, maxLines) {
+    const i = lines.findIndex(l => startRe.test(l));
+    if (i < 0) return '';
+    const out = [aiStripLabel(lines[i])];
+    for (let j = i + 1; j < lines.length && out.length < (maxLines || 4); j++) {
+        if (stopRe.test(lines[j])) break;
+        out.push(lines[j]);
+    }
+    return out.join('\n').slice(0, 1000);
 }
-
-function mergeAiItems(items) {
-    const multi = ['tags', 'salaryRows', 'onboardRows'];
+function aiPickSalary(text) {
+    let m = text.match(/(\d{3,5})\s*[~\-—至到]\s*(\d{3,5})\s*(?:元)?\s*\/?\s*(?:月|month)/i) || text.match(/(\d{3,5})\s*[~\-—至到]\s*(\d{3,5})\s*元/);
+    if (m) return { min: m[1], max: m[2], conf: 0.9 };
+    m = text.match(/(\d(?:\.\d)?)\s*千\s*[~\-—至到]\s*(\d(?:\.\d)?)\s*千/);
+    if (m) return { min: String(Math.round(m[1] * 1000)), max: String(Math.round(m[2] * 1000)), conf: 0.88 };
+    m = text.match(/(\d{1,3}(?:\.\d)?)\s*元?\s*\/\s*(?:小时|h|时)/i);
+    if (m) {
+        const hourly = Number(m[1]);
+        const mon = Math.round(hourly * 8 * 26 / 100) * 100;
+        return { min: String(mon), max: String(Math.round(mon * 1.2 / 100) * 100), conf: 0.55 };
+    }
+    m = text.match(/(?:月|综合|到手)[^0-9]{0,6}(\d(?:\.\d)?)\s*[千kK]/);
+    if (m) { const v = Math.round(m[1] * 1000); return { min: String(v), max: String(Math.round(v * 1.2 / 100) * 100), conf: 0.55 }; }
+    return null;
+}
+function aiPickRows(lines, kind) {
     const out = [];
-    const byField = {};
-    items.forEach(it => {
-        // 薪资最低/最高合成一条「职位薪资」
-        if (it.f === 'salaryMin' || it.f === 'salaryMax') {
-            if (!byField.salary) {
-                byField.salary = { f: 'salary', label: '职位薪资', vals: [], conf: it.conf, checked: it.checked, has: it.has };
-                out.push(byField.salary);
-            }
-            byField.salary.vals.push(it.val);
-            byField.salary.conf = Math.min(byField.salary.conf, it.conf);
-            byField.salary.checked = byField.salary.checked && it.checked;
-            return;
-        }
-        if (!multi.includes(it.f)) { out.push(it); return; }
-        if (!byField[it.f]) {
-            byField[it.f] = { f: it.f, label: it.label, vals: [], conf: it.conf, checked: it.checked, has: it.has };
-            if (it.f === 'salaryRows' || it.f === 'onboardRows') { byField[it.f].rows = []; delete byField[it.f].vals; }
-            out.push(byField[it.f]);
-        }
-        if (it.f === 'salaryRows' || it.f === 'onboardRows') byField[it.f].rows.push(splitAiRow(it.f, it.val));
-        else byField[it.f].vals.push(it.val);
-        byField[it.f].conf = Math.min(byField[it.f].conf, it.conf);
-        byField[it.f].checked = byField[it.f].checked && it.checked;
-    });
+    const add = (key, val) => { const v = aiClip(val, 50); if (v) out.push({ key: key, val: v }); };
+    if (kind === 'onboard') {
+        const dorm = aiFindLine(lines, /宿舍|住宿/);
+        if (dorm) add('住宿安排', aiStripLabel(dorm));
+        const docs = aiFindLine(lines, /入职资料|携带|所需资料|面试资料/);
+        if (docs) add('所需资料', aiStripLabel(docs));
+        if (/体检/.test(lines.join('\n'))) add('体检说明', aiPhrase(lines.join('\n'), /[^，,。；;\n]{0,10}体检[^，,。；;\n]{0,12}/, 40));
+        return out;
+    }
+    const t = lines.join('\n');
+    const pay = aiFindLine(lines, /发薪|开薪/);
+    if (pay) add('发薪时间', aiStripLabel(pay));
+    const meal = aiPhrase(t, /包吃[^，,。；;\n]{0,6}|餐补[^，,。；;\n]{0,8}|管吃[^，,。；;\n]{0,6}/, 20);
+    if (meal) add('餐费说明', meal);
+    const util = aiPhrase(t, /水电[^，,。；;\n]{0,8}/, 20);
+    if (util) add('水电说明', util);
+    const ins = aiPhrase(t, /[^，,。；;、\n]{0,6}商业险/, 20);
+    if (ins) add('保险扣款', ins);
+    const hourly = aiPhrase(t, /\d{1,3}(?:\.\d)?\s*元?\s*\/\s*(?:小时|h|时)/i, 20);
+    if (hourly) add('计薪说明', hourly);
+    const loan = aiPhrase(t, /(?:预支|借支)[^，,。；;\n]{0,8}/, 20);
+    if (loan) add('借支反馈', loan);
     return out;
 }
 
 function applyAi() {
     const picked = aiItems.filter(i => i.checked);
     if (!picked.length) { toast('请先勾选要填入的项'); return; }
-    const applyOne = (f, val) => {
-        if (f === 'tags') { if (!formJob.tags.includes(val) && formJob.tags.length < 5) formJob.tags.push(val); }
-        else if (f === 'addrs') { if (!formJob.addrs.some(a => a.addr === val)) formJob.addrs.push({ id: ++jobIdSeq, name: val.slice(0, 12), addr: val }); }
-        else if (f === 'salaryRows' || f === 'onboardRows') { if (!formJob[f].some(a => a.val === val)) formJob[f].push({ id: ++jobIdSeq, key: f === 'salaryRows' ? '识别项目' : '入职事项', val }); }
-        else formJob[f] = val;
-    };
     let n = 0;
     picked.forEach(it => {
-        if (it.f === 'salary') { formJob.salaryMin = it.vals[0] || ''; formJob.salaryMax = it.vals[1] || ''; n += 2; return; }
-        if (it.rows) { it.rows.forEach(r => { formJob[it.f].push({ id: ++jobIdSeq, key: r.key, val: r.val }); n++; }); return; }
-        (it.vals || [it.val]).forEach(v => { applyOne(it.f, v); n++; });
+        if (it.f === 'salary') {
+            formJob.salaryMin = it.vals[0] || '';
+            formJob.salaryMax = it.vals[1] || '';
+            n += 2;
+        } else if (it.f === 'tags') {
+            (it.vals || []).forEach(t => {
+                if (!formJob.tags.includes(t) && formJob.tags.length < 5) { formJob.tags.push(t); n++; }
+            });
+        } else if (it.rows) {
+            it.rows.forEach(r => {
+                formJob[it.f].push({ id: ++jobIdSeq, key: r.key, val: r.val });
+                n++;
+            });
+        } else {
+            formJob[it.f] = it.val;
+            n++;
+        }
     });
     popView();
     renderForm();
