@@ -803,6 +803,19 @@
 <div class="sheet" id="logSheet"></div>
 <div class="sheet" id="clFilter"></div>
 <div class="sheet" id="pickSheet"></div>
+<div class="sheet" id="aiSugSheet">
+    <div class="sh-head"><b>重新生成</b><span class="x" data-close>✕</span></div>
+    <div class="sh-body">
+        <label style="display:block;font-size:12px;color:var(--sub);margin-bottom:6px"><span style="color:var(--red);margin-right:2px">*</span>优化建议</label>
+        <textarea class="fta" id="aiSugText" maxlength="200" style="min-height:96px" placeholder="补充要识别的内容，例如：发薪时间每月15日、包住、夜班补贴等"></textarea>
+        <div class="hint">补充的内容会与原文案一起参与识别</div>
+        <div class="sh-err" id="aiSugErr"></div>
+    </div>
+    <div class="sh-foot">
+        <span class="btn ghost" data-close>取消</span>
+        <span class="btn primary" id="aiSugGo">重新生成</span>
+    </div>
+</div>
 <div class="cfrm" id="cfrm"></div>
 <input type="file" id="picInput" accept="image/jpeg,image/jpg,image/png" multiple style="display:none">
 <input type="file" id="vidInput" accept="video/*" style="display:none">
@@ -2070,9 +2083,10 @@ const AI_SAMPLE = [
     '工作地址：湖北省武汉市东湖高新区高新大道666号',
     '联系人：王顾问',
 ].join('\n');
-let aiStep = 1, aiText = '', aiItems = [];
+let aiStep = 1, aiText = '', aiItems = [], aiSuggest = '';
 
-function startAi() { aiStep = 1; aiItems = []; renderAi(); pushView('view-job-ai'); }
+function startAi() { aiStep = 1; aiItems = []; aiSuggest = ''; renderAi(); pushView('view-job-ai'); }
+const aiSource = () => (aiText + (aiSuggest.trim() ? '\n' + aiSuggest.trim() : '')).trim();
 
 function renderAi() {
     document.getElementById('aiSteps').innerHTML = AI_STEPS.map((s, i) => `<span class="${i + 1 === aiStep ? 'on' : ''}">${i + 1} ${s}</span>`).join('');
@@ -2112,7 +2126,7 @@ function renderAi() {
                 </div>`;
             }).join('')}
         </div>
-        <div class="actbar show"><span class="ab ghost" data-back2>返回</span><span class="ab blue" id="aiApply">应用所选 0 项</span></div>`;
+        <div class="actbar show"><span class="ab ghost" id="aiRegen">重新生成</span><span class="ab blue" id="aiApply">应用所选 0 项</span></div>`;
         const sync = () => {
             const n = aiItems.filter(i => i.checked).reduce((a, i) => a + (i.rows ? i.rows.length : i.vals ? i.vals.length : 1), 0);
             document.getElementById('aiApply').textContent = `应用所选 ${n} 项`;
@@ -2124,6 +2138,11 @@ function renderAi() {
             sync();
         });
         document.getElementById('aiApply').onclick = applyAi;
+        document.getElementById('aiRegen').onclick = () => {
+            document.getElementById('aiSugText').value = aiSuggest;
+            document.getElementById('aiSugErr').textContent = '';
+            showSheet(document.getElementById('aiSugSheet'));
+        };
         body.querySelectorAll('[data-back2]').forEach(b => b.onclick = () => popView());
         sync();
     } else {
@@ -2138,7 +2157,7 @@ function runAiProgress() {
     let i = 0;
     const tick = () => {
         ps.forEach((p, k) => { p.className = k < i ? 'done' : k === i ? 'now' : ''; p.innerHTML = (k < i ? '✅ ' : '⏳ ') + p.textContent.replace(/^[^ ]+\s/, ''); });
-        if (i >= ps.length) { aiStep = 3; aiItems = aiParse(aiText); renderAi(); return; }
+        if (i >= ps.length) { aiStep = 3; aiItems = aiParse(aiSource()); renderAi(); return; }
         i++;
         setTimeout(tick, 420);
     };
@@ -2317,6 +2336,18 @@ function applyAi() {
     renderForm();
     toast(`已填入 ${n} 项`);
 }
+
+document.querySelectorAll('#aiSugSheet [data-close]').forEach(b => b.onclick = hideSheet);
+document.getElementById('aiSugText').oninput = () => { document.getElementById('aiSugErr').textContent = ''; };
+document.getElementById('aiSugGo').onclick = () => {
+    const v = document.getElementById('aiSugText').value.trim();
+    const err = document.getElementById('aiSugErr');
+    if (!v) { err.textContent = '请输入优化建议'; document.getElementById('aiSugText').focus(); return; }
+    err.textContent = '';
+    aiSuggest = v;
+    hideSheet();
+    aiStep = 2; renderAi(); runAiProgress();
+};
 
 /* ---------- 导航栈 ---------- */
 const viewStack = ['view-home'];
