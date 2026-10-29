@@ -707,73 +707,71 @@
     .payroll-issue { font-size: 12px; line-height: 1.7; }
     .payroll-issue.err { color: var(--ad-error-text); }
     .payroll-issue.risk { color: var(--ad-warning-text); }
-    /* ===== 发起算薪：四步向导 ===== */
-    #salaryCalcEditPage .payroll-wizard-head { display:flex; align-items:baseline; gap:10px; margin-bottom:12px; }
-    #salaryCalcEditPage .pw-title { font-size:15px; font-weight:600; color:var(--ad-text-1); }
-    #salaryCalcEditPage .pw-tip { font-size:12px; color:var(--ad-text-3); }
-    #salaryCalcEditPage .payroll-range-form { max-width:560px; }
-    #salaryCalcEditPage .payroll-recall { display:flex; align-items:center; gap:8px; margin-top:4px; padding:8px 12px; border-radius:var(--ad-radius); background:var(--ad-primary-bg); font-size:12px; line-height:1.7; color:var(--ad-primary); }
-    #salaryCalcEditPage .payroll-file-list { display:flex; flex-direction:column; gap:10px; }
-    #salaryCalcEditPage .payroll-file-card { display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--ad-border-secondary); border-radius:8px; background:#fff; cursor:pointer; }
-    #salaryCalcEditPage .payroll-file-card:hover { border-color:var(--ad-primary); }
-    #salaryCalcEditPage .payroll-file-card.on { border-color:var(--ad-primary); box-shadow:0 0 0 2px var(--ad-primary-bg); }
-    #salaryCalcEditPage .payroll-file-card.off { cursor:not-allowed; background:#fafafa; opacity:.7; }
-    #salaryCalcEditPage .payroll-file-card > i { font-size:20px; color:var(--ad-primary); }
-    #salaryCalcEditPage .pfc-main { flex:1; min-width:0; }
-    #salaryCalcEditPage .pfc-name { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--ad-text-1); }
-    #salaryCalcEditPage .pfc-meta { margin-top:4px; font-size:12px; color:var(--ad-text-3); }
-    #salaryCalcEditPage .pfc-pick { flex-shrink:0; font-size:12px; color:var(--ad-primary); }
-    #salaryCalcEditPage .payroll-file-card.off .pfc-pick { color:var(--ad-text-4); }
-    #salaryCalcEditPage .payroll-empty-box { padding:26px 0; text-align:center; border:1px dashed var(--ad-border); border-radius:8px; background:var(--ad-fill); font-size:13px; color:var(--ad-text-2); }
-    #salaryCalcEditPage .payroll-empty-box i { display:block; margin-bottom:8px; font-size:26px; color:var(--ad-text-4); }
-    #salaryCalcEditPage .payroll-empty-box .iv-none { margin-top:4px; font-size:12px; }
-    #salaryCalcEditPage .payroll-tpl-label { margin-bottom:6px; font-size:12px; color:var(--ad-text-2); }
-    #salaryCalcEditPage .payroll-tpl-label2 { margin-top:18px; }
-    #salaryCalcEditPage .payroll-preset-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
-    @media (max-width:1180px) { #salaryCalcEditPage .payroll-preset-list { grid-template-columns:1fr; } }
-    #salaryCalcEditPage .payroll-preset { padding:10px 12px; border:1px solid var(--ad-border-secondary); border-radius:8px; background:#fff; cursor:pointer; }
-    #salaryCalcEditPage .payroll-preset:hover { border-color:var(--ad-primary); background:var(--ad-primary-bg); }
-    #salaryCalcEditPage .payroll-preset.off { cursor:not-allowed; opacity:.55; }
-    #salaryCalcEditPage .pp-h { display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:13px; font-weight:600; color:var(--ad-text-1); }
-    #salaryCalcEditPage .pp-new { font-size:11px; font-weight:400; color:var(--ad-primary); }
-    #salaryCalcEditPage .pp-d { margin-top:6px; font-size:12px; line-height:1.6; color:var(--ad-text-3); }
-    #salaryCalcEditPage .pp-m { margin-top:6px; font-size:12px; color:var(--ad-error-text); }
-    #salaryCalcEditPage .payroll-plain { padding:14px 16px; border:1px solid var(--ad-border-secondary); border-radius:8px; background:#fafbfc; }
-    #salaryCalcEditPage .payroll-plain-h { margin-bottom:10px; font-size:12px; font-weight:600; color:var(--ad-text-3); }
-    #salaryCalcEditPage .payroll-plain-row { display:flex; gap:8px; padding:5px 0; font-size:12px; line-height:1.7; color:var(--ad-text-2); }
-    #salaryCalcEditPage .payroll-plain-row b { flex:0 0 68px; color:var(--ad-text-1); }
-    #salaryCalcEditPage .payroll-adv-toggle { margin-top:8px; padding:0; }
-    #salaryCalcEditPage .payroll-adv { margin-top:8px; padding-top:8px; border-top:1px dashed var(--ad-border); }
-    #salaryCalcEditPage .payroll-adv-row { display:flex; gap:10px; padding:3px 0; font-size:12px; }
-    #salaryCalcEditPage .payroll-adv-row b { flex:0 0 68px; color:var(--ad-text-2); font-weight:400; }
-    #salaryCalcEditPage .payroll-adv-row code { flex:1; min-width:0; color:var(--ad-text-1); word-break:break-all; }
-    #salaryCalcEditPage .payroll-check-box { margin-bottom:14px; padding:10px 14px; border-radius:8px; background:var(--ad-fill); }
-    #salaryCalcEditPage .pcb-h { display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; color:var(--ad-text-1); }
-    #salaryCalcEditPage .pcb-tag { padding:0 6px; border-radius:3px; font-size:11px; font-weight:400; line-height:18px; }
-    #salaryCalcEditPage .pcb-tag.err { background:#fef0f0; color:var(--ad-error-text); }
-    #salaryCalcEditPage .pcb-tag.warn { background:var(--ad-warning-bg); color:var(--ad-warning-text); }
-    #salaryCalcEditPage .payroll-check-row { display:flex; align-items:flex-start; gap:8px; padding:5px 0 0; font-size:12px; line-height:1.7; color:var(--ad-text-2); }
-    #salaryCalcEditPage .payroll-check-row.lv-error i { color:var(--ad-error); }
-    #salaryCalcEditPage .payroll-check-row.lv-warn i { color:var(--ad-warning); }
-    #salaryCalcEditPage .payroll-check-row.lv-ok i { color:var(--ad-success); }
-    #salaryCalcEditPage .payroll-sample { margin-bottom:14px; padding:10px 14px; border:1px dashed var(--ad-primary-border); border-radius:8px; background:var(--ad-primary-bg); font-size:12px; line-height:1.8; color:var(--ad-text-1); word-break:break-all; }
-    #salaryCalcEditPage .payroll-sample .ps-h { margin-right:8px; font-weight:600; color:var(--ad-primary); }
-    #salaryCalcEditPage .payroll-preview-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-    #salaryCalcEditPage .pp-title { font-size:13px; font-weight:600; color:var(--ad-text-1); }
-    #salaryCalcEditPage .payroll-calc-text { font-size:12px; color:var(--ad-text-2); }
-    #salaryCalcEditPage .payroll-ack { margin-top:10px; }
-    #salaryCalcEditPage .ef-footer .iv-none { margin-right:auto; }
-    #salaryCalcPage .payroll-draft { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; padding:10px 14px; border:1px solid var(--ad-primary-border); border-radius:8px; background:var(--ad-primary-bg); }
-    #salaryCalcPage .payroll-draft > i { font-size:18px; color:var(--ad-primary); }
-    #salaryCalcPage .pd-main { flex:1; min-width:160px; }
-    #salaryCalcPage .pd-t { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--ad-text-1); white-space:nowrap; }
-    #salaryCalcPage .pd-m { margin-top:3px; font-size:12px; color:var(--ad-text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    #salaryCalcPage .pd-act { display:flex; gap:8px; flex-shrink:0; }
     /* ===== 薪酬档案预览 ===== */
     .sfp-head { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
     .sfp-name { font-size:14px; font-weight:600; color:var(--ad-text-1); }
     .sfp-tip { margin-top:8px; padding:8px 12px; border-radius:6px; background:var(--ad-warning-bg); font-size:12px; line-height:1.7; color:var(--ad-warning-text); }
     .sfp-sec { margin:14px 0 8px; font-size:12px; font-weight:600; color:var(--ad-text-2); }
+    /* ===== 订单管理 ===== */
+    #orderPage .order-card { border:1px solid var(--ad-border-secondary); border-radius:8px; margin-bottom:12px; overflow:hidden; }
+    #orderPage .order-head { display:flex; align-items:center; gap:10px; padding:10px 14px; background:#f7f8fa; border-bottom:1px solid var(--ad-border-secondary); }
+    #orderPage .order-type { font-size:13px; font-weight:600; color:var(--ad-text-1); }
+    #orderPage .order-meta { margin-left:auto; display:flex; flex-wrap:wrap; gap:4px 22px; font-size:12px; color:var(--ad-text-3); }
+    #orderPage .order-item { display:grid; grid-template-columns:minmax(150px,1.2fr) minmax(110px,1fr) minmax(110px,1fr) 160px; gap:12px; padding:10px 14px; font-size:13px; color:var(--ad-text-1); }
+    #orderPage .order-item + .order-item { border-top:1px dashed var(--ad-border); }
+    #orderPage .oi-spec, #orderPage .oi-dur { color:var(--ad-text-2); }
+    #orderPage .oi-amt { text-align:right; font-variant-numeric:tabular-nums; }
+    #orderPage .order-foot { display:flex; align-items:center; gap:14px; padding:10px 14px; border-top:1px dashed var(--ad-border-secondary); }
+    #orderPage .of-inv { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ad-text-3); }
+    #orderPage .of-total { margin-left:auto; font-size:12px; color:var(--ad-text-2); }
+    #orderPage .of-total b { margin-left:4px; font-size:15px; color:var(--ad-error); font-variant-numeric:tabular-nums; }
+    #orderPage .tag-count-tip { font-size:12px; color:var(--ad-text-3); }
+    @media (max-width: 1180px) {
+      #orderPage .order-meta { margin-left:0; width:100%; }
+      #orderPage .order-head { flex-wrap:wrap; }
+      #orderPage .order-item { grid-template-columns:1fr 1fr; }
+    }
+    /* 订单合同：申请 / 详情 / 正文预览 */
+    .order-contract-dlg { max-width: calc(100vw - 24px); }
+    .contract-pick { padding: 4px 4px 2px; }
+    .cp-title { margin: 2px 0 22px; text-align: center; font-size: 16px; font-weight: 700; color: #1f2329; }
+    .cp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .cp-card { padding: 22px 24px; border: 1px solid var(--ad-border-secondary); border-radius: 10px; background: #fff; cursor: pointer; transition: background .15s, border-color .15s; }
+    .cp-card:hover { border-color: var(--ad-primary); }
+    .cp-card.on { background: #f7f8fa; border-color: #dfe3e8; }
+    .cp-ic { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-bottom: 18px; border-radius: 10px; color: #fff; font-size: 22px; }
+    .cp-ic-e { background: #34c759; }
+    .cp-ic-p { background: #2f7cf6; }
+    .cp-name { margin-bottom: 10px; font-size: 16px; font-weight: 700; color: #1f2329; }
+    .cp-desc { margin: 0; padding-left: 16px; font-size: 13px; line-height: 1.9; color: #646a73; }
+    .cp-desc-line { padding-left: 0; }
+    .cd-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .cd-no { font-size: 14px; font-weight: 600; color: var(--ad-text-1); }
+    .cd-type { margin-left: auto; font-size: 12px; color: var(--ad-text-3); }
+    .cd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; padding: 12px 14px; border-radius: 8px; background: var(--ad-fill); font-size: 12px; color: var(--ad-text-2); }
+    .cd-tip { display: flex; gap: 6px; margin-top: 12px; padding: 8px 12px; border-radius: 6px; background: var(--ad-primary-bg); font-size: 12px; line-height: 1.7; color: var(--ad-primary); }
+    .cd-paper { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 16px; margin-top: 14px; }
+    .cd-steps { padding: 14px 16px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; background: #fafbfc; }
+    .cd-steps-h { margin-bottom: 12px; font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
+    .cd-step { display: flex; gap: 10px; padding: 4px 0; font-size: 12px; line-height: 1.8; color: var(--ad-text-2); }
+    .cd-step-n { flex: 0 0 18px; height: 18px; margin-top: 2px; border-radius: 50%; background: var(--ad-primary-bg); color: var(--ad-primary); font-size: 11px; line-height: 18px; text-align: center; }
+    .cd-qr { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px 10px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; background: #fff; text-align: center; }
+    .cd-qr-t { font-size: 12px; font-weight: 600; color: var(--ad-text-1); }
+    .cd-qr-img { width: 118px; height: 118px; margin: 8px 0; }
+    .cd-qr-img svg { width: 100%; height: 100%; }
+    .cd-qr-h { font-size: 11px; line-height: 1.6; color: var(--ad-text-3); }
+    .cv-paper { padding: 10px 26px 18px; }
+    .cv-no { text-align: right; font-size: 12px; color: var(--ad-text-3); }
+    .cv-title { margin: 6px 0 18px; text-align: center; font-size: 20px; font-weight: 700; color: #1f2329; }
+    .cv-p { font-size: 13px; line-height: 2; color: var(--ad-text-1); }
+    .cv-sec { margin: 14px 0 4px; font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
+    .cv-seals { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 22px; }
+    .cv-seal { padding: 12px 14px; border: 1px dashed var(--ad-border); border-radius: 8px; text-align: center; }
+    .cv-seal-h { font-size: 12px; color: var(--ad-text-3); }
+    .cv-seal-b { margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
+    .cv-seal-tag { display: inline-block; margin-top: 8px; padding: 0 8px; border: 1px solid var(--ad-error-border); border-radius: 10px; color: var(--ad-error-text); font-size: 11px; line-height: 20px; transform: rotate(-6deg); }
+    .cv-seal-tag.ok { border-color: var(--ad-success-border); color: var(--ad-success-text); }
+    @media (max-width: 900px) { .cp-cards { grid-template-columns: 1fr; } .cd-paper { grid-template-columns: 1fr; } }
     /* ===== 结算模式选择 ===== */
     .stpl-mode-dlg { max-width: calc(100vw - 24px); }
     .sm-lead { margin-bottom: 12px; }
@@ -1644,6 +1642,185 @@
     </div>
   </div>
 </el-drawer>
+
+<!-- ===== 订单管理页（系统管理） ===== -->
+<div class="page-body" id="orderPage" v-if="currentPage === 'order'">
+  <div class="card pc-card">
+    <el-form :model="orderFilter" class="pc-filter search-form" size="small" label-width="76px" @submit.native.prevent>
+      <el-row :gutter="14">
+        <el-col :span="6"><el-form-item label="订单号"><el-input v-model="orderFilter.no" placeholder="请输入订单号" clearable @keyup.enter.native="orderSearch"></el-input></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="购买类型"><el-select v-model="orderFilter.type" placeholder="全部" clearable><el-option v-for="t in orderTypes" :key="t" :label="t" :value="t"></el-option></el-select></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="支付状态"><el-select v-model="orderFilter.payStatus" placeholder="全部" clearable><el-option v-for="t in orderPayStatuses" :key="t" :label="t" :value="t"></el-option></el-select></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="支付方式"><el-select v-model="orderFilter.payMethod" placeholder="全部" clearable><el-option v-for="t in orderPayMethods" :key="t" :label="t" :value="t"></el-option></el-select></el-form-item></el-col>
+      </el-row>
+      <el-row :gutter="14">
+        <el-col :span="6"><el-form-item label="开票状态"><el-select v-model="orderFilter.invoiceStatus" placeholder="全部" clearable><el-option v-for="t in orderInvoiceStatuses" :key="t" :label="t" :value="t"></el-option></el-select></el-form-item></el-col>
+        <el-col :span="9"><el-form-item label="下单时间"><el-date-picker v-model="orderFilter.createdRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker></el-form-item></el-col>
+        <el-col :span="9"><el-form-item label="支付时间"><el-date-picker v-model="orderFilter.paidRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker></el-form-item></el-col>
+      </el-row>
+      <div class="search-foot pc-filter-foot">
+        <el-button type="primary" @click="orderSearch">查询</el-button>
+        <el-button @click="orderReset">重置</el-button>
+      </div>
+    </el-form>
+
+    <div class="toolbar">
+      <el-button type="primary" size="small" @click="orderBatchInvoice">批量申请开票</el-button>
+      <span class="tag-count-tip">已选 {{ orderSelCount }} 条<template v-if="orderSelCount">，合计 {{ orderMoney(orderSelTotal) }}</template></span>
+    </div>
+
+    <div class="order-list" v-if="orderPageRows.length">
+      <div v-for="o in orderPageRows" :key="o.id" class="order-card">
+        <div class="order-head">
+          <el-checkbox v-model="o.sel"></el-checkbox>
+          <span class="order-type">{{ o.type }}</span>
+          <div class="order-meta">
+            <span>订单号：{{ o.orderNo }}</span>
+            <span>下单时间：{{ o.created }}</span>
+            <span>支付时间：{{ o.payTime || '—' }}</span>
+            <span>支付方式：{{ o.payMethod || '—' }}</span>
+          </div>
+        </div>
+        <div class="order-items">
+          <div v-for="(it, i) in o.items" :key="i" class="order-item">
+            <span class="oi-name">{{ it.name }}</span>
+            <span class="oi-spec">{{ it.spec || '—' }}</span>
+            <span class="oi-dur">{{ it.duration || '—' }}</span>
+            <span class="oi-amt">{{ orderMoney(it.amount) }}</span>
+          </div>
+        </div>
+        <div class="order-foot">
+          <span class="of-inv">开票：<el-tag class="dd-tag" :class="orderInvCls(o.invoiceStatus)" size="mini" disable-transitions>{{ o.invoiceStatus }}</el-tag></span>
+          <span class="of-total">合计 <b>{{ orderMoney(orderTotal(o)) }}</b> 元</span>
+          <el-tag class="dd-tag" :class="orderPayCls(o.payStatus)" size="mini" disable-transitions>{{ o.payStatus }}</el-tag>
+          <el-button size="small" @click="openOrderContract(o)">{{ orderContractBtn(o) }}</el-button>
+          <el-button v-if="orderCanInvoice(o)" type="primary" size="small" @click="orderApplyInvoice(o)">申请开票</el-button>
+          <el-button v-else type="primary" size="small" :disabled="true">{{ o.invoiceStatus === '开票中' ? '开票中' : (o.invoiceStatus === '已开票' ? '已开票' : '不可开票') }}</el-button>
+        </div>
+      </div>
+    </div>
+    <el-empty v-else description="没有符合条件的订单" :image-size="72"></el-empty>
+
+    <div class="bottom-bar">
+      <el-pagination class="list-pager" background layout="total, sizes, prev, pager, next, jumper"
+                     :total="orderFiltered.length" :page-size.sync="orderPageSize" :current-page.sync="orderPage" :page-sizes="[10, 20, 50]"></el-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 订单合同：申请 / 详情 ===== -->
+<el-dialog :title="orderContractDlg.step === 'detail' ? '合同详情' : ''"
+           :visible.sync="orderContractDlg.visible" width="720px" top="8vh" :close-on-click-modal="false" append-to-body custom-class="order-contract-dlg">
+  <div v-if="orderContractDlg.step === 'choose'" class="contract-pick">
+    <div class="cp-title">请选择合同类型</div>
+    <div class="cp-cards">
+      <div class="cp-card" :class="{ on: orderContractDlg.type === '电子合同' }" @click="orderContractDlg.type = '电子合同'">
+        <div class="cp-ic cp-ic-e"><i class="el-icon-document-checked"></i></div>
+        <div class="cp-name">申请电子合同</div>
+        <ul class="cp-desc">
+          <li>签署将跳转至法大大平台完成，加盖双方电子签章后立即生成电子合同。</li>
+          <li>首次签署需在法大大完成企业实名认证。</li>
+        </ul>
+      </div>
+      <div class="cp-card" :class="{ on: orderContractDlg.type === '纸质合同' }" @click="orderContractDlg.type = '纸质合同'">
+        <div class="cp-ic cp-ic-p"><i class="el-icon-document"></i></div>
+        <div class="cp-name">申请纸质合同</div>
+        <div class="cp-desc cp-desc-line">联系客服获取合同文件，加盖鲜章后寄回，约需15个工作日。</div>
+      </div>
+    </div>
+  </div>
+
+  <template v-else-if="orderContractDlg.step === 'detail'">
+    <template v-if="orderContractCur">
+      <div class="cd-head">
+        <span class="cd-no">{{ orderContractCur.no }}</span>
+        <el-tag class="dd-tag" :class="orderContractCls(orderContractCur.status)" size="mini" disable-transitions>{{ orderContractCur.status }}</el-tag>
+        <span class="cd-type">{{ orderContractCur.type }}</span>
+      </div>
+      <div class="cd-grid">
+        <span>关联订单：{{ orderContractOrder.orderNo }}</span>
+        <span>合同金额：{{ orderMoney(orderTotal(orderContractOrder)) }}</span>
+        <span>申请时间：{{ orderContractCur.appliedAt }}</span>
+        <span v-if="orderContractCur.signedAt">签署时间：{{ orderContractCur.signedAt }}</span>
+      </div>
+
+      <template v-if="orderContractCur.type === '电子合同'">
+        <div class="cd-tip" v-if="orderContractCur.status === '待签署'">
+          <i class="el-icon-info"></i>电子合同通过法大大签署：点击「在线签署」将跳转至法大大完成签署，签署完成后自动回到本页并生成合同。
+        </div>
+        <div class="cd-tip" v-else>
+          <i class="el-icon-success"></i>电子合同已在法大大签署并生成，可查看或下载合同文件。
+        </div>
+      </template>
+
+      <div class="cd-paper" v-else>
+        <div class="cd-steps">
+          <div class="cd-steps-h">盖章寄回流程</div>
+          <div class="cd-step" v-for="(s, i) in orderPaperSteps" :key="i">
+            <span class="cd-step-n">{{ i + 1 }}</span><span>{{ s }}</span>
+          </div>
+        </div>
+        <div class="cd-qr">
+          <div class="cd-qr-t">扫码添加客服</div>
+          <div class="cd-qr-img" v-html="qrSvg('kefu')"></div>
+          <div class="cd-qr-h">领取合同文件与寄回地址</div>
+        </div>
+      </div>
+    </template>
+  </template>
+
+  <span slot="footer">
+    <template v-if="orderContractDlg.step === 'choose'">
+      <el-button size="small" @click="orderContractDlg.visible = false">取消</el-button>
+      <el-button type="primary" size="small" @click="orderContractApply">确定申请</el-button>
+    </template>
+    <template v-else>
+      <el-button size="small" @click="orderContractDlg.visible = false">关闭</el-button>
+      <el-button v-if="orderContractCur && orderContractCur.status === '待签署'" type="primary" size="small" @click="orderContractSign">在线签署</el-button>
+      <template v-else-if="orderContractCur && orderContractCur.type === '电子合同'">
+        <el-button size="small" @click="orderContractDownload(orderContractOrder)">下载合同</el-button>
+        <el-button type="primary" size="small" @click="openOrderContractView(orderContractOrder)">查看合同</el-button>
+      </template>
+    </template>
+  </span>
+</el-dialog>
+
+<!-- ===== 查看合同（合同正文预览） ===== -->
+<el-dialog title="查看合同" :visible.sync="orderContractViewDlg.visible" width="760px" top="6vh" append-to-body custom-class="order-contract-view">
+  <div class="cv-paper" v-if="orderViewOrder && orderViewOrder.contract">
+    <div class="cv-no">合同编号：{{ orderViewOrder.contract.no }}</div>
+    <h2 class="cv-title">服务采购合同</h2>
+    <div class="cv-p">甲方（服务方）：深圳市智灵工科技有限公司</div>
+    <div class="cv-p">乙方（客户方）：深圳市辉煌达人力资源管理有限公司</div>
+    <div class="cv-p">关联订单：{{ orderViewOrder.orderNo }}（{{ orderViewOrder.type }}）</div>
+    <div class="cv-sec">第一条　服务内容</div>
+    <div class="cv-p" v-for="(it, i) in orderViewOrder.items" :key="i">　　{{ i + 1 }}. {{ it.name }}　{{ it.spec }}　{{ it.duration }}</div>
+    <div class="cv-sec">第二条　合同金额</div>
+    <div class="cv-p">　　本合同总金额为 {{ orderMoney(orderTotal(orderViewOrder)) }}。</div>
+    <div class="cv-sec">第三条　签署与生效</div>
+    <div class="cv-p" v-if="orderViewOrder.contract.type === '电子合同'">　　双方通过法大大平台在线签署并加盖电子签章，签署完成后合同立即生效。</div>
+    <div class="cv-p" v-else>　　本合同需打印加盖双方鲜章后寄回，盖章完成后生效，约需 15 个工作日。</div>
+    <div class="cv-p">　　签署日期：{{ orderViewOrder.contract.signedAt || orderViewOrder.contract.appliedAt }}</div>
+    <div class="cv-seals">
+      <div class="cv-seal">
+        <div class="cv-seal-h">甲方签章</div>
+        <div class="cv-seal-b">深圳市智灵工科技有限公司</div>
+      </div>
+      <div class="cv-seal">
+        <div class="cv-seal-h">乙方签章</div>
+        <div class="cv-seal-b">深圳市辉煌达人力资源管理有限公司</div>
+        <div class="cv-seal-tag" :class="{ ok: orderViewOrder.contract.type === '电子合同' && orderViewOrder.contract.status === '已签署' }">
+          {{ orderViewOrder.contract.type === '电子合同' ? (orderViewOrder.contract.status === '已签署' ? '电子签章' : '待签署') : '纸质鲜章（待盖章）' }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <span slot="footer">
+    <el-button size="small" @click="orderContractViewDlg.visible = false">关闭</el-button>
+    <el-button v-if="orderViewOrder && orderViewOrder.contract && orderViewOrder.contract.type === '电子合同'" type="primary" size="small" @click="orderContractDownload(orderViewOrder)">下载合同</el-button>
+    <el-button v-else type="primary" size="small" @click="orderContactService">添加客服领取文件</el-button>
+  </span>
+</el-dialog>
 
 <!-- ===== 通用占位页 ===== -->
 <div id="phPage" v-show="currentPage === 'ph'">
@@ -3150,27 +3327,13 @@
     </el-form>
 
     <div class="toolbar">
-      <el-button type="primary" size="small" icon="el-icon-plus" @click="openPayrollCreate">发起算薪</el-button>
-      <el-button size="small" icon="el-icon-copy-document" @click="openPayrollCopyDlg">复制上月算薪</el-button>
-      <span class="tag-count-tip">常用参数会自动带出：用人单位和模板取该单位上次的，档案只有一份时直接选中</span>
-    </div>
-
-    <div class="payroll-draft" v-if="payrollDraft">
-      <i class="el-icon-time"></i>
-      <div class="pd-main">
-        <div class="pd-t">未完成算薪<el-tag class="dd-tag s-other" size="mini" disable-transitions>停在第 {{ payrollDraft.step || 1 }} 步</el-tag></div>
-        <div class="pd-m">{{ payrollDraft.employer || '未选用工单位' }} · {{ payrollDraft.month || '未选月份' }} · 保存于 {{ payrollDraft.savedAt }}</div>
-      </div>
-      <div class="pd-act">
-        <el-button size="small" type="primary" @click="resumePayrollDraft">继续填写</el-button>
-        <el-button size="small" @click="discardPayrollDraft">放弃</el-button>
-      </div>
+      <el-button type="primary" size="small" icon="el-icon-plus" @click="openPayrollCreate">新建算薪</el-button>
     </div>
 
     <el-table :data="payrollPageRows" border size="mini" row-key="id" :height="payrollTableHeight" style="width:100%;">
       <template slot="empty">
-        <el-empty description="还没有算薪记录，先发起一次算薪" :image-size="72">
-          <el-button type="primary" size="small" @click="openPayrollCreate">发起算薪</el-button>
+        <el-empty description="还没有算薪记录，先新建一次算薪" :image-size="72">
+          <el-button type="primary" size="small" @click="openPayrollCreate">新建算薪</el-button>
         </el-empty>
       </template>
       <el-table-column label="名称" min-width="190" show-overflow-tooltip>
@@ -3300,191 +3463,104 @@
   </div>
 </div>
 
-<!-- ===== 发起算薪（独立子页面，四步向导） ===== -->
+<!-- ===== 新建智能算薪（独立子页面，两步） ===== -->
 <div id="salaryCalcEditPage" v-if="currentPage === 'salaryCalcEdit'">
   <div class="ep-card payroll-steps-card">
-    <div class="payroll-wizard-head">
-      <span class="pw-title">发起算薪</span>
-      <span class="pw-tip">{{ ['先确定给哪个单位、哪个月份算薪', '选一份当月已解析的薪酬档案，没有就地上传', '确认结算模板，公式用白话展示', '试算并做算前检查，确认后提交审核'][payrollStep - 1] }}</span>
-    </div>
     <el-steps :active="payrollStep - 1" align-center finish-status="success">
-      <el-step title="选范围" description="单位与月份"></el-step>
-      <el-step title="传数据" description="当月薪酬档案"></el-step>
-      <el-step title="核规则" description="模板与口径"></el-step>
-      <el-step title="试算提交" description="检查后提交"></el-step>
+      <el-step title="填写算薪数据" description="用工单位、月份、结算模板与薪酬数据"></el-step>
+      <el-step title="确认算薪结果" description="核对人数金额后提交审核"></el-step>
     </el-steps>
   </div>
 
-  <!-- 第 1 步：选范围 -->
   <div class="ep-card" v-if="payrollStep === 1">
-    <div class="es-title">这次给谁算薪<span class="es-tip">按该单位上次的算薪自动带出用人单位和结算模板</span></div>
-    <el-form :model="payrollForm" size="small" label-width="100px" class="pc-rule-form payroll-range-form" @submit.native.prevent>
-      <el-form-item><span slot="label"><span class="pc-req">*</span>用工单位</span>
-        <el-select v-model="payrollForm.employer" filterable placeholder="请选择用工单位" style="width:100%" @change="onPayrollEmployerChange">
-          <el-option v-for="e in jobEmployers" :key="e" :label="e" :value="e"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item><span slot="label"><span class="pc-req">*</span>用人单位</span>
-        <el-select v-model="payrollForm.entity" filterable placeholder="请选择用人单位" style="width:100%">
-          <el-option v-for="e in payrollEntities" :key="e" :label="e" :value="e"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item><span slot="label"><span class="pc-req">*</span>所属月份</span>
-        <el-date-picker v-model="payrollForm.month" type="month" value-format="yyyy-MM" placeholder="选择月份" style="width:100%" @change="onPayrollMonthChange"></el-date-picker>
-        <div class="pc-tip">默认带出上个月，可改。</div>
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="payrollForm.remark" type="textarea" :rows="2" maxlength="80" show-word-limit placeholder="选填，如本月补发说明"></el-input>
-      </el-form-item>
-    </el-form>
-    <div class="payroll-recall" v-if="payrollRecall"><i class="el-icon-magic-stick"></i><span>{{ payrollRecall }}</span></div>
-  </div>
-
-  <!-- 第 2 步：传数据 -->
-  <div class="ep-card" v-if="payrollStep === 2">
-    <div class="es-title">选择薪酬档案<span class="es-tip">{{ payrollForm.employer }} · {{ payrollForm.month }}</span></div>
-    <div class="payroll-file-list" v-if="payrollFileCards.length">
-      <div v-for="f in payrollFileCards" :key="f.id" class="payroll-file-card"
-           :class="{ on: payrollForm.fileId === f.id, off: f.status !== 'ok' }" @click="pickPayrollFile(f)">
-        <i class="el-icon-document"></i>
-        <div class="pfc-main">
-          <div class="pfc-name">{{ f.name }}
-            <el-tag v-if="f.lastUsed" class="dd-tag s-normal" size="mini" disable-transitions>上次使用</el-tag>
-            <el-tag class="dd-tag" :class="salaryFileStatusOf(f).cls" size="mini" disable-transitions>{{ salaryFileStatusOf(f).label }}</el-tag>
-          </div>
-          <div class="pfc-meta">{{ f.file }} · {{ f.rows ? f.rows + ' 行' : '—' }} · 上传于 {{ f.uploaded }}</div>
-        </div>
-        <span class="pfc-pick">{{ payrollForm.fileId === f.id ? '已选' : '选择' }}</span>
-      </div>
-    </div>
-    <div class="payroll-empty-box" v-else>
-      <i class="el-icon-folder-opened"></i>
-      <div>{{ payrollForm.employer }} {{ payrollForm.month }} 还没有传过薪酬档案</div>
-      <div class="iv-none">在下面直接上传，解析完成后自动选中，不用离开算薪流程</div>
-    </div>
-    <div class="payroll-inline-upload">
-      <el-button size="small" icon="el-icon-upload2" @click="openSalaryFileDlg({ employer: payrollForm.employer, month: payrollForm.month, fromPayroll: true })">上传这个月的薪酬档案</el-button>
-      <span class="iv-none">支持 xlsx / xls / csv</span>
-    </div>
-    <div class="pc-tip" v-if="payrollParsingFiles.length">有 {{ payrollParsingFiles.length }} 份档案还在解析，完成后会出现在上面。</div>
-  </div>
-
-  <!-- 第 3 步：核规则 -->
-  <div class="ep-card" v-if="payrollStep === 3">
-    <div class="es-title">结算模板与计算口径<span class="es-tip">默认取该单位上次用的模板</span></div>
+    <div class="es-title">算薪数据<span class="es-tip">右侧是所选结算模板的字段口径，只读</span></div>
     <div class="payroll-step1">
-      <div>
-        <div class="payroll-tpl-label">使用已有模板</div>
-        <el-select v-model="payrollForm.tplId" filterable placeholder="请选择结算模板" style="width:100%">
-          <el-option v-for="t in payrollTemplates" :key="t.id" :label="t.name + ' · ' + t.client" :value="t.id"></el-option>
-        </el-select>
-        <div class="pc-tip" v-if="payrollLastRun && payrollForm.tplId === payrollLastRun.tplId">已自动选中「{{ payrollLastRun.tplName }}」（该单位上次使用），核对无误可以直接下一步。</div>
-        <div class="pc-tip" v-else>只列出计算对象为「员工」的模板。</div>
-
-        <div class="payroll-tpl-label payroll-tpl-label2">没有合适的模板？套一个预设</div>
-        <div class="payroll-preset-list">
-          <div v-for="m in payrollPresetCards" :key="m.k" class="payroll-preset" :class="{ off: m.missing.length }" @click="applyPayrollPreset(m.k)">
-            <div class="pp-h">{{ m.name }}<span class="pp-new">生成新模板</span></div>
-            <div class="pp-d">{{ m.desc }}</div>
-            <div class="pp-m" v-if="m.missing.length">缺少字段：{{ m.missing.join('、') }}</div>
+      <el-form :model="payrollForm" size="small" label-width="100px" class="pc-rule-form" @submit.native.prevent>
+        <el-form-item><span slot="label"><span class="pc-req">*</span>用工单位</span>
+          <el-select v-model="payrollForm.employer" filterable placeholder="请选择用工单位" style="width:100%" @change="onPayrollEmployerChange">
+            <el-option v-for="e in jobEmployers" :key="e" :label="e" :value="e"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item><span slot="label"><span class="pc-req">*</span>用人单位</span>
+          <el-select v-model="payrollForm.entity" filterable placeholder="请选择用人单位" style="width:100%">
+            <el-option v-for="e in payrollEntities" :key="e" :label="e" :value="e"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item><span slot="label"><span class="pc-req">*</span>所属月份</span>
+          <el-date-picker v-model="payrollForm.month" type="month" value-format="yyyy-MM" placeholder="选择月份" style="width:100%" @change="onPayrollMonthChange"></el-date-picker>
+        </el-form-item>
+        <el-form-item><span slot="label"><span class="pc-req">*</span>结算模板</span>
+          <el-select v-model="payrollForm.tplId" placeholder="请选择结算模板" style="width:100%">
+            <el-option v-for="t in payrollTemplates" :key="t.id" :label="t.name + ' · ' + t.client" :value="t.id"></el-option>
+          </el-select>
+          <div class="pc-tip">只列出计算对象为「员工」的模板。</div>
+        </el-form-item>
+        <el-form-item><span slot="label"><span class="pc-req">*</span>薪酬数据</span>
+          <el-select v-model="payrollForm.fileId" :disabled="!payrollFileOptions.length" placeholder="请选择薪酬档案" style="width:100%">
+            <el-option v-for="f in payrollFileOptions" :key="f.id" :label="f.name + '（' + f.file + '）'" :value="f.id"></el-option>
+          </el-select>
+          <div class="payroll-inline-upload" v-if="!payrollFileOptions.length && payrollForm.employer && payrollForm.month">
+            <el-button size="small" icon="el-icon-upload2" @click="openSalaryFileDlg({ employer: payrollForm.employer, month: payrollForm.month, fromPayroll: true })">上传这个月的工资表</el-button>
+            <span class="iv-none">传完自动选中，不用离开算薪流程</span>
           </div>
-        </div>
-        <div class="pc-tip">预设会按当前用工单位生成一个新模板并直接选中；要改字段或公式，稍后到「结算模板」里调整。</div>
-      </div>
+          <div class="pc-tip" v-if="!payrollFileOptions.length && !(payrollForm.employer && payrollForm.month)">先选好用工单位和月份，这里会列出可用的工资表。</div>
+          <div class="pc-tip" v-else-if="payrollFileOptions.length">按用工单位 + 所属月份自动匹配已解析的档案。</div>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="payrollForm.remark" type="textarea" :rows="2" maxlength="80" show-word-limit placeholder="选填，如本月补发说明"></el-input>
+        </el-form-item>
+      </el-form>
 
-      <div class="payroll-plain" v-if="payrollTpl">
-        <div class="payroll-plain-h">计算口径（白话版）</div>
-        <div class="payroll-plain-row" v-for="p in payrollPlainRows" :key="p.name"><b>{{ p.name }}</b><span>= {{ p.text }}</span></div>
-        <el-button type="text" size="mini" class="payroll-adv-toggle" @click="payrollTplAdvanced = !payrollTplAdvanced">
-          {{ payrollTplAdvanced ? '收起高级公式' : '查看高级公式（原始表达式）' }}
-        </el-button>
-        <div class="payroll-adv" v-if="payrollTplAdvanced">
-          <div class="payroll-adv-row" v-for="f in payrollAdvRows" :key="f.name"><b>{{ f.name }}</b><code>{{ f.expr }}</code></div>
-          <div class="iv-none" v-if="!payrollAdvRows.length">这个模板的结果项都直接取薪酬档案，没有自定义公式。</div>
-          <div class="pc-tip">公式在「财务管理 → 结算模板 → 使用字段 → 操作 / 编辑」里改。</div>
-        </div>
+      <div class="payroll-preview">
+        <div class="payroll-preview-h">结算模板字段（只读）</div>
+        <template v-if="payrollTpl">
+          <div class="payroll-preview-t">{{ payrollTpl.name }}</div>
+          <div class="payroll-preview-meta">用工单位 {{ payrollTpl.client }} · 计算对象 {{ payrollTpl.target }} · {{ payrollTpl.fields.length }} 个字段</div>
+          <div class="payroll-preview-sec">计算项 · {{ payrollTplCompute.length }}</div>
+          <div class="payroll-preview-row" v-for="n in payrollTplCompute" :key="'c' + n">
+            <span class="payroll-preview-name">{{ n }}</span>
+            <span class="payroll-preview-val">{{ stplValueText(payrollTplVt(payrollTpl, n)) }}<span class="iv-none"> · {{ payrollTplSrcText(payrollTpl, n) }}</span></span>
+          </div>
+          <div class="payroll-preview-sec">结果项 · {{ payrollTplResult.length }}</div>
+          <div class="payroll-preview-row" v-for="n in payrollTplResult" :key="'r' + n">
+            <span class="payroll-preview-name">{{ n }}</span>
+            <span class="payroll-preview-val">
+              <template v-if="payrollTplVt(payrollTpl, n) === 3">{{ payrollTplExpr(payrollTpl, n) }}</template>
+              <template v-else>{{ stplValueText(payrollTplVt(payrollTpl, n)) }}<span class="iv-none"> · {{ payrollTplSrcText(payrollTpl, n) }}</span></template>
+            </span>
+          </div>
+        </template>
+        <div v-else class="payroll-preview-empty">选择结算模板后，这里显示它的字段口径</div>
       </div>
-      <div class="payroll-preview-empty" v-else>选择或套用一个模板后，这里白话展示它的计算口径</div>
     </div>
   </div>
 
-  <!-- 第 4 步：试算并提交 -->
-  <div class="ep-card" v-if="payrollStep === 4">
-    <div class="es-title">试算与提交<span class="es-tip">按「{{ payrollTpl ? payrollTpl.name : '—' }}」生成，提交后进入「待我审核」</span></div>
-
-    <div class="payroll-check-box">
-      <div class="pcb-h">算前检查
-        <span class="pcb-tag err" v-if="payrollCheckErrors">{{ payrollCheckErrors }} 项错误</span>
-        <span class="pcb-tag warn" v-if="payrollCheckWarns">{{ payrollCheckWarns }} 项提示</span>
-      </div>
-      <div class="payroll-check-row" v-for="(c, i) in payrollChecks" :key="i" :class="'lv-' + c.level">
-        <i :class="c.level === 'ok' ? 'el-icon-success' : (c.level === 'warn' ? 'el-icon-warning' : 'el-icon-error')"></i>
-        <span>{{ c.text }}</span>
-      </div>
-    </div>
-
-    <div class="payroll-sample" v-if="payrollSampleText"><span class="ps-h">计算过程示例</span>{{ payrollSampleText }}</div>
-
-    <div class="payroll-preview-head">
-      <span class="pp-title">试算结果</span>
-      <el-radio-group v-model="payrollPreviewSize" size="mini">
-        <el-radio-button label="5">先看 5 人</el-radio-button>
-        <el-radio-button label="all">全部 {{ payrollCalcRows.length }} 人</el-radio-button>
-      </el-radio-group>
-    </div>
-    <el-table :data="payrollPreviewRows" border size="mini" style="width:100%;">
-      <el-table-column label="员工姓名" width="100"><template slot-scope="{ row }"><span class="stpl-fname">{{ row.name }}</span></template></el-table-column>
-      <el-table-column label="手机号" width="126"><template slot-scope="{ row }">{{ row.phone }}</template></el-table-column>
-      <el-table-column v-for="c in payrollResultCols" :key="c" :label="c" min-width="112" align="right">
+  <div class="ep-card" v-else>
+    <div class="es-title">算薪结果<span class="es-tip">按「{{ payrollTpl ? payrollTpl.name : '—' }}」生成，提交后进入「待我审核」</span></div>
+    <el-table :data="payrollCalcRows" border size="mini" style="width:100%;">
+      <el-table-column label="员工姓名" width="110">
+        <template slot-scope="{ row }">{{ row.name }}</template>
+      </el-table-column>
+      <el-table-column label="手机号" width="130">
+        <template slot-scope="{ row }">{{ row.phone }}</template>
+      </el-table-column>
+      <el-table-column v-for="c in payrollResultCols" :key="c" :label="c" min-width="120" align="right">
         <template slot-scope="{ row }"><span class="tabular-nums">{{ fmtInviteMoney(row.vals[c]) }}</span></template>
-      </el-table-column>
-      <el-table-column label="计算过程（应发）" min-width="240" show-overflow-tooltip>
-        <template slot-scope="{ row }"><span class="payroll-calc-text">{{ payrollRowCalc(row) || '—' }}</span></template>
-      </el-table-column>
-      <el-table-column label="检查" width="160" show-overflow-tooltip>
-        <template slot-scope="{ row }">
-          <span v-if="(row.errors || []).length" class="payroll-issue err">{{ payrollIssueText(row.errors) }}</span>
-          <span v-else-if="(row.risks || []).length" class="payroll-issue risk">{{ payrollIssueText(row.risks) }}</span>
-          <span v-else class="iv-none">正常</span>
-        </template>
       </el-table-column>
     </el-table>
     <div class="payroll-sum">
       <span>共 <b>{{ payrollCalcRows.length }}</b> 人</span>
       <span v-for="c in payrollResultCols" :key="'s' + c">{{ c }}合计 <b>{{ fmtInviteMoney(payrollTotal(c)) }}</b></span>
     </div>
-    <div class="payroll-ack" v-if="payrollCheckErrors">
-      <el-checkbox v-model="payrollChecksAck">我已核实以上问题，仍然提交审核</el-checkbox>
-    </div>
   </div>
 
   <div class="ef-footer">
-    <span class="iv-none" v-if="payrollForm.employer">中途离开会自动保存为「未完成算薪」</span>
-    <el-button @click="closePayrollCreate()">取消</el-button>
-    <el-button v-if="payrollStep > 1" @click="payrollPrevStep">上一步</el-button>
-    <el-button v-if="payrollStep < 4" type="primary" @click="payrollNextStep">下一步</el-button>
-    <el-button v-else type="primary" :disabled="payrollCheckErrors > 0 && !payrollChecksAck" @click="payrollSubmit">提交审核</el-button>
+    <el-button @click="closePayrollCreate">取消</el-button>
+    <el-button v-if="payrollStep === 2" @click="payrollPrevStep">上一步</el-button>
+    <el-button v-if="payrollStep === 1" type="primary" @click="payrollNextStep">下一步</el-button>
+    <el-button v-else type="primary" @click="payrollSubmit">提交审核</el-button>
   </div>
 </div>
-
-<!-- ===== 复制上月算薪（弹框） ===== -->
-<el-dialog title="复制上月算薪" :visible.sync="payrollCopyDlg.visible" width="760px" top="8vh" :close-on-click-modal="false" append-to-body custom-class="payroll-dlg">
-  <div class="pc-tip">选一条历史算薪，自动带出用工单位、用人单位、结算模板和备注；月份默认顺延一个月，你只需要选新的薪酬档案。</div>
-  <el-table :data="payrollRuns" size="mini" border :row-key="'id'" style="width:100%;">
-    <el-table-column label="" width="46" align="center">
-      <template slot-scope="{ row }"><el-radio v-model="payrollCopyDlg.runId" :label="row.id"><span></span></el-radio></template>
-    </el-table-column>
-    <el-table-column label="算薪名称" min-width="200" show-overflow-tooltip><template slot-scope="{ row }">{{ row.name }}</template></el-table-column>
-    <el-table-column label="所属月份" prop="month" width="92" align="center"></el-table-column>
-    <el-table-column label="用工单位" prop="employer" min-width="170" show-overflow-tooltip></el-table-column>
-    <el-table-column label="结算模板" prop="tplName" min-width="150" show-overflow-tooltip></el-table-column>
-    <el-table-column label="人数" prop="headcount" width="66" align="right"></el-table-column>
-  </el-table>
-  <span slot="footer">
-    <el-button size="small" @click="payrollCopyDlg.visible = false">取消</el-button>
-    <el-button type="primary" size="small" @click="payrollCopyConfirm">下一步：选薪酬档案</el-button>
-  </span>
-</el-dialog>
 
 <!-- ===== 审核算薪（弹框：通过 / 驳回） ===== -->
 <el-dialog title="审核算薪" :visible.sync="payrollAuditDlg.visible" width="480px" top="12vh" :close-on-click-modal="false" append-to-body custom-class="payroll-dlg">
@@ -4868,7 +4944,7 @@ const SIDE_MENU = [
   { title: '灵活用工', icon: 'el-icon-s-flag', items: ['互联网平台','岗位管理','用工记录','结算管理','用工管理','项目管理'] },
 ];
 // ===== 菜单路由 =====
-const ROUTE_PAGES = { '进入工作台': 'workbench', '员工档案': 'emp', '考勤记录': 'att', '岗位列表': 'job', '计薪提成': 'payComm', '岗位标签': 'jobTag', '招聘顾问': 'advisor', '关联客户': 'client', '邀请规则': 'invite', '邀请记录': 'inviteRecord', '结算模板': 'stpl', '薪酬档案': 'salaryFile', '智能算薪': 'salaryCalc' };   // 已实现的页面
+const ROUTE_PAGES = { '进入工作台': 'workbench', '员工档案': 'emp', '考勤记录': 'att', '岗位列表': 'job', '计薪提成': 'payComm', '岗位标签': 'jobTag', '招聘顾问': 'advisor', '关联客户': 'client', '邀请规则': 'invite', '邀请记录': 'inviteRecord', '结算模板': 'stpl', '薪酬档案': 'salaryFile', '智能算薪': 'salaryCalc', '订单管理': 'order' };   // 已实现的页面
 const AUTH_PAGES = { '登录': 'login', '注册': 'register', '企业认证': 'ent' };   // 独立整屏页，不参与页签与侧栏
 const MENU_INDEX = {};                                          // 菜单名 -> 所属分组
 SIDE_MENU.forEach(g => g.items.forEach(i => { MENU_INDEX[i] = g.title; }));
@@ -4917,7 +4993,7 @@ function switchPage(p, name) {
                  : p === 'methodEdit' ? (methodEditId ? '编辑计薪方式' : '新增计薪方式')
                  : p === 'planEdit' ? (planEditId ? '编辑提成方案' : '新增提成方案')
                  : p === 'stplEdit' ? (stplEditId ? '编辑结算模板' : '新增结算模板')
-                 : p === 'salaryCalcEdit' ? '发起算薪'
+                 : p === 'salaryCalcEdit' ? '新建智能算薪'
                  : p === 'salaryCalcDetail' ? '算薪详情'
                  : menuName;
   if (SUB_PAGE_HOST[p] && !VM.openedTags.includes(tagName)) VM.openedTags.push(tagName);
@@ -4959,7 +5035,7 @@ function onTagClick(t) {
   else if (t === '编辑提成方案') { openPlanEdit(planEditId); }
   else if (t === '新增结算模板') { if (VM.currentPage === 'stplEdit' && !stplEditId) return; openStplEdit(); }
   else if (t === '编辑结算模板') { openStplEdit(stplEditId); }
-  else if (t === '发起算薪') { if (VM.currentPage === 'salaryCalcEdit') return; switchPage('salaryCalcEdit'); }
+  else if (t === '新建智能算薪') { if (VM.currentPage === 'salaryCalcEdit') return; switchPage('salaryCalcEdit'); }
   else if (t === '算薪详情') { if (VM.currentPage === 'salaryCalcDetail') return; switchPage('salaryCalcDetail'); }
   else navigate(t);
 }
@@ -4972,7 +5048,7 @@ function onTagClose(t) {
   if (t === '新增计薪方式' || t === '编辑计薪方式') { switchPage('payComm', '计薪提成'); return; }
   if (t === '新增提成方案' || t === '编辑提成方案') { switchPage('payComm', '计薪提成'); return; }
   if (t === '新增结算模板' || t === '编辑结算模板') { switchPage('stpl', '结算模板'); return; }
-  if (t === '发起算薪') { switchPage('salaryCalc', '智能算薪'); return; }
+  if (t === '新建智能算薪') { switchPage('salaryCalc', '智能算薪'); return; }
   if (t === '算薪详情') { payrollDetailId = null; switchPage('salaryCalc', '智能算薪'); return; }
   if (nameOfRoute() === t) navigate(VM.openedTags.find(x => ROUTE_PAGES[x]) || '员工档案');
 }
@@ -7630,29 +7706,53 @@ const PAYROLL_EMPS = [
   { name: '周雅婷', phone: '150****9034' }, { name: '吴建国', phone: '139****3178' },
 ];
 const PAYROLL_RUNS = [
-  { id: 3014, name: '华星光电技术 2026-09 算薪', employer: '武汉华星光电技术有限公司', entity: '深圳市辉煌达人力资源管理有限公司', month: '2026-09', tplId: 1012, tplName: '华星产线普工月结', fileId: 5012, headcount: 128, gross: 0, net: 0, mix: [0.55, 0.3], creator: '朱轩均', created: '2026-10-09 10:12:08', remark: '导入 9 月华星工资表',
+  { id: 3014, name: '华星光电技术 2026-09 算薪', employer: '武汉华星光电技术有限公司', entity: '深圳市辉煌达人力资源管理有限公司', month: '2026-09', tplId: 1012, tplName: '华星产线普工月结', headcount: 128, gross: 0, net: 0, mix: [0.55, 0.3], creator: '朱轩均', created: '2026-10-09 10:12:08', remark: '导入 9 月华星工资表',
     logs: [{ action: '发起算薪', by: '朱轩均', time: '2026-10-09 10:12:08', remark: '导入 9 月华星工资表' }] },
-  { id: 3013, name: '天马微电子 2026-09 算薪', employer: '武汉天马微电子有限公司', entity: '深圳市辉煌达人力资源管理有限公司', month: '2026-09', tplId: 1011, tplName: '天马两班倒小时结', fileId: 5011, headcount: 96, gross: 0, net: 0, mix: [0.4, 0.35], creator: '刘经理', created: '2026-10-09 09:40:22', remark: '夜班按每班 8 小时折算',
+  { id: 3013, name: '天马微电子 2026-09 算薪', employer: '武汉天马微电子有限公司', entity: '深圳市辉煌达人力资源管理有限公司', month: '2026-09', tplId: 1011, tplName: '天马两班倒小时结', headcount: 96, gross: 0, net: 0, mix: [0.4, 0.35], creator: '刘经理', created: '2026-10-09 09:40:22', remark: '夜班按每班 8 小时折算',
     logs: [{ action: '发起算薪', by: '刘经理', time: '2026-10-09 09:40:22', remark: '夜班按每班 8 小时折算' }] },
-  { id: 3012, name: '三安光电 2026-09 算薪', employer: '鄂州三安光电有限公司', entity: '深圳市智灵工科技有限公司', month: '2026-09', tplId: 1010, tplName: '三安封测周结', fileId: 5010, headcount: 74, gross: 0, net: 0, mix: [0.5, 0.5], creator: '张明远', created: '2026-10-08 15:20:11', remark: '9 月周结汇总',
+  { id: 3012, name: '三安光电 2026-09 算薪', employer: '鄂州三安光电有限公司', entity: '深圳市智灵工科技有限公司', month: '2026-09', tplId: 1010, tplName: '三安封测周结', headcount: 74, gross: 0, net: 0, mix: [0.5, 0.5], creator: '张明远', created: '2026-10-08 15:20:11', remark: '9 月周结汇总',
     logs: [
       { action: '发起算薪', by: '张明远', time: '2026-10-08 15:20:11', remark: '9 月周结汇总' },
       { action: '审核通过', by: '朱轩均', time: '2026-10-08 17:02:45', remark: '金额与考勤一致' },
     ] },
-  { id: 3011, name: '联想产业基地 2026-08 算薪', employer: '武汉联想产业基地', entity: '武汉辉煌达人力资源服务有限公司', month: '2026-08', tplId: 1009, tplName: '联想组装周结', fileId: 5009, headcount: 112, gross: 0, net: 0, mix: [0.6, 0.4], creator: '朱轩均', created: '2026-09-06 11:02:37', remark: '结果项直接取薪酬档案合计',
+  { id: 3011, name: '联想产业基地 2026-08 算薪', employer: '武汉联想产业基地', entity: '武汉辉煌达人力资源服务有限公司', month: '2026-08', tplId: 1009, tplName: '联想组装周结', headcount: 112, gross: 0, net: 0, mix: [0.6, 0.4], creator: '朱轩均', created: '2026-09-06 11:02:37', remark: '结果项直接取薪酬档案合计',
     logs: [
       { action: '发起算薪', by: '朱轩均', time: '2026-09-06 11:02:37', remark: '结果项直接取薪酬档案合计' },
       { action: '审核通过', by: '刘经理', time: '2026-09-06 14:18:20', remark: '通过' },
     ] },
-  { id: 3010, name: '华星光电技术 2026-08 算薪', employer: '武汉华星光电技术有限公司', entity: '深圳市辉煌达人力资源管理有限公司', month: '2026-08', tplId: 1012, tplName: '华星产线普工月结', fileId: 5008, headcount: 121, gross: 0, net: 0, mix: [1, 0], creator: '刘经理', created: '2026-09-05 16:30:09', remark: '',
+  { id: 3010, name: '华星光电技术 2026-08 算薪', employer: '武汉华星光电技术有限公司', entity: '深圳市辉煌达人力资源管理有限公司', month: '2026-08', tplId: 1012, tplName: '华星产线普工月结', headcount: 121, gross: 0, net: 0, mix: [1, 0], creator: '刘经理', created: '2026-09-05 16:30:09', remark: '',
     logs: [
       { action: '发起算薪', by: '刘经理', time: '2026-09-05 16:30:09', remark: '' },
       { action: '审核通过', by: '朱轩均', time: '2026-09-05 18:05:52', remark: '通过' },
       { action: '确认算薪', by: '朱轩均', time: '2026-09-06 09:12:41', remark: '已确认，等待发薪' },
     ] },
 ];
+// ===== 订单管理（系统管理）：按订单成卡展示，可勾选批量申请开票 =====
+const ORDER_TYPES = ['版本升级', '增值服务', '用量充值'];
+const ORDER_PAY_STATUSES = ['已支付', '待支付', '已退款', '已取消'];
+const ORDER_PAY_METHODS = ['对公账户', '支付宝', '微信支付'];
+const ORDER_INVOICE_STATUSES = ['未开票', '开票中', '已开票'];
+const ORDER_ROWS = [
+  { id: 9001, type: '版本升级', orderNo: 'ZZ1422389144173125370424', created: '2026-10-08 14:50:39', payTime: '2026-10-08 14:50:38', payMethod: '对公账户', payStatus: '已支付', invoiceStatus: '未开票',
+    items: [{ name: '高级版', spec: '—', duration: '6个月', amount: 0 }] },
+  { id: 9002, type: '版本升级', orderNo: 'ZZ138451914317754978255', created: '2026-10-08 13:47:32', payTime: '2026-10-08 13:47:31', payMethod: '对公账户', payStatus: '已支付', invoiceStatus: '已开票',
+    items: [{ name: '标准版', spec: '—', duration: '1年', amount: 0 }] },
+  { id: 9003, type: '版本升级', orderNo: 'ZZ138411914317859640262', created: '2026-10-08 13:46:52', payTime: '2026-10-08 13:46:51', payMethod: '对公账户', payStatus: '已支付', invoiceStatus: '未开票',
+    items: [{ name: '高级版', spec: '—', duration: '6个月', amount: 0 }] },
+  { id: 9004, type: '版本升级', orderNo: 'ZZ138309143176717534512', created: '2026-10-08 13:45:03', payTime: '2026-10-08 13:45:03', payMethod: '对公账户', payStatus: '已支付', invoiceStatus: '未开票',
+    items: [{ name: '标准版', spec: '—', duration: '1年', amount: 0 }] },
+  { id: 9005, type: '增值服务', orderNo: 'ZZ138290716438112009358', created: '2026-10-07 10:22:18', payTime: '2026-10-07 10:22:05', payMethod: '支付宝', payStatus: '已支付', invoiceStatus: '开票中',
+    items: [{ name: '短信包', spec: '10000 条', duration: '1年', amount: 1200 }] },
+  { id: 9006, type: '增值服务', orderNo: 'ZZ138190716409551874612', created: '2026-10-06 16:05:44', payTime: '2026-10-06 16:05:39', payMethod: '微信支付', payStatus: '已支付', invoiceStatus: '未开票',
+    items: [{ name: '电子签', spec: '500 份', duration: '1年', amount: 600 }, { name: '短信包', spec: '5000 条', duration: '1年', amount: 500 }] },
+  { id: 9007, type: '用量充值', orderNo: 'ZZ138190716391004517823', created: '2026-10-05 09:31:12', payTime: '', payMethod: '支付宝', payStatus: '待支付', invoiceStatus: '未开票',
+    items: [{ name: '短信条数充值', spec: '5000 条', duration: '—', amount: 250 }] },
+  { id: 9008, type: '版本升级', orderNo: 'ZZ138010915387401225590', created: '2026-09-28 15:12:00', payTime: '2026-09-28 15:12:06', payMethod: '对公账户', payStatus: '已退款', invoiceStatus: '未开票',
+    items: [{ name: '标准版', spec: '—', duration: '1年', amount: 3980 }] },
+  { id: 9009, type: '增值服务', orderNo: 'ZZ137990915381229003417', created: '2026-09-20 11:08:37', payTime: '2026-09-20 11:08:33', payMethod: '对公账户', payStatus: '已支付', invoiceStatus: '已开票',
+    items: [{ name: '考勤硬件', spec: '考勤机 ×2', duration: '—', amount: 2960 }] },
+];
 let payrollDetailId = null;   // 算薪详情子页：当前查看的记录 id
-const PAYROLL_DRAFT_KEY = 'zlPayrollDraft';   // 未完成算薪草稿（刷新不丢）
 
 let stplEditId = null;   // 结算模板子页：非空表示编辑态
 
@@ -7676,64 +7776,12 @@ function payrollFieldVal(name, base) {
   if (/扣减/.test(name)) return 480;
   if (/借支/.test(name)) return 0;
   if (/单价|时薪|费率/.test(name)) return 24;
-  // 加班工时按差额倒推，保证 单价×考勤工时 + 加班×夜班单价 能对上每个人的应发
-  if (/加班/.test(name)) return Math.max(0, Math.round((base - 24 * 174) / 24));
-  if (/工时/.test(name)) return 174;
+  if (/工时/.test(name)) return 240;
   if (/天数/.test(name)) return 22;
   if (/月薪/.test(name)) return 6200;
   if (/提成/.test(name)) return 860;
   if (/服务费|住宿|水电|保险|餐补|津贴|险/.test(name)) return 180;
   return 100;
-}
-// 极简表达式求值：只处理 stplTokenize 产出的数字 / 字段 / + - * / 与括号
-function payrollEvalExpr(expr, vals) {
-  const pool = Object.keys(vals || {}).sort((a, b) => b.length - a.length);
-  const tk = stplTokenize(expr, pool);
-  if (tk.err) return null;
-  const ts = tk.tokens;
-  let i = 0;
-  const peek = () => ts[i];
-  const atom = () => {
-    const t = ts[i++];
-    if (!t) return NaN;
-    if (t.t === 'num') return t.v;
-    if (t.t === 'ref') return Number(vals[t.v] == null ? 0 : vals[t.v]) || 0;
-    if (t.t === 'op' && t.v === '(') { const v = add(); if (peek() && peek().v === ')') i++; return v; }
-    if (t.t === 'op' && (t.v === '-' || t.v === '+')) { const v = atom(); return t.v === '-' ? -v : v; }
-    return NaN;
-  };
-  const mul = () => {
-    let v = atom();
-    while (peek() && peek().t === 'op' && (peek().v === '*' || peek().v === '/')) {
-      const op = ts[i++].v, r = atom();
-      v = op === '*' ? v * r : v / r;
-    }
-    return v;
-  };
-  const add = () => {
-    let v = mul();
-    while (peek() && peek().t === 'op' && (peek().v === '+' || peek().v === '-')) {
-      const op = ts[i++].v, r = mul();
-      v = op === '+' ? v + r : v - r;
-    }
-    return v;
-  };
-  const out = add();
-  return Number.isFinite(out) ? Math.round(out * 100) / 100 : null;
-}
-// 计算项取 mock 值，结果项按模板公式算，保证明细里的结果和公式对得上
-function payrollFillVals(tpl, base) {
-  const cols = payrollColsOf(tpl), vals = {};
-  cols.forEach(n => { vals[n] = payrollFieldVal(n, base); });
-  for (let pass = 0; pass < 2; pass++) {
-    cols.forEach(n => {
-      const e = payrollTplExpr(tpl, n);
-      if (!e) return;
-      const v = payrollEvalExpr(e, vals);
-      if (v != null) vals[n] = v;
-    });
-  }
-  return vals;
 }
 // 计算项是取数（单价、工时、天数…），不加 ¥；只有结果项是金额
 function payrollValText(name, v) {
@@ -7801,13 +7849,13 @@ function payrollResultColsOf(tpl) {
 }
 // mix = [已确认占比, 待确认占比]，其余为待我审核
 function payrollBuildRows(tplId, count, mix) {
-  const tpl = VM.stplAll.find(t => t.id === tplId);
+  const tpl = VM.stplAll.find(t => t.id === tplId), cols = payrollColsOf(tpl);
   const doneN = Math.round(count * ((mix && mix[0]) || 0));
   const confirmN = Math.round(count * ((mix && mix[1]) || 0));
   const rows = [];
   for (let i = 0; i < count; i++) {
-    const base = 6000 + (i % 40) * 55 + (i % 7) * 20;
-    const vals = payrollFillVals(tpl, base);
+    const base = 6000 + (i % 40) * 55 + (i % 7) * 20, vals = {};
+    cols.forEach(n => { vals[n] = payrollFieldVal(n, base); });
     rows.push(Object.assign(payrollEmpAt(i), payrollRowIssues(i), {
       id: i + 1,
       status: i < doneN ? 'done' : (i < doneN + confirmN ? 'confirm' : 'audit'),
@@ -7933,220 +7981,40 @@ function deletePayrollRun(run) {
     .catch(() => {});
 }
 function payrollTotal(col) { return VM.payrollCalcRows.reduce((s, r) => s + ((r.vals && r.vals[col]) || 0), 0); }
-// ---------- 发起算薪：四步向导（选范围 → 传数据 → 核规则 → 试算提交） ----------
-function payrollLastMonth() {
-  const d = new Date();
-  d.setDate(1); d.setMonth(d.getMonth() - 1);
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-}
-function payrollNextMonth(month) {
-  const p = String(month || '').split('-');
-  if (p.length !== 2) return payrollLastMonth();
-  const d = new Date(Number(p[0]), Number(p[1]), 1);
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-}
-// 记录按下发时间倒序放在 payrollRuns 里，第一条命中就是该单位上次的算薪
-function payrollLastRunOf(employer) { return employer ? (VM.payrollRuns.find(r => r.employer === employer) || null) : null; }
-function payrollApplyEmployerDefaults(force) {
-  const f = VM.payrollForm, last = payrollLastRunOf(f.employer);
-  if (!last) return false;
-  if (force || !f.entity) f.entity = last.entity;
-  if (force || !f.tplId) f.tplId = last.tplId;
-  return true;
-}
-function payrollDraftSave() {
-  const f = VM.payrollForm;
-  if (!f.employer) return;
-  const d = { employer: f.employer, entity: f.entity, month: f.month, tplId: f.tplId, fileId: f.fileId, remark: f.remark, step: VM.payrollStep, savedAt: nowSecStr() };
-  VM.payrollDraft = d;
-  try { localStorage.setItem(PAYROLL_DRAFT_KEY, JSON.stringify(d)); } catch (e) {}
-}
-function payrollDraftClear() {
-  VM.payrollDraft = null;
-  try { localStorage.removeItem(PAYROLL_DRAFT_KEY); } catch (e) {}
-}
-function payrollDraftLoad() {
-  try {
-    const s = localStorage.getItem(PAYROLL_DRAFT_KEY);
-    VM.payrollDraft = s ? JSON.parse(s) : null;
-  } catch (e) { VM.payrollDraft = null; }
-}
-// prefill: { form:{...}, step } —— 复制上月、继续草稿都走这里
-function startPayrollWizard(prefill) {
-  VM.payrollStep = (prefill && prefill.step) || 1;
-  VM.payrollForm = { employer: '', entity: '', month: payrollLastMonth(), tplId: null, fileId: null, remark: '' };
+// ---------- 智能算薪：新建（两步） ----------
+function openPayrollCreate() {
+  const m = new Date();
+  VM.payrollStep = 1;
+  VM.payrollForm = { employer: '', entity: '', month: m.getFullYear() + '-' + String(m.getMonth() + 1).padStart(2, '0'), tplId: VM.payrollTemplates.length ? VM.payrollTemplates[0].id : null, fileId: null, remark: '' };
   VM.payrollCalcRows = [];
-  VM.payrollChecksAck = false; VM.payrollPreviewSize = '5'; VM.payrollTplAdvanced = false;
-  if (prefill && prefill.form) Object.assign(VM.payrollForm, prefill.form);
-  // 草稿里的模板可能是向导里临时生成的，刷新后已不存在 —— 回到第 3 步重选，别停在无法试算的第 4 步
-  const staleTpl = VM.payrollForm.tplId && !VM.stplAll.some(t => t.id === VM.payrollForm.tplId);
-  if (staleTpl) VM.payrollForm.tplId = null;
-  if (VM.payrollForm.employer && !staleTpl) payrollApplyEmployerDefaults(false);
-  // 老用户（该单位算过薪）默认直接看全量，首次算薪先看 5 人
-  VM.payrollPreviewSize = payrollLastRunOf(VM.payrollForm.employer) ? 'all' : '5';
-  if (VM.payrollStep >= 4 && !VM.payrollForm.tplId) VM.payrollStep = 3;
-  if (VM.payrollStep >= 4) payrollBuildPreview();
   switchPage('salaryCalcEdit');
 }
-function openPayrollCreate() {
-  const d = VM.payrollDraft;
-  if (d && d.employer) {
-    VM.$confirm('有一条未完成的算薪（' + (d.employer || '未选用工单位') + ' · ' + (d.month || '未选月份') + '，停在第 ' + (d.step || 1) + ' 步），继续填写还是重新发起？', '未完成算薪', {
-      confirmButtonText: '继续填写', cancelButtonText: '重新发起', distinguishCancelAndClose: true, type: 'info',
-    }).then(() => resumePayrollDraft())
-      .catch(action => { if (action === 'cancel') { payrollDraftClear(); startPayrollWizard(); } });
-    return;
-  }
-  startPayrollWizard();
-}
-function resumePayrollDraft() {
-  const d = VM.payrollDraft;
-  if (!d) { startPayrollWizard(); return; }
-  startPayrollWizard({ form: d, step: d.step || 1 });
-  showToast('已恢复上次未完成的算薪');
-}
-function discardPayrollDraft() {
-  VM.$confirm('放弃这条未完成的算薪？已选的用工单位、模板和薪酬档案都会清空。', '放弃算薪', { type: 'warning', confirmButtonText: '放弃', cancelButtonText: '取消' })
-    .then(() => { payrollDraftClear(); showToast('已放弃未完成的算薪'); })
-    .catch(() => {});
-}
 function closePayrollCreate() {
-  // 已经选了用工单位就当草稿留着，下次能从列表继续
-  if (VM.payrollForm.employer) payrollDraftSave();
-  VM.openedTags = VM.openedTags.filter(t => t !== '发起算薪');
+  VM.openedTags = VM.openedTags.filter(t => t !== '新建智能算薪');
   switchPage('salaryCalc', '智能算薪');
 }
-function openPayrollCopyDlg() {
-  if (!VM.payrollRuns.length) { VM.$message.warning('还没有可复制的算薪记录'); return; }
-  VM.payrollCopyDlg = { visible: true, runId: VM.payrollRuns[0].id };
-}
-function payrollCopyConfirm() {
-  const run = VM.payrollRuns.find(r => r.id === VM.payrollCopyDlg.runId);
-  if (!run) { VM.$message.warning('请选择一条算薪记录'); return; }
-  VM.payrollCopyDlg.visible = false;
-  startPayrollWizard({ form: { employer: run.employer, entity: run.entity, month: payrollNextMonth(run.month), tplId: run.tplId, fileId: null, remark: '' }, step: 2 });
-  payrollAutoPickFile();
-  payrollDraftSave();
-  showToast('已带出「' + run.name + '」的单位和模板，选一份新档案就能算');
-}
-function onPayrollEmployerChange() {
-  VM.payrollForm.fileId = null;
-  payrollApplyEmployerDefaults(true);
-  payrollAutoPickFile();
-  payrollDraftSave();
-}
-function onPayrollMonthChange() {
-  VM.payrollForm.fileId = null;
-  payrollAutoPickFile();
-  payrollDraftSave();
-}
-function payrollAutoPickFile() {
-  const f = VM.payrollForm;
-  if (f.fileId) return;
-  const opts = VM.salaryFiles.filter(x => x.employer === f.employer && x.month === f.month && x.status === 'ok');
-  if (opts.length === 1) f.fileId = opts[0].id;
-}
-function pickPayrollFile(file) {
-  if (!file) return;
-  if (file.status !== 'ok') { VM.$message.warning('「' + file.name + '」' + salaryFileStatusOf(file).label + '，解析完成后才能用于算薪'); return; }
-  VM.payrollForm.fileId = file.id;
-  payrollDraftSave();
-}
+function onPayrollEmployerChange() { VM.payrollForm.fileId = null; }
+function onPayrollMonthChange() { VM.payrollForm.fileId = null; }
 function payrollNextStep() {
-  const f = VM.payrollForm;
-  if (VM.payrollStep === 1) {
-    const miss = [];
-    if (!f.employer) miss.push('用工单位');
-    if (!f.entity) miss.push('用人单位');
-    if (!f.month) miss.push('所属月份');
-    if (miss.length) { VM.$message.error('请完善：' + miss.join('、')); return; }
-    payrollAutoPickFile();
-    VM.payrollStep = 2;
-    payrollDraftSave();
-    payrollStepScroll();
-    return;
-  }
-  if (VM.payrollStep === 2) {
-    const file = VM.salaryFiles.find(x => x.id === f.fileId);
-    if (!file) { VM.$message.error('请选择一份薪酬档案'); return; }
-    if (file.status !== 'ok') { VM.$message.error('薪酬档案还' + salaryFileStatusOf(file).label + '，解析完成后才能继续'); return; }
-    if (!f.tplId) payrollApplyEmployerDefaults(false);
-    if (!f.tplId && VM.payrollTemplates.length) f.tplId = VM.payrollTemplates[0].id;
-    VM.payrollStep = 3;
-    payrollDraftSave();
-    payrollStepScroll();
-    return;
-  }
-  if (VM.payrollStep === 3) {
-    if (!f.tplId) { VM.$message.error('请选择或套用一个结算模板'); return; }
-    payrollBuildPreview();
-    VM.payrollStep = 4;
-    payrollDraftSave();
-    payrollStepScroll();
-  }
-}
-function payrollPrevStep() {
-  if (VM.payrollStep > 1) VM.payrollStep--;
-  payrollDraftSave();
-  payrollStepScroll();
-}
-function payrollStepScroll() {
-  const el = document.getElementById('salaryCalcEditPage');
-  if (el) el.scrollTop = 0;
-}
-function payrollBuildPreview() {
-  const f = VM.payrollForm, tpl = VM.stplAll.find(t => t.id === f.tplId);
-  if (!tpl) { VM.payrollCalcRows = []; return; }
-  // 明细要覆盖模板的全部字段（详情里计算项、结果项都要有值），试算表只展示结果项
+  const f = VM.payrollForm, miss = [];
+  if (!f.employer) miss.push('用工单位');
+  if (!f.entity) miss.push('用人单位');
+  if (!f.month) miss.push('所属月份');
+  if (!f.tplId) miss.push('结算模板');
+  if (!f.fileId) miss.push('薪酬数据');
+  if (miss.length) { VM.$message.error('请完善：' + miss.join('、')); return; }
+  // 明细要覆盖模板的全部字段（详情里计算项、结果项都要有值），第二步只是只显示结果项
+  const allCols = payrollColsOf(VM.stplAll.find(t => t.id === f.tplId));
   VM.payrollCalcRows = PAYROLL_EMPS.map((e, i) => {
-    const base = 6200 + i * 137;
-    const vals = payrollFillVals(tpl, base);
+    const base = 6200 + i * 137, vals = {};
+    allCols.forEach(n => { vals[n] = payrollFieldVal(n, base); });
     return Object.assign({ name: e.name, phone: e.phone }, payrollRowIssues(i), { vals: vals });
   });
+  VM.payrollStep = 2;
 }
-// 套预设：按模式生成一个新模板挂在当前用工单位上，立刻选中（不跳去结算模板页）
-function applyPayrollPreset(k) {
-  const m = stplModeOf(k);
-  if (!m) return;
-  const missing = stplModeMissing(k);
-  if (missing.length) { VM.$message.error('「' + m.name + '」需要字段：' + missing.join('、') + '，请先到「薪酬字段」补上'); return; }
-  const f = VM.payrollForm;
-  const id = Math.max.apply(null, VM.stplAll.map(t => t.id)) + 1;
-  const name = payrollShortUnit(f.employer || '') + m.name + '模板';
-  VM.stplAll.unshift({
-    id: id, name: name, client: f.employer, target: '员工',
-    fields: m.fields.slice(), vtMap: Object.assign({}, m.vtMap), srcMap: Object.assign({}, m.srcMap), formulas: Object.assign({}, m.formulas),
-    remark: '由算薪向导按「' + m.name + '」预设生成', creator: '朱轩均', created: nowSecStr(),
-  });
-  f.tplId = id;
-  payrollDraftSave();
-  showToast('已套用「' + m.name + '」，生成模板：' + name);
-}
-function payrollPlainExpr(expr) {
-  return String(expr || '').replace(/\*/g, ' × ').replace(/\//g, ' ÷ ').replace(/\+/g, ' + ').replace(/-/g, ' − ').replace(/\s+/g, ' ').trim();
-}
-// 把公式里的字段名换成真实数值，用于「这一行是怎么算出来的」
-function payrollSampleExpr(tpl, row) {
-  if (!tpl || !row) return '';
-  const res = payrollResultColsOf(tpl);
-  const name = res.find(n => /应发/.test(n)) || res[0];
-  const expr = payrollTplExpr(tpl, name);
-  if (!expr) return '';
-  let s = expr;
-  (tpl.fields || []).slice().sort((a, b) => b.length - a.length).forEach(fn => {
-    const v = row.vals ? row.vals[fn] : null;
-    if (v == null) return;
-    s = s.split(fn).join(Number(v).toFixed(2).replace(/\.00$/, ''));
-  });
-  const plain = payrollPlainExpr(s);
-  // 公式本身就是取某一个字段时，代入后只剩一个数字，直接显示字段名更好读
-  return /^[\d.]+$/.test(plain) ? payrollPlainExpr(expr) : plain;
-}
-function payrollRowCalc(row) { return payrollSampleExpr(VM.payrollTpl, row); }
+function payrollPrevStep() { VM.payrollStep = 1; }
 function payrollSubmit() {
   const f = VM.payrollForm, tpl = VM.stplAll.find(x => x.id === f.tplId);
-  if (!tpl || !VM.payrollCalcRows.length) { VM.$message.error('还没有试算结果，请返回上一步重新生成'); return; }
-  if (VM.payrollCheckErrors > 0 && !VM.payrollChecksAck) { VM.$message.error('算前检查还有 ' + VM.payrollCheckErrors + ' 项错误，请先处理，或勾选「我已核实」后再提交'); return; }
   const resCols = payrollResultColsOf(tpl), rows = VM.payrollCalcRows;
   const grossCol = resCols.find(n => /应发/.test(n)) || resCols[0];
   const netCol = resCols.find(n => /实发/.test(n)) || resCols[resCols.length - 1];
@@ -8155,14 +8023,12 @@ function payrollSubmit() {
   const run = {
     id: VM.payrollNextId++, name: payrollRunName(f),
     employer: f.employer, entity: f.entity, month: f.month,
-    tplId: f.tplId, tplName: tpl ? tpl.name : '—', fileId: f.fileId, remark: remark,
+    tplId: f.tplId, tplName: tpl ? tpl.name : '—', remark: remark,
     headcount: rows.length, gross: sum(grossCol), net: sum(netCol),
     creator: '朱轩均', created: now,
     rows: rows.map(r => Object.assign({}, r, { status: 'audit', rejectReason: '', logs: [] })),
   };
   VM.payrollRuns.unshift(run);
-  payrollDraftClear();
-  VM.payrollForm.employer = ''; VM.payrollForm.month = '';
   closePayrollCreate();
   showToast('已提交审核：' + run.name);
 }
@@ -8200,6 +8066,94 @@ function retrySalaryFile(row) {
     showToast('「' + row.name + '」已解析完成，可用于算薪');
   }, 1600);
 }
+
+// ---------- 订单管理：筛选、勾选与申请开票 ----------
+function orderBlankFilter() { return { no: '', type: '', payStatus: '', payMethod: '', invoiceStatus: '', createdRange: [], paidRange: [] }; }
+function orderMoney(v) { return '¥' + Number(v || 0).toFixed(2); }
+function orderTotal(o) { return ((o && o.items) || []).reduce((a, it) => a + Number(it.amount || 0), 0); }
+function orderPayCls(s) { return s === '已支付' ? 's-normal' : s === '待支付' ? 's-late' : s === '已退款' ? 's-early' : 's-absent'; }
+function orderInvCls(s) { return s === '已开票' ? 's-normal' : s === '开票中' ? 's-other' : 's-rest'; }
+function orderCanInvoice(o) { return o.payStatus === '已支付' && o.invoiceStatus === '未开票'; }
+function orderSearch() { VM.orderQuery = Object.assign({}, VM.orderFilter); VM.orderPage = 1; }
+function orderReset() { VM.orderFilter = orderBlankFilter(); orderSearch(); }
+function orderApplyInvoice(o) {
+  if (!orderCanInvoice(o)) { VM.$message.warning('只有已支付且未开票的订单可以申请开票'); return; }
+  VM.$confirm('确认为订单 ' + o.orderNo + ' 申请开票？开票金额 ' + orderMoney(orderTotal(o)) + '。', '申请开票', { confirmButtonText: '提交申请', cancelButtonText: '取消', type: 'info' })
+    .then(() => { o.invoiceStatus = '开票中'; showToast('已提交开票申请'); })
+    .catch(() => {});
+}
+function orderBatchInvoice() {
+  const picked = VM.orders.filter(o => o.sel);
+  if (!picked.length) { VM.$message.warning('请先勾选要开票的订单'); return; }
+  const ok = picked.filter(orderCanInvoice);
+  if (!ok.length) { VM.$message.warning('所选订单里没有可申请开票的（需已支付且未开票）'); return; }
+  const total = ok.reduce((a, o) => a + orderTotal(o), 0);
+  VM.$confirm('将为 ' + ok.length + ' 笔订单申请开票，合计 ' + orderMoney(total) + '。', '批量申请开票', { confirmButtonText: '提交申请', cancelButtonText: '取消', type: 'info' })
+    .then(() => {
+      ok.forEach(o => { o.invoiceStatus = '开票中'; o.sel = false; });
+      showToast('已提交 ' + ok.length + ' 笔开票申请');
+    })
+    .catch(() => {});
+}
+// ---------- 订单合同：申请 → 电子签署 / 纸质寄回 ----------
+function orderContractCls(s) {
+  if (s === '已签署') return 's-normal';
+  if (s === '已申请') return 's-other';
+  if (s === '待签署') return 's-late';
+  return 's-rest';
+}
+// 合同没生成时按钮叫「申请合同」，电子签署完成 / 纸质已申请后才叫「查看合同」
+function orderContractBtn(o) {
+  const c = o && o.contract;
+  if (!c) return '申请合同';
+  if (c.type === '纸质合同') return '查看合同';
+  return c.status === '已签署' ? '查看合同' : '申请合同';
+}
+function openOrderContract(o) {
+  if (!o) return;
+  VM.orderContractDlg = { visible: true, step: o.contract ? 'detail' : 'choose', orderId: o.id, type: o.contract ? o.contract.type : '电子合同' };
+}
+function orderContractApply() {
+  const d = VM.orderContractDlg, o = VM.orders.find(x => x.id === d.orderId);
+  if (!o) return;
+  if (!d.type) { VM.$message.warning('请选择合同类型'); return; }
+  const isE = d.type === '电子合同';
+  o.contract = {
+    type: d.type,
+    status: isE ? '待签署' : '已申请',
+    no: 'HT' + String(o.orderNo).slice(2, 12) + (isE ? 'E' : 'P'),
+    appliedAt: nowSecStr(), signedAt: '',
+  };
+  d.step = 'detail';
+  showToast(isE ? '已申请电子合同，点击「在线签署」即可完成' : '已申请纸质合同，请添加客服领取合同文件');
+}
+// 电子合同跳转法大大签署：演示环境用延时模拟「跳转 → 签完回跳」，回来后合同即为已签署
+function orderContractSign() {
+  const o = VM.orders.find(x => x.id === VM.orderContractDlg.orderId);
+  if (!o || !o.contract || o.contract.status !== '待签署') return;
+  if (VM.orderSigning) return;
+  VM.orderSigning = true;
+  showToast('正在跳转至法大大签署…');
+  setTimeout(() => {
+    VM.orderSigning = false;
+    o.contract.status = '已签署';
+    o.contract.signedAt = nowSecStr();
+    showToast('法大大签署完成，电子合同已生成');
+  }, 900);
+}
+function orderContactService() {
+  VM.orderContractDlg.visible = false;
+  VM.orderContractViewDlg.visible = false;
+  openQrDlg('kefu');
+}
+function openOrderContractView(o) {
+  if (!o || !o.contract) return;
+  VM.orderContractViewDlg = { visible: true, orderId: o.id };
+}
+function orderContractDownload(o) {
+  if (!o || !o.contract) return;
+  showToast('合同已开始下载（演示）');
+}
 function saveSalaryFile() {
   const d = VM.salaryFileDlg, f = d.form, miss = [], name = (f.name || '').trim();
   if (!f.employer) miss.push('用工单位');
@@ -8224,7 +8178,7 @@ function saveSalaryFile() {
     row.status = 'ok';
     row.rows = 200 + Math.floor(Math.random() * 260);
     // 从算薪页内嵌上传的，解析完直接替用户选中
-    if (d.fromPayroll && VM.payrollForm) { VM.payrollForm.fileId = row.id; payrollDraftSave(); }
+    if (d.fromPayroll && VM.payrollForm) VM.payrollForm.fileId = row.id;
   }, 1600);
 }
 function deleteSalaryFile(row) {
@@ -9019,8 +8973,10 @@ const FN_BRIDGE = {
   openInviteDetail, inviteRecCls, fmtInviteMoney, inviteRuleName, invitePaidAmount, inviteInviterPhone, inviteRecordSelectable, onInviteRecordSelect, clearInviteRecordSelection, confirmInviteReward, batchConfirmInviteReward, inviteRecordSearch, inviteRecordReset,
   inviteRuleOf, inviteDaysOrAll, inviteRehireText, inviteOwnerPolicyText, inviteSelfPolicyText, inviteOwnerPolicyTip, inviteSelfPolicyTip, inviteProtectEnd, inviteReleased, invitePitRecords, inviteOwnerWinner, inviteOwnerNodes, inviteOwnerLocked, openInviteOwner, reassignInviteOwner,
   salaryFileSearch, salaryFileReset, salaryFileStatusOf, openSalaryFileDlg, onSalaryFilePick, removeSalaryFilePick, saveSalaryFile, deleteSalaryFile,
+  orderSearch, orderReset, orderBatchInvoice, orderApplyInvoice, orderMoney, orderTotal, orderPayCls, orderInvCls, orderCanInvoice,
+  openOrderContract, orderContractApply, orderContractSign, openOrderContractView, orderContractDownload, orderContractCls, orderContractBtn, orderContactService,
   openPayrollCreate, closePayrollCreate, payrollNextStep, payrollPrevStep, payrollSubmit, payrollTotal, payrollValText, payrollIssueText, payrollStatusOf, payrollEmpStatus, payrollSeedRows, payrollRunCount, payrollSearch, payrollReset, openPayrollDetail, closePayrollDetail, openPayrollAuditRow, openPayrollBatchAudit, submitPayrollAudit, payrollConfirmRow, payrollBatchConfirm, payrollDetailSelect, payrollDetailTabChange, payrollDetailSearch, payrollDetailReset, payrollClearSel, payrollRelayout, openPayrollRowLogs, deletePayrollRun, payrollTplVt, payrollTplSrcText, payrollTplExpr, onPayrollEmployerChange, onPayrollMonthChange,
-  openPayrollCopyDlg, payrollCopyConfirm, resumePayrollDraft, discardPayrollDraft, pickPayrollFile, applyPayrollPreset, payrollRowCalc, openSalaryFilePreview, retrySalaryFile,
+  openSalaryFilePreview, retrySalaryFile,
   stplTabChange, stplSearch, stplReset, openStplEdit, closeStplEdit, saveStplTpl, copyStplTpl, deleteStplTpl, onStplFieldsChange, onStplTplVtChange, onStplTplSrcChange, openStplModeDlg, chooseStplMode, openStplFieldPick, toggleStplFieldPick, confirmStplFieldPick, openStplFieldCfg, onStplFieldCfgVt, saveStplFieldCfg, removeStplFormField,
   openStplFieldDlg, saveStplFieldDlg, deleteStplField, onStplFieldVtChange, addStplFieldGroup, renameStplFieldGroup, deleteStplFieldGroup,
   stplFieldOf, stplFieldsOfGroup, stplFieldGroupName, stplValueText, stplValueOpts, stplSrcOpts, stplSrcText, stplTplClients, stplPayDayOf, stplPayDayText, stplFieldRefNames, stplFormulaTokens, stplFieldErr, stplValidate, stplTplExpr, stplTplVt, stplTplSrc, stplTplSrcText, stplTplErr, stplTplNeedExpr, stplFormFields, stplFormComputeFields, stplFormResultNames, stplEditableText,
@@ -9539,14 +9495,21 @@ const VM = new Vue({
     payrollRuns: PAYROLL_RUNS.map(r => Object.assign({}, r, { logs: (r.logs || []).map(l => Object.assign({}, l)) })),
     payrollNextId: 3015, payrollEntities: PAYROLL_ENTITIES,
     payrollStep: 1, payrollForm: { employer: '', entity: '', month: '', tplId: null, fileId: null, remark: '' },
-    payrollCalcRows: [], payrollDraft: null, payrollPreviewSize: '5', payrollChecksAck: false, payrollTplAdvanced: false,
-    payrollCopyDlg: { visible: false, runId: null },
+    payrollCalcRows: [],
     payrollFilter: { name: '', employer: '', month: '' }, payrollQuery: { name: '', employer: '', month: '' },
     payrollPage: 1, payrollPageSize: 10,
     payrollDetailPage: 1, payrollDetailPageSize: 10, payrollDetailSel: [], payrollDetailH: 0,
     payrollDetailFilter: { name: '', job: '', empStatus: '' }, payrollDetailQuery: { name: '', job: '', empStatus: '' },
     payrollAuditDlg: { visible: false, rows: [], bulk: false, mode: 'pass', remark: '' },
     payrollLogDlg: { visible: false, name: '', logs: [] },
+    // 订单管理
+    orders: ORDER_ROWS.map(o => Object.assign({}, o, { items: (o.items || []).map(it => Object.assign({}, it)), sel: false, contract: null })),
+    orderTypes: ORDER_TYPES, orderPayStatuses: ORDER_PAY_STATUSES, orderPayMethods: ORDER_PAY_METHODS, orderInvoiceStatuses: ORDER_INVOICE_STATUSES,
+    orderFilter: orderBlankFilter(), orderQuery: orderBlankFilter(),
+    orderPage: 1, orderPageSize: 10,
+    orderContractDlg: { visible: false, step: 'choose', orderId: null, type: '电子合同' },
+    orderContractViewDlg: { visible: false, orderId: null },
+    orderSigning: false,
     // AI 一键填表（新建岗位）
     aiFill: { visible: false, step: 'input', text: '', items: [], missing: [], progress: 0, stageText: '', token: 0, timer: null, snapshot: null, undoVisible: false, applied: 0, advice: '', adviceUsed: '' },
     aiAdviceDlg: { visible: false, text: '' },
@@ -9711,7 +9674,7 @@ const VM = new Vue({
     },
     salaryFilePageRows() { const s = (this.salaryFilePage - 1) * this.salaryFilePageSize; return this.salaryFileFiltered.slice(s, s + this.salaryFilePageSize); },
     salaryFileTableHeight() { return Math.max(260, this.winH - 386); },
-    payrollTableHeight() { return Math.max(240, this.winH - 290 - (this.payrollDraft ? 64 : 0)); },
+    payrollTableHeight() { return Math.max(260, this.winH - 290); },
     payrollFiltered() {
       const q = this.payrollQuery;
       return this.payrollRuns.filter(r =>
@@ -9722,6 +9685,37 @@ const VM = new Vue({
     payrollPageRows() {
       const s = (this.payrollPage - 1) * this.payrollPageSize;
       return this.payrollFiltered.slice(s, s + this.payrollPageSize);
+    },
+    orderFiltered() {
+      const q = this.orderQuery;
+      return this.orders.filter(o => {
+        if (q.no && o.orderNo.indexOf(q.no) < 0) return false;
+        if (q.type && o.type !== q.type) return false;
+        if (q.payStatus && o.payStatus !== q.payStatus) return false;
+        if (q.payMethod && o.payMethod !== q.payMethod) return false;
+        if (q.invoiceStatus && o.invoiceStatus !== q.invoiceStatus) return false;
+        const c = String(o.created || '').slice(0, 10);
+        if (q.createdRange && q.createdRange.length === 2 && (c < q.createdRange[0] || c > q.createdRange[1])) return false;
+        const p = String(o.payTime || '').slice(0, 10);
+        if (q.paidRange && q.paidRange.length === 2 && (!p || p < q.paidRange[0] || p > q.paidRange[1])) return false;
+        return true;
+      });
+    },
+    orderPageRows() {
+      const s = (this.orderPage - 1) * this.orderPageSize;
+      return this.orderFiltered.slice(s, s + this.orderPageSize);
+    },
+    orderSelCount() { return this.orders.filter(o => o.sel).length; },
+    orderSelTotal() { return this.orders.filter(o => o.sel).reduce((a, o) => a + orderTotal(o), 0); },
+    orderContractOrder() { return this.orders.find(o => o.id === this.orderContractDlg.orderId) || null; },
+    orderContractCur() { const o = this.orderContractOrder; return o ? o.contract : null; },
+    orderViewOrder() { return this.orders.find(o => o.id === this.orderContractViewDlg.orderId) || null; },
+    orderPaperSteps() {
+      return [
+        '联系客服领取合同文件，打印并加盖公司鲜章',
+        '按客服提供的地址寄回',
+        '我们收到后约 15 个工作日完成盖章并寄回',
+      ];
     },
     payrollDetailRun() { return this.payrollRuns.find(r => r.id === payrollDetailId) || null; },
     payrollDetailTabs() {
@@ -9784,72 +9778,6 @@ const VM = new Vue({
       const f = this.payrollForm;
       return this.salaryFiles.filter(x => x.employer === f.employer && x.month === f.month && x.status === 'ok');
     },
-    // ---- 四步向导 ----
-    payrollLastRun() { return this.payrollForm.employer ? (this.payrollRuns.find(r => r.employer === this.payrollForm.employer) || null) : null; },
-    payrollRecall() {
-      const last = this.payrollLastRun;
-      if (!last) return '';
-      const tpl = this.stplAll.find(t => t.id === last.tplId);
-      return '上次（' + last.month + '）用的是：用人单位「' + last.entity + '」· 结算模板「' + (tpl ? tpl.name : last.tplName) + '」';
-    },
-    payrollFileCards() {
-      const f = this.payrollForm, last = this.payrollLastRun;
-      return this.salaryFiles
-        .filter(x => x.employer === f.employer && x.month === f.month)
-        .map(x => Object.assign({}, x, { lastUsed: !!(last && last.fileId === x.id) }));
-    },
-    payrollParsingFiles() { return this.payrollFileCards.filter(x => x.status === 'parsing'); },
-    payrollPickedFile() { return this.salaryFiles.find(x => x.id === this.payrollForm.fileId) || null; },
-    payrollPresetCards() {
-      const names = new Set((this.stplFields || []).map(f => f.name));
-      return STPL_MODES.map(m => {
-        const need = m.fields.concat(...Object.keys(m.formulas).map(n => stplRefs(m.formulas[n])));
-        return { k: m.k, name: m.name, desc: m.desc, missing: Array.from(new Set(need)).filter(n => !names.has(n)) };
-      });
-    },
-    payrollPlainRows() {
-      const t = this.payrollTpl;
-      if (!t) return [];
-      return payrollResultColsOf(t).map(n => {
-        const expr = payrollTplExpr(t, n);
-        return { name: n, text: expr ? payrollPlainExpr(expr) : '取' + payrollTplSrcText(t, n) };
-      });
-    },
-    payrollAdvRows() {
-      const t = this.payrollTpl;
-      if (!t) return [];
-      return payrollResultColsOf(t).filter(n => payrollTplVt(t, n) === 3).map(n => ({ name: n, expr: payrollTplExpr(t, n) }));
-    },
-    payrollPreviewRows() { return this.payrollPreviewSize === '5' ? this.payrollCalcRows.slice(0, 5) : this.payrollCalcRows; },
-    payrollSampleText() {
-      const t = this.payrollTpl, row = this.payrollCalcRows[0];
-      if (!t || !row) return '';
-      const res = payrollResultColsOf(t);
-      const name = res.find(n => /应发/.test(n)) || res[0];
-      const expr = payrollSampleExpr(t, row);
-      if (!expr) return '';
-      return row.name + '：' + expr + ' = ' + fmtInviteMoney(row.vals[name] || 0);
-    },
-    payrollChecks() {
-      const t = this.payrollTpl, rows = this.payrollCalcRows, out = [];
-      if (!t) return out;
-      const avail = new Set(t.fields || []);
-      (t.fields || []).forEach(n => {
-        if (payrollTplVt(t, n) !== 3) return;
-        const r = stplValidate(payrollTplExpr(t, n), avail, n);
-        if (!r.ok) out.push({ level: 'error', text: '「' + n + '」的公式有问题：' + r.msg });
-      });
-      const errRows = rows.filter(r => (r.errors || []).length);
-      if (errRows.length) out.push({ level: 'error', text: errRows.length + ' 人的薪酬数据有问题（如 ' + errRows[0].name + '：' + payrollIssueText(errRows[0].errors) + '）' });
-      const dupRows = rows.filter(r => r.dup);
-      if (dupRows.length) out.push({ level: 'warn', text: dupRows.length + ' 人有多份薪酬档案或重名，请确认取数口径' });
-      const riskRows = rows.filter(r => (r.risks || []).length);
-      if (riskRows.length) out.push({ level: 'warn', text: riskRows.length + ' 人有风险提示（实发低于最低工资、多笔借支等），不阻断提交' });
-      if (!out.length) out.push({ level: 'ok', text: '未发现缺人、重复、缺单价或公式冲突，可以直接提交' });
-      return out;
-    },
-    payrollCheckErrors() { return this.payrollChecks.filter(c => c.level === 'error').length; },
-    payrollCheckWarns() { return this.payrollChecks.filter(c => c.level === 'warn').length; },
     payrollResultCols() {
       const names = this.payrollTplResult;
       return names.length ? names : ['应发工资', '实发工资'];
@@ -9989,7 +9917,7 @@ const VM = new Vue({
     window.addEventListener('hashchange', handleRoute);
     window.addEventListener('resize', this.onWinResize);
     // VM 尚未完成初始化（TDZ），必须推迟到下一个微任务再走路由
-    this.$nextTick(() => { payrollSeedRows(); payrollDraftLoad(); handleRoute(); applyFilter(); });
+    this.$nextTick(() => { payrollSeedRows(); handleRoute(); applyFilter(); });
   },
   methods: {
     onWinResize() { this.winH = window.innerHeight; payrollRelayout(); },

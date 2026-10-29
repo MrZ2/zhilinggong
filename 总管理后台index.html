@@ -284,6 +284,28 @@
     #genPage .gen-num { display: flex; align-items: center; gap: 8px; }
     #genPage .gen-unit { font-size: 12px; color: var(--ad-text-2); }
     #genPage .gen-link { color: var(--ad-primary); cursor: pointer; }
+    #genPage .gen-money { font-variant-numeric: tabular-nums; font-weight: 500; }
+    #genPage .gen-calc { height: 30px; line-height: 30px; font-weight: 600; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    /* 详情抽屉（custom-class 挂在 body 上，不能写进 #genPage 作用域） */
+    .gen-drawer .el-drawer__body { padding: 0; display: flex; flex-direction: column; }
+    .gen-drawer .gd { display: flex; flex-direction: column; height: 100%; }
+    .gen-drawer .gd-head { padding: 18px 22px 14px; border-bottom: 1px solid var(--ad-border-2); }
+    .gen-drawer .gd-title { font-size: 16px; font-weight: 600; color: var(--ad-text-1); }
+    .gen-drawer .gd-sub { margin-top: 4px; font-size: 12px; color: var(--ad-text-3); }
+    .gen-drawer .gd-body { flex: 1; overflow: auto; padding: 6px 22px 16px; }
+    .gen-drawer .gd-row { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px dashed var(--ad-border-2); font-size: 13px; }
+    .gen-drawer .gd-row:last-child { border-bottom: 0; }
+    .gen-drawer .gd-k { flex: 0 0 96px; color: var(--ad-text-3); }
+    .gen-drawer .gd-v { flex: 1; color: var(--ad-text-1); word-break: break-all; }
+    .gen-drawer .gd-empty { color: var(--ad-text-4); }
+    .gen-drawer .gd-foot { padding: 12px 22px; border-top: 1px solid var(--ad-border-2); display: flex; justify-content: flex-end; gap: 8px; }
+    .gen-drawer .gd-sec { margin-top: 16px; }
+    .gen-drawer .gd-sec-title { font-size: 13px; font-weight: 600; color: var(--ad-text-1); margin-bottom: 6px; }
+    .gen-drawer .gd-svc { border: 1px solid var(--ad-border-2); border-radius: var(--ad-radius); overflow: hidden; }
+    .gen-drawer .gd-svc-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; font-size: 13px; }
+    .gen-drawer .gd-svc-row + .gd-svc-row { border-top: 1px solid var(--ad-border-2); }
+    .gen-drawer .gd-svc-name { color: var(--ad-text-1); }
+    .gen-drawer .gd-svc-qty { color: var(--ad-text-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
     #genPage .gen-stats { display: flex; flex-wrap: wrap; gap: 28px; padding: 10px 14px; margin-bottom: 12px;
       background: var(--ad-fill-2); border-radius: var(--ad-radius); font-size: 12px; color: var(--ad-text-2); }
     #genPage .gen-stats b { margin-left: 6px; font-size: 15px; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
@@ -294,6 +316,13 @@
       gap: 4px; width: 88px; height: 88px; border: 1px dashed var(--ad-border); border-radius: var(--ad-radius);
       font-size: 12px; color: var(--ad-text-3); cursor: pointer; }
     #genPage .gen-upload:hover { border-color: var(--ad-primary); color: var(--ad-primary); }
+    #genPage .gen-up-done { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; color: var(--ad-text-2); }
+    #genPage .gen-up-done .gen-up-name { max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #genPage .gen-up-done .el-button--text { padding: 0; }
+    #genPage .gen-up-thumb { width: 30px; height: 22px; object-fit: cover; border: 1px solid var(--ad-border); border-radius: 3px; }
+    #genPage .gen-thumb { width: 48px; height: 30px; border-radius: 3px; cursor: pointer; vertical-align: middle; }
+    #genPage .gen-file-link { display: inline-flex; align-items: center; gap: 4px; color: var(--ad-primary); cursor: pointer; }
+    #genPage .gen-file-link:hover { text-decoration: underline; }
     /* 法定假日月历 */
     #genPage .cal-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     #genPage .cal-title { font-size: 15px; font-weight: 600; color: var(--ad-text-1); margin-right: 4px; }
@@ -312,7 +341,10 @@
     #genPage .el-tabs__header { margin-bottom: 12px; }
     /* 筛选控件必须撑满栅格，否则日期区间会按内容撑开、把页面顶宽 */
     #genPage .search-form .el-form-item__content > * { width: 100% !important; }
-    .gen-dlg .el-dialog__body { padding-top: 12px; }
+    .gen-dlg .el-dialog__body { padding-top: 12px; max-height: 62vh; overflow: auto; }
+    #genPage .gen-lines .gen-line { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    #genPage .gen-lines .el-button--text { padding: 0 4px; }
+    .gen-dlg .gen-hint { font-size: 12px; color: var(--ad-text-3); white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -631,7 +663,7 @@
 
       <el-tab-pane name="svc">
         <span slot="label">增值服务 <span class="ve-tab-num">({{ spSvcOn }})</span></span>
-        <sp-offer-list :items="spSvc" kind="svc"></sp-offer-list>
+        <sp-offer-list :items="spSvc" kind="svc" :catalog="vaSvc"></sp-offer-list>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -765,8 +797,8 @@
       <el-tab-pane v-for="(t, ti) in gen.tabs" :key="ti" :name="String(ti)" :label="t"></el-tab-pane>
     </el-tabs>
 
-    <div class="gen-stats" v-if="gen.stats">
-      <span v-for="s in gen.stats" :key="s.l" class="gen-stat">{{ s.l }}<b>{{ s.v }}</b></span>
+    <div class="gen-stats" v-if="genStats.length">
+      <span v-for="s in genStats" :key="s.l" class="gen-stat">{{ s.l }}<b>{{ s.v }}</b></span>
     </div>
 
     <!-- 日历：法定假日 -->
@@ -806,9 +838,9 @@
 
     <!-- 列表 / 树形表格 -->
     <template v-else>
-      <el-form v-if="gen.filters && gen.filters.length" :model="genForm" class="gen-filter search-form" size="small" label-width="82px" @submit.native.prevent>
+      <el-form v-if="genView.filters && genView.filters.length" :model="genForm" class="gen-filter search-form" size="small" label-width="82px" @submit.native.prevent>
         <el-row :gutter="14">
-          <el-col :span="f.span || 6" v-for="(f, fi) in gen.filters" :key="fi">
+          <el-col :span="f.span || 6" v-for="(f, fi) in genView.filters" :key="fi">
             <el-form-item :label="f.l">
               <el-input v-if="f.k === 'i'" v-model="genForm[fi]" :placeholder="'请输入' + f.l" clearable @keyup.enter.native="genSearch"></el-input>
               <el-select v-else-if="f.k === 's'" v-model="genForm[fi]" placeholder="全部" clearable style="width:100%">
@@ -822,33 +854,41 @@
         <div class="search-foot"><el-button type="primary" @click="genSearch">查询</el-button><el-button @click="genReset">重置</el-button></div>
       </el-form>
 
-      <div class="toolbar" v-if="gen.add || gen.export">
-        <el-button v-if="gen.add" type="primary" size="small" icon="el-icon-plus" @click="genOpenDlg(null, false)">{{ gen.add }}</el-button>
-        <el-button v-if="gen.export" size="small" icon="el-icon-download" @click="genSaveTabs('导出任务已创建，请到「导出记录」下载')">{{ gen.export }}</el-button>
-        <span class="tag-count-tip">共 {{ genFiltered.length }} 条<span v-if="gen.total && gen.total !== genFiltered.length"> / 线上 {{ gen.total }} 条</span></span>
+      <div class="toolbar" v-if="genView.add || genView.export">
+        <el-button v-if="genView.add" type="primary" size="small" icon="el-icon-plus" @click="genOpenDlg(null, false)">{{ genView.add }}</el-button>
+        <el-button v-if="genView.export" size="small" icon="el-icon-download" @click="genSaveTabs('导出任务已创建，请到「导出记录」下载')">{{ genView.export }}</el-button>
+        <span class="tag-count-tip">共 {{ genFiltered.length }} 条</span>
       </div>
 
-      <el-table :data="gen.type === 'tree' ? genAll : genPageRows" border size="mini" row-key="_i"
+      <el-table :data="genView.type === 'tree' ? genAll : genPageRows" border size="mini" :row-key="genView.rowKey || '_i'"
                 :height="genTableHeight" empty-text="暂无数据" style="width:100%">
-        <el-table-column v-for="(col, ci) in gen.cols" :key="ci" :label="col.l" :prop="col.p"
-                         :width="col.w" :min-width="col.mw" :fixed="col.f" show-overflow-tooltip>
+        <el-table-column v-for="(col, ci) in genView.cols" :key="ci" :label="col.l" :prop="col.p"
+                         :width="col.w" :min-width="col.mw" :fixed="col.f" :align="col.align || (col.k === 'money' ? 'right' : null)" show-overflow-tooltip>
           <template slot-scope="{ row }">
             <el-switch v-if="col.k === 'sw'" :value="row[col.p]" @change="genSwitch(row, col, $event)"></el-switch>
-            <el-tag v-else-if="col.k === 'tag'" size="mini" effect="plain"
-                    :type="row[col.p] === '开启' || row[col.p] === true ? 'success' : 'info'">{{ row[col.p] }}</el-tag>
+            <el-tag v-else-if="col.k === 'tag'" size="mini" effect="plain" :type="genTagType(col, row)">{{ row[col.p] }}</el-tag>
+            <span v-else-if="col.k === 'money'" class="gen-money">{{ moneyText(row[col.p]) }}</span>
             <span v-else-if="col.k === 'link'" class="gen-link">{{ row[col.p] }}</span>
             <span v-else-if="col.k === 'img'" class="gen-img" :class="{ empty: !row[col.p] }">{{ row[col.p] || '—' }}</span>
+            <template v-else-if="col.k === 'attach'">
+              <el-tooltip v-if="row.fileKind === 'img' && row.fileUrl" :content="row[col.p]" placement="top">
+                <el-image class="gen-thumb" :src="row.fileUrl" :preview-src-list="[row.fileUrl]" fit="cover"></el-image>
+              </el-tooltip>
+              <span v-else-if="row[col.p]" class="gen-file-link" @click="genFileDownload(row)"><i class="el-icon-document"></i>{{ row[col.p] }}</span>
+              <span v-else>—</span>
+            </template>
+            <span v-else-if="col.k === 'dash'">{{ row[col.p] || '—' }}</span>
             <span v-else>{{ row[col.p] }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-if="gen.ops" label="操作" :width="gen.opsW || (gen.ops.length * 62 + 24)" fixed="right">
+        <el-table-column v-if="genView.ops" label="操作" :width="genView.opsW || (genView.ops.length * 62 + 24)" fixed="right">
           <template slot-scope="{ row }">
-            <el-button v-for="(o, oi) in gen.ops" :key="oi" type="text" size="mini" @click="genOp(o, row)">{{ o }}</el-button>
+            <el-button v-for="(o, oi) in genView.ops" :key="oi" type="text" size="mini" :disabled="genOpDisabled(o, row)" @click="genOp(o, row)">{{ o }}</el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <div class="bottom-bar" v-if="gen.type !== 'tree'">
+      <div class="bottom-bar" v-if="genView.type !== 'tree'">
         <el-pagination class="list-pager" background layout="total, sizes, prev, pager, next, jumper"
                        :total="genFiltered.length" :page-size.sync="genPageSize" :current-page.sync="genPage" :page-sizes="[10, 20, 50]"></el-pagination>
       </div>
@@ -856,16 +896,16 @@
   </div>
 
   <!-- 新增 / 编辑弹窗 -->
-  <el-dialog :title="genDlg.title" :visible.sync="genDlg.visible" :width="(gen.dlg && gen.dlg.w) || '560px'"
+  <el-dialog :title="genDlg.title" :visible.sync="genDlg.visible" :width="(genView.dlg && genView.dlg.w) || '560px'"
              :close-on-click-modal="false" destroy-on-close append-to-body custom-class="gen-dlg">
     <el-form :model="genDlgForm" size="small" label-width="96px" @submit.native.prevent>
-      <el-form-item v-for="(it, ii) in (gen.dlg && gen.dlg.items) || []" :key="ii" :label="it.l">
+      <el-form-item v-for="(it, ii) in (genView.dlg && genView.dlg.items) || []" v-if="genShow(it)" :key="ii" :label="it.l">
         <el-input v-if="it.k === 'i'" v-model="genDlgForm[ii]" :placeholder="'请输入' + it.l"></el-input>
         <el-input v-else-if="it.k === 'p'" v-model="genDlgForm[ii]" type="password" show-password :placeholder="'请输入' + it.l"></el-input>
         <el-input v-else-if="it.k === 'a'" v-model="genDlgForm[ii]" type="textarea" :rows="2" :placeholder="'请输入' + it.l"></el-input>
         <el-input-number v-else-if="it.k === 'n'" v-model="genDlgForm[ii]" :min="0" controls-position="right" style="width:100%"></el-input-number>
-        <el-select v-else-if="it.k === 's'" v-model="genDlgForm[ii]" :placeholder="'请选择' + it.l" style="width:100%">
-          <el-option v-for="o in it.o" :key="o" :label="o" :value="o"></el-option>
+        <el-select v-else-if="it.k === 's'" v-model="genDlgForm[ii]" :placeholder="'请选择' + it.l" style="width:100%" @change="genDlgChange(ii)">
+          <el-option v-for="o in genDlgOpts(it)" :key="o" :label="it.lab ? it.lab(o) : o" :value="o"></el-option>
         </el-select>
         <el-radio-group v-else-if="it.k === 'r'" v-model="genDlgForm[ii]">
           <el-radio v-for="o in it.o" :key="o" :label="o">{{ o }}</el-radio>
@@ -873,9 +913,40 @@
         <el-checkbox-group v-else-if="it.k === 'c'" v-model="genDlgForm[ii]">
           <el-checkbox v-for="o in it.o" :key="o" :label="o">{{ o }}</el-checkbox>
         </el-checkbox-group>
-        <div v-else-if="it.k === 'u'" class="gen-upload"><i class="el-icon-plus"></i><span>上传图片</span></div>
+        <template v-else-if="it.k === 'u'">
+          <el-upload action="#" :auto-upload="false" :show-file-list="false" :accept="it.accept || ''"
+                     :on-change="(f) => genUploadPick(f, ii)">
+            <div class="gen-upload"><i class="el-icon-upload2"></i><span>{{ it.txt || '点击上传' }}</span></div>
+          </el-upload>
+          <div class="gen-up-done" v-if="genDlgForm[ii]">
+            <img v-if="genDlgFiles[ii] && genDlgFiles[ii].kind === 'img'" :src="genDlgFiles[ii].url" class="gen-up-thumb" alt="">
+            <i v-else class="el-icon-document"></i>
+            <span class="gen-up-name">{{ genDlgForm[ii] }}</span>
+            <el-button type="text" @click="genClearUpload(ii)">移除</el-button>
+          </div>
+        </template>
         <el-date-picker v-else-if="it.k === 'dt'" v-model="genDlgForm[ii]" type="date" value-format="yyyy-MM-dd"
                         :placeholder="'请选择' + it.l" style="width:100%"></el-date-picker>
+        <div v-else-if="it.k === 'svcLines'" class="gen-lines">
+          <div class="gen-line" v-for="(ln, li) in genSvcLines" :key="li">
+            <el-select v-model="ln.svc" placeholder="选择增值服务" filterable style="flex:1">
+              <el-option v-for="o in genSvcTypes" :key="o" :label="o" :value="o"></el-option>
+            </el-select>
+            <template v-if="ln.svc === '合同套餐'">
+              <el-select v-model="ln.years" style="width:92px">
+                <el-option v-for="y in [1, 2, 3]" :key="y" :label="y + ' 年'" :value="y"></el-option>
+              </el-select>
+              <el-input-number v-model="ln.copies" :min="1" :max="99999" controls-position="right" style="width:118px"></el-input-number>
+              <span class="gen-hint">份</span>
+            </template>
+            <template v-else>
+              <el-input-number v-model="ln.qty" :min="1" :max="9999" controls-position="right" style="width:112px"></el-input-number>
+              <span class="gen-hint">数量</span>
+            </template>
+            <el-button type="text" :disabled="genSvcLines.length <= 1" @click="genSvcLineDel(li)">删除</el-button>
+          </div>
+          <el-button type="text" icon="el-icon-plus" @click="genSvcLineAdd">添加服务</el-button>
+        </div>
       </el-form-item>
     </el-form>
     <span slot="footer">
@@ -883,6 +954,40 @@
       <el-button type="primary" size="small" @click="genSaveDlg">提交</el-button>
     </span>
   </el-dialog>
+
+  <!-- 详情抽屉：按当前页的列自动渲染只读键值，任何配了「详情」操作的页面都能用 -->
+  <el-drawer :visible.sync="genDetail.visible" size="460px" :with-header="false" append-to-body custom-class="gen-drawer">
+    <div class="gd" v-if="genDetail.row && gen">
+      <div class="gd-head">
+        <div class="gd-title">{{ genView.detailTitle || '详情' }}</div>
+        <div class="gd-sub">#{{ genDetail.row[genDetailKey] }}</div>
+      </div>
+      <div class="gd-body">
+        <div class="gd-row" v-for="col in genView.cols" :key="col.p">
+          <span class="gd-k">{{ col.l }}</span>
+          <span class="gd-v">
+            <el-tag v-if="col.k === 'tag'" size="mini" effect="plain" :type="genTagType(col, genDetail.row)">{{ genDetail.row[col.p] }}</el-tag>
+            <b v-else-if="col.k === 'money'" class="gen-money">{{ moneyText(genDetail.row[col.p]) }}</b>
+            <span v-else-if="col.k === 'sw'">{{ genDetail.row[col.p] ? '开启' : '关闭' }}</span>
+            <span v-else :class="{ 'gd-empty': !genDetail.row[col.p] }">{{ genDetail.row[col.p] || '—' }}</span>
+          </span>
+        </div>
+        <div class="gd-sec" v-if="genSvcDetail.length">
+          <div class="gd-sec-title">增值服务明细</div>
+          <div class="gd-svc">
+            <div class="gd-svc-row" v-for="(l, li) in genSvcDetail" :key="li">
+              <span class="gd-svc-name">{{ l.name }}</span>
+              <span class="gd-svc-qty">{{ svcQtyText(l) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="gd-foot">
+        <el-button v-if="genDetailCanRefundDel" type="danger" size="small" plain @click="genOp('删除', genDetail.row)">删除</el-button>
+        <el-button size="small" @click="genDetail.visible = false">关闭</el-button>
+      </div>
+    </div>
+  </el-drawer>
 </div>
 
 <!-- ===== 通用占位页 ===== -->
@@ -1046,6 +1151,7 @@ function switchPage(p, menuSlug, tag) {
   }
   VM.$nextTick(() => {
     relayoutTables();   // v-show 隐藏的容器里表格初始化列宽为 0
+    fitGenTable();      // 固定高度算不准时，把卡片底部的空白补给表格
     if (p === 'versionEdit' && VM.verAnchor) { focusVerSection(VM.verAnchor); VM.verAnchor = ''; }
   });
 }
@@ -1490,7 +1596,7 @@ let _SP_KEY = 100;
 function spKey(p) { return p + (++_SP_KEY); }
 // 版本列固定 4 个槽位，名称由运营填写；不可增减，仅可左右移序
 const SP_COLS = [ { key: 'c1', name: '' }, { key: 'c2', name: '' }, { key: 'c3', name: '' }, { key: 'c4', name: '' } ];
-// 更多版本 / 增值服务：官网展示用的两份独立列表，字段一致，与「系统管理 / 版本管理」不联动
+// 更多版本：官网展示用的独立列表，与「系统管理 / 版本管理」不联动
 const SP_UNITS = ['元/年', '元/个', '元/份', '元/次'];
 const SP_MORE = [
   { key: 'm1', name: '电子合同',   intro: '电子劳动合同签署能力，含模板与归档',   price: 299,  unit: '元/年', icon: '', sort: 60, on: true },
@@ -1498,11 +1604,11 @@ const SP_MORE = [
   { key: 'm3', name: '集团版',     intro: '多法人多租户统一管控',                 price: 9800, unit: '元/年', icon: '', sort: 29, on: false },
   { key: 'm4', name: '校园专项版', intro: '校企批量招聘场景，支持名单批量导入',   price: 599,  unit: '元/年', icon: '', sort: 28, on: false },
 ];
+// 官网增值服务：条目必须引用「系统管理 → 增值服务」目录（svcId / name 取自 VA_SVC），不能自由起名
 const SP_SVC = [
-  { key: 'v1', name: '付款渠道', intro: '开通在线付款渠道，支持多用人单位',   price: 1999, unit: '元/年', icon: '', sort: 80, on: true },
-  { key: 'v2', name: '集团管理', intro: '集团多分公司统一管理与跨法人结算',   price: 4999, unit: '元/年', icon: '', sort: 70, on: true },
-  { key: 'v3', name: '简历公海', intro: '简历共享池，按量领取优质简历',       price: 199,  unit: '元/份', icon: '', sort: 60, on: true },
-  { key: 'v4', name: '宿舍管理', intro: '宿舍床位与住宿记录管理',             price: 599,  unit: '元/个', icon: '', sort: 50, on: false },
+  { key: 'v1', svcId: 23, name: '简历识别 300 份',   intro: '简历智能解析入池，按份计费，支持批量领取', price: 0.04, unit: '元/份', icon: '', sort: 80, on: true },
+  { key: 'v2', svcId: 16, name: '身份证识别 3000 次', intro: '证件 OCR 自动核验识别，替代人工录入',     price: 0.03, unit: '元/次', icon: '', sort: 70, on: true },
+  { key: 'v3', svcId: 17, name: '宿舍管理扩容',      intro: '宿舍床位与住宿记录管理，按床位扩容',       price: 0.01, unit: '元/个', icon: '', sort: 60, on: true },
 ];
 const SP_GROUPS = [
   { key: 'g1', title: '招聘管理', rows: [
@@ -1782,6 +1888,93 @@ const GEN_EMP = ['深圳市大族半导体装备科技有限公司', '深圳市�
   '四川省蜀福香食品有限责任公司', '深圳国冶星光电科技股份有限公司', '辽河大街3号仁合大药房'];
 const GEN_AUDITOR = ['朱轩均', '何义', '梁艺文', '王琰婷', '冯国鲜', '刘利琴'];
 const GEN_AUDIT_ST = ['待跟进', '已处理', '驳回'];
+// 增值服务目录：由「系统管理 → 增值服务」维护，官网价格的增值服务页签引用它。
+// name 是对外展示名称（商户端与官网可见），type 只是内部分类；两边共用 VM.vaSvc 这一份数据。
+const VA_SVC = [
+  { id: 23, type: '简历识别',   name: '简历识别 300 份',    term: '长期有效', qty: 300,  price: '0.04',  remark: '', show: true, created: '2025-12-22 14:40:29' },
+  { id: 22, type: '简历识别',   name: '简历识别 20 份',     term: '长期有效', qty: 20,   price: '0.03',  remark: '', show: true, created: '2025-12-22 14:40:15' },
+  { id: 21, type: '简历识别',   name: '简历识别 10 份',     term: '长期有效', qty: 10,   price: '0.01',  remark: '', show: true, created: '2025-12-22 14:25:34' },
+  { id: 20, type: '灵工岗位',   name: '灵工岗位扩容',       term: '长期有效', qty: 1,    price: '20.00', remark: '', show: true, created: '2025-11-22 13:18:08' },
+  { id: 19, type: '全职岗位',   name: '全职岗位扩容',       term: '长期有效', qty: 1,    price: '20.00', remark: '', show: true, created: '2025-11-22 13:17:45' },
+  { id: 18, type: '员工数量',   name: '员工数量扩容',       term: '长期有效', qty: 1,    price: '20.00', remark: '', show: true, created: '2025-11-22 13:17:38' },
+  { id: 17, type: '宿舍管理',   name: '宿舍管理扩容',       term: '长期有效', qty: 1,    price: '0.01',  remark: '', show: true, created: '2025-11-21 17:18:27' },
+  { id: 16, type: '身份证识别', name: '身份证识别 3000 次', term: '长期有效', qty: 3000, price: '0.03',  remark: '', show: true, created: '2025-11-21 17:17:15' },
+  { id: 15, type: '身份证识别', name: '身份证识别 10 次',   term: '长期有效', qty: 10,   price: '0.01',  remark: '', show: true, created: '2025-11-21 17:17:05' },
+  { id: 14, type: '合同套餐',   name: '电子合同 500 份',    term: '2年',      qty: 500,  price: '0.01',  remark: '', show: true, created: '2025-11-20 16:51:25' },
+];
+const VA_SVC_TYPES = ['简历识别', '身份证识别', '合同套餐', '员工数量', '全职岗位', '灵工岗位', '宿舍管理'];
+// 订单行可买的增值服务类型，顺序与线上下拉一致
+const ORDER_SVC_TYPES = ['合同套餐', '付款渠道', '简历公海', '用工单位', '用人单位', '集团管理',
+  '身份证识别', '宿舍管理', '员工数量', '全职岗位', '灵工岗位', '简历识别'];
+// 订单：线上规律是每个商户入驻时自动生成一对（版本升级 + 增值服务赠送），金额 0、操作人空
+const ORDER_ROWS = (function () {
+  const base = MCH_ROWS.filter(function (m) { return m.on; }).slice(0, 6);
+  if (!base.length) return [];
+  const times = ['2026-09-22 10:32:50', '2026-09-22 10:30:11', '2026-09-22 09:53:01',
+                 '2026-09-22 09:25:46', '2026-09-21 16:27:42', '2026-09-18 14:10:05'];
+  // 版本赠送的增值服务内容，与商户逐个对应，保证每条增值服务订单都有明细可看
+  const gifts = [
+    [{ name: '简历识别', qty: 1 }],
+    [{ name: '身份证识别', qty: 1 }],
+    [{ name: '员工数量', qty: 2 }],
+    [{ name: '全职岗位', qty: 1 }],
+    [{ name: '灵工岗位', qty: 1 }],
+    [{ name: '合同套餐', years: 1, copies: 200 }],
+  ];
+  const out = [];
+  let id = 181;
+  base.forEach(function (m, i) {
+    const t = times[i] || '2026-09-18 10:00:00';
+    out.push({ id: id--, mch: m.name, type: '版本升级', pay: '已支付', way: '对公账户', chan: '后台代录', amt: 0, file: '', remark: '版本', op: '', pt: t, ct: t });
+    out.push({ id: id--, mch: m.name, type: '增值服务', svcs: gifts[i] || [{ name: '简历识别', qty: 1 }], pay: '已支付', way: '对公账户', chan: '后台代录', amt: 0, file: '', remark: '版本赠送', op: '', pt: t, ct: t });
+  });
+  // 补充样本：覆盖全部支付状态、全部支付方式、真实金额与已填操作人
+  out.push({ id: 165, mch: base[0].name, type: '增值服务', svcs: [{ name: '灵工岗位', qty: 1 }], pay: '待支付', way: '微信', chan: '线上支付', amt: 20, file: '', remark: '线下扫码待确认', op: '王琰婷', pt: '', ct: '2026-09-20 15:02:11' });
+  out.push({ id: 164, mch: base[1].name, type: '版本升级', pay: '已退款', way: '对公账户', chan: '线下转账', amt: 3999, file: '', remark: '客户取消升级', op: '冯国鲜', pt: '2026-09-15 11:20:03', ct: '2026-09-15 11:18:40' });
+  out.push({ id: 163, mch: base[2].name, type: '增值服务', svcs: [{ name: '合同套餐', years: 2, copies: 500 }, { name: '简历识别', qty: 1 }], pay: '已支付', way: '支付宝', chan: '线上支付', amt: 12, file: '', remark: '合同套餐续购', op: '朱轩均', pt: '2026-09-12 09:41:27', ct: '2026-09-12 09:40:55' });
+  out.push({ id: 162, mch: base[3].name, type: '增值服务', svcs: [{ name: '身份证识别', qty: 1 }, { name: '宿舍管理', qty: 2 }], pay: '已支付', way: '对公账户', chan: '线下转账', amt: 900, file: '', remark: '身份证识别 3000 次 × 0.03', op: '何义', pt: '2026-09-08 16:30:12', ct: '2026-09-08 16:28:00' });
+  return out;
+})();
+function orderPaidSum(rows) {
+  const n = rows.filter(function (r) { return r.pay === '已支付'; })
+                .reduce(function (s, r) { return s + (Number(r.amt) || 0); }, 0);
+  return n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+// 订单合同：订单对应的签署记录，关联到具体订单号；商户与平台分别签署
+// 用对象而不是定位数组，这份数据要挂到 VM.orderContracts 上支持新增
+const ORDER_CONTRACTS = (function () {
+  const base = MCH_ROWS.filter(function (m) { return m.on; }).slice(0, 6);
+  if (!base.length) return [];
+  const mk = function (i, oid, type, amt, st, mchSign, pltSign, start, done, up, rm) {
+    const mch = base[i % base.length].name;
+    const short = mch.replace(/(股份有限公司|有限责任公司|有限公司|集团).*$/, '');
+    const cname = type === '增值服务' ? '增值服务采购合同' : '版本升级服务合同';
+    return { id: i + 1, no: 'HT2026' + (1001 + i), oid: oid, mch: mch, type: type,
+             amt: amt, st: st, mchSign: mchSign, pltSign: pltSign, start: start, done: done,
+             file: up ? short + '·' + cname + '.pdf' : '', remark: rm || '' };
+  };
+  const list = [
+    mk(0, 181, '版本升级', 0,    '已签署', '已签署', '已签署', '2026-09-22 10:33:10', '2026-09-22 10:41:22', 1),
+    mk(1, 179, '版本升级', 0,    '已签署', '已签署', '已签署', '2026-09-22 10:31:02', '2026-09-22 10:38:40', 1),
+    mk(2, 177, '版本升级', 0,    '签署中', '已签署', '待签署', '2026-09-22 09:55:23', '', 1, '等商户盖章回传'),
+    mk(3, 163, '增值服务', 12,   '已签署', '已签署', '已签署', '2026-09-12 09:42:05', '2026-09-12 09:50:11', 1),
+    mk(4, 162, '增值服务', 900,  '待签署', '待签署', '待签署', '2026-09-08 16:31:20', '', 0, '合同待拟定，尚未上传附件'),
+    mk(5, 164, '版本升级', 3999, '已作废', '待签署', '待签署', '2026-09-15 11:19:15', '2026-09-15 11:40:02', 1, '客户取消升级，合同作废'),
+  ];
+  // 图片附件示例：列表里显示缩略图，点开可看大图（内联 SVG，不引外部资源）
+  list[3].file = '增值服务采购合同-盖章扫描件.png';
+  list[3].fileKind = 'img';
+  list[3].fileUrl = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%2776%27%3E' +
+    '%3Crect width=%27120%27 height=%2776%27 fill=%27%23eef2f7%27/%3E' +
+    '%3Crect x=%2710%27 y=%278%27 width=%27100%27 height=%2760%27 rx=%273%27 fill=%27%23fff%27 stroke=%27%23d9dee7%27/%3E' +
+    '%3Crect x=%2718%27 y=%2718%27 width=%2758%27 height=%275%27 rx=%272%27 fill=%27%23c3ccd9%27/%3E' +
+    '%3Crect x=%2718%27 y=%2730%27 width=%2784%27 height=%274%27 rx=%272%27 fill=%27%23dde3ec%27/%3E' +
+    '%3Crect x=%2718%27 y=%2739%27 width=%2770%27 height=%274%27 rx=%272%27 fill=%27%23dde3ec%27/%3E' +
+    '%3Crect x=%2718%27 y=%2748%27 width=%2746%27 height=%274%27 rx=%272%27 fill=%27%23dde3ec%27/%3E' +
+    '%3Ccircle cx=%2792%27 cy=%2756%27 r=%279%27 fill=%27none%27 stroke=%27%23e6a23c%27/%3E%3C/svg%3E';
+  list.forEach(function (r) { if (!r.fileKind) r.fileKind = r.file ? 'pdf' : ''; r.fileUrl = r.fileUrl || ''; });
+  return list;
+})();
 const GEN_PAGES = {
   // ---------- 系统管理 ----------
   'system/daily-settle': {
@@ -1866,28 +2059,21 @@ const GEN_PAGES = {
       { l: '商户号', k: 'i' }, { l: '账号', k: 'i' }, { l: '备注', k: 'a' }, { l: '状态', k: 'r', o: ['开启', '关闭'] }] },
   },
   'system/value-added': {
-    filters: [ { l: '服务类型', k: 's', o: ['简历识别', '身份证识别', '合同套餐', '员工数量', '全职岗位', '灵工岗位', '宿舍管理'] } ],
+    live: 'vaSvc', rowKey: 'id', keyField: 'name',
+    filters: [ { l: '服务类型', k: 's', o: VA_SVC_TYPES } ],
     add: '新增服务',
-    cols: [ { l: 'ID', p: 'id', w: 80 }, { l: '服务类型', p: 'type', w: 130 }, { l: '有效期', p: 'term', w: 110 },
+    cols: [ { l: 'ID', p: 'id', w: 80 }, { l: '服务类型', p: 'type', w: 130 },
+            { l: '服务名称（对外展示）', p: 'name', w: 200 }, { l: '有效期', p: 'term', w: 110 },
             { l: '数量', p: 'qty', w: 100 }, { l: '价格', p: 'price', w: 100 }, { l: '备注', p: 'remark', mw: 140 },
             { l: '购买展示', p: 'show', k: 'sw', w: 100 }, { l: '创建时间', p: 'created', w: 170 } ],
     ops: ['编辑', '删除'], total: 18,
-    rows: [
-      [23, '简历识别', '长期有效', 317, '0.04', '', true, '2025-12-22 14:40:29'],
-      [22, '简历识别', '长期有效', 20, '0.03', '', true, '2025-12-22 14:40:15'],
-      [21, '简历识别', '长期有效', 10, '0.01', '', true, '2025-12-22 14:25:34'],
-      [20, '灵工岗位', '长期有效', 1, '20.00', '', true, '2025-11-22 13:18:08'],
-      [19, '全职岗位', '长期有效', 1, '20.00', '', true, '2025-11-22 13:17:45'],
-      [18, '员工数量', '长期有效', 1, '20.00', '', true, '2025-11-22 13:17:38'],
-      [17, '宿舍管理', '长期有效', 1, '0.01', '', true, '2025-11-21 17:18:27'],
-      [16, '身份证识别', '长期有效', 3000, '0.03', '', true, '2025-11-21 17:17:15'],
-      [15, '身份证识别', '长期有效', 10, '0.01', '', true, '2025-11-21 17:17:05'],
-      [14, '合同套餐', '2年', 507, '0.01', '', true, '2025-11-20 16:51:25'],
-    ],
     dlg: { title: '新增服务', w: '560px', items: [
-      { l: '服务类型', k: 's', o: ['简历识别', '身份证识别', '合同套餐', '员工数量', '全职岗位', '灵工岗位', '宿舍管理'] },
-      { l: '有效期', k: 's', o: ['长期有效', '1年', '2年', '3年'] }, { l: '数量', k: 'n' }, { l: '价格', k: 'n' },
-      { l: '备注', k: 'a' }, { l: '购买展示', k: 'r', o: ['展示', '隐藏'] }] },
+      { l: '服务名称', k: 'i', p: 'name', req: true },
+      { l: '服务类型', k: 's', p: 'type', o: VA_SVC_TYPES },
+      { l: '有效期', k: 's', p: 'term', o: ['长期有效', '1年', '2年', '3年'] },
+      { l: '数量', k: 'n', p: 'qty' }, { l: '价格', k: 'n', p: 'price' },
+      { l: '备注', k: 'a', p: 'remark' },
+      { l: '购买展示', k: 'r', p: 'show', bool: true, o: ['展示', '隐藏'] }] },
   },
   'system/export-log': {
     filters: [ { l: '导出类型', k: 's', o: ['用户资金明细', '提现管理', '订单管理', '考勤记录'] },
@@ -2141,24 +2327,83 @@ const GEN_PAGES = {
     ],
   },
   'merchant/order': {
-    filters: [ { l: '商户名称', k: 's', o: GEN_MCH }, { l: '购买类型', k: 's', o: ['版本升级', '增值服务'] },
-               { l: '支付状态', k: 's', o: ['待支付', '已支付', '已退款'] }, { l: '支付方式', k: 's', o: ['对公账户', '微信', '支付宝'] },
-               { l: '操作人', k: 's', o: GEN_AUDITOR }, { l: '支付时间', k: 'd' }, { l: '创建时间', k: 'd' } ],
+    live: 'orderList', rowKey: 'id', keyField: 'id', idKey: 'id', createdKey: 'ct',
+    onCreate: orderCreate,
+    detailTitle: '订单详情',
+    tabs: ['订单记录', '订单合同'],
+    // 订单合同：订单对应的签署记录；换一套列/数据/筛选，不显示统计
+    tabViews: [null, {
+      live: 'orderContracts', idKey: 'id', createdKey: 'start', onCreate: contractCreate, onOpen: null,
+      add: '新增合同', stats: [], ops: ['下载合同'], opsW: 104,
+      opEnable: { '下载合同': { p: 'st', eq: '已签署' } },
+      keyField: 'no', rowKey: 'no', detailTitle: '合同详情',
+      requireFields: [ { p: 'oid', l: '所属订单' }, { p: 'file', l: '合同附件' } ],
+      filters: [ { l: '商户名称', k: 's', p: 'mch', o: MCH_ROWS.map(function (r) { return r.name; }) },
+                 { l: '签署状态', k: 's', p: 'st', o: ['待签署', '签署中', '已签署', '已作废'] } ],
+      cols: [ { l: '合同编号', p: 'no', w: 140 }, { l: '关联订单号', p: 'oid', w: 110 },
+              { l: '商户', p: 'mch', mw: 260 }, { l: '合同类型', p: 'type', w: 120 },
+              { l: '合同金额', p: 'amt', k: 'money', w: 120 },
+              { l: '签署状态', p: 'st', k: 'tag', w: 110,
+                tagType: { '已签署': 'success', '签署中': 'warning', '待签署': 'info', '已作废': 'danger' } },
+              { l: '商户签署', p: 'mchSign', k: 'tag', w: 110, tagType: { '已签署': 'success', '待签署': 'info' } },
+              { l: '平台签署', p: 'pltSign', k: 'tag', w: 110, tagType: { '已签署': 'success', '待签署': 'info' } },
+              { l: '合同附件', p: 'file', k: 'attach', mw: 200 },
+              { l: '备注', p: 'remark', k: 'dash', mw: 140 },
+              { l: '发起时间', p: 'start', w: 165 }, { l: '完成时间', p: 'done', w: 165 } ],
+      dlg: { title: '新增合同', w: '620px', items: [
+        { l: '合同类型', k: 'r', p: 'type', o: ['版本升级', '增值服务'] },
+        { l: '商户名称', k: 's', p: 'mch',
+          o: function (vm) {
+            const names = [];
+            vm.orderList.forEach(function (r) { if (names.indexOf(r.mch) < 0) names.push(r.mch); });
+            return names;
+          },
+          onChange: function (vm) { vm.genDlgForm[genDlgIndex('oid')] = ''; } },
+        { l: '所属订单', k: 's', p: 'oid',
+          o: function (vm) {
+            const mch = vm.genDlgForm[genDlgIndex('mch')];
+            return vm.orderList.filter(function (r) { return r.mch === mch; }).map(function (r) { return r.id; });
+          },
+          lab: function (id) {
+            const r = VM.orderList.find(function (x) { return String(x.id) === String(id); });
+            if (!r) return id;
+            return id + ' · ' + r.type + ' · ' + moneyText(r.amt) + ' · ' + String(r.ct).slice(0, 10);
+          } },
+        { l: '合同金额', k: 'n', p: 'amt', empty: 1 },
+        { l: '合同附件', k: 'u', p: 'file', fileKind: 'fileKind', fileUrl: 'fileUrl',
+          txt: '上传附件', accept: '.pdf,.png,.jpg,.jpeg,.gif,.webp' },
+        { l: '备注', k: 'a', p: 'remark' }] },
+    }],
+    requireFields: [ { p: 'mch', l: '所属商户' }, { p: 'type', l: '购买类型' }, { p: 'way', l: '支付方式' } ],
+    stats: [
+      { l: '累计成交金额（元）', calc: function (rows) { return orderPaidSum(rows); } },
+      { l: '待支付笔数', calc: function (rows) { return rows.filter(function (r) { return r.pay === '待支付'; }).length; } },
+      { l: '订单总数', calc: function (rows) { return rows.length; } },
+    ],
+    filters: [ { l: '商户名称', k: 's', p: 'mch', o: MCH_ROWS.map(function (r) { return r.name; }) },
+               { l: '购买类型', k: 's', p: 'type', o: ['版本升级', '增值服务'] },
+               { l: '支付状态', k: 's', p: 'pay', o: ['待支付', '已支付', '已退款'] },
+               { l: '支付方式', k: 's', p: 'way', o: ['对公账户', '微信', '支付宝'] },
+               { l: '操作人', k: 's', p: 'op', o: GEN_AUDITOR },
+               { l: '支付时间', k: 'd', p: 'pt' }, { l: '创建时间', k: 'd', p: 'ct' } ],
     add: '新增记录',
     cols: [ { l: 'ID', p: 'id', w: 80 }, { l: '所属商户', p: 'mch', mw: 280 }, { l: '购买类型', p: 'type', w: 120 },
-            { l: '支付状态', p: 'pay', k: 'tag', w: 110 }, { l: '支付方式', p: 'way', w: 120 }, { l: '支付金额', p: 'amt', w: 110 },
-            { l: '附件', p: 'file', k: 'img', w: 90 }, { l: '备注', p: 'remark', mw: 140 }, { l: '操作人', p: 'op', w: 110 },
+            { l: '支付状态', p: 'pay', k: 'tag', w: 110,
+              tagType: { '已支付': 'success', '待支付': 'warning', '已退款': 'info' } },
+            { l: '支付方式', p: 'way', w: 120 }, { l: '支付渠道', p: 'chan', w: 120 }, { l: '支付金额', p: 'amt', k: 'money', w: 120 },
+            { l: '附件', p: 'file', k: 'img', w: 90 }, { l: '备注', p: 'remark', mw: 160 }, { l: '操作人', p: 'op', w: 110 },
             { l: '支付时间', p: 'pt', w: 165 }, { l: '创建时间', p: 'ct', w: 165 } ],
-    ops: ['详情', '删除'], total: 165,
-    rows: [
-      [181, '内蒙古西贝餐饮集团有限公司上海分公司', '版本升级', '已支付', '对公账户', '0.00', '', '版本', '朱轩均', '2026-09-22 10:32:50', '2026-09-22 10:32:50'],
-      [180, '内蒙古西贝餐饮集团有限公司上海分公司', '增值服务', '已支付', '对公账户', '0.00', '', '版本赠送', '朱轩均', '2026-09-22 10:32:50', '2026-09-22 10:32:50'],
-      [179, '内蒙古西贝餐饮集团有限公司', '版本升级', '已支付', '对公账户', '0.00', '', '版本', '何义', '2026-09-22 10:30:11', '2026-09-22 10:30:11'],
-      [178, '优酷信息技术(北京)有限公司', '增值服务', '待支付', '微信', '20.00', '', '', '王琰婷', '', '2026-09-22 09:53:01'],
-    ],
-    dlg: { title: '新增记录', w: '600px', items: [
-      { l: '所属商户', k: 's', o: GEN_MCH }, { l: '购买类型', k: 's', o: ['版本升级', '增值服务'] },
-      { l: '支付方式', k: 's', o: ['对公账户', '微信', '支付宝'] }, { l: '支付金额', k: 'n' }, { l: '备注', k: 'a' }] },
+    ops: ['详情', '删除'], opsW: 140, total: 165,
+    dlg: { title: '新增订单', w: '620px', items: [
+      { l: '所属商户', k: 's', p: 'mch', o: MCH_ROWS.map(function (r) { return r.name; }) },
+      { l: '购买类型', k: 'r', p: 'type', o: ['版本升级', '增值服务'] },
+      { l: '目标版本', k: 's', p: 'ver', oRef: 'genVerNames', def: 0, showIf: { p: 'type', eq: '版本升级' } },
+      { l: '购买时长', k: 's', p: 'years', o: [1, 3, 5], def: 0, showIf: { p: 'type', eq: '版本升级' } },
+      { l: '增值服务明细', k: 'svcLines', showIf: { p: 'type', eq: '增值服务' } },
+      { l: '支付金额', k: 'n', p: 'amt' },
+      { l: '支付方式', k: 's', p: 'way', o: ['对公账户', '微信', '支付宝'] },
+      { l: '备注', k: 'a', p: 'remark' }] },
+    onOpen: orderOpen,
   },
 
   // ---------- 运营管理 ----------
@@ -2345,10 +2590,11 @@ const GEN_PAGES = {
     ],
   },
 };
+let GEN_ROW_SEQ = 0;   // 树形表的 row-key 必须全局唯一；用字符串，el-table 内部按字符串索引
 function genBuildRows(cols, rows) {
-  return (rows || []).map(function (r, i) {
+  return (rows || []).map(function (r) {
     const raw = Array.isArray(r) ? r : r.v;
-    const o = { _i: i };
+    const o = { _i: 'r' + (++GEN_ROW_SEQ) };
     cols.forEach(function (c, ci) { o[c.p] = raw[ci]; });
     if (!Array.isArray(r) && r.c) o.children = genBuildRows(cols, r.c);
     return o;
@@ -2360,9 +2606,20 @@ function genEnter(slug) {
   VM.genTab = '0';
   VM.genForm = {}; VM.genQuery = {};
   VM.genPage = 1;
-  VM.genAll = genBuildRows(c.cols || [], c.rows);
+  VM.genEditRow = null;
+  VM.genFitExtra = 0;
+  VM.genAll = genSrcFor(c, 0);
   if (c.type === 'tabs') VM.genForms = blankGenForms(c);
   if (c.type === 'calendar') VM.genCal = genBuildCal(c.cal.y, c.cal.m, c.cal.marks);
+}
+// 当前页签的数据源：页签自带 live/rows 优先，其次基础配置的 live，最后按配置现造副本
+function genSrcFor(c, ti) {
+  const v = (c.tabViews && c.tabViews[ti]) || null;
+  if (v && v.live) return VM[v.live];
+  GEN_ROW_SEQ = 0;
+  if (v && v.rows) return genBuildRows(v.cols || c.cols || [], v.rows);
+  if (c.live) return VM[c.live];
+  return genBuildRows(c.cols || [], c.rows);
 }
 function blankGenForms(c) {
   const o = {};
@@ -2371,40 +2628,234 @@ function blankGenForms(c) {
 }
 function genSearch() { VM.genQuery = Object.assign({}, VM.genForm); VM.genPage = 1; }
 function genReset() { VM.genForm = {}; VM.genQuery = {}; VM.genPage = 1; }
-function genTabClick() { VM.genPage = 1; }
-function genOp(o, row) {
+function genTabClick() {
   const c = GEN_PAGES[VM.genSlug] || {};
+  VM.genPage = 1;
+  VM.genForm = {}; VM.genQuery = {};
+  if (!c.tabViews) return;                 // 纯展示用的页签不换数据
+  VM.genAll = genSrcFor(c, +VM.genTab);
+  VM.genFitExtra = 0;
+  VM.$nextTick(fitGenTable);
+}
+function nowStr() {
+  const d = new Date(), p = function (n) { return String(n).padStart(2, '0'); };
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
+         ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+}
+function moneyText(p) {
+  if (p === '' || p == null) return '—';
+  const n = Number(p);
+  if (!isFinite(n)) return String(p);
+  return '¥' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+// 合同套餐按「年限 / 份数」展示，其它服务按数量
+function svcQtyText(l) {
+  if (l.years != null) return l.years + ' 年 / ' + (l.copies || 0) + ' 份';
+  return '× ' + (l.qty || 0);
+}
+function genTagType(col, row) {
+  const v = row[col.p];
+  if (col.tagType && col.tagType[v] !== undefined) return col.tagType[v];
+  return v === '开启' || v === true ? 'success' : 'info';
+}
+// 弹窗条件字段：showIf: { p:'type', eq:'增值服务' }
+function genDlgIndex(p) {
+  const c = VM.genView || {};
+  return ((c.dlg && c.dlg.items) || []).findIndex(function (x) { return x.p === p; });
+}
+function genShow(it) {
+  if (!it.showIf) return true;
+  return VM.genDlgForm[genDlgIndex(it.showIf.p)] === it.showIf.eq;
+}
+// 弹窗下拉选项：静态 o / 运行时字段 oRef / 函数 o
+function genDlgOpts(it) {
+  if (typeof it.o === 'function') return it.o(VM);
+  if (it.oRef) return VM[it.oRef] || [];
+  return it.o || [];
+}
+function orderOpen(vm) { vm.genSvcLines = [{ svc: '', qty: 1, years: 1, copies: 500 }]; }
+function genSvcLineAdd() { VM.genSvcLines.push({ svc: '', qty: 1, years: 1, copies: 500 }); }
+function genSvcLineDel(i) { if (VM.genSvcLines.length > 1) VM.genSvcLines.splice(i, 1); }
+function orderCreate(vm, patch) {
+  const now = nowStr();
+  const extra = { op: '朱轩均', file: '', chan: patch.chan || '后台代录', pay: patch.pay || '已支付' };
+  extra.pt = extra.pay === '已支付' ? now : '';
+  extra.ct = now;
+  if (patch.type === '增值服务') {
+    const lines = (vm.genSvcLines || []).filter(function (l) { return l.svc; });
+    // 合同套餐按「年限 + 份数」记录，其它服务只记数量
+    extra.svcs = lines.map(function (l) {
+      return l.svc === '合同套餐'
+        ? { name: l.svc, years: Number(l.years) || 1, copies: Number(l.copies) || 1 }
+        : { name: l.svc, qty: Number(l.qty) || 1 };
+    });
+  }
+  return extra;
+}
+function genOpenDetail(row) {
+  VM.genDetail = { visible: true, row: row };
+}
+// 弹窗上传控件：原型不落地文件，只记文件名 + 类型 + 图片预览地址
+function genUploadPick(file, ii) {
+  const name = (file && (file.name || (file.raw && file.raw.name))) || '';
+  const isImg = /\.(png|jpe?g|gif|webp|bmp)$/i.test(name);
+  if (!isImg && !/\.pdf$/i.test(name)) { VM.$message.error('附件只支持图片（PNG / JPG / GIF / WebP）或 PDF'); return; }
+  const raw = file && file.raw;
+  VM.$set(VM.genDlgFiles, ii, { kind: isImg ? 'img' : 'pdf', url: isImg && raw ? URL.createObjectURL(raw) : '' });
+  VM.genDlgForm[ii] = name;
+  showToast('已选择附件「' + name + '」');
+}
+function genClearUpload(ii) {
+  VM.genDlgForm[ii] = '';
+  VM.$set(VM.genDlgFiles, ii, { kind: '', url: '' });
+}
+// 弹窗下拉联动：配置里给 item 挂 onChange(vm, value) 即可（如换商户后清空订单）
+function genDlgChange(ii) {
+  const c = VM.genView || {};
+  const it = ((c.dlg && c.dlg.items) || [])[ii];
+  if (it && it.onChange) it.onChange(VM, VM.genDlgForm[ii]);
+}
+function genFileDownload(row) {
+  showToast('已开始下载「' + (row.file || row.name || '附件') + '」');
+}
+// 新增合同：编号顺延，商户取自所选订单；手动新增的合同默认双方已签署
+function contractCreate(vm, patch) {
+  const now = nowStr();
+  const ord = (vm.orderList || []).find(function (r) { return String(r.id) === String(patch.oid); });
+  const seq = (vm.orderContracts || []).reduce(function (m, r) {
+    return Math.max(m, Number(String(r.no).replace(/\D/g, '')) || 0);
+  }, 0);
+  return { no: 'HT' + (seq + 1 || 20261001), mch: ord ? ord.mch : '',
+           st: '已签署', mchSign: '已签署', pltSign: '已签署', start: now, done: now };
+}
+// 行操作的启用条件：opEnable: { '下载合同': { p:'st', eq:'已签署' } }
+function genOpDisabled(o, row) {
+  const c = VM.genView || {};
+  const cfg = c.opEnable && c.opEnable[o];
+  return !!(cfg && row[cfg.p] !== cfg.eq);
+}
+function genOp(o, row) {
+  const c = VM.genView || {};
+  const key = c.keyField || ((c.cols || [])[0] || {}).p;
+  const label = row[key] === undefined || row[key] === null ? '' : String(row[key]);
+  if (o === '下载合同') {
+    const en = (c.opEnable || {})['下载合同'];
+    if (en && row[en.p] !== en.eq) { VM.$message.warning('合同签署完成后才能下载'); return; }
+    const cname = row.type === '增值服务' ? '增值服务采购合同' : row.type === '版本升级' ? '版本升级服务合同' : '合同';
+    showToast('已开始下载「' + (row.file || cname + '.pdf') + '」');
+    return;
+  }
+  if (o === '详情' || o === '查看' || o === '查看详情') { genOpenDetail(row); return; }
   if (o === '删除') {
-    VM.$confirm('确认删除「' + (row[c.cols[0].p] || '') + '」？', '提示', { type: 'warning', confirmButtonText: '确认删除', cancelButtonText: '取消' })
+    VM.$confirm('确认删除「' + (label || '该记录') + '」？', '提示', { type: 'warning', confirmButtonText: '确认删除', cancelButtonText: '取消' })
       .then(function () {
-        const i = VM.genAll.indexOf(row);
-        if (i >= 0) VM.genAll.splice(i, 1);
+        const src = c.live ? VM[c.live] : VM.genAll;
+        const i = src.indexOf(row);
+        if (i >= 0) src.splice(i, 1);
+        if (VM.genDetail.row === row) VM.genDetail.visible = false;
+        const maxPage = Math.max(1, Math.ceil(VM.genFiltered.length / VM.genPageSize));
+        if (VM.genPage > maxPage) VM.genPage = maxPage;
         showToast('已删除');
       }).catch(() => {});
     return;
   }
-  if (o === '编辑' || o === '添加下级' || o === '添加' || o === '查看' || o === '详情') { genOpenDlg(row, o === '编辑'); return; }
-  showToast(o + '：' + (row.name || ''));
+  if (o === '编辑' || o === '添加下级' || o === '添加') { genOpenDlg(row, o === '编辑'); return; }
+  showToast(o + '：' + (row.name || label));
 }
 function genOpenDlg(row, fill) {
-  const c = GEN_PAGES[VM.genSlug] || {};
+  const c = VM.genView || {};
   if (!c.dlg) { showToast('原型未实现该操作'); return; }
-  VM.genEditId = row ? row._i : null;
-  VM.genDlgForm = {};
+  VM.genEditRow = fill ? row : null;
+  // 必须先把表单攒完整再整体赋值：Vue 2 侦测不到在已响应式对象上新增的 key，
+  // 逐个 genDlgForm[i] = v 会让 radio/showIf 改了数据却不重渲染（表现为点了没反应）。
+  const form = {};
   (c.dlg.items || []).forEach(function (it, i) {
-    if (fill && c.cols[i] && row[c.cols[i].p] !== undefined) VM.genDlgForm[i] = row[c.cols[i].p];
-    else VM.genDlgForm[i] = it.k === 'n' ? 0 : it.k === 'c' ? [] : it.k === 'r' ? (it.o && it.o[0]) : '';
+    let v;
+    if (fill && row && it.p && row[it.p] !== undefined) {
+      v = row[it.p];
+      if (it.bool) v = v ? it.o[0] : it.o[1];
+    } else {
+      // empty: 1 表示不预置数值（Element 的 input-number 会把 '' 强制成 0，只有 undefined 才真的空着）
+      v = it.k === 'n' ? (it.empty ? undefined : 0) : it.k === 'c' ? [] : it.k === 'r' ? (it.o && it.o[0]) : '';
+      // def: 0 表示默认选中第一个选项（数字/下拉都适用）
+      if (it.def !== undefined) { const opts = genDlgOpts(it); if (opts.length) v = opts[it.def] || opts[0]; }
+    }
+    form[i] = v;
+  });
+  VM.genDlgForm = form;
+  VM.genDlgFiles = {};
+  // 依赖前一项才算出选项的下拉（先选商户再选订单）在第一轮拿到的是空选项，
+  // 等整份表单落到 VM 上再补一次默认值；此时 key 已存在，赋值仍可被侦测。
+  if (!fill) (c.dlg.items || []).forEach(function (it, i) {
+    if (it.def === undefined || (form[i] !== '' && form[i] != null)) return;
+    const opts = genDlgOpts(it);
+    if (opts.length) VM.genDlgForm[i] = opts[it.def] || opts[0];
   });
   VM.genDlg = { visible: true, title: fill ? c.dlg.title.replace('添加', '编辑').replace('新增', '编辑') : c.dlg.title };
+  if (c.onOpen) c.onOpen(VM);
 }
 function genSaveDlg() {
-  const c = GEN_PAGES[VM.genSlug] || {};
+  const c = VM.genView || {};
+  const items = (c.dlg && c.dlg.items) || [];
+  if (!c.live) {
+    VM.genDlg.visible = false;
+    showToast((c.dlg ? c.dlg.title : '保存') + '成功（原型）');
+    return;
+  }
+  const patch = {};
+  items.forEach(function (it, i) {
+    if (!genShow(it)) return;          // 条件字段隐藏时不要把它上一轮的旧值写进去
+    if (it.k === 'u') {                // 附件除了文件名，还要记类型与图片预览地址
+      const meta = (VM.genDlgFiles || {})[i] || {};
+      if (it.fileKind) patch[it.fileKind] = meta.kind || '';
+      if (it.fileUrl) patch[it.fileUrl] = meta.url || '';
+    }
+    if (!it.p) return;                 // 纯展示型表单项（如 svcLines）不参与值收集
+    let v = VM.genDlgForm[i];
+    if (typeof v === 'string') v = v.trim();
+    if (it.bool) v = (v === it.o[0]);
+    else if (it.k === 'n' || it.calc) v = Number(v) || 0;
+    patch[it.p] = v;
+  });
+  const arr = VM[c.live], key = c.keyField || 'name';
+  const keyItem = items.find(function (x) { return x.p === key; });
+  const nameItem = items.filter(function (x) { return x.req; })[0] || keyItem || items[0] || { l: '名称' };
+  const label = String(patch[key] || '');
+  // 只有把 keyField 放进弹窗的页面才做「必填 + 唯一」校验（订单的 id 是自动生成的，不适用）
+  if (keyItem) {
+    if (!label) { VM.$message.error('请填写' + nameItem.l); return; }
+    if (arr.some(function (r) { return r !== VM.genEditRow && String(r[key]) === label; })) {
+      VM.$message.error(nameItem.l + '「' + label + '」已存在'); return;
+    }
+  }
+  for (const rf of (c.requireFields || [])) {
+    if (patch[rf.p] === '' || patch[rf.p] == null) {
+      const it = items.find(function (x) { return x.p === rf.p; });
+      const verb = it && it.k === 'u' ? '请上传' : it && (it.k === 'i' || it.k === 'a') ? '请输入' : '请选择';
+      VM.$message.error(verb + rf.l); return;
+    }
+  }
+  const disp = label || patch.name || patch.mch || '';
+  if (VM.genEditRow) {
+    Object.assign(VM.genEditRow, patch);
+    showToast((disp ? '「' + disp + '」' : '') + '已保存');
+  } else {
+    const now = nowStr();
+    const extra = c.onCreate ? c.onCreate(VM, patch) : {};
+    const row = {};
+    row[c.idKey || 'id'] = arr.reduce(function (m, r) { return Math.max(m, Number(r[c.idKey || 'id']) || 0); }, 0) + 1;
+    row[c.createdKey || 'created'] = now;
+    Object.assign(row, extra, patch);
+    arr.unshift(row);
+    VM.genPage = 1;
+    showToast((disp ? '「' + disp + '」' : '') + '已新增');
+  }
+  VM.genEditRow = null;
   VM.genDlg.visible = false;
-  showToast((c.dlg ? c.dlg.title : '保存') + '成功（原型）');
 }
 function genSwitch(row, col, v) {
   row[col.p] = v;
-  const c = GEN_PAGES[VM.genSlug] || {};
+  const c = VM.genView || {};
   const first = (c.cols || [])[0];
   showToast('「' + (row.name || (first ? row[first.p] : '') || '') + '」' + col.l + '已' + (v ? '开启' : '关闭'));
 }
@@ -2437,7 +2888,9 @@ const FN_BRIDGE = {
   spMoveCol, spAddGroup, spDelGroup, spMoveGroup, spAddRow, spDelRow, spMoveRow, spSave, onSpTabClick,
   mchSearch, mchReset, openMchAdd, openMchEdit, saveMchEdit, openMchVer, saveMchVer, onMchSwitch, onAuditSwitch,
   mchUsed, mchQuota, mchQuotaText, mchUsageCls, mchExpireText, mchExpireSoon, verSvcCount,
-  genSearch, genReset, genTabClick, genOp, genOpenDlg, genSaveDlg, genSwitch, genSaveTabs,
+  genSearch, genReset, genTabClick, genOp, genOpenDlg, genSaveDlg, genSwitch, genSaveTabs, genOpDisabled,
+  moneyText, svcQtyText, genTagType, genShow, genDlgOpts, genSvcLineAdd, genSvcLineDel, genUploadPick, genClearUpload,
+  genDlgChange, genFileDownload,
 };
 Object.keys(FN_BRIDGE).forEach(k => { Vue.prototype[k] = FN_BRIDGE[k]; });
 Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 };
@@ -2505,7 +2958,8 @@ Vue.component('perm-tree', {
 
 // 官网价格 · 更多版本 / 增值服务共用的「列表 + 弹框」组件（items 为父级数组，就地增删）
 Vue.component('sp-offer-list', {
-  props: { items: { type: Array, default: () => [] }, kind: { type: String, default: 'more' } },
+  // catalog 仅 kind==='svc' 用：增值服务必须从「系统管理 → 增值服务」目录里选，不能自由起名
+  props: { items: { type: Array, default: () => [] }, kind: { type: String, default: 'more' }, catalog: { type: Array, default: () => [] } },
   data() {
     return {
       seq: 0,
@@ -2513,17 +2967,31 @@ Vue.component('sp-offer-list', {
       units: SP_UNITS,
       dlg: { visible: false },
       form: this.blank(),
-      rules: {
-        name:  [{ required: true, message: '请输入名称', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }],
-        intro: [{ required: true, message: '请输入介绍', trigger: 'blur' }, { max: 60, message: '介绍不超过 60 字', trigger: 'blur' }],
-        price: [{ required: true, type: 'number', min: 0, message: '请输入价格（0 表示免费）', trigger: 'change' }],
-        unit:  [{ required: true, message: '请选择计价单位', trigger: 'change' }],
-        sort:  [{ required: true, type: 'number', min: 1, message: '请输入排序值', trigger: 'change' }],
-      },
     };
   },
   computed: {
     kindName() { return this.kind === 'more' ? '版本' : '服务'; },
+    rules() {
+      return {
+        name:  this.kind === 'svc'
+                 ? [{ required: true, message: '请选择增值服务', trigger: 'change' }]
+                 : [{ required: true, message: '请输入名称', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }],
+        intro: [{ required: true, message: '请输入介绍', trigger: 'blur' }, { max: 60, message: '介绍不超过 60 字', trigger: 'blur' }],
+        price: [{ required: true, type: 'number', min: 0, message: '请输入价格（0 表示免费）', trigger: 'change' }],
+        unit:  [{ required: true, message: '请选择计价单位', trigger: 'change' }],
+        sort:  [{ required: true, type: 'number', min: 1, message: '请输入排序值', trigger: 'change' }],
+      };
+    },
+    // 目录里尚未上架的服务；正在编辑的这一条不算占用
+    svcOptions() {
+      const used = this.items.filter(i => i.key !== this.form.key).map(i => i.name);
+      const list = this.catalog.filter(s => used.indexOf(s.name) < 0);
+      if (this.form.name && !list.some(s => s.name === this.form.name)) {
+        list.unshift({ id: null, name: this.form.name, price: this.form.price, missing: true });
+      }
+      return list;
+    },
+    svcMissing() { return this.kind === 'svc' && !!this.form.name && !this.catalog.some(s => s.name === this.form.name); },
     sorted() { return this.items.slice().sort((a, b) => b.sort - a.sort); },
     onCount() { return this.items.filter(i => i.on).length; },
     tableHeight() { return Math.max(220, this.winH - 412); },   // 这两个页签没有吸底保存栏，比列表页多吃约 60px
@@ -2532,7 +3000,7 @@ Vue.component('sp-offer-list', {
   beforeDestroy() { window.removeEventListener('resize', this.onResize); },
   methods: {
     onResize() { this.winH = window.innerHeight; },
-    blank() { return { key: '', name: '', intro: '', price: 0, unit: '元/年', icon: '', sort: 10, on: true }; },
+    blank() { return { key: '', svcId: null, name: '', intro: '', price: 0, unit: '元/年', icon: '', sort: 10, on: true }; },
     maxSort() { return this.items.reduce((m, i) => Math.max(m, i.sort || 0), 0); },
     openAdd() {
       this.form = this.blank();
@@ -2541,16 +3009,28 @@ Vue.component('sp-offer-list', {
       this.$nextTick(() => { if (this.$refs.offerForm) this.$refs.offerForm.clearValidate(); });
     },
     openEdit(row) {
-      this.form = { key: row.key, name: row.name, intro: row.intro, price: row.price, unit: row.unit || '元/年', icon: row.icon || '', sort: row.sort, on: !!row.on };
+      this.form = { key: row.key, svcId: row.svcId || null, name: row.name, intro: row.intro, price: row.price, unit: row.unit || '元/年', icon: row.icon || '', sort: row.sort, on: !!row.on };
       this.dlg.visible = true;
       this.$nextTick(() => { if (this.$refs.offerForm) this.$refs.offerForm.clearValidate(); });
+    },
+    // 选中目录服务后带出名称与价格；介绍、图标、单位、排序仍由运营自行编辑
+    onSvcPick(name) {
+      const s = this.catalog.find(x => x.name === name);
+      if (!s) return;
+      this.form.svcId = s.id;
+      this.form.name = s.name;
+      this.form.price = Number(s.price) || 0;
+      if (this.$refs.offerForm) this.$refs.offerForm.validateField('name');
     },
     save() {
       this.$refs.offerForm.validate(ok => {
         if (!ok) return;
         const f = this.form, name = f.name.trim();
+        if (this.kind === 'svc' && !this.catalog.some(s => s.name === name)) {
+          this.$message.error('「' + name + '」已不在增值服务目录中，请到「系统管理 → 增值服务」重新配置'); return;
+        }
         if (this.items.some(i => i.name === name && i.key !== f.key)) { this.$message.error('名称「' + name + '」已存在'); return; }
-        const patch = { name: name, intro: f.intro.trim(), price: Number(f.price) || 0, unit: f.unit, icon: f.icon, sort: Number(f.sort) || 1, on: !!f.on };
+        const patch = { svcId: f.svcId || null, name: name, intro: f.intro.trim(), price: Number(f.price) || 0, unit: f.unit, icon: f.icon, sort: Number(f.sort) || 1, on: !!f.on };
         if (f.key) {
           const row = this.items.find(i => i.key === f.key);
           if (row) Object.assign(row, patch);
@@ -2587,7 +3067,7 @@ Vue.component('sp-offer-list', {
     '<div>' +
       '<div class="toolbar">' +
         '<el-button type="primary" size="small" icon="el-icon-plus" @click="openAdd">新增{{ kindName }}</el-button>' +
-        '<span class="tag-count-tip">共 {{ items.length }} 项，上架 {{ onCount }} 项 · 排序值越大越靠前</span>' +
+        '<span class="tag-count-tip">共 {{ items.length }} 项，上架 {{ onCount }} 项 · 排序值越大越靠前<span v-if="kind === \'svc\'"> · 可上架的服务取自增值服务目录（当前 {{ catalog.length }} 项）</span></span>' +
       '</div>' +
       '<el-table :data="sorted" border size="mini" row-key="key" :height="tableHeight" empty-text="暂无数据" style="width:100%;">' +
         '<el-table-column label="名称" min-width="190"><template slot-scope="{ row }"><div class="so-nm"><span class="so-ico"><img v-if="row.icon" :src="row.icon" alt=""><b v-else>{{ row.name.charAt(0) }}</b></span><span class="so-name">{{ row.name }}</span></div></template></el-table-column>' +
@@ -2604,7 +3084,17 @@ Vue.component('sp-offer-list', {
       '</el-table>' +
       '<el-dialog :title="form.key ? \'编辑\' + kindName : \'新增\' + kindName" :visible.sync="dlg.visible" width="560px" :close-on-click-modal="false" destroy-on-close append-to-body custom-class="so-dlg">' +
         '<el-form :model="form" :rules="rules" ref="offerForm" size="small" label-width="76px" @submit.native.prevent>' +
-          '<el-form-item label="名称" prop="name"><el-input v-model="form.name" maxlength="20" show-word-limit :placeholder="kind === \'more\' ? \'如：电子合同\' : \'如：付款渠道\'"></el-input></el-form-item>' +
+          '<el-form-item label="名称" prop="name">' +
+            '<el-select v-if="kind === \'svc\'" v-model="form.name" filterable placeholder="请选择增值服务" style="width:100%" @change="onSvcPick">' +
+              '<el-option v-for="s in svcOptions" :key="s.name" :label="s.name" :value="s.name">' +
+                '<span style="float:left">{{ s.name }}</span>' +
+                '<span style="float:right;color:#8492a6;font-size:12px">{{ s.missing ? \'已不在目录\' : s.type }}</span>' +
+              '</el-option>' +
+            '</el-select>' +
+            '<el-input v-else v-model="form.name" maxlength="20" show-word-limit placeholder="如：电子合同"></el-input>' +
+            '<div class="so-tip" v-if="kind === \'svc\'">服务取自「系统管理 → 增值服务」目录，选中后自动带出名称与价格；介绍、图标、计价单位、排序仍可编辑</div>' +
+            '<div class="so-tip" v-if="kind === \'svc\' && svcMissing" style="color:#f56c6c">该服务已不在目录中，保存会被拦截，请重新选择</div>' +
+          '</el-form-item>' +
           '<el-form-item label="图标">' +
             '<el-upload ref="iconUpload" action="#" :auto-upload="false" :show-file-list="false" accept="image/*" :limit="1" :on-change="onIconPick">' +
               '<div class="so-up" :class="{ filled: form.icon }">' +
@@ -2615,7 +3105,7 @@ Vue.component('sp-offer-list', {
             '<div class="so-tip">选填，建议 80×80 以内的方形图片，不超过 200KB；未上传时官网显示名称首字<el-button v-if="form.icon" type="text" size="mini" @click="form.icon = \'\'">移除</el-button></div>' +
           '</el-form-item>' +
           '<el-form-item label="介绍" prop="intro"><el-input v-model="form.intro" type="textarea" :rows="2" maxlength="60" show-word-limit :placeholder="\'一句话说明这个\' + kindName + \'给谁用、解决什么问题\'"></el-input></el-form-item>' +
-          '<el-form-item label="价格" prop="price"><el-input-number v-model="form.price" :min="0" :max="999999" :step="100" :controls="false"></el-input-number><el-select v-model="form.unit" style="width:104px;margin-left:8px"><el-option v-for="u in units" :key="u" :label="u" :value="u"></el-option></el-select><div class="so-tip">填 0 表示免费，官网价格页显示「免费」并忽略单位</div></el-form-item>' +
+          '<el-form-item label="价格" prop="price"><el-input-number v-model="form.price" :min="0" :max="999999" :step="kind === \'svc\' ? 1 : 100" :precision="kind === \'svc\' ? 2 : 0" :controls="false"></el-input-number><el-select v-model="form.unit" style="width:104px;margin-left:8px"><el-option v-for="u in units" :key="u" :label="u" :value="u"></el-option></el-select><div class="so-tip">填 0 表示免费，官网价格页显示「免费」并忽略单位</div></el-form-item>' +
           '<el-form-item label="排序" prop="sort"><el-input-number v-model="form.sort" :min="1" :max="999" :controls="false"></el-input-number><div class="so-tip">值越大越靠前，官网按此顺序展示卡片</div></el-form-item>' +
         '</el-form>' +
         '<span slot="footer">' +
@@ -2640,8 +3130,8 @@ const VM = new Vue({
     // 通用复刻页（GEN_PAGES 驱动）
     genSlug: '', genTab: '0',
     genForm: {}, genQuery: {}, genPage: 1, genPageSize: 10,
-    genAll: [], genDlg: { visible: false, title: '' }, genDlgForm: {}, genEditId: null, genForms: {},
-    genCal: [],
+    genAll: [], genDlg: { visible: false, title: '' }, genDlgForm: {}, genDlgFiles: {}, genEditRow: null, genForms: {},
+    genCal: [], genDetail: { visible: false, row: null }, genSvcLines: [], genFitExtra: 0,
     // 版本管理
     verPermGroups: VER_PERM_GROUPS,
     verFrontGroups: VER_FRONT_GROUPS,
@@ -2649,6 +3139,12 @@ const VM = new Vue({
     // 官网价格 · 版本功能对比（逐层深拷贝，编辑不污染常量）
     spTab: 'compare',          // 页签：版本对比 / 更多版本 / 增值服务
     spCols: SP_COLS.map(c => Object.assign({}, c)),
+    // 增值服务目录（系统管理/增值服务 维护，官网价格·增值服务页签引用；两边共用这一份）
+    vaSvc: VA_SVC.map(r => Object.assign({}, r)),
+    // 订单（商户管理/订单管理；新增、删除都写这一份，切页回来仍在）
+    orderList: ORDER_ROWS.map(r => Object.assign({}, r)),
+    // 订单合同（订单管理 · 订单合同页签；新增/删除写这一份）
+    orderContracts: ORDER_CONTRACTS.map(r => Object.assign({}, r)),
     // 更多版本 / 增值服务：官网展示用的独立列表，与版本管理不联动
     spMore: SP_MORE.map(i => Object.assign({}, i)),
     spSvc: SP_SVC.map(i => Object.assign({}, i)),
@@ -2712,28 +3208,79 @@ const VM = new Vue({
     currentGroupName() { return (ROUTES[this.activeSlug] || {}).group || '总管理后台'; },
     // ---------- 通用复刻页 ----------
     gen() { return GEN_PAGES[this.genSlug] || null; },
-    genFiltered() {
+    // 页签可以各带一套列/数据/筛选/操作：tabViews[i] 覆盖基础配置，留空则沿用基础配置
+    genView() {
       const c = this.gen;
+      if (!c || !c.tabViews) return c;
+      const v = c.tabViews[+this.genTab];
+      return v ? Object.assign({}, c, v) : c;
+    },
+    genFiltered() {
+      const c = this.genView;
       if (!c) return [];
       const cols = c.cols || [];
-      const qs = Object.keys(this.genQuery).map(k => this.genQuery[k]).filter(v => v !== '' && v != null);
-      if (!qs.length) return this.genAll;
-      // 原型阶段按「任一列文本命中」做宽松匹配，开关列以 开启/关闭 参与匹配
-      const hit = r => cols.some(col => {
-        const s = col.k === 'sw' ? (r[col.p] ? '开启' : '关闭') : String(r[col.p] == null ? '' : r[col.p]);
-        return qs.every(q => s.indexOf(String(q)) >= 0);
+      const cellOf = (r, p) => {
+        const col = cols.find(x => x.p === p);
+        if (!col) return '';
+        return col.k === 'sw' ? (r[p] ? '开启' : '关闭') : String(r[p] == null ? '' : r[p]);
+      };
+      const active = [];
+      (c.filters || []).forEach((f, fi) => {
+        const v = this.genQuery[fi];
+        if (v === '' || v == null || (Array.isArray(v) && !v.length)) return;
+        active.push({ f: f, v: v });
       });
-      return this.genAll.filter(hit);
+      if (!active.length) return this.genAll;
+      // 逐项匹配后 AND：每项只跟自己绑定的列比，筛选项再多也不会互相挤成空集
+      return this.genAll.filter(r => active.every(a => {
+        const f = a.f, v = a.v;
+        if (f.k === 'd') {
+          if (!f.p || !Array.isArray(v) || v.length !== 2 || !v[0] || !v[1]) return true;
+          // 日期只比前 10 位，兼容 yyyy-MM-dd 与带时分秒两种存法
+          const day = String(r[f.p] == null ? '' : r[f.p]).slice(0, 10);
+          return !!day && day >= v[0] && day <= v[1];
+        }
+        if (f.p) {
+          const s = cellOf(r, f.p);
+          return f.k === 's' ? s === String(v) : s.indexOf(String(v)) >= 0;
+        }
+        // 没配 p 的旧筛选项退回「任一列命中」，其余页面无需改配置
+        return cols.some(col => {
+          const s = cellOf(r, col.p);
+          return f.k === 's' ? s === String(v) : s.indexOf(String(v)) >= 0;
+        });
+      }));
     },
     genPageRows() { const s = (this.genPage - 1) * this.genPageSize; return this.genFiltered.slice(s, s + this.genPageSize); },
-    genTableHeight() {
-      const c = this.gen || {};
+    genStats() {
+      const c = this.genView;
+      if (!c || !c.stats) return [];
+      return c.stats.map(s => ({ l: s.l, v: typeof s.calc === 'function' ? s.calc(this.genAll, this) : s.v }));
+    },
+    genDetailKey() {
+      const c = this.genView;
+      return (c && (c.keyField || ((c.cols || [])[0] || {}).p)) || 'id';
+    },
+    genDetailCanRefundDel() {
+      const c = this.genView, r = this.genDetail.row;
+      return !!(c && r && (c.ops || []).indexOf('删除') >= 0);
+    },
+    genSvcDetail() {
+      const r = this.genDetail.row;
+      return (r && Array.isArray(r.svcs)) ? r.svcs : [];
+    },
+    genVerNames() { return this.verAll.map(function (v) { return v.name; }); },
+    genSvcTypes() { return ORDER_SVC_TYPES; },
+    genChrome() {
+      const c = this.genView || {};
       let chrome = 300;
       if (c.filters && c.filters.length) chrome += 62 * Math.ceil((c.filters.length + 1) / 4);
       if (c.tabs && c.tabs.length) chrome += 46;
-      if (c.add) chrome += 50;
-      return Math.max(220, this.winH - chrome);
+      if (c.stats) chrome += 46;
+      if (c.add || c.export) chrome += 50;
+      return chrome;
     },
+    genTableHeight() { return Math.max(220, this.winH - this.genChrome) + (this.genFitExtra || 0); },
     verOnlineCount() { return this.verAll.filter(r => r.on).length; },
     verEditTag() { return this.verEditId ? '编辑版本' : '新增版本'; },
     verPermTotal() { return PERM_TOTAL; },
@@ -2798,7 +3345,11 @@ const VM = new Vue({
     activeSlug(v) { const m = this.$refs.sideMenu; if (m && m.activeIndex !== v) m.activeIndex = v; },
   },
   methods: {
-    onWinResize() { this.winH = window.innerHeight; },
+    onWinResize() {
+      this.winH = window.innerHeight;
+      this.genFitExtra = 0;
+      this.$nextTick(() => fitGenTable());
+    },
   },
   mounted() {
     window.addEventListener('hashchange', handleRoute);
@@ -2818,6 +3369,33 @@ function relayoutTables() {
     const t = el.__vue__;
     if (t && typeof t.doLayout === 'function') t.doLayout();
   });
+}
+// 表格是固定 px 高度，估多了底部会空出一截。渲染后量一次卡片里「表格以外」的高度，
+// 把剩余空间补给表格。只放大不缩小，避免和 doLayout / 滚动互相触发。
+function fitGenTable(tries) {
+  tries = tries || 0;
+  const page = document.getElementById('genPage');
+  if (!page || page.offsetParent === null || !VM.gen) return;
+  const card = page.querySelector('.card');
+  const tbl = page.querySelector('.el-table');
+  if (!card || !tbl) return;
+  const cur = tbl.getBoundingClientRect().height;
+  const cardH = card.getBoundingClientRect().height;
+  // el-table 首次挂载时高度还是 0，等它布局完成再量
+  if (!cur || !cardH) {
+    if (tries < 12) setTimeout(function () { fitGenTable(tries + 1); }, 60);
+    return;
+  }
+  const nonTable = cardH - cur;                             // 卡片内表格以外的固定高度
+  const avail = window.innerHeight - 12 - 96 - nonTable;    // 视口 - 页底边距 - 页顶边距
+  const delta = Math.round(avail - cur);
+  if (delta > 8) {
+    VM.genFitExtra += delta;
+    VM.$nextTick(relayoutTables);
+  } else if (tries < 2 && !VM.genFitExtra) {
+    // 首屏尺寸可能还没稳定，再确认一次
+    setTimeout(function () { fitGenTable(tries + 1); }, 90);
+  }
 }
 </script>
 </body>
