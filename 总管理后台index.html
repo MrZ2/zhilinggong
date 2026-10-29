@@ -900,7 +900,7 @@
              :close-on-click-modal="false" destroy-on-close append-to-body custom-class="gen-dlg">
     <el-form :model="genDlgForm" size="small" label-width="96px" @submit.native.prevent>
       <el-form-item v-for="(it, ii) in (genView.dlg && genView.dlg.items) || []" v-if="genShow(it)" :key="ii" :label="it.l">
-        <el-input v-if="it.k === 'i'" v-model="genDlgForm[ii]" :placeholder="'请输入' + it.l"></el-input>
+        <el-input v-if="it.k === 'i'" v-model="genDlgForm[ii]" :placeholder="'请输入' + it.l" :maxlength="it.max" :show-word-limit="!!it.max"></el-input>
         <el-input v-else-if="it.k === 'p'" v-model="genDlgForm[ii]" type="password" show-password :placeholder="'请输入' + it.l"></el-input>
         <el-input v-else-if="it.k === 'a'" v-model="genDlgForm[ii]" type="textarea" :rows="2" :placeholder="'请输入' + it.l"></el-input>
         <el-input-number v-else-if="it.k === 'n'" v-model="genDlgForm[ii]" :min="0" controls-position="right" style="width:100%"></el-input-number>
@@ -1036,6 +1036,7 @@ const SIDE_MENU = [
     { name: '导出记录',   slug: 'system/export-log'    },
     { name: '法定假日',   slug: 'system/holiday'       },
     { name: '法大大授权', slug: 'system/fadada'        },
+    { name: '合同模板',   slug: 'system/contract-tpl'   },
   ]},
   { title: '商户管理', icon: 'el-icon-s-shop', slug: 'merchant', items: [
     { name: '商户列表', slug: 'merchant/list'            },
@@ -1082,6 +1083,7 @@ const SIDE_MENU = [
 const GEN_SLUGS = [
   'system/daily-settle', 'system/menu', 'system/role', 'system/agreement', 'system/admin',
   'system/payment', 'system/value-added', 'system/export-log', 'system/holiday', 'system/fadada',
+  'system/contract-tpl',
   'merchant/backend-menu', 'merchant/frontend-menu', 'merchant/role', 'merchant/staff',
   'merchant/contract-tpl', 'merchant/fulltime-job', 'merchant/flex-job', 'merchant/sensitive-word',
   'merchant/apply', 'merchant/user', 'merchant/employer', 'merchant/contract', 'merchant/order',
@@ -1975,6 +1977,20 @@ const ORDER_CONTRACTS = (function () {
   list.forEach(function (r) { if (!r.fileKind) r.fileKind = r.file ? 'pdf' : ''; r.fileUrl = r.fileUrl || ''; });
   return list;
 })();
+// 系统管理 / 合同模板：平台侧签署模板（同类可多条，同时只开启 1 条）
+const CONTRACT_TPLS = [
+  { id: 1, type: '版本升级', plat: '法大大', fdd: 'B1664382',
+    seal: '1770849447432486914', tid: '1770849301252751361',
+    peid: '858a33700f844f70a879427315a7607a', ceid: '', on: true, created: '2026-09-22 10:12:33' },
+  { id: 2, type: '版本升级', plat: '法大大', fdd: 'B2195292',
+    seal: '1783666388081119738', tid: '1789356036664120818',
+    peid: '858a33700f844f70a879427315a7607a', ceid: 'e68f03e73a0b4e78b8e476dfd220753a', on: false, created: '2026-09-22 09:40:11' },
+  { id: 3, type: '增值服务', plat: '法大大', fdd: 'B1664382',
+    seal: '1770849447432486914', tid: '1770849301252759902',
+    peid: '858a33700f844f70a879427315a7607a', ceid: '', on: true, created: '2026-09-20 15:02:48' },
+  { id: 4, type: '增值服务', plat: '腾讯电子签', fdd: '-',
+    seal: '', tid: '1768514612465246210', peid: '', ceid: '', on: false, created: '2026-09-18 11:26:05' },
+];
 const GEN_PAGES = {
   // ---------- 系统管理 ----------
   'system/daily-settle': {
@@ -2109,6 +2125,38 @@ const GEN_PAGES = {
     dlg: { title: '新增授权', w: '600px', items: [
       { l: '企业名称', k: 'i' }, { l: '企业类型', k: 's', o: ['企业', '个体工商户'] }, { l: '法人姓名', k: 'i' },
       { l: '统一社会信用代码', k: 'i' }, { l: '手机号', k: 'i' }, { l: '备注', k: 'a' }] },
+  },
+  // 平台侧合同模板：版本升级 / 增值服务两类模板，同类可以建多个，但同时只能开启 1 个
+  'system/contract-tpl': {
+    live: 'contractTpls', rowKey: 'id', idKey: 'id', createdKey: 'created',
+    swGroup: 'type',          // 表格开关按类型互斥：开启一个自动关闭同类其它模板
+    afterSave: function (vm, row) {
+      if (!row.on) return;
+      vm.contractTpls.forEach(function (r) { if (r !== row && r.type === row.type) r.on = false; });
+    },
+    filters: [ { l: '合同类型', k: 's', p: 'type', o: ['版本升级', '增值服务'] },
+               { l: '合同平台', k: 's', p: 'plat', o: ['法大大', '腾讯电子签'] },
+               { l: '状态', k: 's', p: 'on', o: ['开启', '关闭'] } ],
+    add: '新增合同模板',
+    cols: [ { l: '合同类型', p: 'type', w: 110 },
+            { l: '合同平台', p: 'plat', w: 110 }, { l: '法大大号', p: 'fdd', w: 120 },
+            { l: '印章ID', p: 'seal', w: 180 }, { l: '模板ID', p: 'tid', w: 180 },
+            { l: '主企业ID', p: 'peid', mw: 200 }, { l: '子企业ID', p: 'ceid', mw: 200 },
+            { l: '状态', p: 'on', k: 'sw', w: 90 },
+            { l: '创建时间', p: 'created', w: 165 } ],
+    ops: ['更新', '编辑', '复制', '删除'], opsW: 190,
+    // 复制出来的模板默认关闭，避免同类出现两个开启
+    onCopy: function () { return { on: false }; },
+    requireFields: [ { p: 'plat', l: '合同平台' }, { p: 'fdd', l: '法大大号' }, { p: 'tid', l: '模板ID' } ],
+    dlg: { title: '新增合同模板', w: '600px', items: [
+      { l: '合同类型', k: 'r', p: 'type', o: ['版本升级', '增值服务'] },
+      { l: '合同平台', k: 's', p: 'plat', o: ['法大大', '腾讯电子签'], def: 0 },
+      { l: '法大大号', k: 'i', p: 'fdd' },
+      { l: '印章ID', k: 'i', p: 'seal' },
+      { l: '模板ID', k: 'i', p: 'tid', max: 50 },
+      { l: '主企业ID', k: 'i', p: 'peid' },
+      { l: '子企业ID', k: 'i', p: 'ceid' },
+      { l: '状态', k: 'r', p: 'on', bool: true, o: ['开启', '关闭'], def: 0 }] },
   },
 
   // ---------- 商户管理 ----------
@@ -2760,6 +2808,18 @@ function genOp(o, row) {
     return;
   }
   if (o === '编辑' || o === '添加下级' || o === '添加') { genOpenDlg(row, o === '编辑'); return; }
+  if (o === '更新') { showToast('已同步「' + (row.name || label) + '」最新信息'); return; }
+  if (o === '复制') {
+    const arr = c.live ? VM[c.live] : VM.genAll;
+    const copy = Object.assign({}, row, c.onCopy ? c.onCopy(VM, row) : {});
+    copy[c.idKey || 'id'] = arr.reduce(function (m, r) { return Math.max(m, Number(r[c.idKey || 'id']) || 0); }, 0) + 1;
+    copy[c.createdKey || 'created'] = nowStr();
+    const at = arr.indexOf(row);
+    if (at >= 0) arr.splice(at + 1, 0, copy); else arr.unshift(copy);
+    if (c.afterSave) c.afterSave(VM, copy);
+    showToast('已复制');
+    return;
+  }
   showToast(o + '：' + (row.name || label));
 }
 function genOpenDlg(row, fill) {
@@ -2836,8 +2896,9 @@ function genSaveDlg() {
     }
   }
   const disp = label || patch.name || patch.mch || '';
-  if (VM.genEditRow) {
-    Object.assign(VM.genEditRow, patch);
+  let saved = VM.genEditRow;
+  if (saved) {
+    Object.assign(saved, patch);
     showToast((disp ? '「' + disp + '」' : '') + '已保存');
   } else {
     const now = nowStr();
@@ -2847,15 +2908,22 @@ function genSaveDlg() {
     row[c.createdKey || 'created'] = now;
     Object.assign(row, extra, patch);
     arr.unshift(row);
+    saved = row;
     VM.genPage = 1;
     showToast((disp ? '「' + disp + '」' : '') + '已新增');
   }
+  if (c.afterSave) c.afterSave(VM, saved);
   VM.genEditRow = null;
   VM.genDlg.visible = false;
 }
 function genSwitch(row, col, v) {
   row[col.p] = v;
   const c = VM.genView || {};
+  // 同组互斥：swGroup 指定分组字段，打开一个就关掉同组其它行（如合同模板同类只开一个）
+  if (v && c.swGroup) {
+    const src = c.live ? VM[c.live] : VM.genAll;
+    src.forEach(function (r) { if (r !== row && r[c.swGroup] === row[c.swGroup]) r[col.p] = false; });
+  }
   const first = (c.cols || [])[0];
   showToast('「' + (row.name || (first ? row[first.p] : '') || '') + '」' + col.l + '已' + (v ? '开启' : '关闭'));
 }
@@ -3145,6 +3213,8 @@ const VM = new Vue({
     orderList: ORDER_ROWS.map(r => Object.assign({}, r)),
     // 订单合同（订单管理 · 订单合同页签；新增/删除写这一份）
     orderContracts: ORDER_CONTRACTS.map(r => Object.assign({}, r)),
+    // 系统管理 · 合同模板（版本升级 / 增值服务各 1 个）
+    contractTpls: CONTRACT_TPLS.map(r => Object.assign({}, r)),
     // 更多版本 / 增值服务：官网展示用的独立列表，与版本管理不联动
     spMore: SP_MORE.map(i => Object.assign({}, i)),
     spSvc: SP_SVC.map(i => Object.assign({}, i)),
