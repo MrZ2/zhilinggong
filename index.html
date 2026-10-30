@@ -1002,20 +1002,28 @@
     #upgradePage .up-ver-card.active { border-color:var(--ad-primary); background:var(--ad-primary-bg); }
     #upgradePage .up-cur-badge { position:absolute; top:-1px; right:-1px; background:var(--ad-primary); color:#fff; font-size:11px; padding:1px 8px; border-radius:0 8px 0 8px; }
     #upgradePage .vc-name { font-size:15px; font-weight:700; color:var(--ad-text-1); }
-    #upgradePage .vc-price { margin:8px 0 6px; color:var(--ad-error); }
-    #upgradePage .vc-price .amt { font-size:20px; font-weight:700; }
-    #upgradePage .vc-price .unit, #upgradePage .sc-price .unit { font-size:12px; color:var(--ad-text-3); }
-    #upgradePage .vc-desc { font-size:12px; color:var(--ad-text-3); margin-bottom:8px; min-height:32px; }
-    #upgradePage .vc-feats { list-style:none; padding:0; margin:0; font-size:12px; color:var(--ad-text-2); line-height:1.9; }
+    #upgradePage .vc-feats { list-style:none; padding:0; margin:12px 0 0; font-size:12px; color:var(--ad-text-2); line-height:1.9; }
     #upgradePage .vc-feats li::before { content:'✓'; color:var(--ad-success); margin-right:6px; }
+    #upgradePage .up-dur-title { margin-top:22px; }
+    #upgradePage .up-dur-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+    #upgradePage .up-dur-card { position:relative; padding:16px 18px; border:1.5px solid var(--ad-border-secondary); border-radius:8px; background:#fff; cursor:pointer; transition:.2s; }
+    #upgradePage .up-dur-card:hover { border-color:var(--ad-primary); }
+    #upgradePage .up-dur-card.active { border-color:var(--ad-primary); background:var(--ad-primary-bg); }
+    #upgradePage .ud-label { font-size:13px; font-weight:600; color:var(--ad-text-1); }
+    #upgradePage .ud-price { margin-top:8px; font-size:24px; font-weight:700; line-height:1.2; color:var(--ad-error); font-variant-numeric:tabular-nums; }
+    #upgradePage .ud-sub { margin-top:2px; font-size:12px; color:var(--ad-text-3); }
+    #upgradePage .ud-check { position:absolute; top:10px; right:12px; color:var(--ad-primary); font-size:15px; }
+    #upgradePage .up-note { display:flex; align-items:flex-start; gap:8px; margin-top:22px; padding:14px 16px; border:1px dashed var(--ad-border); border-radius:8px; background:var(--ad-fill); font-size:13px; line-height:1.8; color:var(--ad-text-2); }
+    #upgradePage .up-note i { margin-top:3px; font-size:15px; color:var(--ad-primary); }
+    #upgradePage .up-agree-link { font-size:13px; color:var(--ad-primary); cursor:pointer; }
+    #upgradePage .up-agree-link:hover { text-decoration:underline; }
     #upgradePage .up-svc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; flex-shrink:0; }
     #upgradePage .up-svc-card { position:relative; border:1.5px solid var(--ad-border-secondary); border-radius:8px; padding:16px 16px 12px; cursor:pointer; transition:.2s; }
     #upgradePage .up-svc-card:hover { border-color:var(--ad-primary); }
     #upgradePage .up-svc-card.active { border-color:var(--ad-primary); background:var(--ad-primary-bg); }
     #upgradePage .up-svc-check { position:absolute; top:10px; right:12px; color:var(--ad-primary); font-size:14px; }
     #upgradePage .sc-name { font-size:14px; font-weight:700; color:var(--ad-text-1); }
-    #upgradePage .sc-price { color:var(--ad-error); font-weight:600; margin:6px 0; }
-    #upgradePage .sc-desc { font-size:12px; color:var(--ad-text-3); }
+    #upgradePage .sc-desc { margin-top:8px; font-size:12px; line-height:1.7; color:var(--ad-text-3); }
     #upgradePage .up-svc-list { margin-top:16px; border:1px solid var(--ad-border-secondary); border-radius:8px; flex:1; min-height:120px; overflow-y:auto; }
     #upgradePage .up-svc-list-head, #upgradePage .up-svc-list-row { display:grid; grid-template-columns:1.6fr 100px 170px 110px 56px; align-items:center; gap:12px; padding:8px 16px; }
     #upgradePage .up-svc-list-head { background:#FAFAFA; font-size:12.5px; color:var(--ad-text-3); position:sticky; top:0; z-index:2; }
@@ -1060,6 +1068,17 @@
     .up-pay-dlg .up-pay-bank .up-pay-line { display:flex; justify-content:space-between; font-size:13px; color:var(--ad-text-2); line-height:2; }
     .up-pay-dlg .up-pay-bank .up-pay-line .amt { color:var(--ad-error); font-weight:700; }
     .up-pay-dlg .up-pay-bank .up-pay-tip { text-align:left; margin-top:6px; color:var(--ad-warning); }
+    /* 购买协议（版本 / 增值服务） */
+    .up-agree-dlg { max-width: calc(100vw - 24px); }
+    .up-agree-dlg .el-dialog__body { max-height: 68vh; overflow-y: auto; }
+    .ag-doc { font-size: 13px; line-height: 1.9; color: var(--ad-text-1); }
+    .ag-parties { padding: 10px 14px; border-radius: 6px; background: var(--ad-fill); font-size: 12.5px; line-height: 1.9; color: var(--ad-text-2); }
+    .ag-intro { margin: 14px 0 6px; }
+    .ag-sec { margin-top: 12px; }
+    .ag-h { margin-bottom: 2px; font-weight: 600; }
+    .ag-sec p { margin: 0; color: var(--ad-text-2); }
+    .ag-sign { margin-top: 22px; padding-top: 12px; border-top: 1px dashed var(--ad-border); font-size: 12.5px; line-height: 2; color: var(--ad-text-2); }
+    .ag-sign span { display: block; }
     /* ===== 登录 / 注册（各自独立的整屏页面） ===== */
     .auth-page { position: fixed; inset: 0; z-index: 2000; background: linear-gradient(135deg, #f0f5ff 0%, #f5f5f5 55%, #e6f4ff 100%); display: flex; align-items: center; justify-content: center; padding: 24px; overflow: auto; }
     .auth-wrap { width: 900px; max-width: 100%; background: #fff; border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,.10); display: flex; overflow: hidden; }
@@ -4289,29 +4308,46 @@
     <el-tabs v-model="upgradeTab" type="card" class="up-tabs">
       <el-tab-pane label="版本购买" name="version">
         <div class="up-pane-body">
-          <div class="up-sec-title">选择版本<span class="up-sec-tip">按年购买</span></div>
+          <div class="up-sec-title">选择版本<span class="up-sec-tip">价格按所选购买时长结算</span></div>
           <div class="up-ver-grid">
             <div v-for="v in upgradeVersions" :key="v.id" class="up-ver-card"
                  :class="{ active: upgradeVersionId === v.id, current: v.name === upgradeCurrent }"
                  @click="selectUpgradeVersion(v.id)">
               <span v-if="v.name === upgradeCurrent" class="up-cur-badge">当前版本</span>
               <div class="vc-name">{{ v.name }}</div>
-              <div class="vc-price"><span class="amt">¥{{ v.pricePerYear }}</span><span class="unit">/年</span></div>
-              <div class="vc-desc">{{ v.desc }}</div>
               <ul class="vc-feats"><li v-for="f in v.features" :key="f">{{ f }}</li></ul>
             </div>
           </div>
+
+          <div class="up-sec-title up-dur-title" v-if="upgradeBuyMode === 'buy'">选择购买时长<span class="up-sec-tip">默认 1 年，价格随所选时长变化</span></div>
+          <div class="up-dur-grid" v-if="upgradeBuyMode === 'buy'">
+            <div v-for="p in upgradeDurationCards" :key="p.d" class="up-dur-card"
+                 :class="{ active: upgradeVersionYears === p.d }" @click="upgradeVersionYears = p.d">
+              <span class="ud-label">{{ p.d }} 年</span>
+              <div class="ud-price">¥{{ p.total }}</div>
+              <div class="ud-sub">¥{{ upgradeCurVersion ? upgradeCurVersion.pricePerYear : 0 }}/年</div>
+              <i v-if="upgradeVersionYears === p.d" class="ud-check el-icon-check"></i>
+            </div>
+          </div>
+          <div class="up-note" v-else>
+            <i :class="upgradeBuyMode === 'free' ? 'el-icon-success' : 'el-icon-service'"></i>
+            <span v-if="upgradeBuyMode === 'free'">免费版无需购买，可直接使用现有功能；需要更多能力时再选择付费版本。</span>
+            <span v-else>独立部署需要结合企业情况单独评估，请联系客服获取方案与报价。</span>
+          </div>
         </div>
         <div class="up-action">
-          <div class="up-action-l">
-            <span class="dur-label">购买时长</span>
-            <el-radio-group v-model="upgradeVersionYears" size="small">
-              <el-radio-button v-for="d in upgradeDurations" :key="d" :label="d">{{ d }} 年</el-radio-button>
-            </el-radio-group>
+          <div class="up-action-l up-agree" v-if="upgradeBuyMode === 'buy'">
+            <el-checkbox v-model="upgradeAgreeVersion">我已阅读并同意</el-checkbox>
+            <span class="up-agree-link" @click="openUpgradeAgreement('version')">《版本购买协议》</span>
+          </div>
+          <div class="up-action-l" v-else>
+            <span class="up-sel-info">{{ upgradeBuyMode === 'free' ? '免费版无需购买' : '独立部署需联系客服' }}</span>
           </div>
           <div class="up-action-r">
-            <span class="up-action-total">合计 <span class="amt">¥{{ upgradeVersionAmount }}</span></span>
-            <el-button type="primary" @click="openUpgradePay('version')">购买版本</el-button>
+            <span class="up-action-total" v-if="upgradeBuyMode === 'buy'">合计 <span class="amt">¥{{ upgradeVersionAmount }}</span></span>
+            <el-button v-if="upgradeBuyMode === 'buy'" type="primary" :disabled="!upgradeAgreeVersion" @click="openUpgradePay('version')">购买版本</el-button>
+            <el-button v-else-if="upgradeBuyMode === 'deploy'" type="primary" @click="openUpgradeContact">联系客服</el-button>
+            <el-button v-else disabled>无需购买</el-button>
           </div>
         </div>
       </el-tab-pane>
@@ -4323,11 +4359,6 @@
                :class="{ active: upgradeServiceItems.some(it => it.id === s.id) }" @click="toggleUpgradeService(s.id)">
             <i class="up-svc-check" :class="upgradeServiceItems.some(it => it.id === s.id) ? 'el-icon-check' : 'el-icon-plus'"></i>
             <div class="sc-name">{{ s.name }}</div>
-            <div class="sc-price">
-              <template v-if="s.mode === 'pack'">¥{{ s.packs[0].price }}<span class="unit">起 / {{ s.packs[0].qty }}{{ s.unit }}</span></template>
-              <template v-else-if="s.mode === 'yearQty'">¥{{ s.price }}<span class="unit">/份/年</span></template>
-              <template v-else>¥{{ s.price }}<span class="unit">/{{ s.unit }}</span></template>
-            </div>
             <div class="sc-desc">{{ s.desc }}</div>
           </div>
         </div>
@@ -4361,10 +4392,14 @@
         <div class="up-svc-empty" v-else>尚未选择增值服务，点击上方卡片进行多选</div>
 
         <div class="up-action">
-          <div class="up-action-l"><span class="up-sel-info">已选 {{ upgradeServiceItems.length }} 项</span></div>
+          <div class="up-action-l up-agree">
+            <el-checkbox v-model="upgradeAgreeService">我已阅读并同意</el-checkbox>
+            <span class="up-agree-link" @click="openUpgradeAgreement('service')">《增值服务购买协议》</span>
+            <span class="up-sel-info">已选 {{ upgradeServiceItems.length }} 项</span>
+          </div>
           <div class="up-action-r">
             <span class="up-action-total">合计 <span class="amt">¥{{ upgradeServiceAmount }}</span></span>
-            <el-button type="primary" @click="openUpgradePay('service')">购买增值服务</el-button>
+            <el-button type="primary" :disabled="!upgradeAgreeService" @click="openUpgradePay('service')">购买增值服务</el-button>
           </div>
         </div>
       </el-tab-pane>
@@ -4409,6 +4444,29 @@
   <span slot="footer">
     <el-button @click="closeUpgradePay">取消</el-button>
     <el-button type="primary" @click="confirmUpgradePay">确认支付</el-button>
+  </span>
+</el-dialog>
+
+<!-- ===== 购买协议（版本 / 增值服务各一份） ===== -->
+<el-dialog :title="upgradeAgreementDoc.title" :visible.sync="upgradeAgreeDlg.visible" width="760px" top="6vh" :close-on-click-modal="false" append-to-body custom-class="up-agree-dlg">
+  <div class="ag-doc">
+    <div class="ag-parties">
+      <div>甲方（服务提供方）：深圳市智灵工科技有限公司</div>
+      <div>乙方（购买方）：深圳市辉煌达人力资源管理有限公司</div>
+    </div>
+    <p class="ag-intro">{{ upgradeAgreementDoc.intro }}</p>
+    <div class="ag-sec" v-for="(s, i) in upgradeAgreementDoc.sections" :key="i">
+      <div class="ag-h">{{ s.h }}</div>
+      <p>{{ s.p }}</p>
+    </div>
+    <div class="ag-sign">
+      <span>{{ upgradeAgreementDoc.footer }}</span>
+      <span>签署日期：{{ upgradeToday }}</span>
+    </div>
+  </div>
+  <span slot="footer">
+    <el-button size="small" @click="upgradeAgreeDlg.visible = false">关闭</el-button>
+    <el-button type="primary" size="small" @click="upgradeAgreementAgree">我已阅读并同意</el-button>
   </span>
 </el-dialog>
 <script>
@@ -4489,6 +4547,46 @@ const UPGRADE_SERVICES = [
   { id:8, name:'简历识别',  mode:'pack',    unit:'份',  packs:[{qty:200,price:99},{qty:500,price:199},{qty:1000,price:349}], desc:'简历智能解析，按固定份数包购买' },
 ];
 const UPGRADE_BANK = { payee:'深圳市智灵工科技有限公司', bank:'招商银行深圳分行营业部', account:'7559 **** **** 8888', note:'请在转账备注中填写订单号' };
+// 版本购买与增值服务购买的协议分开，各自一份完整文本
+const UPGRADE_AGREEMENTS = {
+  version: {
+    title: '智灵工版本购买协议',
+    intro: '本协议由深圳市智灵工科技有限公司（甲方）与购买平台版本服务的企业用户（乙方）就版本服务的购买与使用达成，双方确认已充分阅读并理解全部条款。',
+    sections: [
+      { h: '一、服务内容', p: '甲方向乙方提供「标准版」「高级版」「电子合同」等版本服务，具体功能权益以购买页展示的版本卡片为准。免费版无需购买；独立部署不在本协议范围内，需另行签署专项协议。' },
+      { h: '二、服务期限', p: '服务自支付成功之日起开通，有效期按乙方所选购买时长（1 年 / 3 年 / 5 年）连续计算。到期未续费的，账号自动降为免费版，历史数据保留 30 天供导出。' },
+      { h: '三、费用与支付', p: '服务费用以购买页按所选版本与时长结算的金额为准，支持支付宝与对公转账。乙方完成支付后，甲方在 1 个工作日内开通对应版本权益。' },
+      { h: '四、发票', p: '乙方可在「系统管理 → 订单管理 → 申请开票」提交开票申请，甲方按实际支付金额开具电子普通发票或增值税专用发票。' },
+      { h: '五、双方权利义务', p: '甲方应保障服务在订阅期内的可用性不低于 99.5%，因系统维护造成的停机将提前 24 小时公告；乙方应妥善保管账号，并对账号下的操作与数据合法性负责。' },
+      { h: '六、数据与隐私', p: '乙方在平台产生的业务数据归乙方所有。甲方仅在提供服务所必需的范围内处理数据，并采取加密、访问控制等措施保障安全，不向第三方披露，法律法规另有规定的除外。' },
+      { h: '七、升级与降级', p: '乙方可在服务有效期内补差价升级版本，升级后有效期不变；降级需待当前订阅周期结束后生效，已支付费用不退还。' },
+      { h: '八、退款与补偿', p: '版本服务开通后不支持退款。因甲方原因导致服务连续中断超过 24 小时的，按实际中断时长顺延服务期限；因乙方自身原因（如账号封禁、违规使用）造成服务中止的，不予补偿。' },
+      { h: '九、违约责任', p: '任何一方违反本协议给对方造成损失的，应承担相应赔偿责任；乙方逾期支付的，甲方有权暂停服务，暂停期间不计入服务期。' },
+      { h: '十、不可抗力', p: '因自然灾害、政策调整、电信运营商故障等不可抗力导致服务中断的，双方互不承担违约责任，受影响方应及时通知对方并尽力减少损失。' },
+      { h: '十一、争议解决', p: '本协议适用中华人民共和国法律。双方发生争议应先友好协商，协商不成的，任一方可向深圳市南山区人民法院提起诉讼。' },
+      { h: '十二、其他', p: '本协议自乙方确认购买并支付成功之日起生效，电子文本与纸质文本具有同等法律效力。甲方可根据业务调整更新协议版本，更新内容将在平台公告。' },
+    ],
+    footer: '甲方：深圳市智灵工科技有限公司　　乙方：深圳市辉煌达人力资源管理有限公司',
+  },
+  service: {
+    title: '智灵工增值服务购买协议',
+    intro: '本协议由深圳市智灵工科技有限公司（甲方）与购买平台增值服务的企业用户（乙方）就增值服务的购买与使用达成，双方确认已充分阅读并理解全部条款。',
+    sections: [
+      { h: '一、服务内容', p: '增值服务包括合同套餐、付款渠道、简历公海、用人单位、集团管理、身份证识别、宿舍管理、简历识别等模块，乙方可按需多选，具体以购买页展示的服务卡片与说明为准。' },
+      { h: '二、计费方式', p: '增值服务按各自规格独立计费：合同套餐按「份 × 年」计费；付款渠道、用人单位、集团管理、宿舍管理按个数计费；简历公海、身份证识别、简历识别按固定份数包计费。最终金额以购买页所选规格及订单金额为准。' },
+      { h: '三、开通与生效', p: '乙方支付成功后，所选增值服务即时开通；按年计费的服务自开通之日起计算有效期，按份数或次数计费的服务按实际使用量扣减，未使用部分不结转。' },
+      { h: '四、用量与续购', p: '份数包或次数用尽后，乙方可随时续购，续购部分叠加至现有余额；年度服务到期前 30 天，甲方将通过站内通知提醒续费。' },
+      { h: '五、使用限制', p: '增值服务仅限乙方在本平台范围内使用，不得转售、出租或共享给关联主体以外的第三方，不得用于违法违规用途。' },
+      { h: '六、双方权利义务', p: '甲方应保障增值服务的稳定运行，并在服务调整或下线前提前 30 天通知；乙方应按平台规则使用服务，并对其业务数据的合法性负责。' },
+      { h: '七、发票', p: '乙方可在「系统管理 → 订单管理 → 申请开票」按实际支付金额申请电子普通发票或增值税专用发票，甲方在收到申请后 5 个工作日内开具。' },
+      { h: '八、退款', p: '增值服务一经开通即开始计费，原则上不支持退款；因甲方原因导致服务无法使用的，可联系客服按剩余用量协商处理。' },
+      { h: '九、协议变更与终止', p: '甲方可根据产品调整更新本协议，更新后将在平台公告并自公告之日起生效；乙方不同意更新内容的，可在生效前停止使用相关服务。' },
+      { h: '十、争议解决', p: '本协议适用中华人民共和国法律。双方发生争议应先友好协商，协商不成的，任一方可向深圳市南山区人民法院提起诉讼。' },
+      { h: '十一、其他', p: '本协议自乙方确认购买并支付成功之日起生效，与《智灵工版本购买协议》相互独立；纸质与电子文本具有同等法律效力。' },
+    ],
+    footer: '甲方：深圳市智灵工科技有限公司　　乙方：深圳市辉煌达人力资源管理有限公司',
+  },
+};
 const JOB_RAW = [
   { id:'J001', jobName:'电子厂普工', employer:'武汉华星光电技术有限公司', workType:'生产制造', position:'普工/操作工', postType:'蓝领',
     salaryMin:'5500', salaryMax:'7500', advisor:'王顾问', audit:'已通过', on:true, full:false, region:'武汉', publisher:'张明远', auditor:'平台审核-王芳', auditTime:'2026-08-03 10:24', deptScope:'part', depts:['招聘一部','招聘二部','驻厂管理部'], applicants:128, created:'2026-08-02',
@@ -6390,6 +6488,15 @@ function closeUpgrade() {
   switchPage(p || 'ph', name);
 }
 function selectUpgradeVersion(id) { VM.upgradeVersionId = id; }
+function openUpgradeContact() { openQrDlg('kefu'); }
+function openUpgradeAgreement(type) {
+  VM.upgradeAgreeDlg = { visible: true, type: type === 'service' ? 'service' : 'version' };
+}
+function upgradeAgreementAgree() {
+  if (VM.upgradeAgreeDlg.type === 'service') VM.upgradeAgreeService = true;
+  else VM.upgradeAgreeVersion = true;
+  VM.upgradeAgreeDlg.visible = false;
+}
 function serviceRowAmount(row) {
   if (row.mode === 'pack') return row.packs[row.packIdx].price;
   if (row.mode === 'yearQty') return row.price * row.years * row.qty;
@@ -6413,10 +6520,16 @@ function toggleUpgradeService(id) {
 }
 function removeUpgradeService(id) { VM.upgradeServiceItems = VM.upgradeServiceItems.filter(it => it.id !== id); }
 function openUpgradePay(mode) {
+  const agreed = mode === 'version' ? VM.upgradeAgreeVersion : VM.upgradeAgreeService;
+  if (!agreed) {
+    VM.$message.warning('请先阅读并勾选' + (mode === 'version' ? '《版本购买协议》' : '《增值服务购买协议》'));
+    return;
+  }
   const dlg = VM.upgradePayDlg;
   if (mode === 'version') {
     const v = VM.upgradeCurVersion;
     if (v.id === 1) { VM.$message.warning('免费版无需购买，可直接使用'); return; }
+    if (v.id === 5) { VM.$message.warning('独立部署请联系客服获取方案与报价'); return; }
     dlg.items = [{ name: v.name, amount: v.pricePerYear * VM.upgradeVersionYears,
       desc: '¥' + v.pricePerYear + '/年 × ' + VM.upgradeVersionYears + '年' }];
   } else {
@@ -8966,6 +9079,7 @@ const FN_BRIDGE = {
   onMethodCommTypeChange, onMethodAdjustChange,
   doLogin, goLogin, goRegister, toStep2, backToRegister, sendSmsCode, handleLicenseChange, removeLicense, submitEnt, openQrDlg, logoutNow, qrSvg,
   openUpgrade, closeUpgrade, selectUpgradeVersion, toggleUpgradeService, removeUpgradeService, openUpgradePay, closeUpgradePay, confirmUpgradePay,
+  openUpgradeAgreement, openUpgradeContact, upgradeAgreementAgree,
   serviceRowAmount,
   openAdvisorDlg, saveAdvisor, deleteAdvisor, toggleAdvisor, onAdvisorTypeChange, handleAdvisorQrChange, handleAdvisorQrRemove, handleAdvisorQrExceed, advisorTypeText, advisorSearch, advisorReset,
   openClientEdit, closeClientEdit, openClientAddrDlg, confirmClientAddr, saveClient, deleteClient, verifyClientName, handleClientImageChange, handleClientImageRemove, handleClientCertChange, handleClientCertRemove, clientAddrText, clientSearch, clientReset,
@@ -9518,6 +9632,8 @@ const VM = new Vue({
     upgradeVersions: UPGRADE_VERSIONS, upgradeServices: UPGRADE_SERVICES, upgradeDurations: UPGRADE_DURATIONS,
     upgradeBank: UPGRADE_BANK,
     upgradeVersionId: 3, upgradeVersionYears: 1, upgradeServiceItems: [],
+    upgradeAgreeVersion: false, upgradeAgreeService: false,
+    upgradeAgreeDlg: { visible: false, type: 'version' },
     upgradePayDlg: { visible: false, mode: '', items: [], amount: 0, method: 'alipay' },
   },
   computed: {
@@ -9528,6 +9644,23 @@ const VM = new Vue({
         .filter(g => g.tags.length);
     },
     upgradeCurVersion() { return this.upgradeVersions.find(v => v.id === this.upgradeVersionId) || this.upgradeVersions[0]; },
+    // 免费版与独立部署不走在线购买：free 无需购买，deploy 联系客服
+    upgradeBuyMode() {
+      const v = this.upgradeCurVersion;
+      if (!v) return 'buy';
+      if (v.id === 1) return 'free';
+      if (v.id === 5) return 'deploy';
+      return 'buy';
+    },
+    upgradeAgreementDoc() { return UPGRADE_AGREEMENTS[this.upgradeAgreeDlg.type] || UPGRADE_AGREEMENTS.version; },
+    upgradeToday() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    },
+    upgradeDurationCards() {
+      const v = this.upgradeCurVersion;
+      return (this.upgradeDurations || []).map(d => ({ d: d, total: (v ? v.pricePerYear : 0) * d }));
+    },
     upgradeVersionAmount() { const v = this.upgradeCurVersion; return (v ? v.pricePerYear : 0) * this.upgradeVersionYears; },
     upgradeServiceAmount() { return this.upgradeServiceItems.reduce((a, it) => a + serviceRowAmount(it), 0); },
     curTabCfg() { return TAB_CFG[this.curTab]; },
