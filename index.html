@@ -452,6 +452,41 @@
     /* 抽屉 */
     .att-drawer .el-drawer__body { padding: 0; }
     .att-drawer-body { padding: 20px 24px 28px; }
+    /* 考勤导入 */
+    .att-imp-file { margin-left: 8px; font-size: 12px; color: var(--ad-text-2); word-break: break-all; }
+    .att-imp-file .el-button { margin-left: 4px; }
+    .att-imp-mode { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+    .att-imp-label { font-size: 13px; color: var(--ad-text-2); }
+    .att-imp-result-period { color: var(--ad-primary); font-weight: 500; }
+    .att-import-dlg .el-dialog__body { max-height: calc(100vh - 250px); overflow-y: auto; }
+    /* 考勤规则 / 模板顺序 */
+    .att-imp-field { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+    .att-imp-asterisk { color: #f56c6c; font-style: normal; margin-right: 2px; }
+    .att-imp-order { margin-bottom: 12px; }
+    .att-imp-order-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .att-imp-order-row:last-child { margin-bottom: 0; }
+    .att-imp-order-no { width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%; background: var(--ad-fill);
+      color: var(--ad-text-3); font-size: 11px; display: flex; align-items: center; justify-content: center; }
+    .att-imp-hint { font-size: 12px; color: var(--ad-text-3); line-height: 1.6; }
+    .att-imp-bad { color: var(--ad-error, #f56c6c); }
+    .att-imp-bad b { color: var(--ad-error, #f56c6c); }
+    /* 导入结果 */
+    .att-imp-result { text-align: center; padding: 8px 0 4px; }
+    .att-imp-result-icon { width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; background: #f0f9eb; color: #67c23a; font-size: 22px; }
+    .att-imp-result-icon.partial { background: #fdf6ec; color: #e6a23c; }
+    .att-imp-result-icon.failed { background: #fef0f0; color: #f56c6c; }
+    .att-imp-result-title { font-size: 16px; font-weight: 600; color: var(--ad-text-1); }
+    .att-imp-result-sub { font-size: 12px; color: var(--ad-text-3); margin-top: 4px; }
+    .att-imp-nums { display: flex; gap: 8px; margin: 18px 0 14px; }
+    .att-imp-nums > div { flex: 1; background: var(--ad-fill); border-radius: 8px; padding: 10px 0; text-align: center; }
+    .att-imp-nums b { display: block; font-size: 20px; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    .att-imp-nums b.bad { color: var(--ad-error, #f56c6c); }
+    .att-imp-nums span { font-size: 12px; color: var(--ad-text-3); }
+    .att-imp-result-tip { font-size: 12px; color: var(--ad-text-3); line-height: 1.7; margin-bottom: 12px; text-align: center; }
+    .att-imp-result-actions { text-align: center; }
+    .att-hist-tip { font-size: 12px; color: var(--ad-text-3); margin: 6px 0 12px; }
+    .att-hist-ok { color: #67c23a; }
+    .att-hist-bad { color: var(--ad-error, #f56c6c); }
     .drawer-h { font-size: 16px; font-weight: 600; color: var(--ad-text-1); }
     .inv-suffix { font-size: 12px; font-weight: 400; color: rgba(0,0,0,.45); }
     .el-image.pd-thumb { width: 40px; height: 40px; border-radius: 4px; border: 1px solid #e8e8e8; flex-shrink: 0; }
@@ -558,8 +593,42 @@
     #advisorPage .ad-qr-none { color: var(--ad-text-4); font-size: 12px; }
     #advisorPage .ad-code { font-family: Consolas, Monaco, monospace; font-size: 12px; color: var(--ad-text-2); word-break: break-all; }
     #advisorPage .pc-filter-foot { padding-bottom: 4px; }
-    /* ===== 关联客户 ===== */
+    /* ===== 面试管理 ===== */
+    #interviewPage .iv-search-tabs > .el-tabs__header { margin-bottom: 14px; }
+    #interviewPage .iv-search-tabs > .el-tabs__header .el-tabs__item { height: 36px; line-height: 36px; font-size: 14px; }
+    #interviewPage .iv-search-tabs > .el-tabs__content, #interviewPage .iv-list-tabs > .el-tabs__content { display: none; }
+    #interviewPage .iv-filter { padding-top: 2px; }
+    #interviewPage .iv-filter .el-form-item { margin-bottom: 14px; }
+    #interviewPage .iv-filter-foot { margin-top: 0; padding-bottom: 2px; }
+    #interviewPage .iv-list-tabs > .el-tabs__header { margin-bottom: 12px; }
+    #interviewPage .iv-list-tabs > .el-tabs__header .el-tabs__item { height: 40px; line-height: 40px; font-size: 14px; }
+    #interviewPage .iv-none { color: var(--ad-text-4); }
+    #interviewPage .iv-name { font-weight: 500; }
+    #interviewPage .iv-bottom { padding: 12px 16px; }
+    .iv-member-dlg .el-dialog__body { padding: 14px 20px 6px; }
+    .iv-member-summary { font-size: 13px; color: var(--ad-text-2); margin-bottom: 12px; }
+    .iv-member-summary b { color: var(--ad-primary); }
+    .iv-member-search { margin-bottom: 12px; }
+    .iv-member-list { display: block; max-height: 320px; overflow-y: auto; }
+    .iv-member-item { display: flex; align-items: center; width: 100%; margin: 0 0 8px !important; padding: 10px 12px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; box-sizing: border-box; }
+    .iv-member-item:last-child { margin-bottom: 0 !important; }
+    .iv-member-item.is-checked { border-color: var(--ad-primary); background: var(--ad-primary-bg); }
+    .iv-member-item.is-disabled { opacity: .55; cursor: not-allowed; }
+    .iv-member-item .el-radio__label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding-left: 8px; }
+    .iv-member-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--ad-primary-bg); color: var(--ad-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+    .iv-member-main { flex: 1; min-width: 0; }
+    .iv-member-name, .iv-member-role { display: block; }
+    .iv-member-name { font-size: 13px; font-weight: 600; color: var(--ad-text-1); line-height: 1.4; }
+    .iv-member-role { font-size: 12px; color: var(--ad-text-3); line-height: 1.4; }
+    .iv-member-phone { font-size: 12px; color: var(--ad-text-3); flex-shrink: 0; }
+    .iv-member-empty { padding: 24px 0; text-align: center; color: var(--ad-text-3); font-size: 13px; }
+    #interviewPage .tag-count-tip, #interviewRulesPage .tag-count-tip { font-size: 12px; color: var(--ad-text-3); }
+    #interviewPage .iv-copy-btn { padding: 0; margin-left: 2px; color: var(--ad-text-3); vertical-align: baseline; }
+    #interviewPage .iv-copy-btn:hover { color: var(--ad-primary); }
+    #interviewRulesPage .ep-head { margin-bottom: 12px; padding: 0; background: transparent; font-size: 15px; }
+    /* ===== 用工单位 ===== */
     #clientPage .cl-none { color: var(--ad-text-4); font-size: 12px; }
+    #clientPage .cl-row-img { width: 44px; height: 44px; border-radius: 4px; cursor: zoom-in; vertical-align: middle; }
     .cl-verify-dlg .cl-code { font-family: Consolas, Monaco, monospace; font-size: 12px; color: var(--ad-text-2); }
     .cl-verify-dlg .cl-verify-item { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--ad-border-secondary); font-size: 13px; }
     .cl-verify-dlg .cl-verify-label { width: 122px; flex-shrink: 0; color: var(--ad-text-3); }
@@ -707,6 +776,101 @@
     .payroll-issue { font-size: 12px; line-height: 1.7; }
     .payroll-issue.err { color: var(--ad-error-text); }
     .payroll-issue.risk { color: var(--ad-warning-text); }
+    /* ===== 一键算薪 ===== */
+    #oneClickPayPage .oc-config { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; align-items: end; }
+    #oneClickPayPage .oc-field { min-width: 0; }
+    #oneClickPayPage .oc-label { display: flex; align-items: center; margin-bottom: 6px; font-size: 12px; font-weight: 500; color: var(--ad-text-2); }
+    #oneClickPayPage .oc-label .req { color: var(--ad-error); margin-right: 2px; }
+    #oneClickPayPage .oc-match-row { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
+    #oneClickPayPage .oc-match { display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 10px 12px; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: #fff; }
+    #oneClickPayPage .oc-match-ic { width: 30px; height: 30px; flex-shrink: 0; border-radius: 8px; background: var(--ad-primary-bg); color: var(--ad-primary); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    #oneClickPayPage .oc-match-main { min-width: 0; flex: 1; }
+    #oneClickPayPage .oc-match-t { font-size: 12px; color: var(--ad-text-3); }
+    #oneClickPayPage .oc-match-v { margin-top: 3px; font-size: 13px; font-weight: 600; color: var(--ad-text-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #oneClickPayPage .oc-match-v.muted { font-weight: 400; color: var(--ad-text-4); }
+    #oneClickPayPage .oc-match-act { flex-shrink: 0; }
+    #oneClickPayPage .oc-run-row { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--ad-border-secondary); }
+    #oneClickPayPage .oc-run-btn { min-width: 148px; height: 42px; font-size: 15px; font-weight: 600; }
+    #oneClickPayPage .oc-progress { margin-top: 12px; }
+    #oneClickPayPage .oc-progress-t { margin-top: 6px; font-size: 12px; color: var(--ad-text-2); }
+    #oneClickPayPage .oc-warn { margin-top: 12px; padding: 8px 12px; border-radius: var(--ad-radius); background: var(--ad-warning-bg); font-size: 12px; line-height: 1.7; color: var(--ad-warning-text); }
+    #oneClickPayPage .oc-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 12px; }
+    #oneClickPayPage .oc-stat { padding: 12px 14px; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: var(--ad-fill); }
+    #oneClickPayPage .oc-stat-t { font-size: 12px; color: var(--ad-text-3); }
+    #oneClickPayPage .oc-stat-v { margin-top: 6px; font-size: 20px; font-weight: 700; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    #oneClickPayPage .oc-stat-v.small { font-size: 16px; }
+    #oneClickPayPage .oc-stat-v.warn { color: var(--ad-warning-text); }
+    #oneClickPayPage .oc-result-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    #oneClickPayPage .oc-result-head .es-title { margin-bottom: 0; }
+    #oneClickPayPage .oc-result-head .oc-result-acts { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    #oneClickPayPage .oc-name { font-weight: 600; color: var(--ad-text-1); }
+    #oneClickPayPage .oc-sub { margin-top: 2px; font-size: 12px; color: var(--ad-text-3); }
+    #oneClickPayPage .oc-summary-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    #oneClickPayPage .oc-summary-note { margin-bottom: 10px; padding: 8px 12px; border-radius: var(--ad-radius); background: var(--ad-warning-bg); font-size: 12px; line-height: 1.7; color: var(--ad-warning-text); }
+    #oneClickPayPage .oc-empty { padding: 26px 0; }
+    #oneClickPayPage .oc-step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    #oneClickPayPage .oc-step-head .es-title { margin-bottom: 0; }
+    #oneClickPayPage .oc-step-head .el-button { margin-left: auto; }
+    #oneClickPayPage .oc-scheme-inline { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--ad-border-secondary); }
+    #oneClickPayPage .oc-scheme-inline-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    #oneClickPayPage .oc-scheme-inline-head .es-title { margin-bottom: 0; }
+    .oc-scheme-dlg .oc-scheme-grid, #oneClickPayPage .oc-scheme-grid { display: grid; grid-template-columns: 280px 1fr; gap: 14px; align-items: start; }
+    .oc-scheme-dlg .oc-scheme-left, .oc-scheme-dlg .oc-scheme-right, #oneClickPayPage .oc-scheme-left, #oneClickPayPage .oc-scheme-right { min-width: 0; padding: 12px; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: var(--ad-fill); }
+    .oc-scheme-dlg .oc-panel-h, #oneClickPayPage .oc-panel-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: var(--ad-text-1); }
+    .oc-scheme-dlg .oc-chip-list, #oneClickPayPage .oc-chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; max-height: 300px; overflow-y: auto; }
+    .oc-scheme-dlg .oc-formula-chip, #oneClickPayPage .oc-formula-chip { padding: 3px 10px; border: 1px solid var(--ad-primary-border); border-radius: 12px; background: #fff; color: var(--ad-primary); font-size: 12px; cursor: pointer; }
+    .oc-scheme-dlg .oc-formula-chip:hover, #oneClickPayPage .oc-formula-chip:hover { background: var(--ad-primary-bg); }
+    .oc-scheme-dlg .oc-formula-chip.ghost, #oneClickPayPage .oc-formula-chip.ghost { border-color: var(--ad-border); color: var(--ad-text-2); background: #fff; }
+    .oc-scheme-dlg .oc-formula-list, #oneClickPayPage .oc-formula-list { display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; }
+    .oc-scheme-dlg .oc-formula-card, #oneClickPayPage .oc-formula-card { padding: 10px 12px; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: #fff; cursor: pointer; }
+    .oc-scheme-dlg .oc-formula-card.active, #oneClickPayPage .oc-formula-card.active { border-color: var(--ad-primary); box-shadow: 0 0 0 2px var(--ad-primary-bg); }
+    .oc-scheme-dlg .oc-formula-head, #oneClickPayPage .oc-formula-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .oc-scheme-dlg .oc-formula-head .el-input, #oneClickPayPage .oc-formula-head .el-input { flex: 1; }
+    .oc-scheme-dlg .oc-op-row, #oneClickPayPage .oc-op-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .oc-scheme-dlg .oc-op, #oneClickPayPage .oc-op { min-width: 36px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: #fff; font-size: 15px; font-weight: 600; color: var(--ad-text-1); cursor: pointer; }
+    .oc-scheme-dlg .oc-op:hover, #oneClickPayPage .oc-op:hover { border-color: var(--ad-primary); color: var(--ad-primary); }
+    #oneClickPayPage .oc-calc-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    #oneClickPayPage .oc-calc-title { font-size: 17px; font-weight: 700; color: var(--ad-text-1); }
+    #oneClickPayPage .oc-calc-sub { margin-top: 4px; font-size: 12px; color: var(--ad-text-3); }
+    #oneClickPayPage .oc-steps { margin-bottom: 12px; padding: 12px 16px; border-radius: var(--ad-radius-lg); background: #fff; border: 1px solid var(--ad-border-secondary); }
+    .oc-scheme-dlg .oc-scheme-grid { display: grid; grid-template-columns: 240px 1fr; gap: 14px; align-items: start; }
+    .oc-scheme-dlg .oc-scheme-left, .oc-scheme-dlg .oc-scheme-right { min-width: 0; padding: 12px; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: var(--ad-fill); }
+    .oc-scheme-dlg .oc-panel-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: var(--ad-text-1); }
+    .oc-scheme-dlg .oc-chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; max-height: 180px; overflow-y: auto; }
+    .oc-scheme-dlg .oc-formula-chip { padding: 2px 8px; border: 1px solid var(--ad-primary-border); border-radius: 10px; background: #fff; color: var(--ad-primary); font-size: 12px; cursor: pointer; }
+    .oc-scheme-dlg .oc-formula-chip:hover { background: var(--ad-primary-bg); }
+    .oc-scheme-dlg .oc-formula-chip.ghost { border-color: var(--ad-border); color: var(--ad-text-2); background: #fff; }
+    .oc-scheme-dlg .oc-formula-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
+    .oc-scheme-dlg .oc-formula-card { padding: 8px 10px; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: #fff; cursor: pointer; }
+    .oc-scheme-dlg .oc-formula-card.active { border-color: var(--ad-primary); box-shadow: 0 0 0 2px var(--ad-primary-bg); }
+    .oc-scheme-dlg .oc-formula-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .oc-scheme-dlg .oc-formula-head .el-input { flex: 1; }
+    .oc-scheme-dlg .oc-op-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .oc-scheme-dlg .oc-op { min-width: 32px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: #fff; font-size: 14px; font-weight: 600; color: var(--ad-text-1); cursor: pointer; }
+    .oc-scheme-dlg .oc-op:hover { border-color: var(--ad-primary); color: var(--ad-primary); }
+    #oneClickPayPage .oc-section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    #oneClickPayPage .oc-section-head .es-title { margin-bottom: 0; }
+    #oneClickPayPage .oc-section-head .el-button { margin-left: auto; }
+    .oc-field-head { display: flex; align-items: center; gap: 8px; margin: 6px 0 10px; font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
+    .oc-field-head .es-tip { font-weight: 400; }
+    .oc-field-head .el-button { margin-left: auto; }
+    .oc-upload-row { display: flex; align-items: center; gap: 12px; min-height: 40px; margin-top: 10px; }
+    .oc-upload-row .el-upload { display: inline-block; }
+    .oc-upload-name { font-size: 12px; color: var(--ad-text-2); }
+    .oc-scheme-dlg .el-dialog__body { max-height: 66vh; overflow-y: auto; }
+    .oc-scheme-dlg .oc-formula-block { margin-top: 14px; padding: 10px 12px; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); background: var(--ad-fill); }
+    .oc-scheme-dlg .oc-formula-title { display: flex; align-items: center; font-size: 12px; font-weight: 600; color: var(--ad-text-1); }
+    .oc-scheme-dlg .oc-formula-title span { color: var(--ad-error); margin-right: 2px; }
+    .oc-scheme-dlg .oc-formula-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .oc-scheme-dlg .oc-formula-chip { padding: 2px 8px; border: 1px solid var(--ad-primary-border); border-radius: 10px; background: #fff; color: var(--ad-primary); font-size: 12px; cursor: pointer; }
+    .oc-scheme-dlg .oc-formula-chip:hover { background: var(--ad-primary-bg); }
+    .oc-payslip-dlg .oc-ps-head { padding: 2px 0 12px; border-bottom: 1px solid var(--ad-border-secondary); }
+    .oc-payslip-dlg .oc-ps-title { font-size: 16px; font-weight: 700; color: var(--ad-text-1); }
+    .oc-payslip-dlg .oc-ps-sub { margin-top: 6px; font-size: 12px; line-height: 1.8; color: var(--ad-text-2); }
+    .oc-payslip-dlg .oc-ps-sec { margin: 14px 0 8px; font-size: 12px; font-weight: 600; color: var(--ad-text-2); }
+    .oc-payslip-dlg .oc-ps-total { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 12px; padding: 10px 14px; border-radius: var(--ad-radius); background: var(--ad-fill); font-size: 12px; color: var(--ad-text-2); }
+    .oc-payslip-dlg .oc-ps-total b { color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    .oc-payslip-dlg .oc-ps-note { margin-top: 10px; font-size: 12px; line-height: 1.7; color: var(--ad-text-3); }
     /* ===== 薪酬档案预览 ===== */
     .sfp-head { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
     .sfp-name { font-size:14px; font-weight:600; color:var(--ad-text-1); }
@@ -996,14 +1160,17 @@
     #upgradePage .up-section { background:#fff; border:1px solid var(--ad-border-secondary); border-radius:8px; padding:16px; flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; margin-bottom:0; }
     #upgradePage .up-sec-title { font-size:14px; font-weight:700; color:var(--ad-text-1); margin-bottom:16px; flex-shrink:0; }
     #upgradePage .up-sec-tip { font-size:12px; color:var(--ad-text-3); font-weight:400; margin-left:8px; }
-    #upgradePage .up-ver-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
-    #upgradePage .up-ver-card { position:relative; border:1.5px solid var(--ad-border-secondary); border-radius:8px; padding:16px; cursor:pointer; transition:.2s; }
+    #upgradePage .up-ver-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    #upgradePage .up-ver-card { position:relative; display:flex; flex-direction:column; border:1.5px solid var(--ad-border-secondary); border-radius:8px; padding:18px 18px 16px; cursor:pointer; transition:.2s; }
     #upgradePage .up-ver-card:hover { border-color:var(--ad-primary); }
     #upgradePage .up-ver-card.active { border-color:var(--ad-primary); background:var(--ad-primary-bg); }
     #upgradePage .up-cur-badge { position:absolute; top:-1px; right:-1px; background:var(--ad-primary); color:#fff; font-size:11px; padding:1px 8px; border-radius:0 8px 0 8px; }
     #upgradePage .vc-name { font-size:15px; font-weight:700; color:var(--ad-text-1); }
-    #upgradePage .vc-feats { list-style:none; padding:0; margin:12px 0 0; font-size:12px; color:var(--ad-text-2); line-height:1.9; }
-    #upgradePage .vc-feats li::before { content:'✓'; color:var(--ad-success); margin-right:6px; }
+    #upgradePage .vc-feats { list-style:none; padding:0; margin:14px 0 0; font-size:12.5px; color:var(--ad-text-2); line-height:1.75; }
+    #upgradePage .vc-feats li { display:flex; align-items:flex-start; gap:6px; padding:2px 0; }
+    #upgradePage .vc-feats li::before { content:'✓'; color:var(--ad-success); flex-shrink:0; }
+    #upgradePage .vc-feats.vc-feats-2col { column-width:170px; column-count:2; column-gap:18px; }
+    #upgradePage .vc-feats.vc-feats-2col li { break-inside:avoid; }
     #upgradePage .up-dur-title { margin-top:22px; }
     #upgradePage .up-dur-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
     #upgradePage .up-dur-card { position:relative; padding:16px 18px; border:1.5px solid var(--ad-border-secondary); border-radius:8px; background:#fff; cursor:pointer; transition:.2s; }
@@ -1013,8 +1180,6 @@
     #upgradePage .ud-price { margin-top:8px; font-size:24px; font-weight:700; line-height:1.2; color:var(--ad-error); font-variant-numeric:tabular-nums; }
     #upgradePage .ud-sub { margin-top:2px; font-size:12px; color:var(--ad-text-3); }
     #upgradePage .ud-check { position:absolute; top:10px; right:12px; color:var(--ad-primary); font-size:15px; }
-    #upgradePage .up-note { display:flex; align-items:flex-start; gap:8px; margin-top:22px; padding:14px 16px; border:1px dashed var(--ad-border); border-radius:8px; background:var(--ad-fill); font-size:13px; line-height:1.8; color:var(--ad-text-2); }
-    #upgradePage .up-note i { margin-top:3px; font-size:15px; color:var(--ad-primary); }
     #upgradePage .up-agree-link { font-size:13px; color:var(--ad-primary); cursor:pointer; }
     #upgradePage .up-agree-link:hover { text-decoration:underline; }
     #upgradePage .up-svc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; flex-shrink:0; }
@@ -1041,7 +1206,8 @@
     #upgradePage .up-action-r { display:flex; align-items:center; gap:16px; }
     #upgradePage .up-action-total { font-size:13px; color:var(--ad-text-2); }
     #upgradePage .up-action-total .amt { font-size:20px; font-weight:700; color:var(--ad-error); margin-left:4px; }
-    @media (max-width:1280px){ #upgradePage .up-ver-grid{grid-template-columns:repeat(3,1fr);} #upgradePage .up-svc-grid{grid-template-columns:repeat(3,1fr);} }
+    @media (max-width:1280px){ #upgradePage .up-svc-grid{grid-template-columns:repeat(3,1fr);} }
+    @media (max-width:900px){ #upgradePage .up-ver-grid{grid-template-columns:1fr;} }
 
     /* 支付方式弹框 */
     .up-pay-dlg .up-pay-h { font-size:16px; font-weight:700; color:var(--ad-text-1); }
@@ -1475,6 +1641,7 @@
 </div>
 
 <div class="export-toolbar">
+  <el-button size="small" icon="el-icon-upload2" @click="openAttImport">导入</el-button>
   <el-button size="small" icon="el-icon-time" @click="handleExportRecord">导出记录</el-button>
   <el-button size="small" class="att-btn-export" icon="el-icon-download" @click="handleExport">导出</el-button>
 </div>
@@ -1659,6 +1826,94 @@
         </div>
       </template>
     </div>
+  </div>
+</el-drawer>
+
+<!-- ===== 考勤记录导入 ===== -->
+<el-dialog title="导入考勤记录" :visible.sync="attImport.visible" width="620px" append-to-body :close-on-click-modal="false" custom-class="att-import-dlg">
+  <template v-if="attImport.step === 'pick'">
+    <div class="att-imp-field">
+      <span class="att-imp-label"><i class="att-imp-asterisk">*</i>考勤规则</span>
+      <el-select v-model="attImport.rule" size="small" placeholder="请选择考勤规则" style="width:170px" @change="attOnRuleChange">
+        <el-option v-for="o in ruleOptions" :key="o" :label="o" :value="o"></el-option>
+      </el-select>
+      <span class="att-imp-hint">导入的打卡会归到该规则下</span>
+    </div>
+    <div class="att-imp-order">
+      <div class="att-imp-order-row">
+        <span class="att-imp-order-no">1</span>
+        <el-button size="small" icon="el-icon-download" @click="attDownloadTemplate">下载模板</el-button>
+        <span class="att-imp-hint">按模板填写，一天一行，班次1~4 依次填上下班时间</span>
+      </div>
+      <div class="att-imp-order-row">
+        <span class="att-imp-order-no">2</span>
+        <el-upload action="#" :auto-upload="false" :show-file-list="false" accept=".xlsx,.csv" :on-change="attOnImportFileChange">
+          <el-button size="small" icon="el-icon-upload2">选择表格</el-button>
+        </el-upload>
+        <span v-if="attImport.fileName" class="att-imp-file">{{ attImport.fileName }}<el-button type="text" size="mini" @click="attImportClearFile">移除</el-button></span>
+      </div>
+    </div>
+    <div class="pc-tip">只有「日期」「姓名」必填，一份文件只放一个自然月；同员工同来源的整月数据会被本次导入覆盖。</div>
+  </template>
+
+  <template v-else>
+    <div class="att-imp-result">
+      <div class="att-imp-result-icon" :class="attImport.result.status">
+        <i :class="attImport.result.status === 'success' ? 'el-icon-check' : (attImport.result.status === 'partial' ? 'el-icon-warning-outline' : 'el-icon-close')"></i>
+      </div>
+      <div class="att-imp-result-title">{{ attImport.result.status === 'success' ? '导入完成' : (attImport.result.status === 'partial' ? '部分导入完成' : '没有数据被导入') }}</div>
+      <div class="att-imp-result-sub">
+        <span class="att-imp-result-period">{{ attImport.result.period }}</span> · {{ attImport.result.rule }} · 批次 {{ attImport.result.id }} · {{ attImport.result.createdAt }} · 操作人 {{ attImport.result.operator }}
+      </div>
+    </div>
+    <div class="att-imp-nums">
+      <div><b>{{ attImport.result.ok }}</b><span>成功行</span></div>
+      <div><b class="bad">{{ attImport.result.failed }}</b><span>失败行</span></div>
+      <div><b>{{ attImport.result.employees }}</b><span>员工</span></div>
+      <div><b>{{ attImport.result.overwritten }}</b><span>覆盖组</span></div>
+      <div><b>{{ attImport.result.punches }}</b><span>打卡条数</span></div>
+    </div>
+    <div class="att-imp-result-tip">已切换到 {{ attImport.result.period }} 的考勤数据。需要撤销可在「导入记录」里回滚该批次，回滚会恢复被覆盖前的数据。</div>
+    <div v-if="attImport.result.failed" class="att-imp-result-actions">
+      <el-button size="small" icon="el-icon-download" @click="attDownloadFailed">下载失败行</el-button>
+    </div>
+  </template>
+
+  <span slot="footer">
+    <el-button v-if="attImport.step === 'result'" size="small" @click="closeAttImport">完成</el-button>
+    <el-button v-else size="small" @click="closeAttImport">取消</el-button>
+    <el-button v-if="attImport.step === 'pick'" size="small" type="primary" :loading="attImport.importing" :disabled="!attImport.file || !attImport.rule" @click="attDoImport">开始导入</el-button>
+    <el-button v-if="attImport.step === 'result'" size="small" type="primary" @click="attOpenBatches">查看导入记录</el-button>
+  </span>
+</el-dialog>
+
+<!-- ===== 考勤导入记录 ===== -->
+<el-drawer title="考勤导入记录" :visible.sync="attImportHist.visible" size="880px" custom-class="att-drawer" append-to-body>
+  <div class="att-drawer-body">
+    <div class="drawer-h">最近 20 次导入</div>
+    <div class="att-hist-tip">回滚会撤销该批次并恢复被覆盖前的数据。完整明细只保留在当前会话，刷新页面后回滚不可用。</div>
+    <el-table :data="attBatches" size="mini" border empty-text="暂无导入记录">
+      <el-table-column label="导入时间" prop="createdAt" width="140"></el-table-column>
+      <el-table-column label="文件" prop="file" min-width="150" show-overflow-tooltip></el-table-column>
+      <el-table-column label="周期" prop="period" width="168"></el-table-column>
+      <el-table-column label="结果" width="110">
+        <template slot-scope="s">
+          <span class="att-hist-ok">{{ s.row.ok }} 成功</span>
+          <span v-if="s.row.failed" class="att-hist-bad"> / {{ s.row.failed }} 失败</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作人" prop="operator" width="72"></el-table-column>
+      <el-table-column label="状态" width="72">
+        <template slot-scope="s">
+          <el-tag size="mini" :type="s.row.rolled ? 'info' : 'success'">{{ s.row.rolled ? '已回滚' : '已生效' }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="60">
+        <template slot-scope="s">
+          <el-button type="text" size="mini" :disabled="s.row.rolled || !s.row.full" :title="s.row.full ? '' : '刷新后不可回滚'" @click="attRollbackBatch(s.row)">回滚</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </el-drawer>
 
@@ -2213,12 +2468,14 @@
   </el-dialog>
 </div>
 
-<!-- ===== 关联客户页 ===== -->
+<!-- ===== 用工单位页 ===== -->
 <div class="page-body" id="clientPage" v-show="currentPage === 'client'">
   <div class="card pc-card">
+    <el-tabs v-model="clientTab" class="cl-tabs" @tab-click="onClientTabClick">
+      <el-tab-pane label="用工单位列表" name="list">
     <el-form :model="clientFilter" class="pc-filter search-form" size="small" label-width="76px" @submit.native.prevent>
       <el-row :gutter="14">
-        <el-col :span="6"><el-form-item label="关联客户"><el-input v-model="clientFilter.name" placeholder="请输入关联客户" clearable @keyup.enter.native="clientSearch"></el-input></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="用工单位"><el-input v-model="clientFilter.name" placeholder="请输入用工单位" clearable @keyup.enter.native="clientSearch"></el-input></el-form-item></el-col>
         <el-col :span="6"><el-form-item label="联系人"><el-select v-model="clientFilter.contact" placeholder="全部" clearable filterable><el-option v-for="c in clientContactOptions" :key="c" :label="c" :value="c"></el-option></el-select></el-form-item></el-col>
         <el-col :span="6"><el-form-item label="用人单位"><el-select v-model="clientFilter.employer" placeholder="全部" clearable><el-option v-for="e in jobEmployers" :key="e" :label="e" :value="e"></el-option></el-select></el-form-item></el-col>
         <el-col :span="6"><el-form-item label="发薪日"><el-select v-model="clientFilter.payDay" placeholder="全部" clearable><el-option v-for="d in pcBaseDays" :key="d" :label="'每月 ' + d + ' 日'" :value="d"></el-option></el-select></el-form-item></el-col>
@@ -2231,20 +2488,26 @@
     </el-form>
 
     <div class="toolbar">
-      <el-button type="primary" size="small" icon="el-icon-plus" @click="openClientEdit()">新增关联客户</el-button>
-      <span class="tag-count-tip">共 {{ clientAll.length }} 家关联客户</span>
+      <el-button type="primary" size="small" icon="el-icon-plus" @click="openClientEdit()">新增用工单位</el-button>
+      <span class="tag-count-tip">共 {{ clientAll.length }} 家用工单位</span>
     </div>
 
     <el-table :data="clientPageRows" border size="mini" row-key="id" :height="clientTableHeight" style="width:100%;">
       <template slot="empty">
-        <el-empty description="还没有关联客户，先新增一个再配置发薪与结算" :image-size="72">
-          <el-button type="primary" size="small" @click="openClientEdit()">新增关联客户</el-button>
+        <el-empty description="还没有用工单位，先新增一个再配置发薪与结算" :image-size="72">
+          <el-button type="primary" size="small" @click="openClientEdit()">新增用工单位</el-button>
         </el-empty>
       </template>
       <el-table-column label="ID" prop="id" width="64"></el-table-column>
-      <el-table-column label="关联客户" prop="name" min-width="180" show-overflow-tooltip></el-table-column>
+      <el-table-column label="用工单位" prop="name" min-width="180" show-overflow-tooltip></el-table-column>
       <el-table-column label="经营地址" min-width="200" show-overflow-tooltip>
         <template slot-scope="{ row }">{{ clientAddrText(row) }}</template>
+      </el-table-column>
+      <el-table-column label="资料图片" width="88" align="center">
+        <template slot-scope="{ row }">
+          <el-image v-if="(row.images || []).length" class="cl-row-img" :src="row.images[0].url" :preview-src-list="(row.images || []).concat(row.certs || []).map(f => f.url).filter(Boolean)" fit="cover"></el-image>
+          <span v-else class="cl-none">—</span>
+        </template>
       </el-table-column>
       <el-table-column label="用人单位" min-width="160" show-overflow-tooltip>
         <template slot-scope="{ row }">{{ (row.employers || []).join('、') || '—' }}</template>
@@ -2256,11 +2519,15 @@
         <template slot-scope="{ row }"><span v-if="row.payDay">每月 {{ row.payDay }} 日</span><span v-else class="cl-none">—</span></template>
       </el-table-column>
       <el-table-column label="联系电话" prop="phone" width="132"></el-table-column>
+      <el-table-column label="签署状态" width="100" align="center">
+        <template slot-scope="{ row }"><el-tag size="mini" effect="plain" :type="row.signStatus === '已签署' ? 'success' : 'info'">{{ row.signStatus || '未签署' }}</el-tag></template>
+      </el-table-column>
       <el-table-column label="创建人" prop="creator" width="76"></el-table-column>
       <el-table-column label="创建时间" prop="created" width="150" align="center"></el-table-column>
-      <el-table-column label="操作" width="96" fixed="right">
+      <el-table-column label="操作" width="176" fixed="right">
         <template slot-scope="{ row }">
           <el-button type="text" size="mini" @click="openClientEdit(row.id)">编辑</el-button>
+          <el-button v-if="row.signStatus !== '已签署'" type="text" size="mini" @click="copyClientSignLink(row)">复制签署链接</el-button>
           <el-button type="text" size="mini" class="job-act-del" @click="deleteClient(row)">删除</el-button>
         </template>
       </el-table-column>
@@ -2270,10 +2537,53 @@
       <el-pagination class="list-pager" background layout="total, sizes, prev, pager, next, jumper"
                      :total="clientFiltered.length" :page-size.sync="clientPageSize" :current-page.sync="clientPage" :page-sizes="[10, 20, 50]"></el-pagination>
     </div>
+      </el-tab-pane>
+
+      <el-tab-pane :label="'签署记录(' + clientContracts.length + ')'" name="sign">
+        <el-form :model="clientContractFilter" class="pc-filter search-form" size="small" label-width="76px" @submit.native.prevent>
+          <el-row :gutter="14">
+            <el-col :span="6"><el-form-item label="用工单位"><el-input v-model="clientContractFilter.client" placeholder="请输入用工单位" clearable @keyup.enter.native="clientContractSearch"></el-input></el-form-item></el-col>
+            <el-col :span="6"><el-form-item label="合同模板"><el-select v-model="clientContractFilter.tpl" placeholder="全部" clearable><el-option v-for="t in clientContractTpls" :key="t" :label="t" :value="t"></el-option></el-select></el-form-item></el-col>
+            <el-col :span="6"><el-form-item label="签署状态"><el-select v-model="clientContractFilter.status" placeholder="全部" clearable><el-option v-for="s in clientContractStatuses" :key="s" :label="s" :value="s"></el-option></el-select></el-form-item></el-col>
+          </el-row>
+          <div class="search-foot pc-filter-foot">
+            <el-button type="primary" @click="clientContractSearch">搜索</el-button>
+            <el-button @click="clientContractReset">重置</el-button>
+          </div>
+        </el-form>
+
+        <div class="toolbar"><span class="tag-count-tip">共 {{ clientContractFiltered.length }} 份合同</span></div>
+
+        <el-table :data="clientContractRows" border size="mini" :height="clientContractTableHeight" style="width:100%;">
+          <template slot="empty"><el-empty description="还没有签署记录" :image-size="72"></el-empty></template>
+          <el-table-column label="合同编号" prop="no" width="170"></el-table-column>
+          <el-table-column label="用工单位" prop="client" min-width="220" show-overflow-tooltip></el-table-column>
+          <el-table-column label="合同模板" prop="tpl" min-width="200" show-overflow-tooltip></el-table-column>
+          <el-table-column label="签署状态" width="110" align="center">
+            <template slot-scope="{ row }"><el-tag size="mini" effect="plain" :type="clientContractStatusType(row.status)">{{ row.status }}</el-tag></template>
+          </el-table-column>
+          <el-table-column label="发起时间" prop="start" width="160" align="center"></el-table-column>
+          <el-table-column label="完成时间" width="160" align="center">
+            <template slot-scope="{ row }">{{ row.done || '—' }}</template>
+          </el-table-column>
+          <el-table-column label="操作" width="120" fixed="right">
+            <template slot-scope="{ row }">
+              <el-button v-if="row.status !== '已签署' && row.status !== '已作废'" type="text" size="mini" @click="copyClientSignLink(row)">复制签署链接</el-button>
+              <span v-else class="cl-none">—</span>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <div class="bottom-bar">
+          <el-pagination class="list-pager" background layout="total, sizes, prev, pager, next, jumper"
+                         :total="clientContractFiltered.length" :page-size.sync="clientContractPageSize" :current-page.sync="clientContractPage" :page-sizes="[10, 20, 50]"></el-pagination>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 
-  <el-dialog title="关联客户信息校验结果" :visible.sync="clientVerifyDlg" width="480px" append-to-body custom-class="cl-verify-dlg">
-    <div class="cl-verify-item"><span class="cl-verify-label">关联客户</span><span class="cl-verify-val">{{ clientEditForm.name }}</span></div>
+  <el-dialog title="用工单位信息校验结果" :visible.sync="clientVerifyDlg" width="480px" append-to-body custom-class="cl-verify-dlg">
+    <div class="cl-verify-item"><span class="cl-verify-label">用工单位</span><span class="cl-verify-val">{{ clientEditForm.name }}</span></div>
     <div class="cl-verify-item"><span class="cl-verify-label">统一社会信用代码</span><span class="cl-verify-val cl-code">{{ clientVerifyInfo.creditCode }}</span></div>
     <div class="cl-verify-item"><span class="cl-verify-label">经营地址</span><span class="cl-verify-val">{{ clientVerifyInfo.addr }}</span></div>
     <div class="cl-verify-tip">结果来自模拟工商库，仅用于原型演示；经营地址不回填表单（本页经营地址为省市区 + 详细地址结构）。</div>
@@ -2283,15 +2593,15 @@
   </el-dialog>
 </div>
 
-<!-- ===== 新增 / 编辑关联客户（独立子页面） ===== -->
+<!-- ===== 新增 / 编辑用工单位（独立子页面） ===== -->
 <div id="clientEditPage" v-show="currentPage === 'clientEdit'">
   <el-form ref="clientFormRef" :model="clientEditForm" :rules="clientRules" size="small" label-width="126px" class="pc-rule-form">
     <div class="ep-card">
-      <div class="es-title">关联客户信息<span class="es-tip">带 <span class="pc-req">*</span> 为必填</span></div>
+      <div class="es-title">用工单位信息<span class="es-tip">带 <span class="pc-req">*</span> 为必填</span></div>
       <el-row :gutter="16">
         <el-col :span="12">
-          <el-form-item prop="name"><span slot="label">关联客户</span>
-            <el-input v-model="clientEditForm.name" maxlength="50" placeholder="请输入关联客户全称">
+          <el-form-item prop="name"><span slot="label">用工单位</span>
+            <el-input v-model="clientEditForm.name" maxlength="50" placeholder="请输入用工单位全称">
               <el-button slot="append" @click="verifyClientName">校验</el-button>
             </el-input>
             <div class="pc-tip">需与营业执照全称一致。校验通过后自动带出统一社会信用代码，可校验示例：武汉华星光电技术有限公司、武汉天马微电子有限公司、鄂州三安光电有限公司、武汉联想产业基地、深圳市智灵工科技有限公司、深圳南山智造有限公司。</div>
@@ -2307,8 +2617,8 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item prop="intro"><span slot="label">关联客户介绍</span>
-        <el-input type="textarea" :rows="4" v-model="clientEditForm.intro" maxlength="500" show-word-limit placeholder="请输入关联客户主营业务、规模、用工需求等"></el-input>
+      <el-form-item prop="intro"><span slot="label">用工单位介绍</span>
+        <el-input type="textarea" :rows="4" v-model="clientEditForm.intro" maxlength="500" show-word-limit placeholder="请输入用工单位主营业务、规模、用工需求等"></el-input>
       </el-form-item>
       <el-row :gutter="16">
         <el-col :span="12"><el-form-item><span slot="label">联系人</span>
@@ -2323,11 +2633,15 @@
         <el-col :span="12"><el-form-item><span slot="label">发薪日</span>
           <el-select v-model="clientEditForm.payDay" placeholder="请选择" clearable><el-option v-for="d in pcBaseDays" :key="d" :label="'每月 ' + d + ' 日'" :value="d"></el-option></el-select>
         </el-form-item></el-col>
+        <el-col :span="12"><el-form-item><span slot="label">合同模板</span>
+          <el-select v-model="clientEditForm.contractTpl" clearable placeholder="请选择（非必填）"><el-option v-for="t in clientContractTpls" :key="t" :label="t" :value="t"></el-option></el-select>
+          <div class="pc-tip">非必填；选择后保存时会生成一份待签署合同，可复制签署链接发给用工单位。</div>
+        </el-form-item></el-col>
       </el-row>
     </div>
     <div class="ep-card">
-      <div class="es-title">关联客户资料</div>
-      <el-form-item><span slot="label">关联客户图片</span>
+      <div class="es-title">用工单位资料</div>
+      <el-form-item><span slot="label">用工单位图片</span>
         <el-upload :key="'img' + clientEditForm.formKey" ref="clientImgUpload" action="#" list-type="picture-card" :auto-upload="false" :file-list="clientEditForm.images"
                    :on-remove="handleClientImageRemove" :on-change="handleClientImageChange" :limit="6"
                    accept="image/jpeg,image/png,image/jpg"><i class="el-icon-plus"></i></el-upload>
@@ -2338,6 +2652,14 @@
                    :on-remove="handleClientCertRemove" :on-change="handleClientCertChange" :limit="5"
                    accept="image/jpeg,image/png,image/jpg"><i class="el-icon-plus"></i></el-upload>
         <div class="pc-tip">jpg / png，最多 5 张，如营业执照、开户许可、劳务派遣许可证。</div>
+      </el-form-item>
+      <el-form-item><span slot="label">合同文件</span>
+        <el-upload :key="'contract' + clientEditForm.formKey" ref="clientContractUpload" action="#" list-type="text" :auto-upload="false" :file-list="clientEditForm.contracts"
+                   :on-remove="handleClientContractRemove" :on-change="handleClientContractChange" multiple
+                   accept=".pdf,.jpg,.jpeg,.png">
+          <el-button size="small" icon="el-icon-upload2">上传合同</el-button>
+        </el-upload>
+        <div class="pc-tip">支持 PDF / JPG / PNG，可上传多份。</div>
       </el-form-item>
     </div>
     <div class="ef-footer">
@@ -2810,6 +3132,169 @@
     </div>
     <span slot="footer">
       <el-button size="small" @click="inviteOwner.visible = false">关闭</el-button>
+    </span>
+  </el-dialog>
+</div>
+
+<!-- ===== 面试管理页 ===== -->
+<div class="page-body" id="interviewPage" v-if="currentPage === 'interview'">
+  <div class="card search-card">
+    <el-tabs v-model="interviewCategory" class="iv-search-tabs">
+      <el-tab-pane label="蓝领" name="blue"></el-tab-pane>
+    </el-tabs>
+    <el-form :model="interviewFilter" class="search-form iv-filter" size="small" label-width="76px" @submit.native.prevent>
+      <el-row :gutter="18">
+        <el-col :span="6"><el-form-item label="员工姓名"><el-input v-model="interviewFilter.name" placeholder="请输入员工姓名" clearable @keyup.enter.native="interviewSearch"></el-input></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="用工单位"><el-select v-model="interviewFilter.employer" placeholder="请选择" clearable filterable><el-option v-for="e in interviewEmployers" :key="e" :label="e" :value="e"></el-option></el-select></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="求职岗位"><el-select v-model="interviewFilter.job" placeholder="请选择" clearable filterable><el-option v-for="j in interviewJobs" :key="j" :label="j" :value="j"></el-option></el-select></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="来源"><el-select v-model="interviewFilter.source" placeholder="来源" clearable><el-option v-for="s in interviewSources" :key="s" :label="s" :value="s"></el-option></el-select></el-form-item></el-col>
+        <el-col v-if="interviewTab === 'assigned'" :span="6"><el-form-item label="归属人"><el-select v-model="interviewFilter.owner" placeholder="请选择" clearable filterable><el-option v-for="m in interviewMembers" :key="m.id" :label="m.name" :value="m.name"></el-option></el-select></el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="分享人"><el-input v-model="interviewFilter.sharer" placeholder="请输入分享人" clearable @keyup.enter.native="interviewSearch"></el-input></el-form-item></el-col>
+      </el-row>
+      <div class="search-foot iv-filter-foot">
+        <el-button type="primary" @click="interviewSearch">查询</el-button>
+        <el-button @click="interviewReset">重置</el-button>
+      </div>
+    </el-form>
+  </div>
+
+  <div class="card">
+    <el-tabs v-model="interviewTab" class="iv-list-tabs" @tab-click="onInterviewTabClick">
+      <el-tab-pane :label="'未分配(' + interviewUnassignedCount + ')'" name="unassigned"></el-tab-pane>
+      <el-tab-pane :label="'已分配(' + interviewAssignedCount + ')'" name="assigned"></el-tab-pane>
+    </el-tabs>
+    <div class="toolbar" v-if="interviewTab === 'unassigned'">
+      <el-button size="small" icon="el-icon-s-operation" @click="goInterviewRules">分配规则</el-button>
+      <span class="tag-count-tip">共 {{ interviewRules.length }} 条规则 · {{ interviewActiveRuleCount }} 条启用</span>
+    </div>
+    <el-table ref="interviewTable" :data="interviewPageRows" border size="mini" row-key="id" :height="interviewTableHeight" style="width:100%;" @selection-change="onInterviewSelect" @sort-change="onInterviewSortChange">
+      <template slot="empty">
+        <el-empty :description="interviewTab === 'unassigned' ? '暂无未分配的面试记录' : '暂无已分配的面试记录'" :image-size="72">
+          <el-button size="small" @click="interviewReset">重置筛选</el-button>
+        </el-empty>
+      </template>
+      <el-table-column key="iv-sel" type="selection" width="44"></el-table-column>
+      <el-table-column label="姓名" prop="name" width="90">
+        <template slot-scope="{ row }"><span class="iv-name">{{ row.name }}</span></template>
+      </el-table-column>
+      <el-table-column label="手机号" width="140">
+        <template slot-scope="{ row }">
+          <span>{{ row.phone }}</span>
+          <el-button v-if="interviewTab === 'assigned'" type="text" size="mini" class="iv-copy-btn" icon="el-icon-document-copy" aria-label="复制手机号" @click="copyInterviewPhone(row)"></el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="用工单位" prop="employer" min-width="180" show-overflow-tooltip></el-table-column>
+      <el-table-column label="投送岗位" prop="job" min-width="120" show-overflow-tooltip></el-table-column>
+      <el-table-column label="投递时间" prop="submitted" width="160" align="center" sortable="custom"></el-table-column>
+      <el-table-column label="分配状态" width="90" align="center">
+        <template slot-scope="{ row }"><el-tag size="mini" effect="plain" :type="row.status === '已分配' ? 'success' : 'info'" disable-transitions>{{ row.status }}</el-tag></template>
+      </el-table-column>
+      <el-table-column label="归属人" width="90">
+        <template slot-scope="{ row }"><span v-if="row.owner">{{ row.owner }}</span><span v-else class="iv-none">—</span></template>
+      </el-table-column>
+      <el-table-column label="分享人" width="90">
+        <template slot-scope="{ row }"><span v-if="row.sharer">{{ row.sharer }}</span><span v-else class="iv-none">—</span></template>
+      </el-table-column>
+      <el-table-column label="来源" prop="source" width="104" align="center"></el-table-column>
+      <el-table-column label="更新时间" prop="updated" width="160" align="center"></el-table-column>
+      <el-table-column label="操作" width="76" fixed="right" align="center">
+        <template slot-scope="{ row }">
+          <el-button v-if="interviewTab === 'unassigned'" type="text" size="mini" @click="openInterviewAssign(row)">分配</el-button>
+          <el-button v-else type="text" size="mini" @click="openInterviewTransfer(row)">转移</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+
+  <div class="card iv-bottom bottom-bar">
+    <span class="selected-info">已选 <span class="num">{{ interviewSelection.length }}</span> 条</span>
+    <el-button v-if="interviewTab === 'unassigned'" type="primary" size="small" :disabled="!interviewSelection.length" @click="batchInterviewAssign">批量分配</el-button>
+    <el-button v-else type="primary" size="small" :disabled="!interviewSelection.length" @click="batchInterviewTransfer">批量转移</el-button>
+    <el-pagination class="list-pager" background layout="total, prev, pager, next, sizes, jumper"
+                   :total="interviewFiltered.length" :page-size.sync="interviewPageSize" :current-page.sync="interviewPage" :page-sizes="[10, 20, 50, 100]"></el-pagination>
+  </div>
+
+  <el-dialog title="选择其他成员" :visible.sync="interviewAssignDlg.visible" width="520px" top="8vh" :close-on-click-modal="false" append-to-body custom-class="iv-member-dlg" @closed="resetInterviewPicker">
+    <div class="iv-member-summary">{{ interviewAssignDlg.mode === 'assign' ? '分配' : '转移' }} <b>{{ interviewAssignDlg.rows.length }}</b> 条面试记录，请选择{{ interviewAssignDlg.mode === 'assign' ? '归属人' : '新的归属人' }}</div>
+    <el-input v-model="interviewAssignDlg.keyword" class="iv-member-search" size="small" prefix-icon="el-icon-search" placeholder="搜索成员姓名 / 手机号" clearable></el-input>
+    <el-radio-group v-model="interviewAssignDlg.memberId" class="iv-member-list">
+      <el-radio v-for="m in interviewPickerMembers" :key="m.id" :label="m.id" :disabled="m.disabled" class="iv-member-item">
+        <span class="iv-member-avatar">{{ m.name.charAt(0) }}</span>
+        <span class="iv-member-main"><span class="iv-member-name">{{ m.name }}</span><span class="iv-member-role">{{ m.note }}</span></span>
+        <span class="iv-member-phone">{{ m.phone }}</span>
+      </el-radio>
+    </el-radio-group>
+    <div v-if="!interviewPickerMembers.length" class="iv-member-empty">没有匹配的成员</div>
+    <span slot="footer">
+      <el-button size="small" @click="interviewAssignDlg.visible = false">取消</el-button>
+      <el-button type="primary" size="small" :disabled="!interviewAssignDlg.memberId" @click="confirmInterviewAssign">{{ interviewAssignDlg.mode === 'assign' ? '确认分配' : '确认转移' }}</el-button>
+    </span>
+  </el-dialog>
+</div>
+
+<!-- ===== 分配规则设置页（面试管理子页面） ===== -->
+<div class="page-body" id="interviewRulesPage" v-if="currentPage === 'interviewRules'">
+  <div class="card">
+    <div class="ep-head" style="display:flex;align-items:center;gap:12px;">
+      <el-button size="mini" icon="el-icon-back" @click="backFromInterviewRules">返回</el-button>
+      <span>分配规则</span>
+    </div>
+    <div class="toolbar">
+      <el-button type="primary" size="small" icon="el-icon-plus" @click="openInterviewRuleForm()">新增规则</el-button>
+      <span class="tag-count-tip">共 {{ interviewRules.length }} 条</span>
+    </div>
+    <el-table :data="interviewRules" border size="mini" row-key="id" max-height="480" style="width:100%;">
+      <template slot="empty">
+        <el-empty description="还没有分配规则，新增一条试试" :image-size="72">
+          <el-button type="primary" size="small" @click="openInterviewRuleForm()">新增规则</el-button>
+        </el-empty>
+      </template>
+      <el-table-column type="index" label="顺序" width="60" align="center"></el-table-column>
+      <el-table-column label="投递渠道" min-width="160" show-overflow-tooltip>
+        <template slot-scope="{ row }">{{ row.sources.join('、') }}</template>
+      </el-table-column>
+      <el-table-column label="岗位名称" min-width="200" show-overflow-tooltip>
+        <template slot-scope="{ row }">{{ row.jobs.join('、') }}</template>
+      </el-table-column>
+      <el-table-column label="分配给" width="110">
+        <template slot-scope="{ row }">{{ interviewRuleMemberName(row) }}</template>
+      </el-table-column>
+      <el-table-column label="状态" width="80" align="center">
+        <template slot-scope="{ row }"><el-switch v-model="row.on" @change="toggleInterviewRule(row)"></el-switch></template>
+      </el-table-column>
+      <el-table-column label="操作" width="120" fixed="right" align="center">
+        <template slot-scope="{ row }">
+          <div class="job-act-btns">
+            <el-button type="text" size="mini" @click="openInterviewRuleForm(row.id)">编辑</el-button>
+            <el-button type="text" size="mini" class="job-act-del" @click="deleteInterviewRule(row)">删除</el-button>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+
+  <el-dialog :title="interviewRuleForm.id ? '编辑分配规则' : '新增分配规则'" :visible.sync="interviewRuleFormDlg.visible" width="560px" top="8vh" :close-on-click-modal="false" custom-class="pc-rule-dlg iv-rule-dlg">
+    <el-form :model="interviewRuleForm" size="small" label-width="100px" class="pc-rule-form" @submit.native.prevent>
+      <el-form-item><span slot="label"><span class="pc-req">*</span>投递渠道</span>
+        <el-select v-model="interviewRuleForm.sources" multiple collapse-tags clearable placeholder="请选择投递渠道" style="width:100%">
+          <el-option v-for="s in interviewSources" :key="s" :label="s" :value="s"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item><span slot="label"><span class="pc-req">*</span>岗位名称</span>
+        <el-select v-model="interviewRuleForm.jobs" multiple collapse-tags clearable filterable placeholder="请选择岗位名称" style="width:100%">
+          <el-option v-for="j in interviewJobs" :key="j" :label="j" :value="j"></el-option>
+        </el-select>
+      </el-form-item>
+      <div class="es-title iv-grp">分配设置</div>
+      <el-form-item><span slot="label"><span class="pc-req">*</span>分配给</span>
+        <el-select v-model="interviewRuleForm.memberId" filterable placeholder="请选择归属人" style="width:100%">
+          <el-option v-for="m in interviewMembers" :key="m.id" :label="m.name" :value="m.id"></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <span slot="footer">
+      <el-button size="small" @click="interviewRuleFormDlg.visible = false">取消</el-button>
+      <el-button type="primary" size="small" @click="saveInterviewRule">保存</el-button>
     </span>
   </el-dialog>
 </div>
@@ -4294,6 +4779,268 @@
   </span>
 </el-dialog>
 
+<!-- ===== 一键算薪（财务管理） ===== -->
+<div class="page-body" id="oneClickPayPage" v-if="currentPage === 'oneClickPay'">
+  <template v-if="oneClick.mode === 'list'">
+    <div class="card pc-card">
+      <div class="toolbar">
+        <el-button type="primary" size="small" icon="el-icon-plus" @click="oneClickStartNew">新建一键算薪</el-button>
+      </div>
+      <el-form :model="oneClick.listFilter" class="pc-filter search-form" size="small" label-width="76px" @submit.native.prevent>
+        <el-row :gutter="14">
+          <el-col :span="6"><el-form-item label="用工单位"><el-select v-model="oneClick.listFilter.employer" placeholder="全部" clearable filterable><el-option v-for="e in jobEmployers" :key="e" :label="e" :value="e"></el-option></el-select></el-form-item></el-col>
+          <el-col :span="6"><el-form-item label="所属月份"><el-date-picker v-model="oneClick.listFilter.month" type="month" value-format="yyyy-MM" placeholder="全部" style="width:100%"></el-date-picker></el-form-item></el-col>
+          <el-col :span="6"><el-form-item label="发起人"><el-input v-model="oneClick.listFilter.creator" placeholder="请输入发起人" clearable @keyup.enter.native="oneClickHistorySearch"></el-input></el-form-item></el-col>
+          <el-col :span="6"><el-form-item label="生成时间"><el-date-picker v-model="oneClick.listFilter.range" type="daterange" value-format="yyyy-MM-dd" range-separator="~" start-placeholder="开始" end-placeholder="结束" style="width:100%"></el-date-picker></el-form-item></el-col>
+        </el-row>
+        <div class="search-foot pc-filter-foot">
+          <el-button type="primary" @click="oneClickHistorySearch">查询</el-button>
+          <el-button @click="oneClickHistoryReset">重置</el-button>
+        </div>
+      </el-form>
+      <el-table :data="oneClickHistoryPageRows" border size="mini" row-key="id" style="width:100%;">
+        <template slot="empty">
+          <el-empty description="还没有一键算薪记录，点击左上角「新建一键算薪」开始" :image-size="72"></el-empty>
+        </template>
+        <el-table-column label="名称" prop="name" min-width="210" show-overflow-tooltip></el-table-column>
+        <el-table-column label="用工单位" prop="employer" min-width="180" show-overflow-tooltip></el-table-column>
+        <el-table-column label="月份" prop="month" width="86" align="center"></el-table-column>
+        <el-table-column label="方案 / 版本" min-width="170" show-overflow-tooltip>
+          <template slot-scope="{ row }">{{ row.schemeName }} · {{ row.schemeVersion }}</template>
+        </el-table-column>
+        <el-table-column label="人数" prop="headcount" width="68" align="right"></el-table-column>
+        <el-table-column label="应发合计" width="116" align="right">
+          <template slot-scope="{ row }">{{ fmtInviteMoney(row.gross) }}</template>
+        </el-table-column>
+        <el-table-column label="实发合计" width="116" align="right">
+          <template slot-scope="{ row }">{{ fmtInviteMoney(row.net) }}</template>
+        </el-table-column>
+        <el-table-column label="发起人" prop="creator" width="76"></el-table-column>
+        <el-table-column label="生成时间" prop="created" width="150" align="center"></el-table-column>
+        <el-table-column label="操作" width="110" fixed="right">
+          <template slot-scope="{ row }">
+            <el-button type="text" size="mini" @click="oneClickViewHistoryRun(row)">查看</el-button>
+            <el-button type="text" size="mini" class="job-act-del" @click="oneClickDeleteRun(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="bottom-bar">
+        <el-pagination class="list-pager" background layout="total, sizes, prev, pager, next"
+                       :total="oneClickHistoryFiltered.length" :page-size.sync="oneClick.listPageSize"
+                       :current-page.sync="oneClick.listPage" :page-sizes="[10, 20, 50]"></el-pagination>
+      </div>
+    </div>
+  </template>
+
+  <template v-else>
+    <div v-if="oneClick.step === 1" class="ep-card">
+      <div class="oc-step-head">
+        <div class="es-title">第 1 步 · 上传数据并确认方案<span class="es-tip">上传原始表格，系统识别工资项并生成公式建议</span></div>
+        <el-button size="mini" @click="oneClickBackToList">返回列表</el-button>
+      </div>
+
+      <div class="oc-config">
+        <div class="oc-field">
+          <div class="oc-label"><span class="req">*</span>用工单位</div>
+          <el-select v-model="oneClick.employer" filterable placeholder="请选择用工单位" style="width:100%" @change="oneClickResetResult">
+            <el-option v-for="e in jobEmployers" :key="e" :label="e" :value="e"></el-option>
+          </el-select>
+        </div>
+        <div class="oc-field">
+          <div class="oc-label"><span class="req">*</span>所属月份</div>
+          <el-date-picker v-model="oneClick.month" type="month" value-format="yyyy-MM" placeholder="请选择月份" style="width:100%" @change="oneClickResetResult"></el-date-picker>
+        </div>
+      </div>
+
+      <div class="oc-match-row">
+        <div class="oc-match">
+          <div class="oc-match-ic"><i class="el-icon-document"></i></div>
+          <div class="oc-match-main">
+            <div class="oc-match-t">算薪数据</div>
+            <div v-if="oneClickSourceRows.length" class="oc-match-v">{{ oneClickSourceRows.length }} 人 · 已上传</div>
+            <div v-else class="oc-match-v muted">暂无数据，请先上传</div>
+          </div>
+          <div class="oc-match-act">
+            <el-tag v-if="oneClickSourceRows.length" size="mini" class="dd-tag s-other" disable-transitions>已上传</el-tag>
+            <el-button size="mini" type="text" @click="oneClickOpenDataDlg">{{ oneClickSourceRows.length ? '重新上传' : '上传表格' }}</el-button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="oneClickExistingRun" class="oc-warn">本月已有一键算薪记录（{{ oneClickExistingRun.name }}），重新算薪会更新该批次。</div>
+
+      <div v-if="oneClickSourceRows.length" class="oc-scheme-inline">
+        <div class="oc-scheme-inline-head">
+          <div class="es-title">算薪方案<span class="es-tip">系统已根据表格生成，可调整后直接保存并计算</span></div>
+        </div>
+        <div class="oc-scheme-grid">
+          <div class="oc-scheme-left">
+            <div class="oc-panel-h">默认项</div>
+            <div class="oc-chip-list">
+              <span v-for="n in oneClickFormulaRefNames" :key="n" class="oc-formula-chip ghost" @click="oneClickInsertToken(n)">{{ n }}</span>
+            </div>
+            <div class="oc-panel-h">工资项</div>
+            <div class="oc-chip-list">
+              <span v-for="f in oneClick.schemeDlg.fields" :key="f.id" class="oc-formula-chip" @click="oneClickInsertToken(f.name)">{{ f.name }}</span>
+              <span v-if="!oneClick.schemeDlg.fields.length" class="iv-none">暂无工资项</span>
+            </div>
+            <div class="pc-tip">点击默认项或工资项，插入右侧当前公式。</div>
+          </div>
+          <div class="oc-scheme-right">
+            <div class="oc-panel-h">
+              <span>公式</span>
+              <el-button size="mini" type="primary" plain icon="el-icon-plus" @click="oneClickAddFormula">添加公式</el-button>
+            </div>
+            <div class="oc-op-row">
+              <span v-for="op in ['+', '-', '*', '/', '(', ')']" :key="op" class="oc-op" @click="oneClickInsertToken(op)">{{ op }}</span>
+            </div>
+            <div class="oc-formula-list">
+              <div v-for="(f, fi) in oneClick.schemeDlg.formulas" :key="f.id" class="oc-formula-card"
+                   :class="{ active: f.id === oneClick.schemeDlg.activeFormulaId }" @click="oneClickSelectFormula(f.id)">
+                <div class="oc-formula-head">
+                  <el-input v-model="f.name" size="mini" maxlength="20" placeholder="公式名称，如：应发工资" @click.native.stop></el-input>
+                  <el-button type="text" size="mini" @click.stop="oneClickRemoveFormula(fi)">删除</el-button>
+                </div>
+                <el-input type="textarea" :rows="3" v-model="f.expr" size="mini"
+                          placeholder="点击左侧默认项、工资项和上方运算符生成公式" @click.native.stop></el-input>
+              </div>
+              <el-empty v-if="!oneClick.schemeDlg.formulas.length" description="还没有公式，点击右上角添加" :image-size="60"></el-empty>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else class="pc-tip">上传表格后，系统会根据列自动生成工资项和应发 / 实发公式建议。</div>
+
+      <div class="oc-run-row">
+        <el-button class="oc-run-btn" type="primary" :loading="oneClick.running" :disabled="!oneClickReady || oneClick.running" @click="oneClickRun">保存并计算</el-button>
+      </div>
+      <div v-if="oneClick.running" class="oc-progress">
+        <el-progress :percentage="oneClick.progress" :show-text="false" :stroke-width="6"></el-progress>
+        <div class="oc-progress-t">{{ oneClick.stageText }}</div>
+      </div>
+    </div>
+
+    <div v-else class="ep-card">
+      <div class="oc-result-head">
+        <div class="es-title">第 2 步 · 计算结果<span class="es-tip">{{ oneClick.run.employer }} · {{ oneClick.run.month }} · {{ oneClick.run.schemeName }} {{ oneClick.run.schemeVersion }}</span></div>
+      </div>
+      <div class="oc-stats">
+        <div class="oc-stat"><div class="oc-stat-t">算薪人数</div><div class="oc-stat-v">{{ oneClickStats.headcount }}</div></div>
+        <div class="oc-stat"><div class="oc-stat-t">应发合计</div><div class="oc-stat-v small">{{ fmtInviteMoney(oneClickStats.gross) }}</div></div>
+        <div class="oc-stat"><div class="oc-stat-t">实发合计</div><div class="oc-stat-v small">{{ fmtInviteMoney(oneClickStats.net) }}</div></div>
+        <div class="oc-stat"><div class="oc-stat-t">异常人数</div><div class="oc-stat-v" :class="{ warn: oneClickStats.issueCount }">{{ oneClickStats.issueCount }}</div></div>
+        <div class="oc-stat"><div class="oc-stat-t">公式数量</div><div class="oc-stat-v">{{ (oneClick.run.formulas || []).length }}</div></div>
+      </div>
+      <el-tabs v-model="oneClick.detailTab" class="pc-tabs" @tab-click="oneClickDetailTabChange">
+        <el-tab-pane v-for="t in oneClickDetailTabs" :key="t.k" :label="t.label + '（' + t.count + '）'" :name="t.k"></el-tab-pane>
+      </el-tabs>
+      <el-form :model="oneClick.resultFilter" class="pc-filter search-form" size="small" label-width="76px" @submit.native.prevent>
+        <el-row :gutter="14">
+          <el-col :span="8"><el-form-item label="员工姓名"><el-input v-model="oneClick.resultFilter.name" placeholder="请输入姓名" clearable @keyup.enter.native="oneClick.page = 1"></el-input></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="身份证号"><el-input v-model="oneClick.resultFilter.idcard" placeholder="请输入身份证号" clearable @keyup.enter.native="oneClick.page = 1"></el-input></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="异常状态"><el-select v-model="oneClick.resultFilter.issue" placeholder="全部" clearable><el-option label="有异常" value="yes"></el-option><el-option label="无异常" value="no"></el-option></el-select></el-form-item></el-col>
+        </el-row>
+        <div class="search-foot pc-filter-foot">
+          <el-button @click="oneClickResetResultFilter">重置</el-button>
+        </div>
+      </el-form>
+      <div class="toolbar">
+        <el-button v-if="oneClick.detailTab === 'audit'" type="primary" size="small" :disabled="!oneClick.sel.length" @click="oneClickBatchApprove">批量审核通过<span v-if="oneClick.sel.length">（{{ oneClick.sel.length }}）</span></el-button>
+        <el-button v-else-if="oneClick.detailTab === 'confirm'" type="primary" size="small" :disabled="!oneClick.sel.length" @click="oneClickBatchConfirm">批量确认<span v-if="oneClick.sel.length">（{{ oneClick.sel.length }}）</span></el-button>
+        <el-button v-else type="primary" size="small" :disabled="!oneClick.sel.length" @click="oneClickBatchExport">批量导出工资条<span v-if="oneClick.sel.length">（{{ oneClick.sel.length }}）</span></el-button>
+      </div>
+      <el-table ref="oneClickTable" :data="oneClickPageRows" border size="mini" row-key="id" style="width:100%;" @selection-change="oneClickRowSelect">
+        <el-table-column key="oc-sel" type="selection" width="42" fixed="left"></el-table-column>
+        <el-table-column label="员工姓名" width="100" fixed="left">
+          <template slot-scope="{ row }"><span class="oc-name">{{ row.name }}</span></template>
+        </el-table-column>
+        <el-table-column label="身份证" width="176" fixed="left">
+          <template slot-scope="{ row }">{{ oneClickMaskId(row.idcard) }}</template>
+        </el-table-column>
+        <el-table-column v-for="f in (oneClick.run.fields || [])" :key="'field-' + f.name" :label="f.name" min-width="110" align="right" show-overflow-tooltip>
+          <template slot-scope="{ row }">{{ fmtInviteMoney((row.valueMap || {})[f.name]) }}</template>
+        </el-table-column>
+        <el-table-column v-for="f in (oneClick.run.formulas || [])" :key="'formula-' + f.name" :label="f.name" min-width="118" align="right">
+          <template slot-scope="{ row }">{{ fmtInviteMoney((row.formulaValues || {})[f.name]) }}</template>
+        </el-table-column>
+        <el-table-column label="异常提示" width="160" show-overflow-tooltip fixed="right">
+          <template slot-scope="{ row }">
+            <span v-if="oneClickRowError(row)" class="payroll-issue err">{{ oneClickRowError(row) }}</span>
+            <span v-else class="iv-none">—</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="风险提示" width="160" show-overflow-tooltip fixed="right">
+          <template slot-scope="{ row }">
+            <span v-if="oneClickRowRisk(row)" class="payroll-issue risk">{{ oneClickRowRisk(row) }}</span>
+            <span v-else class="iv-none">—</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="140" fixed="right">
+          <template slot-scope="{ row }">
+            <el-button v-if="row.status === 'audit'" type="text" size="mini" @click="oneClickApproveRow(row)">审核通过</el-button>
+            <el-button v-if="row.status === 'confirm'" type="text" size="mini" @click="oneClickConfirmRow(row)">确认</el-button>
+            <el-button type="text" size="mini" @click="oneClickViewPayslip(row, oneClick.run)">明细</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="bottom-bar">
+        <el-pagination class="list-pager" background layout="total, sizes, prev, pager, next" :total="oneClickFilteredRows.length"
+                       :page-size.sync="oneClick.pageSize" :current-page.sync="oneClick.page" :page-sizes="[10, 20, 50]"></el-pagination>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== 一键算薪：上传数据 ===== -->
+  <el-dialog title="上传算薪数据" :visible.sync="oneClick.dataDlg.visible" width="640px" append-to-body :close-on-click-modal="false">
+    <div v-if="oneClickScheme" class="pc-tip">上传表格需包含列：{{ oneClickRequiredColumns.join('、') }}。支持 .xlsx / .csv，.xls 请另存为 .xlsx；可先点「下载模板」按模板填写。</div>
+    <div v-else class="pc-tip">上传原始表格后，系统会根据列自动生成工资项和应发 / 实发公式建议，确认后保存为该单位方案。支持 .xlsx / .csv；可先点「下载模板」参考列名。</div>
+    <div class="oc-upload-row">
+      <el-upload action="#" :auto-upload="false" :show-file-list="false" accept=".xlsx,.csv" :on-change="oneClickOnDataFileChange">
+        <el-button size="small" icon="el-icon-upload2">选择表格</el-button>
+      </el-upload>
+      <el-button size="small" icon="el-icon-download" @click="oneClickDownloadTemplate">下载模板</el-button>
+      <span v-if="oneClick.dataDlg.fileName" class="oc-upload-name">{{ oneClick.dataDlg.fileName }}</span>
+      <span v-else class="iv-none">还没有选择文件</span>
+    </div>
+    <div class="pc-tip" v-if="oneClickDataSet">该单位该月已有 {{ oneClickDataSet.rows.length }} 人数据，重新上传会覆盖。</div>
+    <span slot="footer">
+      <el-button size="small" @click="oneClick.dataDlg.visible = false">取消</el-button>
+      <el-button type="primary" size="small" :loading="oneClick.dataDlg.parsing" :disabled="!oneClick.dataDlg.fileName" @click="oneClickSaveData">解析并导入</el-button>
+    </span>
+  </el-dialog>
+
+<!-- ===== 一键算薪：明细抽屉 ===== -->
+  <el-drawer :visible.sync="oneClick.payslip.visible" size="560px" custom-class="oc-payslip-dlg" append-to-body>
+    <template slot="title"><span class="drawer-h">算薪明细</span></template>
+    <div v-if="oneClick.payslip.row && oneClick.payslip.run">
+      <div class="oc-ps-head">
+        <div class="oc-ps-title">{{ oneClick.payslip.row.name }} · {{ oneClick.payslip.run.month }}</div>
+        <div class="oc-ps-sub">
+          用工单位：{{ oneClick.payslip.run.employer }}<br>
+          方案：{{ oneClick.payslip.run.schemeName }} · {{ oneClick.payslip.run.schemeVersion }}<br>
+          身份证：{{ oneClickMaskId(oneClick.payslip.row.idcard) }}
+        </div>
+      </div>
+      <div class="oc-ps-total">
+        <span>应发 <b>{{ fmtInviteMoney(oneClickRowMoney(oneClick.payslip.row).gross) }}</b></span>
+        <span>扣减 <b>{{ fmtInviteMoney(oneClickRowMoney(oneClick.payslip.row).deduction) }}</b></span>
+        <span>实发 <b>{{ fmtInviteMoney(oneClickRowMoney(oneClick.payslip.row).net) }}</b></span>
+      </div>
+      <div class="oc-ps-sec">计算明细</div>
+      <el-table :data="oneClick.payslip.row.fieldValues" border size="mini" style="width:100%;">
+        <el-table-column label="项目" prop="name" min-width="120"></el-table-column>
+        <el-table-column label="来源" width="96">
+          <template slot-scope="{ row: f }">{{ oneClickFieldModeText(f.mode) }}</template>
+        </el-table-column>
+        <el-table-column label="金额" min-width="110" align="right">
+          <template slot-scope="{ row: f }">{{ fmtInviteMoney(f.amount) }}</template>
+        </el-table-column>
+      </el-table>
+      <div class="oc-ps-note">本明细只对应 {{ oneClick.payslip.run.employer }}；与结算模板、薪酬档案、智能算薪无关。</div>
+    </div>
+  </el-drawer>
+</div>
+
 <!-- ===== 版本升级 / 增值服务页 ===== -->
 <div id="upgradePage" v-show="currentPage === 'upgrade'">
   <div class="up-head">
@@ -4315,12 +5062,12 @@
                  @click="selectUpgradeVersion(v.id)">
               <span v-if="v.name === upgradeCurrent" class="up-cur-badge">当前版本</span>
               <div class="vc-name">{{ v.name }}</div>
-              <ul class="vc-feats"><li v-for="f in v.features" :key="f">{{ f }}</li></ul>
+              <ul class="vc-feats" :class="{ 'vc-feats-2col': v.features.length > 5 }"><li v-for="f in v.features" :key="f">{{ f }}</li></ul>
             </div>
           </div>
 
-          <div class="up-sec-title up-dur-title" v-if="upgradeBuyMode === 'buy'">选择购买时长<span class="up-sec-tip">默认 1 年，价格随所选时长变化</span></div>
-          <div class="up-dur-grid" v-if="upgradeBuyMode === 'buy'">
+          <div class="up-sec-title up-dur-title">选择购买时长<span class="up-sec-tip">默认 1 年，价格随所选时长变化</span></div>
+          <div class="up-dur-grid">
             <div v-for="p in upgradeDurationCards" :key="p.d" class="up-dur-card"
                  :class="{ active: upgradeVersionYears === p.d }" @click="upgradeVersionYears = p.d">
               <span class="ud-label">{{ p.d }} 年</span>
@@ -4329,25 +5076,15 @@
               <i v-if="upgradeVersionYears === p.d" class="ud-check el-icon-check"></i>
             </div>
           </div>
-          <div class="up-note" v-else>
-            <i :class="upgradeBuyMode === 'free' ? 'el-icon-success' : 'el-icon-service'"></i>
-            <span v-if="upgradeBuyMode === 'free'">免费版无需购买，可直接使用现有功能；需要更多能力时再选择付费版本。</span>
-            <span v-else>独立部署需要结合企业情况单独评估，请联系客服获取方案与报价。</span>
-          </div>
         </div>
         <div class="up-action">
-          <div class="up-action-l up-agree" v-if="upgradeBuyMode === 'buy'">
+          <div class="up-action-l up-agree">
             <el-checkbox v-model="upgradeAgreeVersion">我已阅读并同意</el-checkbox>
             <span class="up-agree-link" @click="openUpgradeAgreement('version')">《版本购买协议》</span>
           </div>
-          <div class="up-action-l" v-else>
-            <span class="up-sel-info">{{ upgradeBuyMode === 'free' ? '免费版无需购买' : '独立部署需联系客服' }}</span>
-          </div>
           <div class="up-action-r">
-            <span class="up-action-total" v-if="upgradeBuyMode === 'buy'">合计 <span class="amt">¥{{ upgradeVersionAmount }}</span></span>
-            <el-button v-if="upgradeBuyMode === 'buy'" type="primary" :disabled="!upgradeAgreeVersion" @click="openUpgradePay('version')">购买版本</el-button>
-            <el-button v-else-if="upgradeBuyMode === 'deploy'" type="primary" @click="openUpgradeContact">联系客服</el-button>
-            <el-button v-else disabled>无需购买</el-button>
+            <span class="up-action-total">合计 <span class="amt">¥{{ upgradeVersionAmount }}</span></span>
+            <el-button type="primary" :disabled="!upgradeAgreeVersion" @click="openUpgradePay('version')">购买版本</el-button>
           </div>
         </div>
       </el-tab-pane>
@@ -4530,11 +5267,8 @@ const JOB_TAG_GROUPS = JOB_TAG_GROUPS_RAW.map((g, i) => ({ id: i + 1, name: g.na
 // ===== 版本升级 / 增值服务 =====
 const UPGRADE_DURATIONS = [1, 3, 5];   // 购买时长（年）
 const UPGRADE_VERSIONS = [
-  { id:1, name:'免费版',   pricePerYear:0,    desc:'基础招工功能，适合初次试用',     features:['岗位发布与管理','员工档案','基础考勤打卡'] },
   { id:2, name:'标准版',   pricePerYear:999,  desc:'适合 10 人以内的招聘团队',       features:['含免费版全部功能','计薪提成','简历库','微信小程序招聘'] },
   { id:3, name:'高级版',   pricePerYear:1999, desc:'适合中型人力资源公司',           features:['含标准版全部功能','高级数据分析','多门店管理','优先客服'] },
-  { id:4, name:'电子合同', pricePerYear:299,  desc:'电子劳动合同签署能力',           features:['电子合同模板','在线签署','合同归档'] },
-  { id:5, name:'独立部署', pricePerYear:5000, desc:'数据私有化独立部署',             features:['独立服务器部署','数据私有化','专属运维支持'] },
 ];
 const UPGRADE_SERVICES = [
   { id:1, name:'合同套餐',  mode:'yearQty', price:2,    unit:'份', min:1, max:999, desc:'电子合同签署套餐，按年与份数购买' },
@@ -4553,7 +5287,7 @@ const UPGRADE_AGREEMENTS = {
     title: '智灵工版本购买协议',
     intro: '本协议由深圳市智灵工科技有限公司（甲方）与购买平台版本服务的企业用户（乙方）就版本服务的购买与使用达成，双方确认已充分阅读并理解全部条款。',
     sections: [
-      { h: '一、服务内容', p: '甲方向乙方提供「标准版」「高级版」「电子合同」等版本服务，具体功能权益以购买页展示的版本卡片为准。免费版无需购买；独立部署不在本协议范围内，需另行签署专项协议。' },
+      { h: '一、服务内容', p: '甲方向乙方提供「标准版」「高级版」等版本服务，具体功能权益以购买页展示的版本卡片为准。免费版无需购买；独立部署不在本协议范围内，需另行签署专项协议。' },
       { h: '二、服务期限', p: '服务自支付成功之日起开通，有效期按乙方所选购买时长（1 年 / 3 年 / 5 年）连续计算。到期未续费的，账号自动降为免费版，历史数据保留 30 天供导出。' },
       { h: '三、费用与支付', p: '服务费用以购买页按所选版本与时长结算的金额为准，支持支付宝与对公转账。乙方完成支付后，甲方在 1 个工作日内开通对应版本权益。' },
       { h: '四、发票', p: '乙方可在「系统管理 → 订单管理 → 申请开票」提交开票申请，甲方按实际支付金额开具电子普通发票或增值税专用发票。' },
@@ -5033,16 +5767,16 @@ const SIDE_MENU = [
   { title: '工作台', icon: 'el-icon-s-home', items: ['进入工作台'] },
   { title: '系统管理', icon: 'el-icon-s-tools', items: ['基础配置','角色管理','员工管理','付款管理','服务费管理','订单管理','用量统计','发票管理','导出记录','模板管理','审核流程'] },
   { title: '报表中心', icon: 'el-icon-data-line', items: ['招聘统计表','招聘进展表','岗位进度表','简历投递渠道分析','朋友圈统计'] },
-  { title: '用工管理', icon: 'el-icon-s-custom', items: ['关联客户', '岗位列表', '计薪提成', '岗位标签', '关联企业'] },
+  { title: '用工管理', icon: 'el-icon-s-custom', items: ['用工单位', '岗位列表', '计薪提成', '岗位标签', '关联企业'] },
   { title: '人事管理', icon: 'el-icon-user-solid', items: ['合同列表','宿舍管理','住宿记录','员工列表','员工档案','离职申请','供应商管理','招聘顾问','黑名单','门店管理','保险理赔','问题反馈','项目须知','消息通知','关联档案','供应商档案'] },
   { title: '招聘管理', icon: 'el-icon-s-promotion', items: ['接单','我的简历库','公司简历库','面试管理','邀请规则','邀请记录','录入记录','员工报送'] },
   { title: '考勤管理', icon: 'el-icon-stopwatch', items: ['考勤规则','考勤记录','考勤审批','考勤配置'] },
   { title: '考核培训', icon: 'el-icon-reading', items: ['内容管理','题库','考试记录'] },
-  { title: '财务管理', icon: 'el-icon-money', items: ['结算模板','薪酬档案','智能算薪','招聘提成','报销记录','借款管理','发薪管理','工资条','财务统计','企业码管理','员工调薪','银行流水','充值记录','关联发薪记录'] },
+  { title: '财务管理', icon: 'el-icon-money', items: ['结算模板','薪酬档案','一键算薪','智能算薪','招聘提成','报销记录','借款管理','发薪管理','工资条','财务统计','企业码管理','员工调薪','银行流水','充值记录','关联发薪记录'] },
   { title: '灵活用工', icon: 'el-icon-s-flag', items: ['互联网平台','岗位管理','用工记录','结算管理','用工管理','项目管理'] },
 ];
 // ===== 菜单路由 =====
-const ROUTE_PAGES = { '进入工作台': 'workbench', '员工档案': 'emp', '考勤记录': 'att', '岗位列表': 'job', '计薪提成': 'payComm', '岗位标签': 'jobTag', '招聘顾问': 'advisor', '关联客户': 'client', '邀请规则': 'invite', '邀请记录': 'inviteRecord', '结算模板': 'stpl', '薪酬档案': 'salaryFile', '智能算薪': 'salaryCalc', '订单管理': 'order' };   // 已实现的页面
+const ROUTE_PAGES = { '进入工作台': 'workbench', '员工档案': 'emp', '考勤记录': 'att', '岗位列表': 'job', '计薪提成': 'payComm', '岗位标签': 'jobTag', '招聘顾问': 'advisor', '面试管理': 'interview', '用工单位': 'client', '邀请规则': 'invite', '邀请记录': 'inviteRecord', '结算模板': 'stpl', '薪酬档案': 'salaryFile', '一键算薪': 'oneClickPay', '智能算薪': 'salaryCalc', '订单管理': 'order' };   // 已实现的页面
 const AUTH_PAGES = { '登录': 'login', '注册': 'register', '企业认证': 'ent' };   // 独立整屏页，不参与页签与侧栏
 const MENU_INDEX = {};                                          // 菜单名 -> 所属分组
 SIDE_MENU.forEach(g => g.items.forEach(i => { MENU_INDEX[i] = g.title; }));
@@ -5079,20 +5813,22 @@ function handleRoute() {
   if (!VM.openedTags.includes(name)) VM.openedTags.push(name);
   const page = ROUTE_PAGES[name];
   if (!page) VM.ph = { group: MENU_INDEX[name], name };
+  if (page === 'oneClickPay') oneClickBackToList();
   switchPage(page || 'ph', name);
 }
 function switchPage(p, name) {
   VM.currentPage = p;
-  const SUB_PAGE_HOST = { edit: '员工档案', jobPublish: '岗位列表', clientEdit: '关联客户', methodEdit: '计薪提成', planEdit: '计薪提成', stplEdit: '结算模板', salaryCalcEdit: '智能算薪', salaryCalcDetail: '智能算薪' };
+  const SUB_PAGE_HOST = { edit: '员工档案', jobPublish: '岗位列表', clientEdit: '用工单位', methodEdit: '计薪提成', planEdit: '计薪提成', stplEdit: '结算模板', salaryCalcEdit: '智能算薪', salaryCalcDetail: '智能算薪', interviewRules: '面试管理' };
   const menuName = SUB_PAGE_HOST[p] || (name || VM.activeRoute);
   const tagName  = p === 'edit' ? '编辑员工'
                  : p === 'jobPublish' ? (jobEditId ? '编辑岗位' : '创建岗位')
-                 : p === 'clientEdit' ? (clientEditId ? '编辑关联客户' : '新增关联客户')
+                 : p === 'clientEdit' ? (clientEditId ? '编辑用工单位' : '新增用工单位')
                  : p === 'methodEdit' ? (methodEditId ? '编辑计薪方式' : '新增计薪方式')
                  : p === 'planEdit' ? (planEditId ? '编辑提成方案' : '新增提成方案')
                  : p === 'stplEdit' ? (stplEditId ? '编辑结算模板' : '新增结算模板')
                  : p === 'salaryCalcEdit' ? '新建智能算薪'
                  : p === 'salaryCalcDetail' ? '算薪详情'
+                 : p === 'interviewRules' ? '分配规则'
                  : menuName;
   if (SUB_PAGE_HOST[p] && !VM.openedTags.includes(tagName)) VM.openedTags.push(tagName);
   VM.activeTag = tagName;
@@ -5118,6 +5854,9 @@ function switchPage(p, name) {
   if ((p === 'salaryCalc' || p === 'salaryCalcEdit' || p === 'salaryCalcDetail') && nameOfRoute() !== '智能算薪') {
     try { history.replaceState(null, '', routeOf('智能算薪')); } catch (e) {}
   }
+  if ((p === 'interview' || p === 'interviewRules') && nameOfRoute() !== '面试管理') {
+    try { history.replaceState(null, '', routeOf('面试管理')); } catch (e) {}
+  }
   if (p !== 'stpl') destroyStplSortables();   // 离开薪酬字段列表时释放拖拽绑定，避免重复绑定搬两行
   VM.$nextTick(() => { relayoutTables(); payrollRelayout(); });
 }
@@ -5125,8 +5864,8 @@ function onTagClick(t) {
   if (t === '版本升级') { openUpgrade(); return; }
   if (t === '编辑员工') switchPage('edit');
   else if (t === '创建岗位' || t === '编辑岗位') { openJobPublish(t === '编辑岗位' ? jobEditId : null); }
-  else if (t === '新增关联客户') { openClientEdit(); }
-  else if (t === '编辑关联客户') { openClientEdit(clientEditId); }
+  else if (t === '新增用工单位') { openClientEdit(); }
+  else if (t === '编辑用工单位') { openClientEdit(clientEditId); }
   else if (t === '新增计薪方式') { openMethodEdit(); }
   else if (t === '编辑计薪方式') { openMethodEdit(methodEditId); }
   else if (t === '新增提成方案') { openPlanEdit(); }
@@ -5135,6 +5874,7 @@ function onTagClick(t) {
   else if (t === '编辑结算模板') { openStplEdit(stplEditId); }
   else if (t === '新建智能算薪') { if (VM.currentPage === 'salaryCalcEdit') return; switchPage('salaryCalcEdit'); }
   else if (t === '算薪详情') { if (VM.currentPage === 'salaryCalcDetail') return; switchPage('salaryCalcDetail'); }
+  else if (t === '分配规则') { switchPage('interviewRules'); }
   else navigate(t);
 }
 function onTagClose(t) {
@@ -5142,12 +5882,13 @@ function onTagClose(t) {
   if (t === '版本升级') { closeUpgrade(); return; }
   if (t === '编辑员工') { switchPage('emp'); return; }
   if (t === '创建岗位' || t === '编辑岗位') { switchPage('job', '岗位列表'); return; }
-  if (t === '新增关联客户' || t === '编辑关联客户') { switchPage('client', '关联客户'); return; }
+  if (t === '新增用工单位' || t === '编辑用工单位') { switchPage('client', '用工单位'); return; }
   if (t === '新增计薪方式' || t === '编辑计薪方式') { switchPage('payComm', '计薪提成'); return; }
   if (t === '新增提成方案' || t === '编辑提成方案') { switchPage('payComm', '计薪提成'); return; }
   if (t === '新增结算模板' || t === '编辑结算模板') { switchPage('stpl', '结算模板'); return; }
   if (t === '新建智能算薪') { switchPage('salaryCalc', '智能算薪'); return; }
   if (t === '算薪详情') { payrollDetailId = null; switchPage('salaryCalc', '智能算薪'); return; }
+  if (t === '分配规则') { switchPage('interview', '面试管理'); return; }
   if (nameOfRoute() === t) navigate(VM.openedTags.find(x => ROUTE_PAGES[x]) || '员工档案');
 }
 function closeEditTag() { onTagClose('编辑员工'); }
@@ -5319,22 +6060,22 @@ const CATEGORY_CFG = {
 
 // ===== Employees =====
 const attEmployees = [
-  { id:'E001', name:'张福',   phone:'13800138001', rule:'标准班' },
-  { id:'E002', name:'阮仁军', phone:'13800138002', rule:'夜班'   },
-  { id:'E003', name:'李海涛', phone:'13800138003', rule:'标准班' },
-  { id:'E004', name:'何智威', phone:'13800138004', rule:'弹性工时' },
-  { id:'E005', name:'谭方',   phone:'13800138005', rule:'弹性工时' },
-  { id:'E006', name:'黄程义', phone:'13800138006', rule:'标准班' },
-  { id:'E007', name:'黎莲龙', phone:'13800138007', rule:'夜班'   },
-  { id:'E008', name:'田碟碟', phone:'13800138008', rule:'标准班' },
-  { id:'E009', name:'王五',   phone:'13800138009', rule:'标准班' },
-  { id:'E010', name:'赵六',   phone:'13800138010', rule:'休息'   },
-  { id:'E011', name:'陈晨',   phone:'13800138011', rule:'标准班' },
-  { id:'E012', name:'刘洋',   phone:'13800138012', rule:'夜班'   },
-  { id:'E013', name:'周婷',   phone:'13800138013', rule:'弹性工时' },
-  { id:'E014', name:'吴强',   phone:'13800138014', rule:'标准班' },
-  { id:'E015', name:'郑洁',   phone:'13800138015', rule:'休息'   },
-  { id:'E016', name:'孙磊',   phone:'13800138016', rule:'标准班' },
+  { id:'E001', no:'ZG001', name:'张福',   phone:'13800138001', idcard:'420984199001010011', rule:'标准班' },
+  { id:'E002', no:'ZG002', name:'阮仁军', phone:'13800138002', idcard:'420984199001010022', rule:'夜班'   },
+  { id:'E003', no:'ZG003', name:'李海涛', phone:'13800138003', idcard:'420984199001010033', rule:'标准班' },
+  { id:'E004', no:'ZG004', name:'何智威', phone:'13800138004', idcard:'420984199001010044', rule:'弹性工时' },
+  { id:'E005', no:'ZG005', name:'谭方',   phone:'13800138005', idcard:'420984199001010055', rule:'弹性工时' },
+  { id:'E006', no:'ZG006', name:'黄程义', phone:'13800138006', idcard:'420984199001010066', rule:'标准班' },
+  { id:'E007', no:'ZG007', name:'黎莲龙', phone:'13800138007', idcard:'420984199001010077', rule:'夜班'   },
+  { id:'E008', no:'ZG008', name:'田碟碟', phone:'13800138008', idcard:'420984199001010088', rule:'标准班' },
+  { id:'E009', no:'ZG009', name:'王五',   phone:'13800138009', idcard:'420984199001010099', rule:'标准班' },
+  { id:'E010', no:'ZG010', name:'赵六',   phone:'13800138010', idcard:'420984199001010110', rule:'休息'   },
+  { id:'E011', no:'ZG011', name:'陈晨',   phone:'13800138011', idcard:'420984199001010121', rule:'标准班' },
+  { id:'E012', no:'ZG012', name:'刘洋',   phone:'13800138012', idcard:'420984199001010132', rule:'夜班'   },
+  { id:'E013', no:'ZG013', name:'周婷',   phone:'13800138013', idcard:'420984199001010143', rule:'弹性工时' },
+  { id:'E014', no:'ZG014', name:'吴强',   phone:'13800138014', idcard:'420984199001010154', rule:'标准班' },
+  { id:'E015', no:'ZG015', name:'郑洁',   phone:'13800138015', idcard:'420984199001010165', rule:'休息'   },
+  { id:'E016', no:'ZG016', name:'孙磊',   phone:'13800138016', idcard:'420984199001010176', rule:'标准班' },
 ];
 
 // ===== Data helpers =====
@@ -5778,6 +6519,424 @@ function closeDrawer() { if (VM) VM.drawer.visible = false; }
 function handleExport() { showToast('导出任务已提交'); }
 function handleExportRecord() { showToast('导出记录：任务已提交'); }
 
+// ===== 考勤记录导入（按月导入） =====
+const ATT_IMPORT_FIELDS = [
+  { key: 'date',      label: '日期',     required: true },
+  { key: 'name',      label: '姓名',     required: true },
+  { key: 'no',        label: '工号' },
+  { key: 'phone',     label: '手机号' },
+  { key: 'idcard',    label: '身份证号' },
+  { key: 'source',    label: '数据来源' },
+  { key: 's1in',      label: '班次1上班', aliases: ['上班时间', '上班'] },
+  { key: 's1out',     label: '班次1下班', aliases: ['下班时间', '下班'] },
+  { key: 's2in',      label: '班次2上班' },
+  { key: 's2out',     label: '班次2下班' },
+  { key: 's3in',      label: '班次3上班' },
+  { key: 's3out',     label: '班次3下班' },
+  { key: 's4in',      label: '班次4上班' },
+  { key: 's4out',     label: '班次4下班' },
+  { key: 'lateMin',   label: '迟到分钟' },
+  { key: 'earlyMin',  label: '早退分钟' },
+  { key: 'invType',   label: '失效类型' },
+  { key: 'invTime',   label: '失效时间' },
+  { key: 'invStatus', label: '失效状态' },
+];
+const ATT_IMPORT_SRC = { '内部': 'internal', '内部系统': 'internal', 'internal': 'internal', '企微': 'wecom', '企业微信': 'wecom', 'wecom': 'wecom', '海康': 'hikvision', '海康威视': 'hikvision', 'hikvision': 'hikvision' };
+const ATT_IMPORT_CAT = { '正常': 'normal', '补卡': 'makeup', '审批': 'approval', '外勤': 'field', 'normal': 'normal', 'makeup': 'makeup', 'approval': 'approval', 'field': 'field' };
+const ATT_IMPORT_INV = ['正常', '迟到', '早退', '补卡', '审批', '其他异常'];
+const ATT_BATCH_KEY = 'att_import_batches';
+const ATT_BATCH_MEM = {};   // 完整批次（写入明细 / 覆盖备份）只留内存，刷新后不可回滚
+let ATT_LAST_RULE = '';     // 记住上次选的考勤规则，重开弹窗不用重选
+
+function attMonthOf(d) { const x = d || new Date(); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0'); }
+function attDefaultMonth() { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - 1); return attMonthOf(d); }
+function attMonthRange(m) {
+  const y = Number(m.slice(0, 4)), mo = Number(m.slice(5, 7));
+  const last = new Date(y, mo, 0).getDate();
+  return [m + '-01', m + '-' + String(last).padStart(2, '0')];
+}
+function attImportBlank() {
+  return {
+    visible: false, step: 'pick', rule: '', month: '',
+    file: null, fileName: '', parsing: false, importing: false,
+    headers: [], rows: [], groups: [], failedRows: [], result: null,
+  };
+}
+function attTemplateMap(headers) {
+  const map = {}, used = {};
+  const clean = h => String(h == null ? '' : h).replace(/\s+/g, '');
+  ATT_IMPORT_FIELDS.forEach(f => {
+    const names = [f.label].concat(f.aliases || []);
+    const hit = headers.find(h => !used[h] && names.indexOf(clean(h)) >= 0);
+    if (hit) { map[f.key] = hit; used[hit] = true; }
+  });
+  return map;
+}
+function attBatchesRead() {
+  try {
+    const v = JSON.parse(localStorage.getItem(ATT_BATCH_KEY) || '[]');
+    return Array.isArray(v) ? v : [];
+  } catch (e) { return []; }
+}
+function attBatchesWrite(list) {
+  const cut = list.slice(0, 20);
+  try { localStorage.setItem(ATT_BATCH_KEY, JSON.stringify(cut)); } catch (e) {}
+  VM.attBatches = cut.map(b => Object.assign({}, b, { full: !!ATT_BATCH_MEM[b.id] }));
+}
+function attSaveBatch(batch) {
+  ATT_BATCH_MEM[batch.id] = batch;
+  const sum = Object.assign({}, batch);
+  delete sum.backup;
+  delete sum.created;
+  const list = attBatchesRead();
+  list.unshift(sum);
+  attBatchesWrite(list);
+}
+function attMonthImported() {
+  const m = VM.attImport.month;
+  if (!m) return null;
+  return attBatchesRead().find(b => b.period === m && !b.rolled) || null;
+}
+function openAttImport() {
+  VM.attImport = Object.assign(attImportBlank(), { visible: true, rule: ATT_LAST_RULE });
+}
+function attOpenBatches() {
+  VM.attBatches = attBatchesRead().map(b => Object.assign({}, b, { full: !!ATT_BATCH_MEM[b.id] }));
+  VM.attImportHist.visible = true;
+}
+function closeAttImport() { VM.attImport.visible = false; }
+function attImportClearFile() {
+  const d = VM.attImport;
+  d.file = null; d.fileName = ''; d.rows = []; d.headers = []; d.groups = []; d.failedRows = []; d.result = null;
+}
+function attOnRuleChange() {
+  ATT_LAST_RULE = VM.attImport.rule || '';
+}
+function attOnImportFileChange(file) {
+  const name = file && file.name ? file.name : '';
+  const ext = name.split('.').pop().toLowerCase();
+  if (ext !== 'xlsx' && ext !== 'csv') {
+    VM.$message.warning('仅支持 .xlsx 或 .csv，.xls 请另存为 .xlsx');
+    return;
+  }
+  const d = VM.attImport;
+  d.file = (file && file.raw) || file;
+  d.fileName = name;
+  d.result = null;
+}
+function attDownloadCsv(name, rows) {
+  const csv = '\ufeff' + rows.map(r => r.map(oneClickCsvCell).join(',')).join('\r\n');
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast('已下载 ' + name);
+}
+function attDownloadTemplate() {
+  const m = attDefaultMonth();
+  const head = ATT_IMPORT_FIELDS.map(f => f.label);
+  const rows = [
+    [m + '-01', '张福', 'ZG001', '13800138001', '420984199001010011', '内部系统', '08:00', '12:00', '13:00', '17:00', '18:00', '22:00', '23:00', '07:00', '0', '0', '', '', ''],
+    [m + '-02', '张福', 'ZG001', '13800138001', '420984199001010011', '内部系统', '08:52', '18:05', '', '', '', '', '', '', '0', '0', '', '', ''],
+    [m + '-02', '阮仁军', 'ZG002', '13800138002', '420984199001010022', '海康威视', '20:00', '06:10', '', '', '', '', '', '', '0', '0', '', '', ''],
+    [m + '-02', '李海涛', 'ZG003', '13800138003', '420984199001010033', '企业微信', '09:10', '17:20', '', '', '', '', '', '', '10', '10', '上班', '08:55', '其他异常'],
+    [m + '-03', '张福', 'ZG001', '13800138001', '420984199001010011', '内部系统', '08:52', '', '', '', '', '', '', '', '0', '0', '', '', ''],
+  ];
+  attDownloadCsv('考勤导入模板_' + m.replace('-', '') + '.csv', [head].concat(rows));
+}
+function attImportDate(v) {
+  const s = String(v == null ? '' : v).trim();
+  if (!s) return '';
+  const m = s.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})(?:[ T].*)?$/);
+  if (m) {
+    const y = +m[1], mo = +m[2], d = +m[3];
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return '';
+    return y + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+  }
+  if (/^\d{5}(\.\d+)?$/.test(s)) {
+    const n = Math.round(Number(s));
+    if (n > 25000 && n < 60000) {
+      const dt = new Date(Date.UTC(1899, 11, 30) + n * 86400000);
+      return dt.getUTCFullYear() + '-' + String(dt.getUTCMonth() + 1).padStart(2, '0') + '-' + String(dt.getUTCDate()).padStart(2, '0');
+    }
+  }
+  return '';
+}
+function attImportTime(v) {
+  const s = String(v == null ? '' : v).trim();
+  if (!s) return '';
+  const m = s.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (!m) return '';
+  const h = +m[1], mi = +m[2];
+  if (h > 23 || mi > 59) return '';
+  return String(h).padStart(2, '0') + ':' + String(mi).padStart(2, '0');
+}
+function attBuildEmpIndex() {
+  const byPhone = {}, byNo = {}, byIdcard = {}, byName = {};
+  attEmployees.forEach(e => {
+    if (e.phone) byPhone[String(e.phone).trim()] = e;
+    if (e.no) byNo[String(e.no).trim()] = e;
+    if (e.idcard) byIdcard[String(e.idcard).toUpperCase()] = e;
+    (byName[e.name] = byName[e.name] || []).push(e);
+  });
+  return { byPhone: byPhone, byNo: byNo, byIdcard: byIdcard, byName: byName };
+}
+function attVal(row, map, key) {
+  const col = map[key];
+  return col ? String(row[col] == null ? '' : row[col]).trim() : '';
+}
+function attNormalizeRows(rows, map) {
+  const failedRows = [], parsedRows = [], seen = {};
+  const idx = attBuildEmpIndex();
+  rows.forEach((r, i) => {
+    const line = i + 2;
+    const fail = reason => failedRows.push({ line: line, reason: reason, raw: r });
+    const name = attVal(r, map, 'name');
+    if (!name) { fail('姓名不能为空'); return; }
+    const dateRaw = attVal(r, map, 'date');
+    const date = attImportDate(dateRaw);
+    if (!date) { fail('日期「' + (dateRaw || '空') + '」格式应为 yyyy-MM-dd'); return; }
+
+    const shifts = [];
+    let timeErr = '';
+    for (let n = 1; n <= 4; n++) {
+      const inRaw = attVal(r, map, 's' + n + 'in'), outRaw = attVal(r, map, 's' + n + 'out');
+      const inT = attImportTime(inRaw), outT = attImportTime(outRaw);
+      if (inRaw && !inT) { timeErr = '班次' + n + '上班时间「' + inRaw + '」格式应为 HH:mm'; break; }
+      if (outRaw && !outT) { timeErr = '班次' + n + '下班时间「' + outRaw + '」格式应为 HH:mm'; break; }
+      if (!inT && !outT) continue;
+      shifts.push({ name: '班次' + n, inTime: inT, outTime: outT, crossDay: !!(inT && outT && outT <= inT) });
+    }
+    if (timeErr) { fail(timeErr); return; }
+
+    const invTimeRaw = attVal(r, map, 'invTime');
+    const invTime = attImportTime(invTimeRaw);
+    if (!shifts.length && !invTime) { fail('班次1~4 的上下班时间与失效时间都为空'); return; }
+    if (invTimeRaw && !invTime) { fail('失效时间「' + invTimeRaw + '」格式应为 HH:mm'); return; }
+    const lateRaw = attVal(r, map, 'lateMin'), earlyRaw = attVal(r, map, 'earlyMin');
+    if (lateRaw && !/^\d+(\.\d+)?$/.test(lateRaw)) { fail('迟到分钟需为数字'); return; }
+    if (earlyRaw && !/^\d+(\.\d+)?$/.test(earlyRaw)) { fail('早退分钟需为数字'); return; }
+    const invStatus = attVal(r, map, 'invStatus');
+    if (invTime && ATT_IMPORT_INV.indexOf(invStatus) < 0) { fail('失效状态需为「' + ATT_IMPORT_INV.join(' / ') + '」'); return; }
+    if (invStatus && !invTime) { fail('填写失效状态时需同时填写失效时间'); return; }
+
+    const phone = attVal(r, map, 'phone').replace(/[\s-]+/g, '');
+    const no = attVal(r, map, 'no');
+    const idcard = attVal(r, map, 'idcard').toUpperCase();
+    let emp = null;
+    if (idcard && idx.byIdcard[idcard]) emp = idx.byIdcard[idcard];
+    else if (no && idx.byNo[no]) emp = idx.byNo[no];
+    else if (phone && idx.byPhone[phone]) emp = idx.byPhone[phone];
+    else if (idx.byName[name]) {
+      const list = idx.byName[name];
+      if (list.length === 1) emp = list[0];
+      else { fail('员工「' + name + '」在名册中重名，请补充工号或手机号'); return; }
+    }
+    if (!emp) { fail('员工「' + name + '」不在考勤名册中'); return; }
+
+    const srcRaw = attVal(r, map, 'source').toLowerCase().replace(/[\s\-_/\\()（）:：、.,，]+/g, '');
+    const row = {
+      line: line, empId: emp.id, empName: emp.name, phone: emp.phone, rule: emp.rule || '标准班',
+      date: date, source: ATT_IMPORT_SRC[srcRaw] || 'internal',
+      shifts: shifts,
+      invTime: invTime, invType: attVal(r, map, 'invType') === '下班' ? 'out' : 'in', invStatus: invStatus,
+      lateMin: lateRaw === '' ? undefined : Number(lateRaw),
+      earlyMin: earlyRaw === '' ? undefined : Number(earlyRaw),
+      raw: r,
+    };
+    const sig = [row.empId, date, row.source, shifts.map(s => s.name + ':' + s.inTime + '-' + s.outTime).join(','), invTime].join('|');
+    if (seen[sig]) return;
+    seen[sig] = 1;
+    parsedRows.push(row);
+  });
+  return { parsedRows: parsedRows, failedRows: failedRows };
+}
+function attBuildGroups(parsedRows, rule) {
+  const gm = {};
+  parsedRows.forEach(row => {
+    const key = row.empId + '|' + row.date + '|' + row.source;
+    let g = gm[key];
+    if (!g) {
+      g = gm[key] = { key: key, empId: row.empId, empName: row.empName, phone: row.phone, rule: rule || row.rule,
+        date: row.date, source: row.source, shifts: [], invalids: [], lateMin: undefined, earlyMin: undefined,
+        crossDay: false, rows: [] };
+    }
+    row.shifts.forEach(sh => {
+      let target = g.shifts.find(x => x.name === sh.name);
+      if (!target) { target = { name: sh.name, punches: [] }; g.shifts.push(target); }
+      if (sh.inTime && !target.punches.some(p => p.type === 'in' && p.time === sh.inTime)) target.punches.push(mkP(sh.inTime, 'in'));
+      if (sh.outTime && !target.punches.some(p => p.type === 'out' && p.time === sh.outTime)) target.punches.push(mkP(sh.outTime, 'out'));
+      if (sh.crossDay) g.crossDay = true;
+    });
+    if (row.invTime) {
+      const cat = ATT_IMPORT_CAT[row.invStatus];
+      if (cat === 'makeup' || cat === 'approval' || cat === 'field') {
+        const pool = [];
+        g.shifts.forEach(sh => sh.punches.forEach(p => pool.push(p)));
+        const cand = row.invType === 'out'
+          ? pool.filter(p => p.type === 'out').sort((a, b) => (a.time < b.time ? -1 : 1)).pop()
+          : pool.filter(p => p.type === 'in').sort((a, b) => (a.time < b.time ? -1 : 1))[0];
+        if (cand) cand.category = cat;
+      }
+      if (!g.invalids.some(x => x.type === row.invType && x.time === row.invTime)) {
+        g.invalids.push(mkInv(row.invTime, row.invType, row.invStatus || '正常'));
+      }
+    }
+    if (row.lateMin !== undefined) g.lateMin = g.lateMin === undefined ? row.lateMin : Math.max(g.lateMin, row.lateMin);
+    if (row.earlyMin !== undefined) g.earlyMin = g.earlyMin === undefined ? row.earlyMin : Math.max(g.earlyMin, row.earlyMin);
+    g.rows.push(row);
+  });
+  return Object.keys(gm).map(k => gm[k]);
+}
+function attDownloadFailed() {
+  const d = VM.attImport;
+  if (!d.failedRows.length) { showToast('没有失败行'); return; }
+  const cols = d.headers || [];
+  const rows = [['行号', '失败原因'].concat(cols)].concat(d.failedRows.map(f => [f.line, f.reason].concat(cols.map(c => String(f.raw && f.raw[c] != null ? f.raw[c] : '')))));
+  attDownloadCsv('考勤_' + String(d.month || '').replace('-', '') + '_失败行.csv', rows);
+}
+function attRefreshAttViews(month) {
+  if (month) {
+    const r = attMonthRange(month);
+    VM.attFilter.timeline.range = r;
+    VM.attFilter.dailyOverview.range = r;
+    VM.attFilter.dailyDetail.range = r;
+    VM.attFilter.monthly.month = month;
+  }
+  applyFilter();
+  applyDailyOverviewFilter();
+  applyDailyDetailFilter();
+  applyMonthlyOverviewFilter();
+  applyMonthlyDetailFilter();
+}
+async function attDoImport() {
+  const d = VM.attImport;
+  if (!d.rule) { VM.$message.warning('请先选择考勤规则'); return; }
+  if (!d.file) { VM.$message.warning('请先选择表格文件'); return; }
+  if (d.importing) return;
+  ATT_LAST_RULE = d.rule;
+  d.importing = true;
+  try {
+    const rows = await oneClickParseTableFile(d.file);
+    if (!rows.length) throw new Error('表格没有数据行');
+    d.headers = Object.keys(rows[0]);
+    const map = attTemplateMap(d.headers);
+    const missing = [];
+    if (!map.date) missing.push('日期');
+    if (!map.name) missing.push('姓名');
+    if (missing.length) throw new Error('表格缺少列：' + missing.join('、') + '，请下载模板后按模板列填写');
+
+    const months = {};
+    rows.forEach(r => {
+      const dt = attImportDate(attVal(r, map, 'date'));
+      if (dt) months[dt.slice(0, 7)] = (months[dt.slice(0, 7)] || 0) + 1;
+    });
+    const mlist = Object.keys(months).sort();
+    if (mlist.length > 1) {
+      throw new Error('文件包含 ' + mlist.map(x => x + '（' + months[x] + ' 行）').join('、') + ' 多个月份，请按月拆表后分别导入');
+    }
+    d.month = mlist[0] || '';
+
+    const norm = attNormalizeRows(rows, map);
+    d.failedRows = norm.failedRows;
+    d.groups = attBuildGroups(norm.parsedRows, d.rule);
+
+    if (!d.groups.length) {
+      d.result = { id: '-', status: 'failed', period: d.month, rule: d.rule, ok: 0, failed: d.failedRows.length,
+        employees: 0, overwritten: 0, punches: 0, createdAt: nowSecStr(), operator: '朱轩均' };
+      d.step = 'result';
+      return;
+    }
+
+    const prev = attMonthImported();
+    if (prev) {
+      const ok = await VM.$confirm(
+        d.month + ' 已于 ' + prev.createdAt + ' 导入过（批次 ' + prev.id + '）。继续将覆盖该月同员工同来源的打卡记录，覆盖前的数据可在导入记录里回滚恢复。',
+        '覆盖该月考勤', { type: 'warning', confirmButtonText: '继续覆盖', cancelButtonText: '取消' }
+      ).then(() => true).catch(() => false);
+      if (!ok) return;
+    }
+
+    let okRows = 0, punchCount = 0, overwritten = 0;
+    const backup = [], created = [];
+    d.groups.forEach(g => {
+      const dayMap = attendanceData[g.empId] = attendanceData[g.empId] || {};
+      const list = dayMap[g.date] = dayMap[g.date] || [];
+      const i = list.findIndex(s => s.source === g.source);
+      const src = mkSource(g.source, g.rule, g.shifts, g.invalids || []);
+      if (g.crossDay) src.crossDay = true;
+      if (g.lateMin !== undefined) src.lateMin = g.lateMin;
+      if (g.earlyMin !== undefined) src.earlyMin = g.earlyMin;
+      if (i >= 0) {
+        backup.push({ e: g.empId, d: g.date, s: g.source, src: JSON.parse(JSON.stringify(list[i])) });
+        list.splice(i, 1, src);
+        overwritten++;
+      } else {
+        list.push(src);
+        created.push({ e: g.empId, d: g.date, s: g.source });
+      }
+      okRows += g.rows.length;
+      g.shifts.forEach(sh => { punchCount += sh.punches.length; });
+      punchCount += (g.invalids || []).length;
+    });
+
+    attRefreshAttViews(d.month);
+
+    const batch = {
+      id: 'IMP' + String(Date.now()).slice(-9),
+      file: d.fileName, period: d.month, rule: d.rule,
+      total: norm.parsedRows.length + d.failedRows.length,
+      ok: okRows, failed: d.failedRows.length, employees: new Set(d.groups.map(g => g.empId)).size,
+      overwritten: overwritten, punches: punchCount,
+      operator: '朱轩均', createdAt: nowSecStr(), rolled: false,
+      backup: backup, created: created,
+      failures: d.failedRows.slice(0, 100).map(f => ({ line: f.line, reason: f.reason })),
+    };
+    attSaveBatch(batch);
+
+    d.result = {
+      id: batch.id, status: d.failedRows.length ? 'partial' : 'success', period: d.month, rule: d.rule,
+      ok: batch.ok, failed: batch.failed, employees: batch.employees, overwritten: batch.overwritten,
+      punches: batch.punches, createdAt: batch.createdAt, operator: batch.operator,
+    };
+    d.step = 'result';
+    showToast('已导入 ' + d.month + '（' + d.rule + '）：' + batch.ok + ' 行 / ' + batch.punches + ' 条打卡' + (batch.failed ? '，' + batch.failed + ' 行失败' : ''));
+  } catch (e) {
+    VM.$message.error(e && e.message ? e.message : '表格解析失败');
+  } finally {
+    d.importing = false;
+  }
+}
+function attRollbackBatch(b) {
+  const full = ATT_BATCH_MEM[b.id];
+  if (!full) { VM.$message.warning('原型只保留本次会话的回滚数据，刷新后不能回滚'); return; }
+  VM.$confirm('回滚会撤销 ' + (full.period || b.period || '') + ' 这次导入，并恢复被覆盖前的数据，确认继续？', '回滚导入批次', {
+    type: 'warning', confirmButtonText: '确认回滚', cancelButtonText: '取消',
+  }).then(() => {
+    (full.created || []).forEach(c => {
+      const day = attendanceData[c.e] && attendanceData[c.e][c.d];
+      if (!day) return;
+      const i = day.findIndex(s => s.source === c.s);
+      if (i >= 0) day.splice(i, 1);
+      if (!day.length) delete attendanceData[c.e][c.d];
+    });
+    (full.backup || []).forEach(bk => {
+      const dayMap = attendanceData[bk.e] = attendanceData[bk.e] || {};
+      const list = dayMap[bk.d] = dayMap[bk.d] || [];
+      const i = list.findIndex(s => s.source === bk.s);
+      const snap = JSON.parse(JSON.stringify(bk.src));
+      if (i >= 0) list.splice(i, 1, snap); else list.push(snap);
+    });
+    b.rolled = true;
+    b.rolledAt = nowSecStr();
+    const list = attBatchesRead().map(x => (x.id === b.id ? Object.assign({}, x, { rolled: true, rolledAt: b.rolledAt }) : x));
+    attBatchesWrite(list);
+    attRefreshAttViews(full.period || b.period);
+    showToast('已回滚 ' + (full.period || b.period || '') + ' 的导入');
+  }).catch(() => {});
+}
+
 // ===== 日报概况统计（数据行构建） =====
 
 // Compute stats from a single source object
@@ -5790,15 +6949,25 @@ function computeSingleSourceStats(src) {
   const latest   = outPunches.length > 0 ? outPunches.map(p=>p.time).sort().pop() : '--';
   const punchCount = allPunches.length;
   let stdHours = 8, actHours = 0;
-  if (earliest !== '--' && latest !== '--') {
-    const [h1,m1] = earliest.split(':').map(Number);
-    const [h2,m2] = latest.split(':').map(Number);
-    actHours = Math.round(((h2*60+m2)-(h1*60+m1))/6)/10;
-  }
-  const lateCount  = (earliest !== '--' && earliest > '09:00') ? 1 : 0;
-  const lateMin    = lateCount  ? 15 : 0;
-  const earlyLeave = (latest   !== '--' && latest   < '17:30') ? 1 : 0;
-  const earlyMin   = earlyLeave ? 20 : 0;
+  // 实际工时 = 各班组时长之和（单班次内取最早进/最晚出），跨天自动 +24h
+  src.shifts.forEach(sh => {
+    const ins  = sh.punches.filter(p => p.type === 'in').map(p => p.time).sort();
+    const outs = sh.punches.filter(p => p.type === 'out').map(p => p.time).sort();
+    if (!ins.length || !outs.length) return;
+    const [h1,m1] = ins[0].split(':').map(Number);
+    const [h2,m2] = outs[outs.length - 1].split(':').map(Number);
+    let diff = (h2*60+m2)-(h1*60+m1);
+    if (diff < 0) diff += 1440;   // 跨天班：下班计到次日
+    actHours += diff;
+  });
+  actHours = Math.round(actHours/6)/10;
+  // 导入的打卡可带真实的迟到/早退分钟，带了就以文件为准，否则沿用默认判定
+  const hasLateMin = src.lateMin !== undefined && src.lateMin !== null && src.lateMin !== '';
+  const lateCount  = hasLateMin ? (Number(src.lateMin) > 0 ? 1 : 0) : ((earliest !== '--' && earliest > '09:00') ? 1 : 0);
+  const lateMin    = hasLateMin ? Math.max(0, Number(src.lateMin) || 0) : (lateCount ? 15 : 0);
+  const hasEarlyMin = src.earlyMin !== undefined && src.earlyMin !== null && src.earlyMin !== '';
+  const earlyLeave = hasEarlyMin ? (Number(src.earlyMin) > 0 ? 1 : 0) : ((latest !== '--' && latest < '17:30') ? 1 : 0);
+  const earlyMin   = hasEarlyMin ? Math.max(0, Number(src.earlyMin) || 0) : (earlyLeave ? 20 : 0);
   const absentCount = 0, absentMin = 0;
   const missingCard = (inPunches.length === 0 || outPunches.length === 0) ? 1 : 0;
   const missingInCard  = src.shifts.filter(sh => sh.punches.filter(p => p.type === 'in').length === 0).length;
@@ -6488,7 +7657,6 @@ function closeUpgrade() {
   switchPage(p || 'ph', name);
 }
 function selectUpgradeVersion(id) { VM.upgradeVersionId = id; }
-function openUpgradeContact() { openQrDlg('kefu'); }
 function openUpgradeAgreement(type) {
   VM.upgradeAgreeDlg = { visible: true, type: type === 'service' ? 'service' : 'version' };
 }
@@ -6528,8 +7696,6 @@ function openUpgradePay(mode) {
   const dlg = VM.upgradePayDlg;
   if (mode === 'version') {
     const v = VM.upgradeCurVersion;
-    if (v.id === 1) { VM.$message.warning('免费版无需购买，可直接使用'); return; }
-    if (v.id === 5) { VM.$message.warning('独立部署请联系客服获取方案与报价'); return; }
     dlg.items = [{ name: v.name, amount: v.pricePerYear * VM.upgradeVersionYears,
       desc: '¥' + v.pricePerYear + '/年 × ' + VM.upgradeVersionYears + '年' }];
   } else {
@@ -7263,7 +8429,7 @@ function advisorReset() {
   VM.advisorPage = 1;
 }
 
-// ===== 关联客户 =====
+// ===== 用工单位 =====
 const leaves = arr => arr.map(n => ({ value: n, label: n }));
 // 省市区：原型只放常用省份，够演示三级联动
 const CLIENT_REGIONS = [
@@ -7319,9 +8485,43 @@ const CLIENT_ROWS = [
   { id: 2, name: '郑州宇通客车股份有限公司', creditCode: '', region: ['河南省', '郑州市', '航空港区'], addrDetail: '第九大街 168 号', employers: [], contacts: ['冯静怡'], payDay: 22, phone: '0371-6677 8800', intro: '客车整车制造企业，焊装与涂装车间需求技工，要求持证上岗。', images: [], certs: [], creator: '刘经理', created: '2026-09-08 14:37:51' },
   { id: 1, name: '宁波均胜电子股份有限公司', creditCode: '', region: ['浙江省', '宁波市', '鄞州区'], addrDetail: '清逸路 99 号', employers: ['武汉联想产业基地'], contacts: ['苏文杰'], payDay: 28, phone: '0574-8790 1122', intro: '汽车电子与安全系统供应商，产线以自动化设备操作为主。', images: [], certs: [], creator: '张明远', created: '2026-09-14 10:58:15' },
 ];
+// 用工单位合同签署：模板非必填，新增时选了模板就生成一份待签署合同
+const CLIENT_CONTRACT_TPLS = ['劳务派遣服务协议', '人力资源服务合作协议', '用工单位服务协议', '兼职人员合作协议'];
+const CLIENT_CONTRACT_STATUSES = ['待签署', '签署中', '已签署', '已作废'];
+const CLIENT_SIGN_URL = 'https://sign.laborhub.cn/s/';
+function clientSignLink(seed) {
+  let h = 2166136261;
+  const s = String(seed);
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; }
+  return CLIENT_SIGN_URL + h.toString(36) + (h >>> 7).toString(36);
+}
+const CLIENT_SIGN_SEED = {
+  12: ['劳务派遣服务协议', '已签署'], 11: ['人力资源服务合作协议', '已签署'], 10: ['劳务派遣服务协议', '未签署'],
+  9: ['用工单位服务协议', '未签署'], 8: ['人力资源服务合作协议', '已签署'], 7: ['兼职人员合作协议', '未签署'],
+  6: ['劳务派遣服务协议', '已签署'], 5: ['', '未签署'], 4: ['用工单位服务协议', '已签署'],
+  3: ['劳务派遣服务协议', '已签署'], 2: ['', '未签署'], 1: ['兼职人员合作协议', '已签署'],
+};
+CLIENT_ROWS.forEach(r => {
+  const s = CLIENT_SIGN_SEED[r.id] || ['', '未签署'];
+  r.contractTpl = s[0];
+  r.signStatus = s[1];
+  r.signLink = s[1] === '已签署' ? '' : clientSignLink(r.name);
+});
+const CLIENT_CONTRACT_ROWS = [
+  { id: 10, no: 'HT202609120010', clientId: 12, client: '武汉华星光电技术有限公司', tpl: '劳务派遣服务协议', status: '已签署', start: '2026-09-12 10:20:00', done: '2026-09-12 10:26:31' },
+  { id: 9, no: 'HT202609180009', clientId: 11, client: '武汉天马微电子有限公司', tpl: '人力资源服务合作协议', status: '已签署', start: '2026-09-18 09:10:00', done: '2026-09-18 09:45:12' },
+  { id: 8, no: 'HT202609250008', clientId: 10, client: '鄂州三安光电有限公司', tpl: '劳务派遣服务协议', status: '待签署', start: '2026-09-25 14:00:00', done: '' },
+  { id: 7, no: 'HT202609280007', clientId: 9, client: '武汉联想产业基地', tpl: '用工单位服务协议', status: '签署中', start: '2026-09-28 11:32:00', done: '' },
+  { id: 6, no: 'HT202610080006', clientId: 8, client: '深圳市智灵工科技有限公司', tpl: '人力资源服务合作协议', status: '已签署', start: '2026-10-08 15:20:00', done: '2026-10-08 15:24:18' },
+  { id: 5, no: 'HT202610120005', clientId: 7, client: '深圳南山智造有限公司', tpl: '兼职人员合作协议', status: '待签署', start: '2026-10-12 09:36:00', done: '' },
+  { id: 4, no: 'HT202610150004', clientId: 6, client: '东莞立讯精密工业有限公司', tpl: '劳务派遣服务协议', status: '已签署', start: '2026-10-15 13:02:00', done: '2026-10-15 13:09:42' },
+  { id: 3, no: 'HT202610200003', clientId: 4, client: '杭州海康威视电子有限公司', tpl: '用工单位服务协议', status: '已签署', start: '2026-10-20 10:12:00', done: '2026-10-20 10:18:55' },
+  { id: 2, no: 'HT202610260002', clientId: 3, client: '成都富士康科技有限公司', tpl: '劳务派遣服务协议', status: '已签署', start: '2026-10-26 16:40:00', done: '2026-10-26 16:47:03' },
+  { id: 1, no: 'HT202611020001', clientId: 1, client: '宁波均胜电子股份有限公司', tpl: '兼职人员合作协议', status: '已签署', start: '2026-11-02 09:05:00', done: '2026-11-02 09:11:26' },
+];
 let clientEditId = null, clientFormSeq = 0;
 function blankClientForm() {
-  return { id: null, formKey: 0, name: '', creditCode: '', region: [], addrDetail: '', employers: [], contacts: [], payDay: 15, phone: '', intro: '', images: [], certs: [] };
+  return { id: null, formKey: 0, name: '', creditCode: '', region: [], addrDetail: '', employers: [], contacts: [], payDay: 15, phone: '', intro: '', contractTpl: '', images: [], certs: [], contracts: [] };
 }
 function clientCopyFiles(list) { return (list || []).map(f => ({ name: f.name, url: f.url })); }
 function clientAddrText(r) { return ((r.region || []).join('') + (r.addrDetail || '')) || '—'; }
@@ -7338,7 +8538,8 @@ function openClientEdit(id) {
     VM.clientEditForm = Object.assign(blankClientForm(), {
       id: r.id, formKey: clientFormSeq, name: r.name, creditCode: r.creditCode, region: (r.region || []).slice(),
       addrDetail: r.addrDetail, employers: (r.employers || []).slice(), contacts: (r.contacts || []).slice(), payDay: r.payDay, phone: r.phone, intro: r.intro,
-      images: clientCopyFiles(r.images), certs: clientCopyFiles(r.certs),
+      contractTpl: r.contractTpl || '',
+      images: clientCopyFiles(r.images), certs: clientCopyFiles(r.certs), contracts: clientCopyFiles(r.contracts),
     });
   } else {
     VM.clientEditForm = Object.assign(blankClientForm(), { formKey: clientFormSeq });
@@ -7348,7 +8549,7 @@ function openClientEdit(id) {
   switchPage('clientEdit');
   VM.$nextTick(() => { const el = document.getElementById('clientEditPage'); if (el) el.scrollTop = 0; });
 }
-function closeClientEdit() { switchPage('client', '关联客户'); }
+function closeClientEdit() { switchPage('client', '用工单位'); }
 function openClientAddrDlg() {
   VM.clientAddrDlg = { visible: true, region: (VM.clientEditForm.region || []).slice(), addrDetail: VM.clientEditForm.addrDetail || '' };
 }
@@ -7363,9 +8564,9 @@ function confirmClientAddr() {
 }
 function verifyClientName() {
   const name = (VM.clientEditForm.name || '').trim();
-  if (!name) { VM.$message.warning('请先输入关联客户'); return; }
+  if (!name) { VM.$message.warning('请先输入用工单位'); return; }
   const hit = CLIENT_REGISTRY[name];
-  if (!hit) { VM.$message.error('未查询到该关联客户，请核对名称'); return; }
+  if (!hit) { VM.$message.error('未查询到该用工单位，请核对名称'); return; }
   VM.clientEditForm.creditCode = hit.creditCode;
   VM.clientVerifyInfo = { creditCode: hit.creditCode, addr: hit.addr };
   VM.clientVerifyDlg = true;
@@ -7386,6 +8587,14 @@ function handleClientCertRemove(file, fileList) {
   if (file.url && file.url.indexOf('blob:') === 0) URL.revokeObjectURL(file.url);
   VM.clientEditForm.certs = fileList;
 }
+function handleClientContractChange(file, fileList) {
+  fileList.forEach(f => { if (f.raw && !f.url) f.url = URL.createObjectURL(f.raw); });
+  VM.clientEditForm.contracts = fileList;
+}
+function handleClientContractRemove(file, fileList) {
+  if (file.url && file.url.indexOf('blob:') === 0) URL.revokeObjectURL(file.url);
+  VM.clientEditForm.contracts = fileList;
+}
 function saveClient() {
   VM.$refs.clientFormRef.validate(ok => {
     if (!ok) { VM.$message.warning('请检查必填项'); return; }
@@ -7393,21 +8602,25 @@ function saveClient() {
     if (!(f.addrDetail || '').trim()) { VM.$message.error('请完善：详细地址'); return; }
     const payload = { name: f.name.trim(), creditCode: f.creditCode, region: f.region.slice(), addrDetail: f.addrDetail.trim(),
       employers: (f.employers || []).slice(), contacts: (f.contacts || []).slice(), payDay: f.payDay, phone: f.phone, intro: f.intro,
-      images: clientCopyFiles(f.images), certs: clientCopyFiles(f.certs) };
+      contractTpl: f.contractTpl || '',
+      images: clientCopyFiles(f.images), certs: clientCopyFiles(f.certs), contracts: clientCopyFiles(f.contracts) };
     if (f.id) {
       const row = VM.clientAll.find(r => r.id === f.id);
-      if (row) Object.assign(row, payload);
-      showToast('关联客户已保存：' + payload.name);
+      if (row) { Object.assign(row, payload); ensureClientContract(row); }
+      showToast('用工单位已保存：' + payload.name);
     } else {
-      VM.clientAll.unshift(Object.assign({ id: VM.clientNextId++, creator: '朱轩均', created: nowSecStr() }, payload));
+      const row = Object.assign({ signStatus: '未签署', signLink: clientSignLink(payload.name + Date.now()),
+        id: VM.clientNextId++, creator: '朱轩均', created: nowSecStr() }, payload);
+      VM.clientAll.unshift(row);
+      ensureClientContract(row);
       VM.clientPage = 1;
-      showToast('已新增关联客户：' + payload.name);
+      showToast('已新增用工单位：' + payload.name);
     }
     closeClientEdit();
   });
 }
 function deleteClient(row) {
-  VM.$confirm(`确认删除关联客户「${row.name}」？`, '删除确认', { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消' })
+  VM.$confirm(`确认删除用工单位「${row.name}」？`, '删除确认', { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消' })
     .then(() => {
       const i = VM.clientAll.findIndex(r => r.id === row.id);
       if (i >= 0) VM.clientAll.splice(i, 1);
@@ -7421,6 +8634,69 @@ function clientReset() {
   VM.clientFilter = { name: '', contact: '', employer: '', payDay: '', range: [] };
   VM.clientQuery = JSON.parse(JSON.stringify(VM.clientFilter));
   VM.clientPage = 1;
+}
+// ===== 用工单位合同签署 =====
+function onClientTabClick() { VM.clientPage = 1; VM.clientContractPage = 1; }
+function clientContractStatusType(s) {
+  return s === '已签署' ? 'success' : s === '签署中' ? 'warning' : s === '已作废' ? 'danger' : 'info';
+}
+function clientContractSearch() { VM.clientContractQuery = JSON.parse(JSON.stringify(VM.clientContractFilter)); VM.clientContractPage = 1; }
+function clientContractReset() {
+  VM.clientContractFilter = { client: '', tpl: '', status: '' };
+  VM.clientContractQuery = { client: '', tpl: '', status: '' };
+  VM.clientContractPage = 1;
+}
+// 新增/编辑用工单位时选了模板，且还没有合同时，生成一份待签署合同
+function ensureClientContract(row) {
+  if (!row || !row.contractTpl) return;
+  if (VM.clientContracts.some(c => c.clientId === row.id)) return;
+  const id = VM.clientContractNextId++;
+  VM.clientContracts.unshift({
+    id: id, no: 'HT' + todayStr().replace(/-/g, '') + String(id).padStart(4, '0'),
+    clientId: row.id, client: row.name, tpl: row.contractTpl,
+    status: '待签署', start: nowSecStr(), done: '', signLink: row.signLink || '',
+  });
+}
+function clientRowSignLink(row) {
+  if (row.signLink) return row.signLink;
+  if (row.clientId) {
+    const c = VM.clientAll.find(x => x.id === row.clientId);
+    if (c && c.signLink) return c.signLink;
+  }
+  return '';
+}
+function copyTextToClipboard(text, onOk, onFail) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(onOk).catch(() => legacyCopyText(text, onOk, onFail));
+    return;
+  }
+  legacyCopyText(text, onOk, onFail);
+}
+function legacyCopyText(text, onOk, onFail) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.top = '-1000px';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  (ok ? onOk : onFail)();
+}
+function copyClientSignLink(row) {
+  if (!row) return;
+  if (row.signStatus === '已签署' || row.status === '已签署') { VM.$message.warning('该合同已完成签署'); return; }
+  if (row.status === '已作废') { VM.$message.warning('该合同已作废，无法签署'); return; }
+  let link = clientRowSignLink(row);
+  if (!link) {
+    link = clientSignLink((row.client || row.name || '') + Date.now());
+    row.signLink = link;
+  }
+  copyTextToClipboard(link,
+    () => showToast('签署链接已复制，可发送给用工单位'),
+    () => VM.$alert(link, '签署链接', { confirmButtonText: '知道了' }));
 }
 
 // ===== 邀请规则 =====
@@ -7675,6 +8951,178 @@ function inviteRecordReset() {
   VM.inviteRecordQuery = JSON.parse(JSON.stringify(VM.inviteRecordFilter));
   VM.inviteRecordPage = 1;
 }
+
+// ===== 面试管理 =====
+const INTERVIEW_MEMBERS = [
+  { id: 1, name: '戴少华', phone: '136****2081', role: '招聘顾问' },
+  { id: 2, name: '梁浩', phone: '137****5520', role: '招聘顾问' },
+  { id: 3, name: '何义', phone: '135****7742', role: '驻厂管理员' },
+  { id: 4, name: '部落战', phone: '188****3316', role: '招聘专员' },
+  { id: 5, name: '黄海燕', phone: '139****6608', role: '驻厂管理员' },
+  { id: 6, name: '周晓兰', phone: '150****9023', role: '招聘专员' },
+];
+const INTERVIEW_EMPLOYERS = ['深圳华工新能源装备有限公司', '深圳市科敏传感器有限公司', '四川省蜀福香食品有限责任公司', '深圳国冶星光电科技股份有限公司'];
+const INTERVIEW_JOBS = ['华工电工中工', '科敏女工', '科敏男', '测试005', '国冶星光普工'];
+const INTERVIEW_SOURCES = ['支付宝小程序', '微信小程序', '抖音小程序'];
+const INTERVIEW_JOB_EMPLOYER = { '华工电工中工': INTERVIEW_EMPLOYERS[0], '科敏女工': INTERVIEW_EMPLOYERS[1], '科敏男': INTERVIEW_EMPLOYERS[1], '测试005': INTERVIEW_EMPLOYERS[2], '国冶星光普工': INTERVIEW_EMPLOYERS[3] };
+const INTERVIEW_PEOPLE = [
+  { name: '冯国鲜', phone: '185****1862' },
+  { name: '朱轩均', phone: '188****6985' },
+  { name: '测试2号', phone: '155****6110' },
+];
+function interviewPad(n) { return String(n).padStart(2, '0'); }
+function interviewShift(base, minutes) {
+  const d = new Date(new Date(base.replace(' ', 'T')).getTime() + minutes * 60000);
+  return d.getFullYear() + '-' + interviewPad(d.getMonth() + 1) + '-' + interviewPad(d.getDate()) + ' ' + interviewPad(d.getHours()) + ':' + interviewPad(d.getMinutes()) + ':' + interviewPad(d.getSeconds());
+}
+function interviewSeedRow(id, person, job, submitted, source, status, owner, updated, sharer) {
+  return { id, name: person.name, phone: person.phone, employer: INTERVIEW_JOB_EMPLOYER[job], job, submitted, status, owner, sharer: sharer || '', source, updated };
+}
+function buildInterviewRows() {
+  const rows = [];
+  const un = [
+    ['华工电工中工', '2025-10-21 17:18:47', '微信小程序', '2025-10-21 17:18:47'],
+    ['科敏女工', '2025-10-21 17:16:12', '支付宝小程序', '2025-10-21 17:16:13'],
+    ['科敏女工', '2025-10-21 16:46:49', '支付宝小程序', '2025-10-21 16:46:49'],
+    ['科敏女工', '2025-10-21 16:46:14', '支付宝小程序', '2025-10-21 16:46:14'],
+    ['科敏女工', '2025-10-21 16:23:05', '支付宝小程序', '2025-10-21 16:23:06'],
+    ['科敏女工', '2025-10-21 16:13:35', '支付宝小程序', '2025-10-21 16:13:35'],
+    ['科敏女工', '2025-10-21 16:12:21', '支付宝小程序', '2025-10-21 16:12:21'],
+    ['科敏女工', '2025-10-21 16:11:35', '支付宝小程序', '2025-10-21 16:11:36'],
+    ['科敏女工', '2025-10-21 16:10:34', '支付宝小程序', '2025-10-21 16:10:34'],
+    ['科敏女工', '2025-10-21 15:57:50', '支付宝小程序', '2025-10-21 15:57:50'],
+  ];
+  un.forEach((r, i) => rows.push(interviewSeedRow(i + 1, INTERVIEW_PEOPLE[0], r[0], r[1], r[2], '未分配', '', r[3], '')));
+  for (let i = un.length; i < 2030; i++) {
+    const t = interviewShift('2025-10-21 15:50:00', -(i - un.length) * 7);
+    rows.push(interviewSeedRow(i + 1, INTERVIEW_PEOPLE[i % 3], INTERVIEW_JOBS[i % 5], t, INTERVIEW_SOURCES[i % 3], '未分配', '', t, i % 4 === 0 ? ['王顾问', '李顾问', '张顾问'][i % 3] : ''));
+  }
+  const as = [
+    [0, '科敏男', '2025-10-21 17:36:54', '戴少华', '2026-11-10 10:48:31', '支付宝小程序'],
+    [1, '科敏女工', '2025-10-21 17:28:16', '梁浩', '2026-11-10 10:07:00', '支付宝小程序'],
+    [1, '科敏男', '2025-10-21 17:27:07', '何义', '2026-11-10 10:01:46', '支付宝小程序'],
+    [1, '科敏男', '2025-10-21 17:28:27', '何义', '2026-11-10 10:01:19', '支付宝小程序'],
+    [2, '测试005', '2026-09-18 10:27:57', '何义', '2026-11-10 10:01:19', '微信小程序'],
+    [0, '科敏男', '2025-10-21 17:59:58', '梁浩', '2026-11-10 09:18:26', '支付宝小程序'],
+    [0, '科敏男', '2025-10-22 09:26:58', '梁浩', '2026-11-10 09:18:26', '支付宝小程序'],
+    [0, '国冶星光普工', '2025-10-22 11:07:17', '梁浩', '2026-11-10 09:18:26', '支付宝小程序'],
+    [0, '科敏男', '2025-10-21 17:38:37', '部落战', '2026-11-09 15:36:42', '支付宝小程序'],
+    [0, '科敏男', '2025-10-21 17:59:16', '部落战', '2026-11-09 15:36:42', '支付宝小程序'],
+  ];
+  as.forEach((r, i) => rows.push(interviewSeedRow(2031 + i, INTERVIEW_PEOPLE[r[0]], r[1], r[2], r[5], '已分配', r[3], r[4], '')));
+  for (let i = as.length; i < 450; i++) {
+    const sub = interviewShift('2025-10-21 15:40:00', -(i - as.length) * 9);
+    const upd = interviewShift('2026-11-09 15:30:00', -(i - as.length) * 11);
+    rows.push(interviewSeedRow(2031 + i, INTERVIEW_PEOPLE[i % 3], INTERVIEW_JOBS[(i + 1) % 5], sub, INTERVIEW_SOURCES[(i + 1) % 3], '已分配', INTERVIEW_MEMBERS[i % 4].name, upd, i % 5 === 0 ? '王顾问' : ''));
+  }
+  return rows;
+}
+const INTERVIEW_ROWS = buildInterviewRows();
+function blankInterviewFilter() { return { name: '', employer: '', job: '', source: '', owner: '', sharer: '' }; }
+function clearInterviewSelection() {
+  VM.interviewSelection = [];
+  const t = VM.$refs.interviewTable; if (t) t.clearSelection();
+}
+function interviewSearch() { VM.interviewQuery = Object.assign({}, VM.interviewFilter); VM.interviewPage = 1; clearInterviewSelection(); }
+function interviewReset() {
+  VM.interviewFilter = blankInterviewFilter();
+  VM.interviewQuery = blankInterviewFilter();
+  VM.interviewSort = { prop: '', order: '' };
+  VM.interviewPage = 1;
+  clearInterviewSelection();
+  const t = VM.$refs.interviewTable; if (t) t.clearSort();
+}
+function onInterviewTabClick() { VM.interviewPage = 1; clearInterviewSelection(); }
+function onInterviewSelect(rows) { VM.interviewSelection = rows; }
+function onInterviewSortChange(s) { VM.interviewSort = { prop: s.prop || '', order: s.order || '' }; VM.interviewPage = 1; }
+function openInterviewPicker(mode, rows) {
+  if (!rows.length) { VM.$message.warning('请先选择面试记录'); return; }
+  VM.interviewAssignDlg = { visible: true, mode, rows, keyword: '', memberId: null };
+}
+function openInterviewAssign(row) { openInterviewPicker('assign', [row]); }
+function batchInterviewAssign() { openInterviewPicker('assign', VM.interviewSelection.slice()); }
+function openInterviewTransfer(row) { openInterviewPicker('transfer', [row]); }
+function batchInterviewTransfer() { openInterviewPicker('transfer', VM.interviewSelection.slice()); }
+function resetInterviewPicker() { VM.interviewAssignDlg.keyword = ''; VM.interviewAssignDlg.memberId = null; VM.interviewAssignDlg.rows = []; }
+function confirmInterviewAssign() {
+  const d = VM.interviewAssignDlg, m = INTERVIEW_MEMBERS.find(x => x.id === d.memberId);
+  if (!m) return;
+  const t = nowSecStr(), rows = d.rows;
+  if (d.mode === 'assign') {
+    rows.forEach(r => { r.status = '已分配'; r.owner = m.name; r.updated = t; });
+    showToast('已分配 ' + rows.length + ' 条面试记录给 ' + m.name);
+  } else {
+    let n = 0;
+    rows.forEach(r => { if (r.owner !== m.name) { r.owner = m.name; r.status = '已分配'; r.updated = t; n++; } });
+    if (!n) { VM.$message.warning('所选成员已是这些记录的归属人，请选择其他成员'); return; }
+    showToast(n === rows.length ? '已转移 ' + n + ' 条面试记录给 ' + m.name : '已转移 ' + n + ' 条给 ' + m.name + '，' + (rows.length - n) + ' 条归属人未变化');
+  }
+  d.visible = false;
+  clearInterviewSelection();
+}
+function copyInterviewPhone(row) {
+  if (!row || !row.phone) return;
+  copyTextToClipboard(row.phone,
+    () => showToast('手机号已复制'),
+    () => VM.$alert(row.phone, '手机号', { confirmButtonText: '知道了' }));
+}
+
+// ===== 面试管理：分配规则 =====
+// 口径：规则按数组顺序自上而下匹配，命中即止（first-match-wins）；投递渠道与岗位名称均为必选（多选，至少一项）。
+// memberId 指向 INTERVIEW_MEMBERS，归属人落地为姓名。新规则 push 到末尾（优先级最低）。
+const INTERVIEW_ASSIGN_RULES = [
+  { id: 1, sources: ['支付宝小程序'], jobs: ['科敏女工', '科敏男'], memberId: 2, on: true },
+  { id: 2, sources: ['微信小程序'], jobs: ['华工电工中工'], memberId: 1, on: true },
+  { id: 3, sources: ['支付宝小程序', '抖音小程序'], jobs: ['测试005', '国冶星光普工'], memberId: 3, on: true },
+  { id: 4, sources: ['微信小程序', '抖音小程序'], jobs: ['测试005'], memberId: 6, on: false },
+];
+function blankInterviewRule() { return { id: null, sources: [], jobs: [], memberId: null }; }
+function goInterviewRules() { switchPage('interviewRules'); }
+function backFromInterviewRules() {
+  VM.interviewRuleFormDlg.visible = false;
+  VM.openedTags = VM.openedTags.filter(x => x !== '分配规则');
+  switchPage('interview', '面试管理');
+}
+function interviewRuleCondText(r) {
+  return '渠道：' + r.sources.join('、') + '；岗位：' + r.jobs.join('、');
+}
+function interviewRuleMemberName(r) { const m = INTERVIEW_MEMBERS.find(x => x.id === r.memberId); return m ? m.name : '—'; }
+function openInterviewRuleForm(id) {
+  if (id) {
+    const r = VM.interviewRules.find(x => x.id === id); if (!r) return;
+    VM.interviewRuleForm = { id: r.id, sources: (r.sources || []).slice(), jobs: (r.jobs || []).slice(), memberId: r.memberId };
+  } else {
+    VM.interviewRuleForm = blankInterviewRule();
+  }
+  VM.interviewRuleFormDlg.visible = true;
+}
+function saveInterviewRule() {
+  const f = VM.interviewRuleForm, miss = [];
+  if (!(f.sources || []).length) miss.push('投递渠道');
+  if (!(f.jobs || []).length) miss.push('岗位名称');
+  if (!f.memberId) miss.push('分配给');
+  if (miss.length) { VM.$message.error('请完善：' + miss.join('、')); return; }
+  const payload = { sources: (f.sources || []).slice(), jobs: (f.jobs || []).slice(), memberId: f.memberId };
+  if (f.id) {
+    const row = VM.interviewRules.find(r => r.id === f.id);
+    if (row) Object.assign(row, payload);   // 不带 on：编辑不改变启用状态
+    showToast('分配规则已保存');
+  } else {
+    VM.interviewRules.push(Object.assign({ id: VM.interviewRuleNextId++, on: true }, payload));
+    showToast('已新增分配规则');
+  }
+  VM.interviewRuleFormDlg.visible = false;
+}
+function deleteInterviewRule(row) {
+  VM.$confirm('确认删除该分配规则？删除后新投递将不再按此规则自动分配。', '删除确认',
+    { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消' })
+    .then(() => {
+      const i = VM.interviewRules.findIndex(r => r.id === row.id);
+      if (i >= 0) VM.interviewRules.splice(i, 1);
+      showToast('已删除分配规则');
+    }).catch(() => {});
+}
+function toggleInterviewRule(row) { showToast((row.on ? '已启用规则：' : '已停用规则：') + interviewRuleCondText(row)); }
 
 // ===== 结算模板 / 薪酬字段（财务管理） =====
 // 口径：薪酬字段分「计算项 / 结果项」，计算项再按用户自建分组归类；字段本身只声明取数来源（员工档案 / 薪酬档案）与是否可修改，**不在字段上配置公式**。
@@ -7977,7 +9425,751 @@ function payrollBuildRows(tplId, count, mix) {
   }
   return rows;
 }
-// 挂载后补齐 mock 记录的明细，并用明细重算人数与合计，保证列表与详情一致
+
+// ===== 一键算薪（独立模块：不读写结算模板、薪酬档案、智能算薪） =====
+const ONE_CLICK_RESERVED_COLS = ['姓名', '身份证号', '岗位', '应发工资', '实发工资'];
+// 方案公式里始终可用的默认项（不依赖上传表格有哪些列；表格里同名列有值时取该值，否则按 0 计）
+const ONE_CLICK_DEFAULT_ITEMS = [
+  '员工单价', '基本工资', '夜班单价天', '夜班单价小时', '商业险月', '商业险天', '餐补月', '餐补天',
+  '稳岗津贴', '招聘成本', '未还借款', '住宿费', '招聘提成',
+];
+const ONE_CLICK_STORE_KEY = 'zlOneClickPayV1';
+let oneClickToken = 0;
+function oneClickFieldModeText(mode) {
+  return mode === 'formula' ? '公式' : '表格列';
+}
+function oneClickFormulaTokens(expr, names) {
+  const src = String(expr || '');
+  const sorted = (names || []).filter(Boolean).slice().sort((a, b) => b.length - a.length);
+  const tokens = [];
+  let i = 0;
+  while (i < src.length) {
+    const ch = src[i];
+    if (/\s/.test(ch)) { i++; continue; }
+    if ('+-*/()'.indexOf(ch) > -1) { tokens.push({ t: ch }); i++; continue; }
+    if (/[0-9.]/.test(ch)) {
+      let j = i;
+      while (j < src.length && /[0-9.]/.test(src[j])) j++;
+      const n = Number(src.slice(i, j));
+      if (!isFinite(n)) throw new Error('数字格式不正确：' + src.slice(i, j));
+      tokens.push({ t: 'num', v: n });
+      i = j;
+      continue;
+    }
+    const name = sorted.find(n => src.slice(i, i + n.length) === n);
+    if (name) { tokens.push({ t: 'name', v: name }); i += name.length; continue; }
+    throw new Error('公式里有不认识的字段或字符：' + src.slice(i, i + 8));
+  }
+  return tokens;
+}
+function oneClickParseFormula(expr, names, label, values) {
+  const text = String(expr || '').trim();
+  if (!text) throw new Error(label + '不能为空');
+  const tokens = oneClickFormulaTokens(text, names);
+  if (!tokens.length) throw new Error(label + '不能为空');
+  let pos = 0;
+  const peek = () => tokens[pos];
+  const next = () => tokens[pos++];
+  const evalMode = !!values;
+  const readFactor = () => {
+    const tk = peek();
+    if (!tk) throw new Error(label + '不完整');
+    if (tk.t === 'num') { next(); return tk.v; }
+    if (tk.t === 'name') { next(); if (!evalMode) return 0; const v = Number(values[tk.v]); if (!isFinite(v)) throw new Error(label + '字段取数失败：' + tk.v); return v; }
+    if (tk.t === '(') { next(); const v = readExpr(); if (!peek() || peek().t !== ')') throw new Error(label + '括号不匹配'); next(); return v; }
+    if (tk.t === '-') { next(); return -readFactor(); }
+    throw new Error(label + '格式不正确');
+  };
+  const readTerm = () => {
+    let v = readFactor();
+    while (peek() && (peek().t === '*' || peek().t === '/')) {
+      const op = next().t;
+      const r = readFactor();
+      if (op === '*') v *= r;
+      else { if (r === 0) throw new Error(label + '出现除以 0'); v /= r; }
+    }
+    return v;
+  };
+  const readExpr = () => {
+    let v = readTerm();
+    while (peek() && (peek().t === '+' || peek().t === '-')) {
+      const op = next().t;
+      const r = readTerm();
+      v = op === '+' ? v + r : v - r;
+    }
+    return v;
+  };
+  const result = readExpr();
+  if (pos !== tokens.length) throw new Error(label + '格式不正确');
+  return evalMode ? Math.round(result * 100) / 100 : true;
+}
+function oneClickValidateFormula(expr, names, label) { oneClickParseFormula(expr, names, label, null); }
+function oneClickEvalFormula(expr, names, label, values) { return oneClickParseFormula(expr, names, label, values || {}); }
+function oneClickMaskId(id) {
+  const s = String(id || '');
+  if (!s) return '—';
+  if (s.length <= 8) return s;
+  return s.slice(0, 6) + '********' + s.slice(-4);
+}
+function oneClickRowMoney(row) {
+  return { gross: Number(row.gross || 0), net: Number(row.net || 0), deduction: Number(row.deduction || 0) };
+}
+function oneClickRowHours(row) {
+  return row.hours == null ? '—' : row.hours;
+}
+function oneClickRowIssue(row) {
+  const out = [];
+  (row.errors || []).forEach(x => out.push(x));
+  (row.risks || []).forEach(x => out.push(x));
+  return out.join('；');
+}
+function oneClickRowError(row) { return (row.errors || []).join('；'); }
+function oneClickRowRisk(row) { return (row.risks || []).join('；'); }
+function oneClickRowGroup(status) { return status === 'rejected' ? 'audit' : status; }
+function oneClickDefaultTab(run) {
+  const rows = (run && run.rows) || [];
+  if (rows.some(r => oneClickRowGroup(r.status) === 'done')) return 'done';
+  if (rows.some(r => oneClickRowGroup(r.status) === 'confirm')) return 'confirm';
+  return 'audit';
+}
+function oneClickDetailTabChange() {
+  VM.oneClick.page = 1;
+  oneClickClearSel();
+}
+function oneClickRowSelect(rows) { VM.oneClick.sel = rows || []; }
+function oneClickClearSel() {
+  VM.oneClick.sel = [];
+  const t = VM.$refs.oneClickTable;
+  if (t && t.clearSelection) t.clearSelection();
+}
+function oneClickBatchApprove() {
+  const rows = (VM.oneClick.sel || []).filter(r => r.status === 'audit');
+  if (!rows.length) { VM.$message.warning('请先勾选待我审核的员工'); return; }
+  VM.$confirm('确认批量通过所选 ' + rows.length + ' 人的算薪结果？通过后进入「待确认」。', '批量审核通过', { type: 'warning', confirmButtonText: '通过', cancelButtonText: '取消' })
+    .then(() => {
+      const time = nowSecStr();
+      rows.forEach(r => {
+        r.status = 'confirm';
+        r.logs = (r.logs || []).concat([{ action: '审核通过', by: '朱轩均', time: time, remark: '批量通过' }]);
+      });
+      if (!(VM.oneClick.run.rows || []).some(r => oneClickRowGroup(r.status) === 'audit')) VM.oneClick.detailTab = 'confirm';
+      oneClickClearSel();
+      oneClickSave();
+      showToast('已批量通过 ' + rows.length + ' 人');
+    })
+    .catch(() => {});
+}
+function oneClickBatchConfirm() {
+  const rows = (VM.oneClick.sel || []).filter(r => r.status === 'confirm');
+  if (!rows.length) { VM.$message.warning('请先勾选待确认的员工'); return; }
+  VM.$confirm('批量确认所选 ' + rows.length + ' 人的算薪结果？确认后进入「已确认」。', '批量确认', { type: 'warning', confirmButtonText: '确认', cancelButtonText: '取消' })
+    .then(() => {
+      const time = nowSecStr();
+      rows.forEach(r => {
+        r.status = 'done';
+        r.logs = (r.logs || []).concat([{ action: '确认算薪', by: '朱轩均', time: time, remark: '批量确认' }]);
+      });
+      if (!(VM.oneClick.run.rows || []).some(r => oneClickRowGroup(r.status) === 'confirm')) VM.oneClick.detailTab = 'done';
+      oneClickClearSel();
+      oneClickSave();
+      showToast('已批量确认 ' + rows.length + ' 人');
+    })
+    .catch(() => {});
+}
+function oneClickBatchExport() {
+  const rows = VM.oneClick.sel || [];
+  if (!rows.length) { VM.$message.warning('请先勾选要导出的员工'); return; }
+  showToast('已提交 ' + rows.length + ' 人的工资条导出任务');
+}
+function oneClickApproveRow(row) {
+  if (!row || row.status !== 'audit') return;
+  VM.$confirm('确认通过「' + row.name + '」的算薪结果？通过后进入「待确认」。', '审核通过', { type: 'warning', confirmButtonText: '通过', cancelButtonText: '取消' })
+    .then(() => {
+      row.status = 'confirm';
+      row.logs = (row.logs || []).concat([{ action: '审核通过', by: '朱轩均', time: nowSecStr(), remark: '' }]);
+      if (!(VM.oneClick.run.rows || []).some(r => oneClickRowGroup(r.status) === 'audit')) VM.oneClick.detailTab = 'confirm';
+      oneClickSave();
+      showToast('已通过：' + row.name);
+    })
+    .catch(() => {});
+}
+function oneClickConfirmRow(row) {
+  if (!row || row.status !== 'confirm') return;
+  VM.$confirm('确认「' + row.name + '」的算薪结果？确认后进入「已确认」。', '确认算薪', { type: 'warning', confirmButtonText: '确认', cancelButtonText: '取消' })
+    .then(() => {
+      row.status = 'done';
+      row.logs = (row.logs || []).concat([{ action: '确认算薪', by: '朱轩均', time: nowSecStr(), remark: '' }]);
+      if (!(VM.oneClick.run.rows || []).some(r => oneClickRowGroup(r.status) === 'confirm')) VM.oneClick.detailTab = 'done';
+      oneClickSave();
+      showToast('已确认：' + row.name);
+    })
+    .catch(() => {});
+}
+function oneClickSave() {
+  try {
+    const s = VM.oneClick;
+    localStorage.setItem(ONE_CLICK_STORE_KEY, JSON.stringify({
+      schemes: s.schemes, dataSets: s.dataSets, runs: s.runs, nextId: s.nextId,
+    }));
+  } catch (e) {}
+}
+function oneClickLoad() {
+  try {
+    const raw = localStorage.getItem(ONE_CLICK_STORE_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (Array.isArray(d.schemes)) {
+      VM.oneClick.schemes = d.schemes.map(s => {
+        const fields = (s.fields || []).map((f, i) => typeof f === 'string' ? { id: i + 1, name: f } : { id: f.id || i + 1, name: f.name });
+        let formulas = Array.isArray(s.formulas) ? s.formulas : [];
+        if (!formulas.length) {
+          if (s.grossFormula) formulas.push({ id: 1, name: '应发工资', expr: s.grossFormula });
+          if (s.netFormula) formulas.push({ id: 2, name: '实发工资', expr: s.netFormula });
+        }
+        return Object.assign({}, s, { fields: fields, formulas: formulas });
+      });
+    }
+    if (Array.isArray(d.dataSets)) VM.oneClick.dataSets = d.dataSets;
+    if (Array.isArray(d.runs)) {
+      VM.oneClick.runs = d.runs.map(r => {
+        const run = Object.assign({}, r);
+        if (!Array.isArray(run.formulas) || !run.formulas.length) {
+          run.formulas = [{ id: 1, name: '应发工资', expr: '' }, { id: 2, name: '实发工资', expr: '' }];
+          (run.rows || []).forEach(row => {
+            row.formulaValues = { '应发工资': Number(row.gross || 0), '实发工资': Number(row.net || 0) };
+          });
+        }
+        return run;
+      });
+    }
+    if (Number(d.nextId) > 0) VM.oneClick.nextId = Number(d.nextId);
+  } catch (e) {}
+}
+function oneClickStartNew() {
+  const s = VM.oneClick;
+  s.mode = 'calc'; s.step = 1; s.employer = ''; s.month = ''; s.run = null;
+  s.detailTab = 'audit'; s.sel = [];
+  s.resultFilter = { name: '', idcard: '', issue: '' }; s.page = 1;
+  s.payslip = { visible: false, row: null, run: null };
+}
+function oneClickBackToList() {
+  const s = VM.oneClick;
+  s.mode = 'list'; s.step = 1; s.run = null;
+  s.payslip = { visible: false, row: null, run: null };
+}
+function oneClickViewHistoryRun(run) {
+  const s = VM.oneClick;
+  s.mode = 'calc'; s.step = 2; s.run = run;
+  s.employer = run.employer; s.month = run.month;
+  s.detailTab = oneClickDefaultTab(run);
+  s.resultFilter = { name: '', idcard: '', issue: '' }; s.page = 1; s.sel = [];
+  s.payslip = { visible: false, row: null, run: null };
+}
+function oneClickDeleteRun(run) {
+  VM.$confirm('确认删除该一键算薪记录？删除后不可恢复。', '删除确认', { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消' })
+    .then(() => {
+      const s = VM.oneClick;
+      const i = s.runs.findIndex(r => r.id === run.id);
+      if (i >= 0) s.runs.splice(i, 1);
+      if (s.run && s.run.id === run.id) { s.run = null; s.step = 1; s.mode = 'list'; }
+      if (s.listPage > Math.max(1, Math.ceil(s.runs.length / s.listPageSize))) s.listPage = 1;
+      oneClickSave();
+      showToast('已删除一键算薪记录');
+    })
+    .catch(() => {});
+}
+function oneClickHistorySearch() {
+  const s = VM.oneClick;
+  s.listQuery = Object.assign({}, s.listFilter);
+  s.listPage = 1;
+}
+function oneClickHistoryReset() {
+  const s = VM.oneClick;
+  s.listFilter = { employer: '', month: '', creator: '', range: [] };
+  s.listQuery = { employer: '', month: '', creator: '', range: [] };
+  s.listPage = 1;
+}
+function oneClickResetResultFilter() {
+  VM.oneClick.resultFilter = { name: '', idcard: '', issue: '' };
+  VM.oneClick.page = 1;
+  oneClickClearSel();
+}
+function oneClickResetResult() {
+  const s = VM.oneClick;
+  oneClickToken++;
+  if (s.timer) clearTimeout(s.timer);
+  s.running = false; s.timer = null; s.progress = 0; s.stageText = '';
+  s.run = null; s.step = 1; s.detailTab = 'audit'; s.page = 1;
+  s.resultFilter = { name: '', idcard: '', issue: '' };
+  s.payslip = { visible: false, row: null, run: null };
+  oneClickPrepareSchemeDlg();
+}
+function oneClickPrepareSchemeDlg() {
+  const s = VM.oneClick;
+  if (!s.employer) return;
+  const existing = s.schemes.find(x => x.employer === s.employer);
+  let name = existing ? existing.name : '';
+  let fields = existing ? existing.fields.map((f, i) => ({ id: f.id || i + 1, name: f.name })) : [];
+  let formulas = existing ? (existing.formulas || []).map((f, i) => ({ id: f.id || i + 1, name: f.name, expr: f.expr })) : [];
+  if (!existing) {
+    const ds = VM.oneClickDataSet;
+    if (ds) {
+      const sug = oneClickSuggestScheme(ds.headers, ds.rows);
+      fields = sug.fields;
+      formulas = sug.formulas;
+      name = String(s.employer).replace(/(有限责任公司|股份有限公司|有限公司)$/, '') + '一键算薪方案';
+    }
+  }
+  s.schemeDlg = {
+    employer: s.employer,
+    name: name,
+    fields: fields,
+    formulas: formulas,
+    activeFormulaId: formulas.length ? formulas[0].id : null,
+  };
+}
+function oneClickAddFormula() {
+  const d = VM.oneClick.schemeDlg;
+  const id = Date.now() + Math.floor(Math.random() * 1000);
+  d.formulas.push({ id: id, name: '', expr: '' });
+  d.activeFormulaId = id;
+}
+function oneClickRemoveFormula(index) {
+  const d = VM.oneClick.schemeDlg;
+  d.formulas.splice(index, 1);
+  if (!d.formulas.some(f => f.id === d.activeFormulaId)) d.activeFormulaId = d.formulas.length ? d.formulas[0].id : null;
+}
+function oneClickSelectFormula(id) { VM.oneClick.schemeDlg.activeFormulaId = id; }
+function oneClickInsertToken(token) {
+  const d = VM.oneClick.schemeDlg;
+  const f = d.formulas.find(x => x.id === d.activeFormulaId);
+  if (!f) { VM.$message.warning('请先选择或添加一个公式'); return; }
+  const cur = String(f.expr || '').replace(/\s+$/, '');
+  f.expr = cur ? (cur + ' ' + token) : token;
+}
+function oneClickBackspaceFormula() {
+  const d = VM.oneClick.schemeDlg;
+  const f = d.formulas.find(x => x.id === d.activeFormulaId);
+  if (!f) return;
+  const parts = String(f.expr || '').trim().split(/\s+/);
+  parts.pop();
+  f.expr = parts.join(' ');
+}
+function oneClickClearFormula() {
+  const d = VM.oneClick.schemeDlg;
+  const f = d.formulas.find(x => x.id === d.activeFormulaId);
+  if (f) f.expr = '';
+}
+function oneClickSuggestScheme(headers, rows) {
+  const skip = ['姓名', '身份证号', '岗位', '手机号', '部门', '备注', '日期', '月份', '序号', '应发工资', '实发工资'];
+  const usable = (headers || []).filter(h => {
+    const name = String(h || '').trim();
+    if (!name || skip.indexOf(name) > -1) return false;
+    if (!/^[\u4e00-\u9fa5A-Za-z0-9_]+$/.test(name)) return false;
+    return (rows || []).some(r => String(r[name] == null ? '' : r[name]).trim() !== '' && isFinite(Number(r[name])));
+  });
+  const price = usable.find(h => /单价|时薪|工价|费率/.test(h));
+  const hours = usable.find(h => /工时|小时/.test(h));
+  const baseSalary = usable.find(h => /底薪|月薪|工资|结算/.test(h));
+  const netDeduct = usable.filter(h => /个税|社保|公积金/.test(h));
+  const deductions = usable.filter(h => netDeduct.indexOf(h) < 0 && h !== price && h !== hours && h !== baseSalary && /借款|住宿|水电|保险|违规|处罚|扣款|罚款|借支|扣/.test(h));
+  const rewards = usable.filter(h => netDeduct.indexOf(h) < 0 && deductions.indexOf(h) < 0 && h !== price && h !== hours && h !== baseSalary && /奖励|津贴|补贴|提成|满勤|奖金|绩效|餐补|夜班|加班/.test(h));
+  const base = price && hours ? price + '*' + hours : (price || baseSalary || '');
+  const parts = [];
+  if (base) parts.push(base);
+  deductions.forEach(h => parts.push('-' + h));
+  rewards.forEach(h => parts.push('+' + h));
+  let expr = parts.join('') || '0';
+  if (/^-/.test(expr)) expr = '0' + expr;
+  return {
+    fields: usable.map((h, i) => ({ id: i + 1, name: h })),
+    formulas: [
+      { id: 1, name: '应发工资', expr: expr },
+      { id: 2, name: '实发工资', expr: '应发工资' },
+    ],
+  };
+}
+// 校验并保存内嵌方案；silent 时只保存不弹提示。返回是否成功
+function oneClickCommitScheme(silent) {
+  const s = VM.oneClick, d = s.schemeDlg;
+  const name = (d.name || '').trim();
+  if (!d.employer) { VM.$message.warning('请先选择用工单位'); return false; }
+  if (!name) { VM.$message.warning('请填写方案名称'); return false; }
+  const fields = [], fieldNames = {};
+  for (let i = 0; i < (d.fields || []).length; i++) {
+    const f = d.fields[i];
+    const fn = (f.name || '').trim();
+    if (!fn) { VM.$message.warning('第 ' + (i + 1) + ' 个工资项名称不能为空'); return false; }
+    if (fieldNames[fn]) { VM.$message.warning('工资项名称重复：' + fn); return false; }
+    fieldNames[fn] = true;
+    fields.push({ id: f.id || i + 1, name: fn });
+  }
+  if (!fields.length) { VM.$message.warning('没有可用的工资项'); return false; }
+  const formulas = [], formulaNames = {};
+  for (let i = 0; i < (d.formulas || []).length; i++) {
+    const f = d.formulas[i];
+    const fn = (f.name || '').trim();
+    const expr = (f.expr || '').trim();
+    if (!fn) { VM.$message.warning('第 ' + (i + 1) + ' 个公式名称不能为空'); return false; }
+    if (formulaNames[fn]) { VM.$message.warning('公式名称重复：' + fn); return false; }
+    if (fieldNames[fn]) { VM.$message.warning('公式名称不能与工资项同名：' + fn); return false; }
+    formulaNames[fn] = true;
+    formulas.push({ id: f.id || i + 1, name: fn, expr: expr });
+  }
+  if (!formulas.length) { VM.$message.warning('请至少保留一个公式'); return false; }
+  try {
+    formulas.forEach((f, i) => {
+      const allowed = fields.map(x => x.name).concat(ONE_CLICK_DEFAULT_ITEMS).concat(formulas.slice(0, i).map(x => x.name));
+      oneClickValidateFormula(f.expr, allowed, f.name);
+    });
+  } catch (e) {
+    VM.$message.error(e && e.message ? e.message : '公式不正确');
+    return false;
+  }
+  const existing = s.schemes.find(x => x.employer === d.employer);
+  // 内容没变就不写版本，避免每次「保存并计算」都升一版
+  const sig = (nm, fs, ms) => JSON.stringify([nm, fs.map(f => f.name), ms.map(f => [f.name, f.expr])]);
+  if (existing && sig(name, fields, formulas) === sig(existing.name, existing.fields, existing.formulas)) return true;
+  if (existing) {
+    existing.history = (existing.history || []).concat([{
+      version: existing.version || 'v1', name: existing.name,
+      fields: existing.fields.map(f => Object.assign({}, f)),
+      formulas: (existing.formulas || []).map(f => Object.assign({}, f)),
+      changed: nowSecStr(),
+    }]);
+    existing.name = name;
+    existing.fields = fields;
+    existing.formulas = formulas;
+    existing.version = 'v' + (Number(String(existing.version || 'v1').replace(/\D/g, '')) + 1);
+    existing.updated = nowSecStr();
+    if (!silent) showToast('方案已更新：' + name);
+  } else {
+    s.schemes.unshift({
+      employer: d.employer, name: name, version: 'v1', fields: fields, formulas: formulas,
+      history: [], created: nowSecStr(), updated: nowSecStr(),
+    });
+    if (!silent) showToast('方案已创建：' + name);
+  }
+  oneClickSave();
+  return true;
+}
+function oneClickOpenDataDlg() {
+  const s = VM.oneClick;
+  if (!s.employer || !s.month) { VM.$message.warning('请先选择用工单位和月份'); return; }
+  s.dataDlg = { visible: true, file: null, fileName: '', parsing: false };
+}
+function oneClickCsvCell(v) {
+  const s = String(v == null ? '' : v);
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+// 下载导入模板：优先用当前方案的工资项列，没有方案时给一组常用列
+function oneClickDownloadTemplate() {
+  const d = VM.oneClick.schemeDlg || {}, scheme = VM.oneClickScheme;
+  const src = (d.fields && d.fields.length ? d.fields : (scheme ? scheme.fields : []));
+  const fieldNames = src.map(f => String(f.name || '').trim()).filter(Boolean);
+  const cols = ['姓名', '身份证号', '岗位'];
+  fieldNames.forEach(n => { if (cols.indexOf(n) < 0) cols.push(n); });
+  if (!fieldNames.length) ['单价', '工时', '满勤奖', '住宿扣款'].forEach(n => cols.push(n));
+  const sample = cols.map(n => {
+    if (n === '姓名') return '张三';
+    if (n === '身份证号') return '420101199001010011';
+    if (n === '岗位') return '普工';
+    if (n.indexOf('工时') > -1 || n.indexOf('天数') > -1) return '174';
+    if (n.indexOf('单价') > -1) return '20';
+    return '0';
+  });
+  const csv = '\ufeff' + [cols, sample].map(r => r.map(oneClickCsvCell).join(',')).join('\r\n');
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = '一键算薪导入模板.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast('模板已下载，按列填写后再上传');
+}
+function oneClickOnDataFileChange(file) {
+  const d = VM.oneClick.dataDlg;
+  const name = file && file.name ? file.name : '';
+  const ext = name.split('.').pop().toLowerCase();
+  if (ext !== 'xlsx' && ext !== 'csv') {
+    VM.$message.warning('仅支持 .xlsx 或 .csv，.xls 请另存为 .xlsx');
+    return;
+  }
+  d.file = (file && file.raw) || file;
+  d.fileName = name;
+}
+function oneClickParseCsv(text) {
+  const s = String(text || '').replace(/^\ufeff/, '');
+  const rows = [];
+  let row = [], cell = '', quote = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (quote) {
+      if (ch === '"') {
+        if (s[i + 1] === '"') { cell += '"'; i++; } else quote = false;
+      } else cell += ch;
+    } else {
+      if (ch === '"') quote = true;
+      else if (ch === ',') { row.push(cell); cell = ''; }
+      else if (ch === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
+      else if (ch !== '\r') cell += ch;
+    }
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  const clean = rows.filter(r => r.some(x => String(x).trim() !== ''));
+  const headers = (clean.shift() || []).map(h => String(h).trim());
+  if (!headers.length) throw new Error('表格没有表头');
+  return clean.map(r => {
+    const o = {};
+    headers.forEach((h, i) => { o[h] = String(r[i] == null ? '' : r[i]).trim(); });
+    return o;
+  }).filter(o => Object.keys(o).some(k => o[k] !== ''));
+}
+function oneClickColToNum(ref) {
+  let n = 0;
+  const letters = String(ref || '').replace(/[^A-Z]/gi, '').toUpperCase();
+  for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
+  return n;
+}
+function oneClickNumToCol(n) {
+  let s = '';
+  while (n > 0) {
+    const m = (n - 1) % 26;
+    s = String.fromCharCode(65 + m) + s;
+    n = Math.floor((n - 1) / 26);
+  }
+  return s;
+}
+async function oneClickUnzip(buf) {
+  if (buf.byteLength < 22) throw new Error('不是有效的 xlsx 文件');
+  const view = new DataView(buf);
+  let eocd = -1;
+  const min = Math.max(0, buf.byteLength - 65557);
+  for (let i = buf.byteLength - 22; i >= min; i--) {
+    if (view.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('不是有效的 xlsx 文件');
+  const count = view.getUint16(eocd + 10, true);
+  let offset = view.getUint32(eocd + 16, true);
+  const out = {};
+  for (let i = 0; i < count; i++) {
+    if (view.getUint32(offset, true) !== 0x02014b50) break;
+    const method = view.getUint16(offset + 10, true);
+    const compSize = view.getUint32(offset + 20, true);
+    const nameLen = view.getUint16(offset + 28, true);
+    const extraLen = view.getUint16(offset + 30, true);
+    const commentLen = view.getUint16(offset + 32, true);
+    const localOff = view.getUint32(offset + 42, true);
+    const name = new TextDecoder().decode(new Uint8Array(buf, offset + 46, nameLen));
+    const lNameLen = view.getUint16(localOff + 26, true);
+    const lExtraLen = view.getUint16(localOff + 28, true);
+    const dataStart = localOff + 30 + lNameLen + lExtraLen;
+    const data = new Uint8Array(buf, dataStart, compSize);
+    if (method === 0) out[name] = data;
+    else if (method === 8) {
+      const stream = new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+      out[name] = new Uint8Array(await new Response(stream).arrayBuffer());
+    }
+    offset += 46 + nameLen + extraLen + commentLen;
+  }
+  return out;
+}
+async function oneClickParseXlsx(buf) {
+  if (typeof DecompressionStream === 'undefined') throw new Error('当前浏览器不支持解析 xlsx，请上传 CSV');
+  const files = await oneClickUnzip(buf);
+  const sheetName = Object.keys(files).find(k => /^xl\/worksheets\/sheet\d+\.xml$/.test(k));
+  if (!sheetName) throw new Error('xlsx 里没有找到工作表');
+  const decoder = new TextDecoder();
+  const sharedXml = files['xl/sharedStrings.xml'] ? decoder.decode(files['xl/sharedStrings.xml']) : '';
+  const shared = [];
+  if (sharedXml) {
+    const doc = new DOMParser().parseFromString(sharedXml, 'application/xml');
+    doc.querySelectorAll('si').forEach(si => {
+      shared.push(Array.from(si.querySelectorAll('t')).map(t => t.textContent).join(''));
+    });
+  }
+  const sheetXml = decoder.decode(files[sheetName]);
+  const doc = new DOMParser().parseFromString(sheetXml, 'application/xml');
+  const rows = [];
+  doc.querySelectorAll('sheetData > row').forEach(rowEl => {
+    const cells = {};
+    rowEl.querySelectorAll('c').forEach(c => {
+      const ref = c.getAttribute('r') || '';
+      const col = ref.replace(/\d/g, '');
+      const t = c.getAttribute('t');
+      let v = '';
+      if (t === 'inlineStr') {
+        v = Array.from(c.querySelectorAll('is t')).map(x => x.textContent).join('');
+      } else {
+        const vEl = c.querySelector('v');
+        v = vEl ? vEl.textContent : '';
+        if (t === 's') v = shared[Number(v)] || '';
+      }
+      if (col) cells[col] = v;
+    });
+    const nums = Object.keys(cells).map(oneClickColToNum);
+    const max = nums.length ? Math.max.apply(null, nums) : 0;
+    const arr = [];
+    for (let i = 1; i <= max; i++) arr.push(cells[oneClickNumToCol(i)] || '');
+    if (arr.some(x => String(x).trim() !== '')) rows.push(arr);
+  });
+  const headers = (rows.shift() || []).map(h => String(h).trim());
+  if (!headers.length) throw new Error('表格没有表头');
+  return rows.map(r => {
+    const o = {};
+    headers.forEach((h, i) => { o[h] = String(r[i] == null ? '' : r[i]).trim(); });
+    return o;
+  }).filter(o => Object.keys(o).some(k => o[k] !== ''));
+}
+async function oneClickParseTableFile(file) {
+  const name = String(file && file.name ? file.name : '').toLowerCase();
+  if (name.endsWith('.csv')) return oneClickParseCsv(await file.text());
+  if (name.endsWith('.xlsx')) return oneClickParseXlsx(await file.arrayBuffer());
+  throw new Error('仅支持 .xlsx 或 .csv，.xls 请另存为 .xlsx');
+}
+async function oneClickSaveData() {
+  const s = VM.oneClick, d = s.dataDlg;
+  if (!d.file) { VM.$message.warning('请先选择表格文件'); return; }
+  d.parsing = true;
+  try {
+    const rows = await oneClickParseTableFile(d.file);
+    if (!rows.length) throw new Error('表格没有数据行');
+    const headers = Object.keys(rows[0]);
+    const required = VM.oneClickRequiredColumns;
+    const missing = required.filter(h => headers.indexOf(h) < 0);
+    if (missing.length) throw new Error('表格缺少列：' + missing.join('、'));
+    const parsed = [], ids = {};
+    rows.forEach((r, i) => {
+      const name = String(r['姓名'] || '').trim();
+      const idcard = String(r['身份证号'] || '').trim();
+      if (!name || !idcard) throw new Error('第 ' + (i + 2) + ' 行姓名、身份证号不能为空');
+      if (!/^\d{15}$|^\d{17}[\dXx]$/.test(idcard)) throw new Error('第 ' + (i + 2) + ' 行身份证号需为 15 或 18 位，18 位可含末位 X');
+      if (ids[idcard]) throw new Error('身份证号重复：' + idcard);
+      ids[idcard] = true;
+      parsed.push(Object.assign({}, r, { '姓名': name, '身份证号': idcard }));
+    });
+    const ds = { employer: s.employer, month: s.month, headers: headers, rows: parsed, imported: nowSecStr() };
+    const idx = s.dataSets.findIndex(x => x.employer === s.employer && x.month === s.month);
+    if (idx >= 0) s.dataSets.splice(idx, 1, ds); else s.dataSets.unshift(ds);
+    d.visible = false;
+    oneClickResetResult();
+    oneClickSave();
+    if (!VM.oneClickScheme) showToast('已导入 ' + parsed.length + ' 人，请确认下方系统建议的工资项和公式后点击「保存并计算」');
+    else showToast('已导入 ' + parsed.length + ' 人算薪数据');
+  } catch (e) {
+    VM.$message.error(e && e.message ? e.message : '表格解析失败');
+  } finally {
+    d.parsing = false;
+  }
+}
+function oneClickBuildRows(scheme, sources) {
+  return (sources || []).map((src, i) => {
+    const values = {};
+    const fieldValues = [];
+    const errors = [], risks = [];
+    ONE_CLICK_DEFAULT_ITEMS.forEach(n => {
+      const v = Number(src[n] || 0);
+      values[n] = isFinite(v) ? v : 0;
+    });
+    scheme.fields.forEach(f => {
+      const amount = Number(src[f.name] || 0);
+      values[f.name] = isFinite(amount) ? amount : 0;
+      fieldValues.push({ name: f.name, mode: 'table', amount: values[f.name] });
+    });
+    scheme.formulas.forEach((f, idx) => {
+      const allowed = scheme.fields.map(x => x.name).concat(ONE_CLICK_DEFAULT_ITEMS).concat(scheme.formulas.slice(0, idx).map(x => x.name));
+      let amount = 0;
+      try { amount = oneClickEvalFormula(f.expr, allowed, f.name, values); }
+      catch (e) { errors.push(e && e.message ? e.message : f.name + '计算失败'); }
+      values[f.name] = amount;
+      fieldValues.push({ name: f.name, mode: 'formula', amount: amount });
+    });
+    const grossF = scheme.formulas.find(f => f.name === '应发工资') || scheme.formulas[0] || null;
+    const netF = scheme.formulas.find(f => f.name === '实发工资') || scheme.formulas[scheme.formulas.length - 1] || null;
+    const gross = grossF ? Number(values[grossF.name] || 0) : 0;
+    const net = netF ? Number(values[netF.name] || 0) : 0;
+    const deduction = Math.round((gross - net) * 100) / 100;
+    if (net < 0) errors.push('实发为负数，请核对公式');
+    if (net < 2360) risks.push('实发低于当地最低工资');
+    const formulaValues = {};
+    scheme.formulas.forEach(f => { formulaValues[f.name] = Number(values[f.name] || 0); });
+    return {
+      id: i + 1, name: src['姓名'], idcard: src['身份证号'], hours: Number(src['工时'] || 0),
+      fieldValues: fieldValues, formulaValues: formulaValues, valueMap: Object.assign({}, values),
+      gross: gross, deduction: deduction, net: net,
+      errors: errors, risks: risks,
+      status: 'audit', schemeVersion: scheme.version,
+    };
+  });
+}
+function oneClickRun() {
+  const s = VM.oneClick;
+  if (s.running) return;
+  if (!s.employer || !s.month) { VM.$message.warning('请先选择用工单位和月份'); return; }
+  if (!VM.oneClickSourceRows.length) { VM.$message.warning('请先上传算薪数据'); return; }
+  // 保存并计算：先把内嵌方案（可能的调整）落库，再计算
+  if (!oneClickCommitScheme(true)) return;
+  const scheme = VM.oneClickScheme;
+  if (!scheme) { VM.$message.warning('请先上传表格并确认方案'); return; }
+  s.running = true; s.progress = 8; s.stageText = '读取工资项与公式…';
+  const token = ++oneClickToken;
+  const stages = ['读取工资项与公式…', '校验人员与异常…', '生成算薪结果…'];
+  let step = 0;
+  const finish = () => {
+    if (token !== oneClickToken) return;
+    const rows = oneClickBuildRows(scheme, VM.oneClickSourceRows);
+    const gross = rows.reduce((a, r) => a + Number(r.gross || 0), 0);
+    const net = rows.reduce((a, r) => a + Number(r.net || 0), 0);
+    const existing = s.runs.find(r => r.employer === s.employer && r.month === s.month);
+    const fields = scheme.fields.map(f => Object.assign({}, f));
+    const formulas = scheme.formulas.map(f => Object.assign({}, f));
+    let run;
+    if (existing) {
+      run = existing;
+      VM.$set(run, 'rows', rows);
+      run.headcount = rows.length; run.gross = gross; run.net = net;
+      run.schemeName = scheme.name; run.schemeVersion = scheme.version;
+      run.fields = fields; run.formulas = formulas;
+      run.created = nowSecStr();
+      run.logs = (run.logs || []).concat([{ action: '重新一键算薪', by: '朱轩均', time: nowSecStr(), remark: '生成 ' + rows.length + ' 条结果' }]);
+    } else {
+      run = {
+        id: s.nextId++, name: scheme.name + ' · ' + s.month + ' 一键算薪',
+        employer: s.employer, month: s.month,
+        schemeName: scheme.name, schemeVersion: scheme.version,
+        fields: fields, formulas: formulas,
+        headcount: rows.length, gross: gross, net: net,
+        creator: '朱轩均', created: nowSecStr(),
+        logs: [{ action: '一键算薪', by: '朱轩均', time: nowSecStr(), remark: '生成 ' + rows.length + ' 条结果' }],
+        rows: rows,
+      };
+      s.runs.unshift(run);
+    }
+    s.run = run; s.running = false; s.timer = null; s.progress = 100; s.stageText = '完成';
+    s.step = 2; s.detailTab = 'audit'; s.page = 1; s.sel = [];
+    s.resultFilter = { name: '', idcard: '', issue: '' };
+    oneClickSave();
+    showToast('一键算薪完成：' + rows.length + ' 人，实发 ' + fmtInviteMoney(net));
+  };
+  const tick = () => {
+    if (token !== oneClickToken) return;
+    step++;
+    if (step < stages.length) {
+      s.progress = step === 1 ? 36 : 68;
+      s.stageText = stages[step];
+      s.timer = setTimeout(tick, 420);
+      return;
+    }
+    finish();
+  };
+  s.timer = setTimeout(tick, 320);
+}
+function oneClickRerun() { oneClickRun(); }
+function oneClickViewPayslip(row, run) {
+  VM.oneClick.payslip = { visible: true, row: row, run: run };
+}
+function oneClickExportPayslips() { showToast('导出工资条：任务已提交'); }
+function oneClickExportPayslip(row, run) { showToast('导出工资条：任务已提交'); }
+
 function payrollSeedRows() {
   VM.payrollRuns.forEach(run => {
     if (run.rows && run.rows.length) return;
@@ -9061,6 +11253,8 @@ const FN_BRIDGE = {
   openEditPage, cancelEdit, saveEdit, addPeriodRow, removePeriodRow,
   attCellHtml, openDrawer, closeDrawer, srcCfg, srcTitle, catShort, catLabel, invShort, getDevice,
   handleExport, handleExportRecord, applyFilter, resetFilter, setMonthPreset, applyMonthlyFilter, resetMonthlyFilter,
+  openAttImport, closeAttImport, attImportClearFile, attOnImportFileChange, attDownloadTemplate, attDoImport,
+  attOnRuleChange, attDownloadFailed, attOpenBatches, attRollbackBatch,
   onAttTabClick, onDailySubClick, onMonthlySubClick,
   applyDailyOverviewFilter, resetDailyOverviewFilter, applyDailyDetailFilter, resetDailyDetailFilter,
   applyMonthlyOverviewFilter, applyMonthlyDetailFilter,
@@ -9079,18 +11273,22 @@ const FN_BRIDGE = {
   onMethodCommTypeChange, onMethodAdjustChange,
   doLogin, goLogin, goRegister, toStep2, backToRegister, sendSmsCode, handleLicenseChange, removeLicense, submitEnt, openQrDlg, logoutNow, qrSvg,
   openUpgrade, closeUpgrade, selectUpgradeVersion, toggleUpgradeService, removeUpgradeService, openUpgradePay, closeUpgradePay, confirmUpgradePay,
-  openUpgradeAgreement, openUpgradeContact, upgradeAgreementAgree,
+  openUpgradeAgreement, upgradeAgreementAgree,
   serviceRowAmount,
   openAdvisorDlg, saveAdvisor, deleteAdvisor, toggleAdvisor, onAdvisorTypeChange, handleAdvisorQrChange, handleAdvisorQrRemove, handleAdvisorQrExceed, advisorTypeText, advisorSearch, advisorReset,
-  openClientEdit, closeClientEdit, openClientAddrDlg, confirmClientAddr, saveClient, deleteClient, verifyClientName, handleClientImageChange, handleClientImageRemove, handleClientCertChange, handleClientCertRemove, clientAddrText, clientSearch, clientReset,
+  openClientEdit, closeClientEdit, openClientAddrDlg, confirmClientAddr, saveClient, deleteClient, verifyClientName, handleClientImageChange, handleClientImageRemove, handleClientCertChange, handleClientCertRemove, handleClientContractChange, handleClientContractRemove, clientAddrText, clientSearch, clientReset,
+  onClientTabClick, clientContractStatusType, clientContractSearch, clientContractReset, copyClientSignLink,
   openInviteDlg, saveInviteRule, deleteInviteRule, toggleInviteRule, inviteJobsText, inviteDaysText, inviteMaxText, inviteSearch, inviteReset,
   openInviteDetail, inviteRecCls, fmtInviteMoney, inviteRuleName, invitePaidAmount, inviteInviterPhone, inviteRecordSelectable, onInviteRecordSelect, clearInviteRecordSelection, confirmInviteReward, batchConfirmInviteReward, inviteRecordSearch, inviteRecordReset,
+  interviewSearch, interviewReset, onInterviewTabClick, onInterviewSelect, onInterviewSortChange, openInterviewAssign, batchInterviewAssign, openInterviewTransfer, batchInterviewTransfer, confirmInterviewAssign, resetInterviewPicker, copyInterviewPhone,
+  goInterviewRules, backFromInterviewRules, openInterviewRuleForm, saveInterviewRule, deleteInterviewRule, toggleInterviewRule, interviewRuleCondText, interviewRuleMemberName,
   inviteRuleOf, inviteDaysOrAll, inviteRehireText, inviteOwnerPolicyText, inviteSelfPolicyText, inviteOwnerPolicyTip, inviteSelfPolicyTip, inviteProtectEnd, inviteReleased, invitePitRecords, inviteOwnerWinner, inviteOwnerNodes, inviteOwnerLocked, openInviteOwner, reassignInviteOwner,
   salaryFileSearch, salaryFileReset, salaryFileStatusOf, openSalaryFileDlg, onSalaryFilePick, removeSalaryFilePick, saveSalaryFile, deleteSalaryFile,
   orderSearch, orderReset, orderBatchInvoice, orderApplyInvoice, orderMoney, orderTotal, orderPayCls, orderInvCls, orderCanInvoice,
   openOrderContract, orderContractApply, orderContractSign, openOrderContractView, orderContractDownload, orderContractCls, orderContractBtn, orderContactService,
   openPayrollCreate, closePayrollCreate, payrollNextStep, payrollPrevStep, payrollSubmit, payrollTotal, payrollValText, payrollIssueText, payrollStatusOf, payrollEmpStatus, payrollSeedRows, payrollRunCount, payrollSearch, payrollReset, openPayrollDetail, closePayrollDetail, openPayrollAuditRow, openPayrollBatchAudit, submitPayrollAudit, payrollConfirmRow, payrollBatchConfirm, payrollDetailSelect, payrollDetailTabChange, payrollDetailSearch, payrollDetailReset, payrollClearSel, payrollRelayout, openPayrollRowLogs, deletePayrollRun, payrollTplVt, payrollTplSrcText, payrollTplExpr, onPayrollEmployerChange, onPayrollMonthChange,
   openSalaryFilePreview, retrySalaryFile,
+  oneClickStartNew, oneClickBackToList, oneClickAddFormula, oneClickRemoveFormula, oneClickSelectFormula, oneClickInsertToken, oneClickOpenDataDlg, oneClickDownloadTemplate, oneClickOnDataFileChange, oneClickSaveData, oneClickHistorySearch, oneClickHistoryReset, oneClickRun, oneClickRerun, oneClickResetResult, oneClickResetResultFilter, oneClickDetailTabChange, oneClickRowSelect, oneClickBatchApprove, oneClickBatchConfirm, oneClickBatchExport, oneClickApproveRow, oneClickConfirmRow, oneClickViewPayslip, oneClickViewHistoryRun, oneClickDeleteRun, oneClickExportPayslip, oneClickExportPayslips, oneClickRowMoney, oneClickRowHours, oneClickRowIssue, oneClickRowError, oneClickRowRisk, oneClickMaskId, oneClickFieldModeText,
   stplTabChange, stplSearch, stplReset, openStplEdit, closeStplEdit, saveStplTpl, copyStplTpl, deleteStplTpl, onStplFieldsChange, onStplTplVtChange, onStplTplSrcChange, openStplModeDlg, chooseStplMode, openStplFieldPick, toggleStplFieldPick, confirmStplFieldPick, openStplFieldCfg, onStplFieldCfgVt, saveStplFieldCfg, removeStplFormField,
   openStplFieldDlg, saveStplFieldDlg, deleteStplField, onStplFieldVtChange, addStplFieldGroup, renameStplFieldGroup, deleteStplFieldGroup,
   stplFieldOf, stplFieldsOfGroup, stplFieldGroupName, stplValueText, stplValueOpts, stplSrcOpts, stplSrcText, stplTplClients, stplPayDayOf, stplPayDayText, stplFieldRefNames, stplFormulaTokens, stplFieldErr, stplValidate, stplTplExpr, stplTplVt, stplTplSrc, stplTplSrcText, stplTplErr, stplTplNeedExpr, stplFormFields, stplFormComputeFields, stplFormResultNames, stplEditableText,
@@ -9463,7 +11661,7 @@ const VM = new Vue({
       { name: '岗位列表', icon: 'el-icon-s-order', desc: '创建岗位、提交审核、管理上下架与满员状态' },
       { name: '员工档案', icon: 'el-icon-user-solid', desc: '在职与离职名册、计薪方式与单价、批量导出' },
       { name: '计薪提成', icon: 'el-icon-money', desc: '计薪方式、提成方案、驻厂与门店提成规则' },
-      { name: '关联客户', icon: 'el-icon-office-building', desc: '登记用工单位、发薪日与联系人信息' },
+      { name: '用工单位', icon: 'el-icon-office-building', desc: '登记用工单位、发薪日与联系人信息' },
     ],
     ph: { group: '人事管理', name: '员工档案' },
     // 员工档案
@@ -9492,6 +11690,9 @@ const VM = new Vue({
     dailyOverview: { rows: [] }, dailyDetail: { rows: [] },
     monthlyOverview: { rows: [] }, monthlyDetail: { rows: [], dateList: [], sourceFilter: '' },
     attColPanel: attInitColPanel(),
+    attImport: attImportBlank(),
+    attImportHist: { visible: false },
+    attBatches: attBatchesRead(),
     drawer: { visible: false, title: '', emp: {}, sources: [], totalPunches: 0, totalInvalid: 0, countText: '' },
     winH: window.innerHeight,
     // 编辑
@@ -9551,18 +11752,24 @@ const VM = new Vue({
     advisorQuery: { name: '', type: '', on: '', range: [] },
     advisorPage: 1, advisorPageSize: 10, advisorNextId: 13,
     advisorDlg: { visible: false }, advisorForm: blankAdvisor(),
-    // 关联客户
+    // 用工单位
     clientRegions: CLIENT_REGIONS,
+    clientTab: 'list',
     clientAll: CLIENT_ROWS.map(r => Object.assign({}, r)),
+    clientContracts: CLIENT_CONTRACT_ROWS.map(r => Object.assign({ signLink: clientSignLink(r.no) }, r)),
+    clientContractTpls: CLIENT_CONTRACT_TPLS, clientContractStatuses: CLIENT_CONTRACT_STATUSES,
+    clientContractFilter: { client: '', tpl: '', status: '' },
+    clientContractQuery: { client: '', tpl: '', status: '' },
+    clientContractPage: 1, clientContractPageSize: 10, clientContractNextId: 11,
     clientFilter: { name: '', contact: '', employer: '', payDay: '', range: [] },
     clientQuery: { name: '', contact: '', employer: '', payDay: '', range: [] },
     clientPage: 1, clientPageSize: 10, clientNextId: 13,
     clientEditForm: blankClientForm(),
     clientVerifyDlg: false, clientVerifyInfo: { creditCode: '', addr: '' },
     clientRules: {
-      name: [{ required: true, message: '请输入关联客户', trigger: 'blur' }],
+      name: [{ required: true, message: '请输入用工单位', trigger: 'blur' }],
       region: [{ type: 'array', required: true, message: '请选择省市区', trigger: 'change' }],
-      intro: [{ required: true, message: '请输入关联客户介绍', trigger: 'blur' }],
+      intro: [{ required: true, message: '请输入用工单位介绍', trigger: 'blur' }],
     },
     clientAddrDlg: { visible: false, region: [], addrDetail: '' },
     // 邀请规则
@@ -9581,6 +11788,20 @@ const VM = new Vue({
     inviteRecordQuery: { inviter: '', invitee: '', ruleId: '', status: '', range: [] },
     inviteRecordPage: 1, inviteRecordPageSize: 10,
     inviteOwner: { visible: false, row: {} },
+    // 面试管理
+    interviewCategory: 'blue',
+    interviewTab: 'unassigned',
+    interviewAll: INTERVIEW_ROWS.map(r => Object.assign({}, r)),
+    interviewMembers: INTERVIEW_MEMBERS,
+    interviewEmployers: INTERVIEW_EMPLOYERS, interviewJobs: INTERVIEW_JOBS, interviewSources: INTERVIEW_SOURCES,
+    interviewFilter: blankInterviewFilter(), interviewQuery: blankInterviewFilter(),
+    interviewSelection: [], interviewPage: 1, interviewPageSize: 10,
+    interviewSort: { prop: '', order: '' },
+    interviewAssignDlg: { visible: false, mode: 'assign', rows: [], keyword: '', memberId: null },
+    interviewRules: INTERVIEW_ASSIGN_RULES.map(r => Object.assign({}, r, { sources: r.sources.slice(), jobs: r.jobs.slice() })),
+    interviewRuleNextId: 5,
+    interviewRuleFormDlg: { visible: false },
+    interviewRuleForm: blankInterviewRule(),
     // 结算模板 / 薪酬字段
     stplTab: 'tpl',
     stplAll: STPL_TPL.map(r => Object.assign({}, r, { fields: (r.fields || []).slice(), formulas: Object.assign({}, r.formulas) })),
@@ -9616,6 +11837,21 @@ const VM = new Vue({
     payrollDetailFilter: { name: '', job: '', empStatus: '' }, payrollDetailQuery: { name: '', job: '', empStatus: '' },
     payrollAuditDlg: { visible: false, rows: [], bulk: false, mode: 'pass', remark: '' },
     payrollLogDlg: { visible: false, name: '', logs: [] },
+    // 一键算薪
+    oneClick: {
+      mode: 'list', step: 1,
+      employer: '', month: '',
+      schemes: [], dataSets: [], runs: [], nextId: 1,
+      schemeDlg: { visible: false, employer: '', name: '', fields: [], formulas: [], activeFormulaId: null },
+      dataDlg: { visible: false, file: null, fileName: '', parsing: false },
+      running: false, progress: 0, stageText: '', timer: null,
+      run: null, detailTab: 'audit', page: 1, pageSize: 10, sel: [],
+      resultFilter: { name: '', idcard: '', issue: '' },
+      listPage: 1, listPageSize: 10,
+      listFilter: { employer: '', month: '', creator: '', range: [] },
+      listQuery: { employer: '', month: '', creator: '', range: [] },
+      payslip: { visible: false, row: null, run: null },
+    },
     // 订单管理
     orders: ORDER_ROWS.map(o => Object.assign({}, o, { items: (o.items || []).map(it => Object.assign({}, it)), sel: false, contract: null })),
     orderTypes: ORDER_TYPES, orderPayStatuses: ORDER_PAY_STATUSES, orderPayMethods: ORDER_PAY_METHODS, orderInvoiceStatuses: ORDER_INVOICE_STATUSES,
@@ -9644,14 +11880,6 @@ const VM = new Vue({
         .filter(g => g.tags.length);
     },
     upgradeCurVersion() { return this.upgradeVersions.find(v => v.id === this.upgradeVersionId) || this.upgradeVersions[0]; },
-    // 免费版与独立部署不走在线购买：free 无需购买，deploy 联系客服
-    upgradeBuyMode() {
-      const v = this.upgradeCurVersion;
-      if (!v) return 'buy';
-      if (v.id === 1) return 'free';
-      if (v.id === 5) return 'deploy';
-      return 'buy';
-    },
     upgradeAgreementDoc() { return UPGRADE_AGREEMENTS[this.upgradeAgreeDlg.type] || UPGRADE_AGREEMENTS.version; },
     upgradeToday() {
       const d = new Date();
@@ -9756,7 +11984,18 @@ const VM = new Vue({
       });
     },
     clientPageRows() { const s = (this.clientPage - 1) * this.clientPageSize; return this.clientFiltered.slice(s, s + this.clientPageSize); },
-    clientTableHeight() { return Math.max(260, this.winH - 386); },
+    clientTableHeight() { return Math.max(260, this.winH - 426); },
+    clientContractFiltered() {
+      const q = this.clientContractQuery;
+      return this.clientContracts.filter(r => {
+        if (q.client && String(r.client).indexOf(q.client) < 0) return false;
+        if (q.tpl && r.tpl !== q.tpl) return false;
+        if (q.status && r.status !== q.status) return false;
+        return true;
+      });
+    },
+    clientContractRows() { const s = (this.clientContractPage - 1) * this.clientContractPageSize; return this.clientContractFiltered.slice(s, s + this.clientContractPageSize); },
+    clientContractTableHeight() { return Math.max(240, this.winH - 426); },
     clientContactOptions() { return Array.from(new Set(this.clientAll.reduce((a, r) => a.concat(r.contacts || []), []))); },
     clientAddrDlgPreview() { const d = this.clientAddrDlg; const t = (d.region || []).join('') + (d.addrDetail || ''); return t || '尚未选择省市区'; },
     inviteFiltered() {
@@ -9790,6 +12029,40 @@ const VM = new Vue({
     inviteRecordPageRows() { const s = (this.inviteRecordPage - 1) * this.inviteRecordPageSize; return this.inviteRecordFiltered.slice(s, s + this.inviteRecordPageSize); },
     inviteRecordTableHeight() { return Math.max(260, this.winH - 386); },
     inviteRecordSelectedAmount() { return (this.inviteRecordSelection || []).reduce((a, r) => a + r.amount, 0); },
+    interviewUnassignedCount() { return this.interviewAll.filter(r => r.status === '未分配').length; },
+    interviewAssignedCount() { return this.interviewAll.filter(r => r.status === '已分配').length; },
+    interviewFiltered() {
+      const q = this.interviewQuery, tab = this.interviewTab;
+      const list = this.interviewAll.filter(r => {
+        if (r.status !== (tab === 'unassigned' ? '未分配' : '已分配')) return false;
+        if (q.name && String(r.name).indexOf(q.name.trim()) < 0) return false;
+        if (q.employer && r.employer !== q.employer) return false;
+        if (q.job && r.job !== q.job) return false;
+        if (q.source && r.source !== q.source) return false;
+        if (tab === 'assigned' && q.owner && r.owner !== q.owner) return false;
+        if (q.sharer && String(r.sharer).indexOf(q.sharer.trim()) < 0) return false;
+        return true;
+      });
+      const s = this.interviewSort;
+      if (s.prop && s.order) {
+        const k = s.order === 'ascending' ? 1 : -1;
+        list.sort((a, b) => { const x = String(a[s.prop] || ''), y = String(b[s.prop] || ''); return (x < y ? -1 : x > y ? 1 : 0) * k; });
+      }
+      return list;
+    },
+    interviewPageRows() { const s = (this.interviewPage - 1) * this.interviewPageSize; return this.interviewFiltered.slice(s, s + this.interviewPageSize); },
+    interviewTableHeight() { return Math.max(240, this.winH - (this.interviewTab === 'unassigned' ? 454 : 410)); },
+    interviewPickerMembers() {
+      const d = this.interviewAssignDlg, kw = (d.keyword || '').trim().toLowerCase();
+      return this.interviewMembers.filter(m => !kw || m.name.toLowerCase().indexOf(kw) > -1 || m.phone.indexOf(kw) > -1 || m.role.toLowerCase().indexOf(kw) > -1).map(m => {
+        const owned = d.mode === 'transfer' ? d.rows.filter(r => r.owner === m.name).length : 0;
+        return Object.assign({}, m, {
+          disabled: d.mode === 'transfer' && d.rows.length > 0 && owned === d.rows.length,
+          note: d.mode === 'transfer' && owned ? (owned === d.rows.length ? '当前归属人' : '已归属 ' + owned + ' 条') : m.role,
+        });
+      });
+    },
+    interviewActiveRuleCount() { return this.interviewRules.filter(r => r.on).length; },
     // 结算模板 / 薪酬字段
     stplIsTplTab() { return this.stplTab === 'tpl'; },
     stplFiltered() {
@@ -9818,6 +12091,100 @@ const VM = new Vue({
     payrollPageRows() {
       const s = (this.payrollPage - 1) * this.payrollPageSize;
       return this.payrollFiltered.slice(s, s + this.payrollPageSize);
+    },
+    // 一键算薪
+    oneClickScheme() {
+      const s = this.oneClick;
+      return s.schemes.find(x => x.employer === s.employer) || null;
+    },
+    oneClickDataSet() {
+      const s = this.oneClick;
+      return s.dataSets.find(x => x.employer === s.employer && x.month === s.month) || null;
+    },
+    oneClickSourceRows() {
+      return (this.oneClickDataSet && this.oneClickDataSet.rows) || [];
+    },
+    oneClickExistingRun() {
+      const s = this.oneClick;
+      return s.runs.find(r => r.employer === s.employer && r.month === s.month) || null;
+    },
+    oneClickReady() {
+      const s = this.oneClick, d = s.schemeDlg;
+      return !!(s.employer && s.month && d && (d.fields || []).length && (d.formulas || []).length && this.oneClickSourceRows.length);
+    },
+    oneClickDetailTabs() {
+      const run = this.oneClick.run;
+      const n = k => run ? (run.rows || []).filter(r => oneClickRowGroup(r.status) === k).length : 0;
+      return [
+        { k: 'done', label: '已确认', count: n('done') },
+        { k: 'confirm', label: '待确认', count: n('confirm') },
+        { k: 'audit', label: '待我审核', count: n('audit') },
+      ];
+    },
+    oneClickFilteredRows() {
+      const rows = (this.oneClick.run && this.oneClick.run.rows) || [];
+      const f = this.oneClick.resultFilter;
+      const tab = this.oneClick.detailTab;
+      return rows.filter(r => {
+        if (oneClickRowGroup(r.status) !== tab) return false;
+        if (f.name && String(r.name || '').indexOf(f.name) < 0) return false;
+        if (f.idcard && String(r.idcard || '').indexOf(f.idcard) < 0) return false;
+        const hasIssue = !!oneClickRowIssue(r);
+        if (f.issue === 'yes' && !hasIssue) return false;
+        if (f.issue === 'no' && hasIssue) return false;
+        return true;
+      });
+    },
+    oneClickPageRows() {
+      const s = (this.oneClick.page - 1) * this.oneClick.pageSize;
+      return this.oneClickFilteredRows.slice(s, s + this.oneClick.pageSize);
+    },
+    oneClickStats() {
+      const run = this.oneClick.run;
+      if (!run) return { headcount: 0, gross: 0, net: 0, issueCount: 0 };
+      let gross = 0, net = 0, issueCount = 0;
+      (run.rows || []).forEach(r => {
+        gross += Number(r.gross || 0);
+        net += Number(r.net || 0);
+        if (oneClickRowIssue(r)) issueCount++;
+      });
+      return { headcount: (run.rows || []).length, gross: gross, net: net, issueCount: issueCount };
+    },
+    oneClickHistoryRuns() {
+      return (this.oneClick.runs || []).slice().sort((a, b) => String(b.created || '').localeCompare(String(a.created || '')) || Number(b.id) - Number(a.id));
+    },
+    oneClickHistoryFiltered() {
+      const q = this.oneClick.listQuery;
+      return this.oneClickHistoryRuns.filter(r => {
+        if (q.employer && r.employer !== q.employer) return false;
+        if (q.month && r.month !== q.month) return false;
+        if (q.creator && String(r.creator || '').indexOf(q.creator) < 0) return false;
+        const d = String(r.created || '').slice(0, 10);
+        if (q.range && q.range.length === 2 && (d < q.range[0] || d > q.range[1])) return false;
+        return true;
+      });
+    },
+    oneClickHistoryPageRows() {
+      const s = (this.oneClick.listPage - 1) * this.oneClick.listPageSize;
+      return this.oneClickHistoryFiltered.slice(s, s + this.oneClick.listPageSize);
+    },
+    oneClickRequiredColumns() {
+      const cols = ['姓名', '身份证号'];
+      const scheme = this.oneClickScheme;
+      if (scheme) {
+        scheme.fields.forEach(f => {
+          if (f.name && cols.indexOf(f.name) < 0) cols.push(f.name);
+        });
+      }
+      return cols;
+    },
+    oneClickFormulaRefNames() {
+      const d = this.oneClick.schemeDlg;
+      const idx = d.formulas.findIndex(f => f.id === d.activeFormulaId);
+      const prev = idx > 0 ? d.formulas.slice(0, idx).map(f => f.name).filter(Boolean) : [];
+      const out = ONE_CLICK_DEFAULT_ITEMS.slice();
+      prev.forEach(n => { if (out.indexOf(n) < 0) out.push(n); });
+      return out;
     },
     orderFiltered() {
       const q = this.orderQuery;
@@ -10036,6 +12403,8 @@ const VM = new Vue({
     clientPageSize() { this.clientPage = 1; },
     invitePageSize() { this.invitePage = 1; },
     inviteRecordPageSize() { this.inviteRecordPage = 1; },
+    interviewPageSize() { this.interviewPage = 1; },
+    interviewFiltered() { const max = Math.max(1, Math.ceil(this.interviewFiltered.length / this.interviewPageSize)); if (this.interviewPage > max) this.interviewPage = max; },
     'jobForm.salaryMin'(v) { const d = String(v || '').replace(/\D/g, ''); if (d !== v) this.jobForm.salaryMin = d; },
     'jobForm.salaryMax'(v) { const d = String(v || '').replace(/\D/g, ''); if (d !== v) this.jobForm.salaryMax = d; },
     'jobForm.salaryRows.length'() { this.initJobSortables(); },
@@ -10050,7 +12419,7 @@ const VM = new Vue({
     window.addEventListener('hashchange', handleRoute);
     window.addEventListener('resize', this.onWinResize);
     // VM 尚未完成初始化（TDZ），必须推迟到下一个微任务再走路由
-    this.$nextTick(() => { payrollSeedRows(); handleRoute(); applyFilter(); });
+    this.$nextTick(() => { payrollSeedRows(); oneClickLoad(); handleRoute(); applyFilter(); });
   },
   methods: {
     onWinResize() { this.winH = window.innerHeight; payrollRelayout(); },
