@@ -616,7 +616,7 @@
         .mb-tip { margin-top: 6px; padding-top: 6px; border-top: 1px dashed #DCE4F2; font-size: 11px; line-height: 1.55; color: #A8620A; }
         .btn.primary.dis { opacity: .45; pointer-events: none; }
 
-        /* 详情：六段流程条 */
+        /* 详情：四段流程条 */
         .flow6 { display: flex; align-items: flex-start; padding: 4px 0 2px; }
         .fs { flex: 1; min-width: 0; text-align: center; position: relative; }
         .fs::before { content: ''; position: absolute; top: 9px; left: -50%; width: 100%; height: 2px; background: #E4E7EC; }
@@ -5152,53 +5152,49 @@ function wrCanExtend(r) {
 function wrCanEnd(r) { return !!r && r.status === '审核通过' && !r.submittedAt && !rowStOf(r); }
 
 /* ---------- 详情流程 / 审核步骤 ---------- */
+/* 详情四段流程（提交接单 → 接单审核 → 做工中 → 结算完成），与后台口径一致
+   做工中包含完工提交/商户结束用工；结算审核 + 打款 + 完成合并为「结算完成」 */
 function wrDetailFlow(row) {
     const r = row || {}, st = rowStOf(r);
     const rejected = r.status === '审核驳回', cancelled = r.status === '已取消';
     const passed = r.status === '审核通过';
     const dead = rejected || cancelled;
+    const settled = wrWorkCode(r) === 'settled';
     const out = [];
     out.push({ title: '提交接单', time: r.applyAt || '', who: r.name || '', text: '员工接单 ' + (r.days || 0) + ' 天，每天 ' + (r.hours || 0) + ' 小时', state: 'done' });
     if (rejected) {
         out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '', text: '审核驳回：' + (r.rejectReason || '未填写理由'), state: 'fail' });
-    } else if (cancelled && !r.auditAt) {
-        out.push({ title: '接单审核', time: '', who: '', text: '员工在审核前取消了接单，流程终止', state: 'stop' });
+    } else if (cancelled) {
+        if (r.auditAt) {
+            out.push({ title: '接单审核', time: r.auditAt, who: r.auditor || '', text: '审核通过（' + (r.auditor || '商户') + '）后员工取消接单，流程终止', state: 'done' });
+        } else {
+            out.push({ title: '接单审核', time: '', who: '', text: '员工在审核前取消了接单，流程终止', state: 'stop' });
+        }
     } else if (passed) {
         out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '', text: '审核通过（' + (r.auditor || '商户') + '），员工上岗做工', state: 'done' });
     } else {
         out.push({ title: '接单审核', time: '', who: '', text: '等待商户审核接单申请', state: 'doing' });
     }
-    if (dead) out.push({ title: '做工', time: '', who: '', text: '流程已终止', state: 'stop' });
-    else if (!passed) out.push({ title: '做工', time: '', who: '', text: '接单审核通过后开始做工', state: 'todo' });
-    else if (r.submittedAt || wrAllDatesSettled(r)) out.push({ title: '做工', time: r.submittedAt || '', who: r.endedByMerchant ? '商户' : (r.name || ''), text: r.endedByMerchant ? '商户主动结束用工，做工结束' : '员工完成 ' + (r.days || 0) + ' 天用工', state: 'done' });
-    else out.push({ title: '做工', time: '', who: '', text: '员工正在用工中，可等待完工或由商户结束用工', state: 'doing' });
-    if (dead) {
-        out.push({ title: '结算审核', time: '', who: '', text: '流程已终止', state: 'stop' });
-    } else if (st && st.status === '待审核') {
-        out.push({ title: '结算审核', time: '', who: '', text: '完工已提交，等待商户结算审核（可修改结算金额）', state: 'doing' });
-    } else if (st && st.auditedAt) {
-        out.push({ title: '结算审核', time: st.auditedAt, who: st.auditedBy || '', text: '结算审核确认（' + (st.auditedBy || '商户') + '），结算金额 ' + fjMoney(st.amount), state: 'done' });
-    } else {
-        out.push({ title: '结算审核', time: '', who: '', text: '完工后进入结算审核', state: 'todo' });
-    }
-    if (dead) {
-        out.push({ title: '结算打款', time: '', who: '', text: '流程已终止', state: 'stop' });
-    } else if (st && st.status === '待打款') {
-        out.push({ title: '结算打款', time: '', who: '', text: '等待商户打款，打款前资金保持冻结', state: 'doing' });
-    } else if (st && st.status === '已结算') {
-        out.push({ title: '结算打款', time: st.paidAt || '', who: st.paidBy || '', text: '打款完成（' + (st.paidBy || '商户') + '），结算金额已转付员工', state: 'done' });
-    } else if (st && st.status === '待审核' && (st.auditRounds || []).some(a => a.result === 'pay_reject')) {
-        const lastRej = (st.auditRounds || []).filter(a => a.result === 'pay_reject').pop();
-        out.push({ title: '结算打款', time: (lastRej && lastRej.time) || '', who: (lastRej && lastRej.auditor) || '', text: '打款被驳回：' + ((lastRej && lastRej.reason) || '未填写理由') + '，可重新结算审核', state: 'fail' });
-    } else {
-        out.push({ title: '结算打款', time: '', who: '', text: '结算审核确认后进行打款', state: 'todo' });
-    }
-    if (wrWorkCode(r) === 'settled') {
-        out.push({ title: '结算完成', time: st.paidAt || '', who: st.paidBy || '', text: '累计已打款 ' + fjMoney(wrPaidStAmountOf(r)) + '，全部结算完成', state: 'done' });
+    const workDone = passed && (r.submittedAt || settled || wrAllDatesSettled(r));
+    if (dead) out.push({ title: '做工中', time: '', who: '', text: '流程已终止', state: 'stop' });
+    else if (!passed) out.push({ title: '做工中', time: '', who: '', text: '接单审核通过后开始做工', state: 'todo' });
+    else if (workDone) out.push({ title: '做工中', time: r.submittedAt || '', who: r.endedByMerchant ? '商户' : (r.name || ''), text: r.endedByMerchant ? '商户主动结束用工，做工结束' : '员工完成 ' + (r.days || 0) + ' 天用工', state: 'done' });
+    else out.push({ title: '做工中', time: '', who: '', text: '员工正在用工中，可等待完工或由商户结束用工', state: 'doing' });
+    if (settled) {
+        out.push({ title: '结算完成', time: (st && st.paidAt) || '', who: (st && st.paidBy) || '', text: '累计已打款 ' + fjMoney(wrPaidStAmountOf(r)) + '，全部结算完成', state: 'done' });
     } else if (dead) {
         out.push({ title: '结算完成', time: '', who: '', text: '流程已终止', state: 'stop' });
+    } else if (st && st.status === '待打款') {
+        out.push({ title: '结算完成', time: '', who: '', text: '结算审核已通过，等待商户打款（' + fjMoney(st.amount) + '），打款完成后结算完成', state: 'doing' });
+    } else if (st && st.status === '待审核') {
+        const lastRej = (st.auditRounds || []).filter(a => a.result === 'pay_reject').pop();
+        if (lastRej) {
+            out.push({ title: '结算完成', time: lastRej.time || '', who: lastRej.auditor || '', text: '打款被驳回：' + (lastRej.reason || '未填写理由') + '，可重新结算审核', state: 'fail' });
+        } else {
+            out.push({ title: '结算完成', time: '', who: '', text: '完工已提交，等待商户结算审核（可修改结算金额）', state: 'doing' });
+        }
     } else {
-        out.push({ title: '结算完成', time: '', who: '', text: '结算打款完成后完成', state: 'todo' });
+        out.push({ title: '结算完成', time: '', who: '', text: '结算审核通过并打款后完成', state: 'todo' });
     }
     return out;
 }

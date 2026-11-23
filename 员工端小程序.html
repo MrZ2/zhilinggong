@@ -2349,7 +2349,7 @@ function addRecordFromOrder(days) {
 }
 
 /* ============================================================
-   接单记录详情：接单审核 → 做工 → 完工 → 结算审核 → 结束
+   接单记录详情：提交接单 → 接单审核 → 做工中 → 结算完成
    ============================================================ */
 /* 演示图片时间：按图片来源关键词取合理时刻，避免跨记录串号 */
 const DEMO_TIME_KEY = [['打卡', '08:40'], ['现场', '12:35'], ['车间', '10:20'], ['产线', '15:10']];
@@ -2782,7 +2782,7 @@ function statusClass(s) {
    取消接单仅允许「接单审核中」（apply_review）；待开工 / 已开工不提供取消 */
 function canCancel(r) { return !!r && r.status === 'apply_review'; }
 function isStarted(r) { return !!r && (r.status === 'working' || r.status === 'settle_review' || r.status === 'settle_rejected' || r.status === 'pay_pending' || r.status === 'paid'); }
-/* 流程进度（7 步：提交接单 / 接单审核 / 做工 / 完工 / 结算审核 / 待发薪 / 已发薪） */
+/* 历史流程进度（旧版 7 步，仅旧详情 renderRecDetailOld 兼容使用；现流程为 recDetailFlow 4 步） */
 function recStep(r) {
     const s = r.status;
     if (s === 'cancelled') return 0;
@@ -3039,12 +3039,15 @@ function recActiveSt(r) {
     });
     return cur;
 }
-/* 与后台 wrDetailFlow 一致的 6 段进度 */
+/* 与后台 wrDetailFlow 一致的 4 段进度（提交接单 → 接单审核 → 做工中 → 结算完成）
+   做工中 = 接单审核通过后上岗，完工提交即本段完成；结算审核 + 打款 + 完成合并为「结算完成」 */
 function recDetailFlow(r) {
     const key = recStatusKey(r);
     const st = recActiveSt(r);
-    const dead = key === 'apply_rejected' || key === 'cancelled' || key === 'settle_rejected';
-    const passed = key !== 'apply_review' && key !== 'apply_rejected' && key !== 'cancelled';
+    const settleFail = key === 'settle_rejected';
+    const dead = key === 'apply_rejected' || key === 'cancelled';
+    const passed = key !== 'apply_review' && !dead;
+    const paidAll = key === 'paid';
     const out = [];
     out.push({ title: '提交接单', state: 'done', time: r.applyAt || '' });
     if (key === 'apply_rejected') {
@@ -3057,39 +3060,25 @@ function recDetailFlow(r) {
         out.push({ title: '接单审核', state: 'done', time: r.auditAt || '' });
     }
     if (dead) {
-        out.push({ title: '做工', state: 'stop', time: '' });
+        out.push({ title: '做工中', state: 'stop', time: '' });
     } else if (!passed) {
-        out.push({ title: '做工', state: 'todo', time: '' });
-    } else if (r.submittedAt || stAllSettled(r)) {
-        out.push({ title: '做工', state: 'done', time: r.submittedAt || '' });
+        out.push({ title: '做工中', state: 'todo', time: '' });
+    } else if (r.submittedAt || paidAll || stAllSettled(r)) {
+        out.push({ title: '做工中', state: 'done', time: r.submittedAt || '' });
     } else {
-        out.push({ title: '做工', state: 'on', time: '' });
+        out.push({ title: '做工中', state: 'on', time: '' });
     }
-    if (dead) {
-        out.push({ title: '结算审核', state: 'stop', time: '' });
-    } else if (st && st.status === '待审核') {
-        out.push({ title: '结算审核', state: 'on', time: '' });
-    } else if (st && st.auditedAt) {
-        out.push({ title: '结算审核', state: 'done', time: st.auditedAt });
-    } else {
-        out.push({ title: '结算审核', state: 'todo', time: '' });
-    }
-    if (dead) {
-        out.push({ title: '结算打款', state: 'stop', time: '' });
-    } else if (st && st.status === '待打款') {
-        out.push({ title: '结算打款', state: 'on', time: '' });
-    } else if (st && st.status === '已结算') {
-        out.push({ title: '结算打款', state: 'done', time: st.paidAt || '' });
-    } else if (st && st.status === '待审核' && (st.auditRounds || []).some(function (a) { return a.result === 'pay_reject'; })) {
-        const rej = (st.auditRounds || []).filter(function (a) { return a.result === 'pay_reject'; }).pop();
-        out.push({ title: '结算打款', state: 'fail', time: rej ? rej.time : '' });
-    } else {
-        out.push({ title: '结算打款', state: 'todo', time: '' });
-    }
-    if (st && st.status === '已结算') {
-        out.push({ title: '结算完成', state: 'done', time: st.paidAt || '' });
+    if (paidAll) {
+        out.push({ title: '结算完成', state: 'done', time: (st && st.paidAt) || '' });
+    } else if (settleFail) {
+        out.push({ title: '结算完成', state: 'fail', time: (st && st.auditedAt) || r.settleAt || '' });
     } else if (dead) {
         out.push({ title: '结算完成', state: 'stop', time: '' });
+    } else if (st && st.status === '待打款') {
+        out.push({ title: '结算完成', state: 'on', time: '' });
+    } else if (st && st.status === '待审核') {
+        const rej = (st.auditRounds || []).filter(function (a) { return a.result === 'pay_reject'; }).pop();
+        out.push({ title: '结算完成', state: rej ? 'fail' : 'on', time: rej ? rej.time : '' });
     } else {
         out.push({ title: '结算完成', state: 'todo', time: '' });
     }
