@@ -1544,6 +1544,9 @@
     .wr-ops .el-button + .el-button { margin-left: 0; }
     /* 详情抽屉 */
     .wr-dw .el-drawer__body { padding: 0 24px 24px; }
+    .wr-dtl-tabs .el-tabs__header { margin: 0 0 10px; }
+    .wr-dtl-tabs .el-tabs__item { font-size: 13px; height: 34px; line-height: 34px; }
+    .wr-dtl-tabs .el-tabs__nav-wrap::after { height: 1px; }
     .wr-dw-hero { margin: 0 -24px 16px; padding: 16px 24px; background: linear-gradient(135deg, #eef4ff 0%, #f7f9fc 100%); border-bottom: 1px solid var(--ad-border-secondary); }
     .wr-dw-hero .l1 { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--ad-text-1); }
     .wr-dw-hero .l1-sub { margin-left: auto; font-size: 12px; font-weight: 400; color: var(--ad-text-3); }
@@ -1562,6 +1565,7 @@
     .wr-days-list .h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: var(--ad-text-2); }
     .wr-days-list .h b { color: var(--ad-text-1); }
     .wr-days-list .h .ok { color: var(--ad-success-text); }
+    .wr-days-list .h .t { margin-left: auto; color: var(--ad-text-3); font-variant-numeric: tabular-nums; }
     .wr-days-list .h .no { color: var(--ad-warning-text); }
     .wr-photo-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     .wr-photo { position: relative; width: 84px; height: 84px; border-radius: 6px; overflow: hidden; background: #eef3fb; }
@@ -3145,7 +3149,7 @@
           </el-select>
         </el-form-item></el-col>
       </el-row>
-      <el-row :gutter="12">
+      <el-row :gutter="12" v-if="wrTab === 'all'">
         <el-col :span="6"><el-form-item label="用工状态">
           <el-select v-model="wrFilter.workStatus" placeholder="请选择用工状态" clearable>
             <el-option v-for="s in wrWorkStatusOptions" :key="s.value" :label="s.label" :value="s.value"></el-option>
@@ -3159,12 +3163,39 @@
         <el-col :span="6"><el-form-item label="接单时间">
           <el-date-picker v-model="wrFilter.applyRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
         </el-form-item></el-col>
-        <el-col :span="6"><el-form-item label="提交时间">
-          <el-date-picker v-model="wrFilter.submitRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
+        <el-col :span="6"><el-form-item label="审核时间">
+          <el-date-picker v-model="wrFilter.auditRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
         </el-form-item></el-col>
       </el-row>
-      <el-row :gutter="12">
-        <el-col :span="6" :offset="18"><el-form-item label-width="0" class="wr-filter-btns">
+      <el-row :gutter="12" v-if="wrTab === 'all'">
+        <el-col :span="6"><el-form-item label="取消时间">
+          <el-date-picker v-model="wrFilter.cancelRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
+        </el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="完成时间">
+          <el-date-picker v-model="wrFilter.doneRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
+        </el-form-item></el-col>
+        <el-col :span="6" :offset="6"><el-form-item label-width="0" class="wr-filter-btns">
+          <el-button type="primary" @click="wrSearch">查询</el-button>
+          <el-button @click="wrReset">重置</el-button>
+        </el-form-item></el-col>
+      </el-row>
+      <el-row :gutter="12" v-if="wrTab === 'apply' || wrTab === 'settle'">
+        <el-col :span="6"><el-form-item label="接单时间">
+          <el-date-picker v-model="wrFilter.applyRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
+        </el-form-item></el-col>
+        <el-col :span="6" :offset="12"><el-form-item label-width="0" class="wr-filter-btns">
+          <el-button type="primary" @click="wrSearch">查询</el-button>
+          <el-button @click="wrReset">重置</el-button>
+        </el-form-item></el-col>
+      </el-row>
+      <el-row :gutter="12" v-if="wrTab === 'pay'">
+        <el-col :span="6"><el-form-item label="接单时间">
+          <el-date-picker v-model="wrFilter.applyRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
+        </el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="结算审核时间">
+          <el-date-picker v-model="wrFilter.settleAuditRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
+        </el-form-item></el-col>
+        <el-col :span="6" :offset="6"><el-form-item label-width="0" class="wr-filter-btns">
           <el-button type="primary" @click="wrSearch">查询</el-button>
           <el-button @click="wrReset">重置</el-button>
         </el-form-item></el-col>
@@ -3235,7 +3266,7 @@
           <span v-else class="wr-tag" :class="wrAuditCls(row)">{{ wrAuditLabel(row) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="wrTab === 'all' || wrTab === 'apply'" label="接单时间" width="90">
+      <el-table-column label="接单时间" width="90">
         <template slot-scope="{ row }">
           <div v-if="row.applyAt" class="wr-time"><b>{{ wrDatePart(row.applyAt) }}</b><span>{{ wrTimePart(row.applyAt) }}</span></div>
           <div v-else class="wr-time dim">—</div>
@@ -3262,12 +3293,6 @@
       <el-table-column v-if="wrTab === 'pay'" label="结算审核时间" width="90">
         <template slot-scope="{ row }">
           <div v-if="rowStOf(row) && rowStOf(row).auditedAt" class="wr-time"><b>{{ wrDatePart(rowStOf(row).auditedAt) }}</b><span>{{ wrTimePart(rowStOf(row).auditedAt) }}</span></div>
-          <div v-else class="wr-time dim">—</div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="wrTab === 'pay'" label="结算时间" width="90">
-        <template slot-scope="{ row }">
-          <div v-if="rowStOf(row) && rowStOf(row).paidAt" class="wr-time"><b>{{ wrDatePart(rowStOf(row).paidAt) }}</b><span>{{ wrTimePart(rowStOf(row).paidAt) }}</span></div>
           <div v-else class="wr-time dim">—</div>
         </template>
       </el-table-column>
@@ -3361,32 +3386,61 @@
         </div>
       </div>
 
-      <div class="wr-sec" v-if="wrStList.length">
-        <div class="wr-sec-t">结算记录<span class="ex">共 {{ wrStList.length }} 笔<span v-if="wrStTotal > 0"> · 累计已打款 {{ fjMoney(wrStTotal) }}</span></span></div>
-        <div class="wr-st-list">
-          <div v-for="s in wrStList" :key="s.id" class="wr-st-item">
-            <div class="h">
-              <span class="amt">{{ fjMoney(s.amount) }}</span>
-              <span class="wr-tag" :class="stDisplayStatus(s).cls">{{ stDisplayStatus(s).label }}</span>
-            </div>
-            <div class="ln"><span>结算人：{{ s.auditedBy || '—' }}</span><span>结算时间：{{ wrFullTime(s.auditedAt) }}</span></div>
-            <div class="ln"><span>打款人：{{ s.paidBy || '—' }}</span><span>打款时间：{{ wrFullTime(s.paidAt) }}</span></div>
-            <div class="ln" v-if="s.settleNote"><span>结算说明：{{ s.settleNote }}</span></div>
-          </div>
-        </div>
-      </div>
+      <div class="wr-sec wr-dtl-tabs">
+        <el-tabs v-model="wrDtlTab">
+          <!-- 完工记录 -->
+          <el-tab-pane label="完工记录" name="done">
+            <template v-if="wrCur.submittedAt">
+              <div class="wr-kv" style="margin-bottom:12px" v-if="wrCur.skipDay">
+                <div><div class="k">未完成天数</div><div class="v">第 {{ wrCur.skipDay }} 天{{ wrCur.skipNote ? '（' + wrCur.skipNote + '）' : '' }}</div></div>
+              </div>
+              <div v-if="wrDtlPhotoDays">
+                <div v-for="g in stPhotoGroups(rowStOf(wrCur) || wrCur)" :key="g.day" class="wr-days-list">
+                  <div class="h"><b>{{ g.label }}</b><span class="ok">已上传 {{ g.photos.length }} 张</span><span class="t">上传时间 {{ g.at }}</span></div>
+                  <div class="wr-photo-grid">
+                    <div v-for="(p, i) in g.photos" :key="i" class="wr-photo"><img :src="p.src" alt="工作图片"><i>{{ p.t }}</i></div>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div v-else class="wr-sub">员工尚未提交完工</div>
+          </el-tab-pane>
 
-      <template v-if="rowStOf(wrCur)">
-        <div class="wr-sec" v-if="rowStOf(wrCur).photoDays">
-          <div class="wr-sec-t">每日完工图片<span class="ex">员工按天上传的现场照片</span></div>
-          <div v-for="g in stPhotoGroups(rowStOf(wrCur))" :key="g.day" class="wr-days-list">
-            <div class="h"><b>{{ g.label }}</b><span class="ok">已上传 {{ g.photos.length }} 张</span></div>
-            <div class="wr-photo-grid">
-              <div v-for="(p, i) in g.photos" :key="i" class="wr-photo"><img :src="p.src" alt="工作图片"><i>{{ p.t }}</i></div>
+          <!-- 结算记录 -->
+          <el-tab-pane label="结算记录" name="settle">
+            <div v-if="wrStList.length">
+              <div class="wr-st-list">
+                <div v-for="s in wrStList" :key="s.id" class="wr-st-item">
+                  <div class="h">
+                    <span class="amt">{{ fjMoney(s.amount) }}</span>
+                    <span class="wr-tag" :class="stDisplayStatus(s).cls">{{ stDisplayStatus(s).label }}</span>
+                  </div>
+                  <div class="ln"><span>结算人：{{ s.auditedBy || '—' }}</span><span>结算时间：{{ wrFullTime(s.auditedAt) }}</span></div>
+                  <div class="ln"><span>打款人：{{ s.paidBy || '—' }}</span><span>打款时间：{{ wrFullTime(s.paidAt) }}</span></div>
+                  <div class="ln" v-if="s.settleNote"><span>结算说明：{{ s.settleNote }}</span></div>
+                </div>
+              </div>
+              <div class="wr-sub" style="margin-top:10px">共 {{ wrStList.length }} 笔<span v-if="wrStTotal > 0"> · 累计已打款 {{ fjMoney(wrStTotal) }}</span></div>
             </div>
-          </div>
-        </div>
-      </template>
+            <div v-else class="wr-sub">暂无结算记录</div>
+          </el-tab-pane>
+
+          <!-- 延期记录 -->
+          <el-tab-pane label="延期记录" name="extend">
+            <div v-if="(wrCur.extendLogs || []).length" class="wr-st-list">
+              <div v-for="(e, i) in wrCur.extendLogs" :key="i" class="wr-st-item">
+                <div class="h">
+                  <span class="amt">{{ fjMoney(e.amount) }}</span>
+                  <span class="wr-tag doing">追加冻结</span>
+                </div>
+                <div class="ln"><span>延期日期：{{ e.dates && e.dates.length ? e.dates.join('、') : '—' }}</span><span>延期天数：{{ e.days }} 天</span></div>
+                <div class="ln"><span>操作人：{{ e.by || '—' }}</span><span>操作时间：{{ wrFullTime(e.time) }}</span></div>
+              </div>
+            </div>
+            <div v-else class="wr-sub">暂无延期记录</div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
 
       <div class="wr-dw-foot">
         <el-button size="small" @click="wrDetail.visible = false">关闭</el-button>
@@ -3418,7 +3472,7 @@
     <div v-if="wrAudit.mode === 'pass' && wrAudit.rows.length" class="wr-freeze">
       <div class="ln"><span class="k">{{ wrAudit.batch ? '本次冻结合计（' + wrAudit.rows.length + ' 条）' : '本次冻结金额' }}</span><b>{{ fjMoney(wrFreezeNeed) }}</b></div>
       <div class="ln"><span class="k">账户可用余额</span><b :class="{ 'is-short': wrFreezeShort > 0 }">{{ fjMoney(fjBalance) }}</b><el-button type="text" size="mini" @click="openFjRechargeDlg()">充值</el-button></div>
-      <div class="ln sub">冻结口径：员工单价 × 应做工时（不含商业险），冻结后不随取消 / 驳回释放。</div>
+      <div class="ln sub">冻结口径：员工单价 × 应做工时 − 商业险（3 元/天 × 天数），冻结后不随取消 / 驳回释放。</div>
       <div class="ln warn" v-if="wrFreezeShort > 0">余额不足，还差 {{ fjMoney(wrFreezeShort) }}，请先充值后再审核通过。</div>
     </div>
     <el-input v-if="wrAudit.mode === 'reject'" v-model="wrAudit.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由，会显示在员工端接单记录中"></el-input>
@@ -8532,12 +8586,12 @@ function wrBuildRows() {
     o.end = dates.length ? dates[dates.length - 1] : o.start;
     if (s[16] === '审核通过') {
       o.actualQty = wrActualQty(o);
-      o.actualAmount = Math.round(Number(o.price) * o.actualQty * 100) / 100;
+      o.actualAmount = Math.round((Number(o.price) * o.actualQty - wrInsTotal(o, o.days)) * 100) / 100;
     }
     return o;
   });
 }
-function wrBlankFilter() { return { name: '', phone: '', client: '', employer: '', job: '', workStatus: '', auditStatus: '', applyRange: [], submitRange: [] }; }
+function wrBlankFilter() { return { name: '', phone: '', client: '', employer: '', job: '', workStatus: '', auditStatus: '', applyRange: [], auditRange: [], cancelRange: [], doneRange: [], settleAuditRange: [] }; }
 function wrDateRuns(r) {
   const ds = (r && r.dates && r.dates.length) ? r.dates : (r && r.start ? [r.start] : []);
   const runs = [];
@@ -8608,8 +8662,16 @@ function wrEnterprise(r) {
   return Math.round((Number(r.entPrice) * qty + Number(r.ins) * Number(r.days)) * 100) / 100;
 }
 // ===== 审核通过冻结资金 =====
-// 冻结口径：仅员工工资 = 员工单价 × 应做工时（日薪 price×days，时薪 price×hours×days），不含商业险
-function wrFreezeAmount(r) { return wrCalcAmount(r); }
+// 商业险：按天扣减（默认 3 元/天 × 天数）
+function wrInsTotal(r, days) {
+  const n = days == null ? Number((r && r.days) || 0) : Number(days) || 0;
+  return fundRound(Number((r && r.ins) || 0) * n);
+}
+// 冻结口径：员工单价 × 应做工时 − 商业险（按天扣减）
+function wrFreezeAmount(r) {
+  if (!r) return 0;
+  return Math.max(0, fundRound(wrCalcAmount(r) - wrInsTotal(r)));
+}
 // 本次需冻结合计：已冻结过的记录跳过（幂等，连点不会二次扣款）
 function wrFreezeSum(rows) {
   return Math.round((rows || []).reduce(function (s, r) {
@@ -8797,7 +8859,7 @@ function wrTabChange() {
 function wrSearch() { VM.wrQuery = JSON.parse(JSON.stringify(VM.wrFilter)); VM.wrPage = 1; }
 function wrReset() { VM.wrFilter = wrBlankFilter(); VM.wrQuery = wrBlankFilter(); VM.wrPage = 1; }
 function wrExport() { showToast('已导出 ' + VM.wrFiltered.length + ' 条用工记录'); }
-function wrOpenDetail(row) { VM.wrDetail = { visible: true, row: row }; }
+function wrOpenDetail(row) { VM.wrDtlTab = 'done'; VM.wrDetail = { visible: true, row: row }; }
 // ===== 商户主动结束用工：按实做工时核定并生成结算单 =====
 function wrQtyUnit(r) { return (r && r.priceType === '日薪') ? '天' : '小时'; }
 function wrQtyText(r) { return wrQty(r) + ' ' + wrQtyUnit(r); }
@@ -8859,7 +8921,7 @@ function wrApplyAudit(rows, mode, reason, a) {
       // 审核只需判定通过/驳回，实做工时按排班扣减未完成天后写入结算
       const qty = wrActualQty(r);
       r.actualQty = qty;
-      r.actualAmount = Math.round(Number(r.price) * qty * 100) / 100;
+      r.actualAmount = Math.round((Number(r.price) * qty - wrInsTotal(r, r.days)) * 100) / 100;
     }
   });
   wrClearSelect();
@@ -8881,8 +8943,8 @@ function stRowFromWr(r) {
     shift: r.shift, price: r.price, priceType: r.priceType, ins: r.ins, payNote: r.payNote,
     planQty: wrQty(r), actualQty: wrActualQty(r), skipDay: r.skipDay || 0, skipNote: r.skipNote || '',
     amount: wrAmount(r),
-    // 结算单自身冻结额（按本单覆盖的日期计），支持同一记录拆成多张结算单
-    frozenAmt: Math.round(Number(r.price) * wrQty(r) * 100) / 100, releasedAmt: 0,
+    // 结算单自身冻结额（按本单覆盖日期计，已扣商业险），支持同一记录拆成多张结算单
+    frozenAmt: wrFreezeAmount(r), releasedAmt: 0,
     submitAt: r.submittedAt,
     status: '待审核', auditedAt: '', auditedBy: '', paidAt: '', paidBy: '', payNote: '', settleNote: '',
     auditRounds: [],
@@ -8907,11 +8969,11 @@ function stInit(rows) {
   [
     { name: '刘美玲', status: '待打款', auditedAt: '2026-11-18 09:20:14', auditedBy: '测试2号', amount: 620,
       rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-18 09:20:14' }] },
-    { name: '林志豪', status: '待打款', auditedAt: '2026-11-18 10:05:47', auditedBy: '王秋玲', amount: 552,
+    { name: '林志豪', status: '待打款', auditedAt: '2026-11-18 10:05:47', auditedBy: '王秋玲', amount: 543,
       rounds: [{ result: 'pass', auditor: '王秋玲', time: '2026-11-18 10:05:47' }] },
     { name: '范晓丽', status: '待打款', auditedAt: '2026-11-18 11:12:03', auditedBy: '朱轩均', amount: 660,
       rounds: [{ result: 'pass', auditor: '朱轩均', time: '2026-11-18 11:12:03' }] },
-    { name: '董伟', status: '待打款', auditedAt: '2026-11-18 14:36:28', auditedBy: '测试2号', amount: 630,
+    { name: '董伟', status: '待打款', auditedAt: '2026-11-18 14:36:28', auditedBy: '测试2号', amount: 621,
       rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-18 14:36:28' }] },
     { name: '陈志强', status: '已结算', auditedAt: '2026-11-17 09:12:33', auditedBy: '测试2号', paidAt: '2026-11-17 09:12:33', paidBy: '测试2号',
       rounds: [
@@ -8952,7 +9014,7 @@ function stInit(rows) {
   const addSt = function (wr, dates, status, o) {
     o = o || {};
     const perDay = wr.priceType === '日薪' ? Number(wr.price) : Number(wr.price) * Number(wr.hours);
-    const frozen = fundRound(perDay * dates.length);
+    const frozen = Math.max(0, fundRound(perDay * dates.length - Number(wr.ins || 0) * dates.length));
     const amount = o.amount != null ? fundRound(o.amount) : frozen;
     const qty = wr.priceType === '日薪' ? dates.length : dates.length * Number(wr.hours);
     const s = {
@@ -8976,15 +9038,15 @@ function stInit(rows) {
   const song = byName['宋文杰'];
   if (song) {
     addSt(song, ['2026-11-17', '2026-11-18'], '已结算', {
-      amount: 480, submitAt: '2026-11-19 17:30:00', auditedAt: '2026-11-19 18:00:00', auditedBy: '测试2号',
+      amount: 474, submitAt: '2026-11-19 17:30:00', auditedAt: '2026-11-19 18:00:00', auditedBy: '测试2号',
       paidAt: '2026-11-20 09:12:00', paidBy: '测试2号', settleNote: '先结算前 2 天',
       rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-19 18:00:00' }, { result: 'pay', auditor: '测试2号', time: '2026-11-20 09:12:00' }],
     });
     addSt(song, ['2026-11-19'], '待打款', {
-      amount: 240, submitAt: '2026-11-22 17:40:00', auditedAt: '2026-11-22 18:05:00', auditedBy: '测试2号',
+      amount: 237, submitAt: '2026-11-22 17:40:00', auditedAt: '2026-11-22 18:05:00', auditedBy: '测试2号',
       rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-22 18:05:00' }],
     });
-    song.frozenAmt = 720;            // 总冻结 1,200 − 已打款 480
+    song.frozenAmt = 711;            // 总冻结 1,185 − 已打款 474
   }
   // 2) 已延长工期：梁晓峰 原 3 天 + 追加 2 天（日期不连续）
   const liang = byName['梁晓峰'];
@@ -8993,10 +9055,10 @@ function stInit(rows) {
     liang.dates = liang.dates.concat(ext).sort();
     liang.days = liang.dates.length;
     liang.end = liang.dates[liang.dates.length - 1];
-    liang.frozenAmt = 1300;          // 780 + 520
-    liang.extendLogs = [{ time: '2026-11-21 15:00:00', days: 2, amount: 520, dates: ext.slice() }];
+    liang.frozenAmt = 1285;          // 冻结 1,300 − 商业险 15
+    liang.extendLogs = [{ time: '2026-11-21 15:00:00', days: 2, amount: 514, dates: ext.slice(), by: '王秋玲' }];
     liang.actualQty = wrActualQty(liang);
-    liang.actualAmount = Math.round(Number(liang.price) * liang.actualQty * 100) / 100;
+    liang.actualAmount = Math.round((Number(liang.price) * liang.actualQty - wrInsTotal(liang)) * 100) / 100;
   }
   // 3) 已结算且含退回金额：许文静 冻结 780 → 结算 620 → 退回 160
   const xu = byName['许文静'];
@@ -9008,7 +9070,7 @@ function stInit(rows) {
       rounds: [{ result: 'pass', auditor: '冯国鲜', time: '2026-11-16 09:30:00' }, { result: 'pay', auditor: '冯国鲜', time: '2026-11-16 10:15:00' }],
     });
     xu.frozenAmt = 0;
-    xu.releasedAmt = 160;
+    xu.releasedAmt = 145;            // 冻结 765 − 结算 620
   }
   // 4) 打款驳回后回到待审核：韩雪
   const han = byName['韩雪'];
@@ -9092,13 +9154,14 @@ function stPhotoSvg(label, seed) {
 function stPhotoGroups(r) {
   const total = Math.max(0, Number(r.photoDays || r.days || 0));
   const times = ['08:45', '12:30', '17:20', '20:10'];
+  const uploadTimes = ['18:20', '18:40', '18:30', '19:05'];
   const groups = [];
   for (let i = 0; i < total; i++) {
     const d = (r.dates && r.dates[i]) || wrAddDays(String(r.submitAt || '').slice(0, 10), i);
     const n = (i % 3) + 2;
     const photos = [];
     for (let j = 0; j < n; j++) photos.push({ t: times[j], src: stPhotoSvg(d.slice(5) + ' 现场 ' + (j + 1), i + j) });
-    groups.push({ day: d, label: d.slice(5) + ' · 第 ' + (i + 1) + ' 天', photos: photos });
+    groups.push({ day: d, at: d + ' ' + uploadTimes[i % uploadTimes.length] + ':00', label: d.slice(5) + ' · 第 ' + (i + 1) + ' 天', photos: photos });
   }
   return groups;
 }
@@ -9218,7 +9281,7 @@ function wrStDateQty(r, dates) {
 }
 function wrStDateAmount(r, dates) {
   if (!r) return 0;
-  return fundRound(Number(r.price) * wrStDateQty(r, dates));
+  return Math.max(0, fundRound(Number(r.price) * wrStDateQty(r, dates) - wrInsTotal(r, (dates || []).length)));
 }
 // 可结算日期：员工已提交完工（结算单待审核）时取其覆盖日期，否则取尚未进入结算的日期
 function wrSettleAvailDates(r) {
@@ -9309,6 +9372,7 @@ function wrSubmitExtend() {
     return;
   }
   const now = wrNow();
+  const who = (VM.authUser && VM.authUser.contact) || '系统管理员';
   const baseFrozen = fundRound(r.frozenAmt != null ? Number(r.frozenAmt) : wrFreezeAmount(r));   // 先取原冻结基数（延长前口径）
   r.dates = busy.concat(picked).sort();
   r.days = r.dates.length;
@@ -9324,7 +9388,7 @@ function wrSubmitExtend() {
   r.actualQty = null;                          // 清空核定值，按延长后的工期重算
   r.actualQty = wrActualQty(r);
   r.actualAmount = Math.round(Number(r.price) * r.actualQty * 100) / 100;
-  r.extendLogs.push({ time: now, days: picked.length, amount: add, dates: picked.slice() });
+  r.extendLogs.push({ time: now, days: picked.length, amount: add, dates: picked.slice(), by: who });
   a.visible = false;
   showToast('已延长 ' + picked.length + ' 天工期，追加冻结 ' + fjMoney(add));
   VM.$nextTick(() => relayoutTables());
@@ -15520,6 +15584,8 @@ var VM = new Vue({
     wrWorkStatusOptions: WR_WORK_STATUS_OPTIONS,
     wrAuditStatusOptions: WR_AUDIT_STATUS_OPTIONS,
     wrDetail: { visible: false, row: {} },
+    // 详情页签：完工记录 / 结算记录 / 延期记录
+    wrDtlTab: 'done',
     wrLog: { visible: false, row: {} },
     // 结算记录（待结算打款页签）：按结算单展示操作人 / 时间 / 金额
     wrStLog: { visible: false, row: {} },
@@ -15783,10 +15849,21 @@ var VM = new Vue({
           const d = String(r.applyAt).slice(0, 10);
           if (d < q.applyRange[0] || d > q.applyRange[1]) return false;
         }
-        if (q.submitRange && q.submitRange.length === 2 && q.submitRange[0] && q.submitRange[1]) {
-          if (!st || !st.submitAt) return false;
-          const d = String(st.submitAt).slice(0, 10);
-          if (d < q.submitRange[0] || d > q.submitRange[1]) return false;
+        if (q.auditRange && q.auditRange.length === 2 && q.auditRange[0] && q.auditRange[1]) {
+          const d = String(r.auditAt || '').slice(0, 10);
+          if (!d || d < q.auditRange[0] || d > q.auditRange[1]) return false;
+        }
+        if (q.cancelRange && q.cancelRange.length === 2 && q.cancelRange[0] && q.cancelRange[1]) {
+          const d = String(r.cancelAt || '').slice(0, 10);
+          if (!d || d < q.cancelRange[0] || d > q.cancelRange[1]) return false;
+        }
+        if (q.doneRange && q.doneRange.length === 2 && q.doneRange[0] && q.doneRange[1]) {
+          const d = String(wrDoneTime(r) || '').slice(0, 10);
+          if (!d || d < q.doneRange[0] || d > q.doneRange[1]) return false;
+        }
+        if (q.settleAuditRange && q.settleAuditRange.length === 2 && q.settleAuditRange[0] && q.settleAuditRange[1]) {
+          const d = String((st && st.auditedAt) || '').slice(0, 10);
+          if (!d || d < q.settleAuditRange[0] || d > q.settleAuditRange[1]) return false;
         }
         return true;
       }).sort((a, b) => {
@@ -15890,6 +15967,13 @@ var VM = new Vue({
     },
     // 用工详情：本记录全部结算记录（含待审核/待打款/打款驳回）；累计已打款只统计已结算
     wrStList() { return wrStSettlementsOf(this.wrCur); },
+    // 用工详情 · 完工记录：每日上传天数（优先结算单记录的上传天数，回退记录自身）
+    wrDtlPhotoDays() {
+      const r = this.wrCur || {};
+      const st = rowStOf(r);
+      const n = Number((st && st.photoDays) || r.photoDays || 0);
+      return n || (r.submittedAt ? Number(r.days) || 0 : 0);
+    },
     wrStTotal() {
       return fundRound(wrStSettlementsOf(this.wrCur)
         .filter(s => s.status === '已结算')
