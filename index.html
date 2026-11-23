@@ -1539,8 +1539,8 @@
     .wr-log-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; color: var(--ad-text-1); }
     .wr-log-head b { font-size: 14px; }
     .wr-log-sub { color: var(--ad-text-3); }
-    .wr-ops { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .wr-ops .el-button { padding: 0; }
+    .wr-ops { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .wr-ops .el-button { padding: 0; font-size: 12px; }
     .wr-ops .el-button + .el-button { margin-left: 0; }
     /* 详情抽屉 */
     .wr-dw .el-drawer__body { padding: 0 24px 24px; }
@@ -1607,6 +1607,55 @@
     .wr-end-money .k { flex: 0 0 auto; white-space: nowrap; }
     .wr-end-money b { flex: 0 0 auto; font-size: 17px; color: var(--ad-error); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .wr-end-money .sub { flex: 1; min-width: 0; line-height: 1.7; }
+    .wr-end-money.is-short b, .wr-end-money.is-short .sub { color: var(--ad-error); }
+    /* 结算弹窗：可结算日期多选 */
+    .wr-settle-dates { display: flex; flex-wrap: wrap; gap: 4px 14px; max-height: 132px; overflow-y: auto; padding: 8px 10px; margin-bottom: 12px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; }
+    .wr-settle-dates .el-checkbox { margin-right: 0; }
+    /* 结算 / 延长工期弹窗：分区布局 */
+    .wr-st-list { display: flex; flex-direction: column; gap: 10px; }
+    .wr-st-item { padding: 10px 12px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; background: #fff; }
+    .wr-st-item .h { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+    .wr-st-item .h .no { font-weight: 600; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    .wr-st-item .h .amt { margin-left: 0; font-size: 15px; font-weight: 700; color: var(--ad-error); font-variant-numeric: tabular-nums; }
+    .wr-st-item .h .t { font-size: 11px; color: var(--ad-text-3); font-variant-numeric: tabular-nums; }
+    .wr-st-item .ln { display: flex; flex-wrap: wrap; gap: 4px 22px; margin-top: 4px; font-size: 12px; color: var(--ad-text-3); }
+    .wr-pay-amount { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; padding: 12px 14px; border-radius: 8px; background: var(--ad-fill); }
+    .wr-pay-amount .k { font-size: 12px; color: var(--ad-text-3); }
+    .wr-pay-amount b { font-size: 22px; font-weight: 700; color: var(--ad-error); font-variant-numeric: tabular-nums; }
+    .wr-info-card { padding: 14px 16px; border-radius: 10px; background: linear-gradient(135deg, #eef4ff 0%, #f7f9fc 100%); border: 1px solid var(--ad-border-secondary); }
+    .wr-info-card .ic-main { display: flex; align-items: center; gap: 10px; }
+    .wr-info-card .ic-name { font-size: 16px; font-weight: 700; color: var(--ad-text-1); }
+    .wr-info-card .ic-sub { margin-top: 4px; font-size: 12px; color: var(--ad-text-2); }
+    .wr-info-card .ic-grid { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 10px; }
+    .wr-info-card .ic-grid .k { margin-right: 6px; font-size: 12px; color: var(--ad-text-3); }
+    .wr-info-card .ic-grid b { font-size: 13px; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    .wr-form-sec { margin-top: 16px; }
+    .wr-form-sec-t { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
+    .wr-form-sec-t .idx { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ad-primary-bg); color: var(--ad-primary); font-size: 11px; font-weight: 600; }
+    .wr-form-sec-t .ex { font-size: 12px; font-weight: 400; color: var(--ad-text-3); }
+    .wr-form-sec-t .ops { margin-left: auto; display: flex; gap: 2px; }
+    .wr-form-sec-t .ops .el-button { padding: 0; }
+    .wr-money-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 10px 12px; border-radius: 8px; background: var(--ad-fill); }
+    .wr-money-grid .k { display: block; margin-bottom: 4px; font-size: 11px; color: var(--ad-text-3); }
+    .wr-money-grid b { font-size: 15px; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    .wr-money-grid b.back { color: var(--ad-success-text); }
+    .wr-money-grid b.is-short { color: var(--ad-error); }
+    .wr-picked-dates { margin-top: 8px; }
+    .wr-date-chip { display: inline-block; margin: 0 6px 6px 0; padding: 1px 8px; border-radius: 10px; background: var(--ad-primary-bg); color: var(--ad-primary); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .wr-settle-dates .el-checkbox { padding: 2px 10px; border: 1px solid var(--ad-border-secondary); border-radius: 14px; background: #fff; }
+    .wr-settle-dates .el-checkbox.is-checked { border-color: var(--ad-primary); background: var(--ad-primary-bg); }
+    .wr-settle-dates .el-checkbox__label { padding-left: 6px; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--ad-text-1); }
+    /* 批量审核：员工清单 */
+    .wr-audit-emps { margin: 0 0 12px; max-height: 126px; overflow-y: auto; border: 1px solid var(--ad-border-secondary); border-radius: 8px; }
+    .wr-audit-emp { display: flex; align-items: center; gap: 10px; padding: 6px 10px; font-size: 12px; color: var(--ad-text-2); border-bottom: 1px solid var(--ad-border-secondary); }
+    .wr-audit-emp:last-child { border-bottom: 0; }
+    .wr-audit-emp b { font-size: 13px; color: var(--ad-text-1); }
+    .wr-audit-emp .ph { margin-left: auto; color: var(--ad-text-3); font-variant-numeric: tabular-nums; }
+    .wr-audit-emp .jb { color: var(--ad-text-3); }
+    /* 批量打款 */
+    .wr-sms-row { display: flex; align-items: center; gap: 8px; }
+    .wr-sms-row .el-input { flex: 1; }
+    .wr-batch-emps { margin-top: 4px; line-height: 1.7; }
     /* 结算管理 */
     .st-no { font-size: 12px; font-weight: 600; color: var(--ad-text-1); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .st-amount { font-size: 13px; font-weight: 600; color: var(--ad-error); font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -1619,6 +1668,42 @@
     .st-kv .k { margin-bottom: 3px; font-size: 11px; color: var(--ad-text-3); }
     .st-kv .v { font-size: 13px; color: var(--ad-text-1); word-break: break-all; }
     .st-kv .v.num { font-variant-numeric: tabular-nums; }
+    /* ===== 财务管理：充值记录 / 流水记录 ===== */
+    .fund-stats { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+    .fund-stat { flex: 1 1 0; width: 0; min-width: 240px; display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: #fff; border: 1px solid var(--ad-border-secondary); border-radius: var(--ad-radius); }
+    .fund-stat-ic { width: 50px; height: 50px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .fund-stat-ic.orange { color: #fa8c16; background: #fff7e6; }
+    .fund-stat-ic.blue { color: #1677ff; background: #e6f4ff; }
+    .fund-stat-ic.red { color: #f5222d; background: #fff1f0; }
+    .fund-stat-k { font-size: 13px; color: var(--ad-text-3); }
+    .fund-stat-v { margin-top: 3px; font-size: 24px; font-weight: 600; color: var(--ad-text-1); line-height: 1.2; font-variant-numeric: tabular-nums; }
+    .fund-stat-v.minus { color: #f5222d; }
+    .fund-stat-sub { margin-top: 4px; font-size: 11px; color: var(--ad-text-4); }
+    .fund-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .fund-toolbar .right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .fund-no { font-size: 12px; color: var(--ad-text-1); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .fund-money { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .fund-money.in { color: var(--ad-success-text); }
+    .fund-money.out { color: var(--ad-error); }
+    .fund-money.muted { color: var(--ad-text-secondary); font-weight: 500; }
+    .fund-voucher { width: 38px; height: 38px; border-radius: 4px; border: 1px solid var(--ad-border-secondary); }
+    .fund-voucher-none { font-size: 12px; color: var(--ad-text-4); }
+    .fund-tag { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap; }
+    .fund-tag.freeze { color: var(--ad-warning-text); background: var(--ad-warning-bg); border: 1px solid var(--ad-warning-border); }
+    .fund-tag.release { color: var(--ad-success-text); background: var(--ad-success-bg); border: 1px solid var(--ad-success-border); }
+    .fund-tag.wage { color: #722ed1; background: #f9f0ff; border: 1px solid #d3adf7; }
+    .fund-tag.lf { color: var(--ad-primary); background: var(--ad-primary-bg); border: 1px solid var(--ad-primary-border); }
+    .fund-tag.recharge { color: var(--ad-success-text); background: var(--ad-success-bg); border: 1px solid var(--ad-success-border); }
+    .fund-dim { font-size: 12px; color: var(--ad-text-4); }
+    .fund-route { font-size: 12px; color: var(--ad-text-2); white-space: nowrap; }
+    .fund-party-n { font-size: 12px; color: var(--ad-text-1); }
+    .fund-note { font-size: 12px; color: var(--ad-text-2); }
+    .fund-recharge-entry { margin-top: 6px; }
+    .fund-kf { display: flex; gap: 14px; align-items: center; margin-top: 14px; }
+    .fund-kf-qr { width: 96px; height: 96px; flex-shrink: 0; border: 1px solid var(--ad-border-secondary); border-radius: 8px; background: #fff; }
+    .fund-kf-title { font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
+    .fund-kf-line { margin-top: 4px; font-size: 11px; color: var(--ad-text-3); line-height: 1.6; }
+    .fund-rc-tip { margin-top: 12px; padding: 8px 12px; border-radius: 6px; background: var(--ad-fill); font-size: 11px; line-height: 1.7; color: var(--ad-text-3); }
     /* 审核弹窗 */
     .wr-audit-types { display: flex; gap: 10px; margin-bottom: 14px; }
     .wr-audit-type { flex: 1; min-height: 58px; padding: 10px 12px; border: 1px solid var(--ad-border); border-radius: 8px; cursor: pointer; transition: .15s; }
@@ -3061,9 +3146,14 @@
         </el-form-item></el-col>
       </el-row>
       <el-row :gutter="12">
-        <el-col :span="6"><el-form-item label="状态">
-          <el-select v-model="wrFilter.status" placeholder="请选择状态" clearable>
-            <el-option v-for="s in wrStatusOptions" :key="s.value" :label="s.label" :value="s.value"></el-option>
+        <el-col :span="6"><el-form-item label="用工状态">
+          <el-select v-model="wrFilter.workStatus" placeholder="请选择用工状态" clearable>
+            <el-option v-for="s in wrWorkStatusOptions" :key="s.value" :label="s.label" :value="s.value"></el-option>
+          </el-select>
+        </el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="审核状态">
+          <el-select v-model="wrFilter.auditStatus" placeholder="请选择审核状态" clearable>
+            <el-option v-for="s in wrAuditStatusOptions" :key="s.value" :label="s.label" :value="s.value"></el-option>
           </el-select>
         </el-form-item></el-col>
         <el-col :span="6"><el-form-item label="接单时间">
@@ -3072,7 +3162,9 @@
         <el-col :span="6"><el-form-item label="提交时间">
           <el-date-picker v-model="wrFilter.submitRange" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始" end-placeholder="结束" unlink-panels></el-date-picker>
         </el-form-item></el-col>
-        <el-col :span="6"><el-form-item label-width="0" class="wr-filter-btns">
+      </el-row>
+      <el-row :gutter="12">
+        <el-col :span="6" :offset="18"><el-form-item label-width="0" class="wr-filter-btns">
           <el-button type="primary" @click="wrSearch">查询</el-button>
           <el-button @click="wrReset">重置</el-button>
         </el-form-item></el-col>
@@ -3081,33 +3173,34 @@
 
     <div class="wr-toolbar">
       <el-button size="small" icon="el-icon-download" @click="wrExport">导出</el-button>
-      <el-button v-if="wrTab === 'apply'" size="small" type="primary" icon="el-icon-check" :disabled="!wrSelectedApply.length" @click="wrBatchPass">批量通过<span v-if="wrSelectedApply.length">（{{ wrSelectedApply.length }}）</span></el-button>
-      <el-button v-if="wrTab === 'settle'" size="small" type="primary" icon="el-icon-check" :disabled="!wrSelectedSettle.length" @click="wrBatchSettleAudit">批量结算审核<span v-if="wrSelectedSettle.length">（{{ wrSelectedSettle.length }}）</span></el-button>
+      <template v-if="wrTab === 'apply'">
+        <el-button size="small" type="primary" icon="el-icon-edit-outline" :disabled="!wrSelectedApply.length" @click="wrOpenAudit(wrSelectedApply)">批量审核<span v-if="wrSelectedApply.length">（{{ wrSelectedApply.length }}）</span></el-button>
+      </template>
+      <el-button v-if="wrTab === 'pay'" size="small" type="primary" icon="el-icon-wallet" :disabled="!wrSelectedPay.length" @click="wrOpenBatchPay">批量打款<span v-if="wrSelectedPay.length">（{{ wrSelectedPay.length }}）</span></el-button>
     </div>
 
     <el-table ref="wrTable" :key="wrTab" :data="wrPageRows" border stripe size="mini" row-key="id"
               style="width:100%" class="wr-table" @selection-change="wrOnSelect">
       <template slot="empty"><el-empty description="没有符合条件的用工记录" :image-size="72"></el-empty></template>
-      <el-table-column v-if="wrTab !== 'all'" type="selection" width="38" align="center"></el-table-column>
+      <el-table-column v-if="wrTab === 'apply' || wrTab === 'pay'" type="selection" width="38" align="center"></el-table-column>
       <el-table-column label="员工姓名" width="76" fixed="left" show-overflow-tooltip>
         <template slot-scope="{ row }"><span class="wr-name">{{ row.name }}</span></template>
       </el-table-column>
-      <el-table-column v-if="wrTab !== 'settle'" label="性别" width="46" align="center">
+      <el-table-column v-if="wrTab === 'all' || wrTab === 'apply' || wrTab === 'settle' || wrTab === 'pay'" label="性别" width="46" align="center">
         <template slot-scope="{ row }">{{ row.gender }}</template>
       </el-table-column>
-      <el-table-column v-if="wrTab !== 'settle'" label="手机号" width="92">
+      <el-table-column v-if="wrTab === 'all' || wrTab === 'apply' || wrTab === 'settle' || wrTab === 'pay'" label="手机号" width="92">
         <template slot-scope="{ row }"><span class="wr-sub" style="margin:0">{{ row.phone }}</span></template>
       </el-table-column>
       <el-table-column label="用工单位" prop="client" min-width="112" show-overflow-tooltip></el-table-column>
       <el-table-column label="岗位" width="92" show-overflow-tooltip>
         <template slot-scope="{ row }">{{ row.job }}</template>
       </el-table-column>
-      <el-table-column label="工期" width="102">
+      <el-table-column label="工期" width="90">
         <template slot-scope="{ row }">
-          <div class="wr-name" style="font-weight:500">{{ row.days }} 天</div>
-          <div class="wr-sub wr-date" :title="wrDateTip(row)">
-            <span class="wr-date-txt">{{ wrDateText(row) }}</span>
-          </div>
+          <el-tooltip :content="wrDateTip(row)" placement="top" effect="light">
+            <span class="wr-name" style="font-weight:500">{{ row.days }} 天</span>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column v-if="wrTab === 'apply'" label="工作时间" width="128">
@@ -3119,26 +3212,30 @@
       <el-table-column label="员工单价" width="76" align="right">
         <template slot-scope="{ row }"><span class="wr-price">{{ row.price }}</span><span class="wr-sub" style="margin:0"> 元/{{ row.priceType === '日薪' ? '天' : '时' }}</span></template>
       </el-table-column>
-      <el-table-column v-if="wrTab === 'settle'" label="应做工时" width="80" align="right">
-        <template slot-scope="{ row }"><span class="wr-name" style="font-weight:500">{{ stPlanQtyText(rowStOf(row)) }}</span></template>
+      <el-table-column v-if="wrTab === 'settle'" label="预计结算总金额" width="124" align="right">
+        <template slot-scope="{ row }"><span class="wr-price">{{ fjMoney(wrEstimatedTotal(row)) }}</span></template>
       </el-table-column>
-      <el-table-column v-if="wrTab === 'settle'" label="实做工时" width="80" align="right">
-        <template slot-scope="{ row }">
-          <span class="wr-name st-actual" :class="{ less: rowStOf(row) && rowStOf(row).actualQty < rowStOf(row).planQty }" :title="rowStOf(row) && rowStOf(row).actualQty < rowStOf(row).planQty ? (rowStOf(row).skipNote || '含未完成天') : ''">{{ stActualQtyText(rowStOf(row)) }}</span>
-        </template>
+      <el-table-column v-if="wrTab === 'settle'" label="已结算金额" width="100" align="right">
+        <template slot-scope="{ row }"><span class="st-amount">{{ fjMoney(wrPaidStAmountOf(row)) }}</span></template>
       </el-table-column>
-      <el-table-column v-if="wrTab === 'settle'" label="应发金额" width="96" align="right">
+      <el-table-column v-if="wrTab === 'settle'" label="待结算金额" width="100" align="right">
+        <template slot-scope="{ row }"><span class="wr-sub" style="margin:0">{{ fjMoney(wrPendingSettleAmount(row)) }}</span></template>
+      </el-table-column>
+      <el-table-column v-if="wrTab === 'pay'" label="结算金额" width="96" align="right">
         <template slot-scope="{ row }"><span class="st-amount">{{ fjMoney(rowStOf(row) ? rowStOf(row).amount : 0) }}</span></template>
       </el-table-column>
-      <el-table-column label="状态" width="96">
+      <el-table-column label="用工状态" width="96">
+        <template slot-scope="{ row }"><span class="wr-tag" :class="wrWorkCls(row)">{{ wrWorkLabel(row) }}</span></template>
+      </el-table-column>
+      <el-table-column label="审核状态" width="100">
         <template slot-scope="{ row }">
           <el-tooltip v-if="wrStatusReason(row)" :content="wrStatusReason(row)" placement="top" effect="light">
-            <span class="wr-tag" :class="wrStatusCls(row)">{{ wrStatusLabel(row) }}</span>
+            <span class="wr-tag" :class="wrAuditCls(row)">{{ wrAuditLabel(row) }}</span>
           </el-tooltip>
-          <span v-else class="wr-tag" :class="wrStatusCls(row)">{{ wrStatusLabel(row) }}</span>
+          <span v-else class="wr-tag" :class="wrAuditCls(row)">{{ wrAuditLabel(row) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="wrTab !== 'settle'" label="接单时间" width="90">
+      <el-table-column v-if="wrTab === 'all' || wrTab === 'apply'" label="接单时间" width="90">
         <template slot-scope="{ row }">
           <div v-if="row.applyAt" class="wr-time"><b>{{ wrDatePart(row.applyAt) }}</b><span>{{ wrTimePart(row.applyAt) }}</span></div>
           <div v-else class="wr-time dim">—</div>
@@ -3156,27 +3253,41 @@
           <div v-else class="wr-time dim">—</div>
         </template>
       </el-table-column>
-      <el-table-column v-if="wrTab === 'settle'" label="提交时间" width="90">
+      <el-table-column v-if="wrTab === 'all'" label="完成时间" width="90">
         <template slot-scope="{ row }">
-          <div v-if="rowStOf(row) && rowStOf(row).submitAt" class="wr-time"><b>{{ wrDatePart(rowStOf(row).submitAt) }}</b><span>{{ wrTimePart(rowStOf(row).submitAt) }}</span></div>
+          <div v-if="wrDoneTime(row)" class="wr-time"><b>{{ wrDatePart(wrDoneTime(row)) }}</b><span>{{ wrTimePart(wrDoneTime(row)) }}</span></div>
           <div v-else class="wr-time dim">—</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="172" fixed="right">
+      <el-table-column v-if="wrTab === 'pay'" label="结算审核时间" width="90">
+        <template slot-scope="{ row }">
+          <div v-if="rowStOf(row) && rowStOf(row).auditedAt" class="wr-time"><b>{{ wrDatePart(rowStOf(row).auditedAt) }}</b><span>{{ wrTimePart(rowStOf(row).auditedAt) }}</span></div>
+          <div v-else class="wr-time dim">—</div>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="wrTab === 'pay'" label="结算时间" width="90">
+        <template slot-scope="{ row }">
+          <div v-if="rowStOf(row) && rowStOf(row).paidAt" class="wr-time"><b>{{ wrDatePart(rowStOf(row).paidAt) }}</b><span>{{ wrTimePart(rowStOf(row).paidAt) }}</span></div>
+          <div v-else class="wr-time dim">—</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="260" fixed="right">
         <template slot-scope="{ row }">
           <div class="wr-ops">
             <el-button type="text" size="mini" @click="wrOpenDetail(row)">详情</el-button>
-            <el-button type="text" size="mini" @click="wrOpenLog(row)">审核记录</el-button>
+            <el-button v-if="wrTab === 'all' || wrTab === 'settle'" type="text" size="mini" @click="wrOpenLog(row)">审核记录</el-button>
+            <el-button v-if="wrTab === 'settle' || wrTab === 'pay'" type="text" size="mini" @click="wrOpenStLog(row)">结算记录</el-button>
             <el-button v-if="wrTab === 'apply' && row.status === '待审核'" type="text" size="mini" @click="wrOpenAudit(row)">审核</el-button>
-            <el-button v-if="wrTab === 'settle' && rowStStatus(row) === '待审核'" type="text" size="mini" @click="stOpenAudit(rowStOf(row))">结算审核</el-button>
-            <el-button v-if="wrCanEnd(row)" type="text" size="mini" @click="wrOpenEnd(row)">结束用工</el-button>
+            <el-button v-if="wrTab === 'settle' && wrCanSettle(row)" type="text" size="mini" @click="wrOpenSettle(row)">结算</el-button>
+            <el-button v-if="wrTab === 'settle' && wrCanExtend(row)" type="text" size="mini" @click="wrOpenExtend(row)">延长工期</el-button>
+            <el-button v-if="wrTab === 'pay' && rowStStatus(row) === '待打款'" type="text" size="mini" @click="wrOpenPay(rowStOf(row))">打款</el-button>
           </div>
         </template>
       </el-table-column>
     </el-table>
 
     <div class="bottom-bar">
-      <template v-if="wrTab !== 'all'">
+      <template v-if="wrTab === 'apply' || wrTab === 'pay'">
         <span class="selected-info">已选 <span class="num">{{ wrSelected.length }}</span> 条</span>
         <el-button type="text" size="mini" @click="wrClearSelect">清空选择</el-button>
       </template>
@@ -3193,7 +3304,8 @@
       <div class="wr-dw-hero">
         <div class="l1">
           {{ wrCur.name }}
-          <span class="wr-tag" :class="wrStatusCls(wrCur)">{{ wrStatusLabel(wrCur) }}</span>
+          <span class="wr-tag" :class="wrWorkCls(wrCur)">{{ wrWorkLabel(wrCur) }}</span>
+          <span class="wr-tag" :class="wrAuditCls(wrCur)">{{ wrAuditLabel(wrCur) }}</span>
           <span class="l1-sub">{{ wrCur.gender }} · {{ wrCur.phone }}</span>
         </div>
         <div class="l2">{{ wrCur.job }} · {{ wrCur.client }}</div>
@@ -3233,7 +3345,6 @@
           <div v-if="wrCur.auditAt"><div class="k">审核时间</div><div class="v num">{{ wrFullTime(wrCur.auditAt) }}</div></div>
           <div v-if="wrCur.rejectReason"><div class="k">驳回理由</div><div class="v" style="color:var(--ad-error-text)">{{ wrCur.rejectReason }}</div></div>
           <div v-if="wrCur.cancelAt"><div class="k">取消时间</div><div class="v num" style="color:var(--ad-text-3)">{{ wrFullTime(wrCur.cancelAt) }}</div></div>
-          <div><div class="k">发薪说明</div><div class="v">{{ wrCur.payNote || '—' }}</div></div>
         </div>
       </div>
 
@@ -3242,31 +3353,30 @@
         <div class="wr-kv">
           <div><div class="k">用工单位</div><div class="v">{{ wrCur.client }}</div></div>
           <div><div class="k">岗位名称</div><div class="v">{{ wrCur.job }}</div></div>
-          <div><div class="k">用工日期</div><div class="v num">{{ wrDateFull(wrCur) }}（{{ wrCur.days }} 天<span v-if="wrCur.gapped">，其中含间隔</span>）</div></div>
+          <div><div class="k">用工日期</div><div class="v num">{{ wrDateFullList(wrCur) }}（{{ wrCur.days }} 天<span v-if="wrCur.gapped">，其中含间隔</span>）</div></div>
           <div><div class="k">工作时间</div><div class="v"><span class="wr-shift"><span v-for="s in wrShiftTags(wrCur)" :key="s">{{ s }}</span></span></div></div>
           <div><div class="k">每天工时</div><div class="v num">{{ wrCur.hours }} 小时</div></div>
+          <div><div class="k">用工单价</div><div class="v num">{{ wrCur.price }} 元/{{ wrCur.priceType === '日薪' ? '天' : '小时' }}</div></div>
+          <div><div class="k">商业险</div><div class="v num">{{ wrCur.ins }} 元/天 × {{ wrCur.days }} 天 = {{ fjMoney(wrCur.ins * wrCur.days) }}</div></div>
+        </div>
+      </div>
+
+      <div class="wr-sec" v-if="wrStList.length">
+        <div class="wr-sec-t">结算记录<span class="ex">共 {{ wrStList.length }} 笔<span v-if="wrStTotal > 0"> · 累计已打款 {{ fjMoney(wrStTotal) }}</span></span></div>
+        <div class="wr-st-list">
+          <div v-for="s in wrStList" :key="s.id" class="wr-st-item">
+            <div class="h">
+              <span class="amt">{{ fjMoney(s.amount) }}</span>
+              <span class="wr-tag" :class="stDisplayStatus(s).cls">{{ stDisplayStatus(s).label }}</span>
+            </div>
+            <div class="ln"><span>结算人：{{ s.auditedBy || '—' }}</span><span>结算时间：{{ wrFullTime(s.auditedAt) }}</span></div>
+            <div class="ln"><span>打款人：{{ s.paidBy || '—' }}</span><span>打款时间：{{ wrFullTime(s.paidAt) }}</span></div>
+            <div class="ln" v-if="s.settleNote"><span>结算说明：{{ s.settleNote }}</span></div>
+          </div>
         </div>
       </div>
 
       <template v-if="rowStOf(wrCur)">
-        <div class="wr-sec">
-          <div class="wr-sec-t">结算信息<span class="ex">结算单 {{ rowStOf(wrCur).id }} · 按实做工时核算</span></div>
-          <div class="st-kv">
-            <div><div class="k">应做工时</div><div class="v num">{{ stPlanQtyText(rowStOf(wrCur)) }}</div></div>
-            <div><div class="k">实做工时</div><div class="v num" :style="rowStOf(wrCur).actualQty < rowStOf(wrCur).planQty ? 'color:var(--ad-warning-text);font-weight:600' : ''">{{ stActualQtyText(rowStOf(wrCur)) }}</div></div>
-            <div v-if="rowStOf(wrCur).actualQty < rowStOf(wrCur).planQty"><div class="k">未做说明</div><div class="v" style="color:var(--ad-warning-text)">{{ rowStOf(wrCur).skipNote || '含未完成天' }}</div></div>
-            <div><div class="k">员工单价</div><div class="v num">{{ rowStOf(wrCur).price }} 元 / {{ rowStOf(wrCur).priceType === '日薪' ? '天' : '小时' }}</div></div>
-            <div><div class="k">商业险</div><div class="v num">{{ rowStOf(wrCur).ins }} 元/天 × {{ rowStOf(wrCur).days }} 天 = {{ fjMoney(rowStOf(wrCur).ins * rowStOf(wrCur).days) }}</div></div>
-            <div><div class="k">员工应发</div><div class="v num" style="color:var(--ad-error);font-weight:600">{{ fjMoney(rowStOf(wrCur).amount) }}</div></div>
-            <div><div class="k">结算状态</div><div class="v"><span class="wr-tag" :class="rowStCls(wrCur)">{{ rowStLabel(wrCur) }}</span></div></div>
-            <div><div class="k">完工提交</div><div class="v num">{{ wrFullTime(rowStOf(wrCur).submitAt) }}</div></div>
-            <div><div class="k">结算审核人</div><div class="v">{{ rowStOf(wrCur).settler || '—' }}</div></div>
-            <div><div class="k">结算审核时间</div><div class="v num">{{ wrFullTime(rowStOf(wrCur).settleAt) }}</div></div>
-            <div v-if="rowStOf(wrCur).rejectReason"><div class="k">结算驳回理由</div><div class="v" style="color:var(--ad-error-text)">{{ rowStOf(wrCur).rejectReason }}</div></div>
-            <div v-if="rowStOf(wrCur).settleNote"><div class="k">结算说明</div><div class="v">{{ rowStOf(wrCur).settleNote }}</div></div>
-          </div>
-        </div>
-
         <div class="wr-sec" v-if="rowStOf(wrCur).photoDays">
           <div class="wr-sec-t">每日完工图片<span class="ex">员工按天上传的现场照片</span></div>
           <div v-for="g in stPhotoGroups(rowStOf(wrCur))" :key="g.day" class="wr-days-list">
@@ -3287,11 +3397,15 @@
   <!-- 审核弹窗 -->
   <el-dialog title="审核用工记录" :visible.sync="wrAudit.visible" width="560px" append-to-body :close-on-click-modal="false">
     <div v-if="wrAudit.rows.length" class="wr-audit-sum">
-      <div>
-        员工 <b>{{ wrAudit.rows[0].name }}</b>　岗位 <b>{{ wrAudit.rows[0].job }}</b>
-        <span v-if="wrAudit.batch">　共 <b>{{ wrAudit.rows.length }}</b> 条</span>
-      </div>
-      <div v-if="!wrAudit.batch">用工日期 {{ wrDateText(wrAudit.rows[0]) }}　每天 {{ wrAudit.rows[0].hours }} 小时　共 {{ wrAudit.rows[0].days }} 天</div>
+      <template v-if="wrAudit.batch">
+        <div>共 <b>{{ wrAudit.rows.length }}</b> 条用工记录待审核</div>
+      </template>
+      <template v-else>
+        <div>
+          员工 <b>{{ wrAudit.rows[0].name }}</b>　{{ wrAudit.rows[0].gender }}　{{ wrAudit.rows[0].phone }}　岗位 <b>{{ wrAudit.rows[0].job }}</b>
+        </div>
+        <div>用工日期 {{ wrDateText(wrAudit.rows[0]) }}　每天 {{ wrAudit.rows[0].hours }} 小时　共 {{ wrAudit.rows[0].days }} 天</div>
+      </template>
     </div>
     <div class="wr-audit-types">
       <div class="wr-audit-type pass" :class="{ on: wrAudit.mode === 'pass' }" @click="wrAudit.mode = 'pass'">
@@ -3333,7 +3447,7 @@
         <span class="sub">结算金额不可超过冻结金额；{{ wrEndQtyText }}</span>
       </div>
       <el-input v-model="wrEnd.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="结束原因（选填），会记录在审核记录中并同步员工端"></el-input>
-      <div class="pc-tip">结束后该笔用工不可恢复，已冻结的资金在结算审核通过后结清。</div>
+      <div class="pc-tip">结束后该笔用工不可恢复，已冻结的资金在结算打款完成后结清。</div>
     </template>
     <span slot="footer">
       <el-button size="small" @click="wrEnd.visible = false">取消</el-button>
@@ -3341,12 +3455,13 @@
     </span>
   </el-dialog>
 
-  <!-- 审核记录弹框：接单审核 + 结算审核上下两个模块 -->
+  <!-- 审核记录弹框：仅展示接单审核记录（结算审核与打款记录已合并到「做工中 / 待结算打款」链路中，不在此展示） -->
   <el-dialog title="审核记录" :visible.sync="wrLog.visible" width="600px" append-to-body custom-class="wr-log-dlg">
     <template v-if="wrLog.row.id">
       <div class="wr-log-head">
         <b>{{ wrLog.row.name }}</b>
-        <span class="wr-tag" :class="wrStatusCls(wrLog.row)">{{ wrStatusLabel(wrLog.row) }}</span>
+        <span class="wr-tag" :class="wrWorkCls(wrLog.row)">{{ wrWorkLabel(wrLog.row) }}</span>
+        <span class="wr-tag" :class="wrAuditCls(wrLog.row)">{{ wrAuditLabel(wrLog.row) }}</span>
         <span class="wr-log-sub">{{ wrLog.row.job }} · {{ wrDateText(wrLog.row) }}</span>
       </div>
 
@@ -3375,70 +3490,204 @@
           </div>
         </div>
       </div>
-
-      <div class="ap-block">
-        <div class="ap-sub">
-          <b>结算审核</b>
-          <span class="ap-sub-id" v-if="rowStOf(wrLog.row)">结算单 {{ rowStOf(wrLog.row).id }} · {{ fjMoney(rowStOf(wrLog.row).amount) }}</span>
-          <span class="ap-sub-id" v-else>尚未生成结算单</span>
-        </div>
-        <div class="ap-flow" v-if="rowStOf(wrLog.row)">
-          <div v-for="(n, i) in stAuditSteps(rowStOf(wrLog.row))" :key="'s' + i" class="ap-node" :class="{ done: n.done, reject: n.reject }">
-            <div class="ap-rail">
-              <span class="ap-idx">{{ i + 1 }}</span>
-              <span class="ap-line"></span>
-            </div>
-            <div class="ap-body">
-              <div class="ap-main">
-                <b class="ap-title">{{ n.title }}</b>
-                <div class="ap-who">{{ n.who }}</div>
-                <div v-if="n.note" class="ap-note">{{ n.note }}</div>
-              </div>
-              <div class="ap-side">
-                <div class="ap-time">{{ n.time || '' }}</div>
-                <span class="ap-badge" :class="n.cls">{{ n.state }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="ap-empty" v-else>员工提交完工（或商户结束用工）后生成结算单，进入结算审核环节。</div>
-      </div>
     </template>
     <span slot="footer"><el-button size="small" type="primary" @click="wrLog.visible = false">关闭</el-button></span>
   </el-dialog>
+
+  <!-- 结算记录弹窗：展示本记录每张结算单的操作人、时间、金额（列表式） -->
+  <el-dialog title="结算记录" :visible.sync="wrStLog.visible" width="640px" append-to-body>
+    <template v-if="wrStLog.row.id">
+      <div class="wr-log-head">
+        <b>{{ wrStLog.row.name }}</b>
+        <span class="wr-tag" :class="wrWorkCls(wrStLog.row)">{{ wrWorkLabel(wrStLog.row) }}</span>
+        <span class="wr-log-sub">{{ wrStLog.row.job }} · {{ wrDateText(wrStLog.row) }}</span>
+      </div>
+      <div class="wr-st-list">
+        <div v-for="s in wrStLogList" :key="s.id" class="wr-st-item">
+          <div class="h">
+            <span class="amt">{{ fjMoney(s.amount) }}</span>
+            <span class="wr-tag" :class="stDisplayStatus(s).cls">{{ stDisplayStatus(s).label }}</span>
+          </div>
+          <div class="ln"><span>结算人：{{ s.auditedBy || '—' }}</span><span>结算时间：{{ wrFullTime(s.auditedAt) }}</span></div>
+          <div class="ln"><span>打款人：{{ s.paidBy || '—' }}</span><span>打款时间：{{ wrFullTime(s.paidAt) }}</span></div>
+          <div class="ln" v-if="s.settleNote"><span>结算说明：{{ s.settleNote }}</span></div>
+          <div class="ln" v-if="stRejectReason(s)"><span style="color:var(--ad-error-text)">驳回理由：{{ stRejectReason(s) }}</span></div>
+        </div>
+        <div v-if="!wrStLogList.length" class="wr-sub">暂无结算记录</div>
+      </div>
+      <div class="pc-tip" v-if="wrStLogTotal > 0">累计已打款 {{ fjMoney(wrStLogTotal) }} 元（不含待审核/待打款结算单）。</div>
+    </template>
+    <span slot="footer"><el-button size="small" type="primary" @click="wrStLog.visible = false">关闭</el-button></span>
+  </el-dialog>
 </div>
 
-  <!-- 审核结算弹窗 -->
-  <el-dialog title="审核结算" :visible.sync="stAudit.visible" width="560px" append-to-body :close-on-click-modal="false">
-    <div v-if="stAudit.rows.length" class="wr-audit-sum">
-      <div v-if="!stAudit.batch">员工 <b>{{ stAudit.rows[0].name }}</b>　岗位 <b>{{ stAudit.rows[0].job }}</b></div>
-      <div v-else>本次结算审核共 <b>{{ stAudit.rows.length }}</b> 笔</div>
-      <div v-if="!stAudit.batch">用工日期 {{ stDateText(stAudit.rows[0]) }}　共 {{ stAudit.rows[0].days }} 天　应发 <b>{{ fjMoney(stAuditTotal) }}</b></div>
-      <div v-else>共 <b>{{ stAudit.rows.length }}</b> 笔　合计应发 <b>{{ fjMoney(stAuditTotal) }}</b></div>
-    </div>
-    <div class="wr-audit-types">
-      <div class="wr-audit-type pass" :class="{ on: stAudit.mode === 'pass' }" @click="stAudit.mode = 'pass'">
-        <b>审核通过</b>
+  <!-- 结算弹窗：选择要结算的日期（支持提前结算部分日期） -->
+  <el-dialog title="结算" :visible.sync="wrSettle.visible" width="640px" append-to-body :close-on-click-modal="false" custom-class="wr-settle-dlg">
+    <template v-if="wrSettle.row.id">
+      <div class="wr-info-card">
+        <div class="ic-main"><span class="ic-name">{{ wrSettle.row.name }}</span><span class="wr-tag doing">做工中</span></div>
+        <div class="ic-sub">{{ wrSettle.row.job }} · {{ wrSettle.row.client }}</div>
+        <div class="ic-grid">
+          <div><span class="k">员工单价</span><b>{{ wrPriceText(wrSettle.row) }}</b></div>
+          <div><span class="k">用工工期</span><b>{{ wrSettle.row.days }} 天 · 每天 {{ wrSettle.row.hours }} 小时</b></div>
+          <div><span class="k">用工日期</span><b>{{ wrDateText(wrSettle.row) }}</b></div>
+        </div>
       </div>
-      <div class="wr-audit-type reject" :class="{ on: stAudit.mode === 'reject' }" @click="stAudit.mode = 'reject'">
-        <b>审核驳回</b>
+
+      <div class="wr-form-sec">
+        <div class="wr-form-sec-t"><span class="idx">1</span>选择结算日期<span class="ex">可只勾选部分日期提前结算</span>
+          <span class="ops">
+            <el-button type="text" size="mini" @click="wrSettlePickAll">全选</el-button>
+            <el-button type="text" size="mini" @click="wrSettlePickNone">清空</el-button>
+          </span>
+        </div>
+        <el-checkbox-group v-model="wrSettle.dates" class="wr-settle-dates" @change="wrSettlePickChange">
+          <el-checkbox v-for="d in wrSettleAvail" :key="d" :label="d">{{ d }}</el-checkbox>
+        </el-checkbox-group>
       </div>
-    </div>
-    <el-form v-if="stAudit.mode === 'pass'" label-width="86px" size="small" class="st-audit-form" @submit.native.prevent>
-      <el-form-item label="结算金额">
-        <el-input-number v-model="stAudit.amount" :min="0" :precision="2" :step="10" controls-position="right" style="width:100%"></el-input-number>
-      </el-form-item>
-      <el-form-item label="结算说明">
-        <el-input v-model="stAudit.note" type="textarea" :rows="2" maxlength="100" show-word-limit placeholder="选填，如按实做工时核减、补贴等说明"></el-input>
-      </el-form-item>
-    </el-form>
-    <el-input v-if="stAudit.mode === 'reject'" v-model="stAudit.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由，会显示在员工端结算记录中"></el-input>
+
+      <div class="wr-form-sec">
+        <div class="wr-form-sec-t"><span class="idx">2</span>确认结算金额</div>
+        <div class="wr-money-grid">
+          <div><span class="k">本次冻结金额</span><b>{{ fjMoney(wrSettleCap) }}</b></div>
+          <div><span class="k">结算金额（可调整）</span>
+            <el-input-number v-model="wrSettle.amount" :min="0" :max="wrSettleCap" :precision="2" :step="10" controls-position="right" style="width:100%"></el-input-number>
+          </div>
+          <div><span class="k">退回金额</span><b class="back">{{ fjMoney(wrSettleBack) }}</b></div>
+        </div>
+      </div>
+
+      <div class="wr-form-sec">
+        <div class="wr-form-sec-t"><span class="idx">3</span>结算说明<span class="ex">选填</span></div>
+        <el-input v-model="wrSettle.note" type="textarea" :rows="2" maxlength="100" show-word-limit placeholder="如按实做工时核减、补贴等说明"></el-input>
+      </div>
+    </template>
     <span slot="footer">
-      <el-button size="small" @click="stAudit.visible = false">取消</el-button>
-      <el-button size="small" :type="stAudit.mode === 'pass' ? 'primary' : 'danger'" @click="stSubmitAudit">{{ stAudit.mode === 'pass' ? '确认通过' : '确认驳回' }}</el-button>
+      <el-button size="small" @click="wrSettle.visible = false">取消</el-button>
+      <el-button size="small" type="primary" @click="wrSubmitSettle">确认结算</el-button>
     </span>
   </el-dialog>
 
+  <!-- 延长工期弹窗：按日期延长，已接单日期不可选 -->
+  <el-dialog title="延长工期" :visible.sync="wrExtend.visible" width="620px" append-to-body :close-on-click-modal="false">
+    <template v-if="wrExtend.row.id">
+      <div class="wr-info-card">
+        <div class="ic-main"><span class="ic-name">{{ wrExtend.row.name }}</span><span class="wr-tag doing">做工中</span></div>
+        <div class="ic-sub">{{ wrExtend.row.job }} · {{ wrPriceText(wrExtend.row) }}</div>
+        <div class="ic-grid">
+          <div><span class="k">当前工期</span><b>{{ wrExtend.row.days }} 天</b></div>
+          <div><span class="k">每天工时</span><b>{{ wrExtend.row.hours }} 小时</b></div>
+          <div><span class="k">当前冻结</span><b>{{ fjMoney(wrExtend.row.frozenAmt != null ? wrExtend.row.frozenAmt : wrFreezeAmount(wrExtend.row)) }}</b></div>
+        </div>
+      </div>
+
+      <div class="wr-form-sec">
+        <div class="wr-form-sec-t"><span class="idx">1</span>选择延长日期<span class="ex">已接单日期不可选</span></div>
+        <el-date-picker v-model="wrExtend.dates" type="dates" value-format="yyyy-MM-dd" placeholder="选择要延长的用工日期（可多选）" :picker-options="wrExtendPicker" style="width:100%"></el-date-picker>
+        <div class="wr-picked-dates" v-if="wrExtend.dates.length">
+          <span v-for="d in wrExtend.dates" :key="d" class="wr-date-chip">{{ d }}</span>
+        </div>
+        <div class="wr-sub">已接单日期：{{ wrExtendBusyText }}</div>
+      </div>
+
+      <div class="wr-form-sec">
+        <div class="wr-form-sec-t"><span class="idx">2</span>冻结金额</div>
+        <div class="wr-money-grid">
+          <div><span class="k">追加冻结</span><b>{{ fjMoney(wrExtendAdd) }}</b></div>
+          <div><span class="k">延长后冻结总额</span><b>{{ fjMoney((wrExtend.row.frozenAmt != null ? wrExtend.row.frozenAmt : wrFreezeAmount(wrExtend.row)) + wrExtendAdd) }}</b></div>
+          <div><span class="k">当前可用余额</span><b :class="{ 'is-short': wrExtendShort > 0 }">{{ fjMoney(fjBalance) }}</b></div>
+        </div>
+        <div class="wr-sub" v-if="wrExtendShort > 0" style="color:var(--ad-error-text)">余额不足，还差 {{ fjMoney(wrExtendShort) }}，请先充值后再延长</div>
+        <div class="wr-sub" v-else>追加冻结 = 所选 {{ wrExtend.dates.length }} 天 × 员工单价口径，通过后从可用余额转入冻结</div>
+      </div>
+    </template>
+    <span slot="footer">
+      <el-button size="small" @click="wrExtend.visible = false">取消</el-button>
+      <el-button size="small" type="primary" :disabled="wrExtendShort > 0 || !wrExtend.dates.length" @click="wrSubmitExtend">确认延长</el-button>
+    </span>
+  </el-dialog>
+
+  <!-- 结算打款弹窗：通过（选打款账户 + 短信验证码）或驳回（填写理由） -->
+  <el-dialog title="结算打款" :visible.sync="wrPay.visible" width="580px" append-to-body :close-on-click-modal="false" @close="wrStopPayTimerFor(wrPay)">
+    <template v-if="wrPay.row && wrPay.row.id">
+      <div class="wr-audit-types">
+        <div class="wr-audit-type pass" :class="{ on: wrPay.mode === 'pass' }" @click="wrPay.mode = 'pass'"><b>通过</b></div>
+        <div class="wr-audit-type reject" :class="{ on: wrPay.mode === 'reject' }" @click="wrPay.mode = 'reject'"><b>驳回</b></div>
+      </div>
+      <div class="wr-pay-amount">
+        <span class="k">打款金额</span><b>{{ fjMoney(wrPay.row.amount) }}</b>
+      </div>
+      <template v-if="wrPay.mode === 'pass'">
+        <el-form label-width="96px" size="small" class="st-audit-form" @submit.native.prevent>
+          <el-form-item label="打款账户">
+            <el-select v-model="wrPay.account" placeholder="请选择打款账户" style="width:100%">
+              <el-option v-for="a in wrPayAccounts" :key="a" :label="a" :value="a"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="短信验证码">
+            <div class="wr-sms-row">
+              <el-input v-model="wrPay.code" maxlength="6" placeholder="请输入 6 位短信验证码"></el-input>
+              <el-button size="small" :disabled="wrPay.left > 0" @click="wrSendPayCodeSingle">{{ wrPay.left > 0 ? wrPay.left + 's 后重发' : '获取验证码' }}</el-button>
+            </div>
+            <div class="wr-sub" style="margin-top:6px">验证码将发送至绑定手机 138****8000（演示环境：固定验证码 123456）</div>
+          </el-form-item>
+          <el-form-item label="打款说明">
+            <el-input v-model="wrPay.note" type="textarea" :rows="2" maxlength="100" show-word-limit placeholder="选填，打款备注"></el-input>
+          </el-form-item>
+        </el-form>
+        <div class="pc-tip">通过后按所选账户打款给员工。</div>
+      </template>
+      <template v-else>
+        <el-input v-model="wrPay.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由，结算单将回到待审核"></el-input>
+        <div class="pc-tip">驳回后该结算单回到「待审核」，可重新结算。</div>
+      </template>
+    </template>
+    <span slot="footer">
+      <el-button size="small" @click="wrPay.visible = false">取消</el-button>
+      <el-button v-if="wrPay.mode === 'pass'" size="small" type="primary" @click="stSubmitPay">确认打款</el-button>
+      <el-button v-else size="small" type="danger" @click="stRejectPay">确认驳回</el-button>
+    </span>
+  </el-dialog>
+
+
+  <!-- 批量打款弹窗：通过（汇总金额 + 打款账户 + 短信验证码）或驳回（填写理由） -->
+  <el-dialog title="批量打款" :visible.sync="wrBatchPay.visible" width="620px" append-to-body :close-on-click-modal="false" @close="wrStopPayTimerFor(wrBatchPay)">
+    <template v-if="wrBatchPay.rows.length">
+      <div class="wr-audit-types">
+        <div class="wr-audit-type pass" :class="{ on: wrBatchPay.mode === 'pass' }" @click="wrBatchPay.mode = 'pass'"><b>通过</b></div>
+        <div class="wr-audit-type reject" :class="{ on: wrBatchPay.mode === 'reject' }" @click="wrBatchPay.mode = 'reject'"><b>驳回</b></div>
+      </div>
+      <div class="wr-pay-amount">
+        <span class="k">打款金额</span><b>{{ fjMoney(wrBatchPayAmount) }}</b>
+      </div>
+      <template v-if="wrBatchPay.mode === 'pass'">
+        <el-form label-width="96px" size="small" class="st-audit-form" @submit.native.prevent>
+          <el-form-item label="打款账户">
+            <el-select v-model="wrBatchPay.account" placeholder="请选择打款账户" style="width:100%">
+              <el-option v-for="a in wrPayAccounts" :key="a" :label="a" :value="a"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="短信验证码">
+            <div class="wr-sms-row">
+              <el-input v-model="wrBatchPay.code" maxlength="6" placeholder="请输入 6 位短信验证码"></el-input>
+              <el-button size="small" :disabled="wrBatchPay.left > 0" @click="wrSendPayCode">{{ wrBatchPay.left > 0 ? wrBatchPay.left + 's 后重发' : '获取验证码' }}</el-button>
+            </div>
+            <div class="wr-sub" style="margin-top:6px">验证码将发送至绑定手机 138****8000（演示环境：固定验证码 123456）</div>
+          </el-form-item>
+        </el-form>
+        <div class="pc-tip">确认后按所选账户一次性打款给员工。</div>
+      </template>
+      <template v-else>
+        <el-input v-model="wrBatchPay.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由，本批结算单将全部回到待审核"></el-input>
+        <div class="pc-tip">驳回后本批 {{ wrBatchPay.rows.length }} 条结算单回到「待审核」。</div>
+      </template>
+    </template>
+    <span slot="footer">
+      <el-button size="small" @click="wrBatchPay.visible = false">取消</el-button>
+      <el-button v-if="wrBatchPay.mode === 'pass'" size="small" type="primary" @click="wrSubmitBatchPay">确认打款</el-button>
+      <el-button v-else size="small" type="danger" @click="wrSubmitBatchPay">确认驳回</el-button>
+    </span>
+  </el-dialog>
 
 <!-- ===== 岗位标签页 ===== -->
 <div class="page-body" id="jobTagPage" v-show="currentPage === 'jobTag'">
@@ -4796,6 +5045,264 @@
     <el-button type="primary" size="small" @click="saveStplFieldDlg">保存</el-button>
   </span>
 </el-dialog>
+
+<!-- ===== 财务管理 · 充值记录 / 流水记录 ===== -->
+<div class="page-body" id="fundPage" v-if="currentPage === 'fund'">
+  <div class="fund-stats">
+    <div class="fund-stat">
+      <div class="fund-stat-ic orange"><i class="el-icon-money"></i></div>
+      <div>
+        <div class="fund-stat-k">可用金额（元）</div>
+        <div class="fund-stat-v">{{ fjMoney(fjBalance) }}</div>
+        <el-button type="primary" size="mini" icon="el-icon-wallet" class="fund-recharge-entry" @click="openFundRechargeDlg">充值</el-button>
+      </div>
+    </div>
+    <div class="fund-stat">
+      <div class="fund-stat-ic blue"><i class="el-icon-lock"></i></div>
+      <div>
+        <div class="fund-stat-k">冻结金额（元）</div>
+        <div class="fund-stat-v">{{ fjMoney(fjFrozen) }}</div>
+      </div>
+    </div>
+    <div class="fund-stat">
+      <div class="fund-stat-ic blue"><i class="el-icon-top"></i></div>
+      <div>
+        <div class="fund-stat-k">累计充值金额（元）</div>
+        <div class="fund-stat-v">{{ fjMoney(fundRechargeTotal) }}</div>
+      </div>
+    </div>
+    <div class="fund-stat">
+      <div class="fund-stat-ic red"><i class="el-icon-bottom"></i></div>
+      <div>
+        <div class="fund-stat-k">累计支出金额（元）</div>
+        <div class="fund-stat-v minus">-{{ fjMoney(fundPayTotal) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card wr-card">
+    <el-tabs v-model="fundTab" class="wr-tabs" @tab-click="fundTabChange">
+      <el-tab-pane :label="'充值记录' + (fundRecharge.length ? '（' + fundRecharge.length + '）' : '')" name="recharge"></el-tab-pane>
+      <el-tab-pane :label="'流水记录' + (fundFlows.length ? '（' + fundFlows.length + '）' : '')" name="flow"></el-tab-pane>
+    </el-tabs>
+
+    <el-form v-if="fundTab === 'recharge'" :model="fundRechargeFilter" class="wr-filter search-form" size="small" label-width="76px" @submit.native.prevent>
+      <el-row :gutter="12">
+        <el-col :span="6"><el-form-item label="付款方式">
+          <el-select v-model="fundRechargeFilter.method" placeholder="全部" clearable>
+            <el-option v-for="m in fundMethods" :key="m" :label="m" :value="m"></el-option>
+          </el-select>
+        </el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="付款账户">
+          <el-select v-model="fundRechargeFilter.account" placeholder="全部" clearable filterable>
+            <el-option v-for="a in fundAccounts" :key="a" :label="a" :value="a"></el-option>
+          </el-select>
+        </el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="支付状态">
+          <el-select v-model="fundRechargeFilter.status" placeholder="全部" clearable>
+            <el-option label="已支付" value="已支付"></el-option>
+            <el-option label="待支付" value="待支付"></el-option>
+          </el-select>
+        </el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="充值时间">
+          <el-date-picker v-model="fundRechargeFilter.range" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" unlink-panels></el-date-picker>
+        </el-form-item></el-col>
+      </el-row>
+    </el-form>
+
+    <el-form v-else :model="fundFlowFilter" class="wr-filter search-form" size="small" label-width="76px" @submit.native.prevent>
+      <el-row :gutter="12">
+        <el-col :span="8"><el-form-item label="类型">
+          <el-select v-model="fundFlowFilter.kind" placeholder="全部" clearable>
+            <el-option v-for="t in fundFlowKinds" :key="t.value" :label="t.label" :value="t.value"></el-option>
+          </el-select>
+        </el-form-item></el-col>
+        <el-col :span="8"><el-form-item label="资金状态">
+          <el-select v-model="fundFlowFilter.state" placeholder="全部" clearable>
+            <el-option v-for="t in fundFlowStates" :key="t.value" :label="t.label" :value="t.value"></el-option>
+          </el-select>
+        </el-form-item></el-col>
+        <el-col :span="8"><el-form-item label="关联对象">
+          <el-input v-model="fundFlowFilter.name" placeholder="员工姓名 / 商户账户" clearable @keyup.enter.native="fundSearch"></el-input>
+        </el-form-item></el-col>
+      </el-row>
+      <el-row :gutter="12">
+        <el-col :span="8"><el-form-item label="流水号">
+          <el-input v-model="fundFlowFilter.ref" placeholder="请输入流水号" clearable @keyup.enter.native="fundSearch"></el-input>
+        </el-form-item></el-col>
+        <el-col :span="8"><el-form-item label="发生时间">
+          <el-date-picker v-model="fundFlowFilter.range" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" unlink-panels :picker-options="fundFlowPickerOptions"></el-date-picker>
+        </el-form-item></el-col>
+      </el-row>
+    </el-form>
+
+    <div class="fund-toolbar">
+      <el-button size="small" icon="el-icon-download" @click="fundExport">导出</el-button>
+      <div class="right">
+        <el-button size="small" type="primary" @click="fundSearch">查询</el-button>
+        <el-button size="small" @click="fundReset">重置</el-button>
+      </div>
+    </div>
+
+    <el-table v-if="fundTab === 'recharge'" :data="fundRechargeRows" border stripe size="mini" row-key="id" empty-text="没有符合条件的充值记录" style="width:100%">
+      <el-table-column label="充值时间" min-width="150">
+        <template slot-scope="{ row }">
+          <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
+        </template>
+      </el-table-column>
+      <el-table-column label="流水号" width="150">
+        <template slot-scope="{ row }"><span class="fund-no">{{ row.id }}</span></template>
+      </el-table-column>
+      <el-table-column label="付款方式" width="90">
+        <template slot-scope="{ row }">{{ row.method }}</template>
+      </el-table-column>
+      <el-table-column label="付款账户" prop="account" min-width="160" show-overflow-tooltip></el-table-column>
+      <el-table-column label="充值金额" width="112" align="right">
+        <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.amount) }}</span></template>
+      </el-table-column>
+      <el-table-column label="实际到账" width="112" align="right">
+        <template slot-scope="{ row }">
+          <span class="fund-money" :class="{ in: row.arrived != null }">{{ row.arrived != null ? fjMoney(row.arrived) : '—' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="支付状态" width="88" align="center">
+        <template slot-scope="{ row }"><span class="wr-tag" :class="row.status === '已支付' ? 'pass' : 'wait'">{{ row.status }}</span></template>
+      </el-table-column>
+      <el-table-column label="充值凭证" width="88" align="center">
+        <template slot-scope="{ row }">
+          <el-image v-if="row.voucher" :src="row.voucher" :preview-src-list="[row.voucher]" fit="cover" style="width:38px;height:38px;border-radius:4px;border:1px solid var(--ad-border-secondary);cursor:zoom-in"></el-image>
+          <span v-else class="fund-voucher-none">—</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" min-width="170" show-overflow-tooltip>
+        <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
+      </el-table-column>
+    </el-table>
+
+    <el-table v-else :data="fundFlowRows" border stripe size="mini" row-key="id" empty-text="没有符合条件的资金流水" style="width:100%">
+      <el-table-column label="流水号" width="150">
+        <template slot-scope="{ row }"><span class="fund-no">{{ row.id }}</span></template>
+      </el-table-column>
+      <el-table-column label="类型" width="84" align="center">
+        <template slot-scope="{ row }"><span class="fund-tag" :class="fundFlowKindCls(row)">{{ fundFlowKindLabel(row) }}</span></template>
+      </el-table-column>
+      <el-table-column label="资金状态" width="84" align="center">
+        <template slot-scope="{ row }">
+          <span v-if="fundFlowStateLabel(row) !== '—'" class="fund-tag" :class="fundFlowStateCls(row)">{{ fundFlowStateLabel(row) }}</span>
+          <span v-else class="fund-dim">—</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="关联对象" width="130">
+        <template slot-scope="{ row }"><span class="fund-party-n">{{ fundFlowParty(row) }}</span></template>
+      </el-table-column>
+      <el-table-column label="金额" width="110" align="right">
+        <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.amount) }}</span></template>
+      </el-table-column>
+      <el-table-column label="资金流向" width="140">
+        <template slot-scope="{ row }"><span class="fund-route">{{ fundFlowRoute(row) }}</span></template>
+      </el-table-column>
+      <el-table-column label="可用余额" width="110" align="right">
+        <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.balanceAfter) }}</span></template>
+      </el-table-column>
+      <el-table-column label="冻结中" width="100" align="right">
+        <template slot-scope="{ row }"><span class="fund-money muted">{{ fjMoney(row.frozenAfter) }}</span></template>
+      </el-table-column>
+      <el-table-column label="备注" min-width="200" show-overflow-tooltip>
+        <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
+      </el-table-column>
+      <el-table-column label="操作" width="70" align="center">
+        <template slot-scope="{ row }">
+          <el-button v-if="fundFlowKindLabel(row) === '灵工'" type="text" size="mini" @click.stop="openFundFlowDetail(row)">详情</el-button>
+          <span v-else class="fund-dim">—</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="发生时间" width="150">
+        <template slot-scope="{ row }">
+          <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <div class="bottom-bar">
+      <el-pagination v-if="fundTab === 'recharge'" class="list-pager" background layout="total, sizes, prev, pager, next, jumper"
+                     :total="fundRechargeFiltered.length" :page-size.sync="fundRechargePageSize" :current-page.sync="fundRechargePage" :page-sizes="[10, 20, 50]"></el-pagination>
+      <el-pagination v-else class="list-pager" background layout="total, sizes, prev, pager, next, jumper"
+                     :total="fundFlowsFiltered.length" :page-size.sync="fundFlowPageSize" :current-page.sync="fundFlowPage" :page-sizes="[10, 20, 50]"></el-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- 财务账户充值（联系客服 / 对公转账） -->
+<el-dialog title="账户充值" :visible.sync="fundRechargeDlg.visible" width="520px" :close-on-click-modal="false" append-to-body custom-class="fund-rc-dlg">
+  <div class="fund-rc-tip" style="margin-top:0">充值请联系专属客服，客服核对到账后 1 个工作日内为您入账。</div>
+  <div class="fj-acct" style="margin-top:12px">
+    <div class="fj-acct-head">
+      <span class="fj-acct-title">对公收款账户</span>
+      <button type="button" class="fj-copy" @click="fjCopyAcct">复制全部</button>
+    </div>
+    <div class="fj-acct-row"><span class="k">户名</span><span class="v">{{ fjBankAcct.name }}</span></div>
+    <div class="fj-acct-row"><span class="k">开户行</span><span class="v">{{ fjBankAcct.bank }}</span></div>
+    <div class="fj-acct-row"><span class="k">账号</span><span class="v">{{ fjBankAcct.account }}</span></div>
+  </div>
+  <div class="fund-kf">
+    <img class="fund-kf-qr" :src="kfQrSrc" alt="客服二维码">
+    <div class="fund-kf-text">
+      <div class="fund-kf-title">扫码添加专属客服</div>
+      <div class="fund-kf-line">转账后请将回单发送给客服核对，确认到账后完成充值。</div>
+      <div class="fund-kf-line">客服电话 400-800-1234（工作日 9:00-18:00）</div>
+    </div>
+  </div>
+  <span slot="footer">
+    <el-button size="small" type="primary" @click="fundRechargeDlg.visible = false">关闭</el-button>
+  </span>
+</el-dialog>
+
+<!-- 资金流水详情（仅灵工类型，展示完整资金流程） -->
+<el-drawer :visible.sync="fundFlowDetail.visible" size="640px" custom-class="wr-dw" append-to-body>
+  <div slot="title" class="wr-dw-title">资金流水详情</div>
+  <template v-if="fundFlowDetail.row.id">
+    <div class="wr-dw-hero">
+      <div class="l1">{{ fundFlowDetail.row.name }}<span class="wr-tag" :class="fundFlowDetail.status === '已结算' ? 'pass' : (fundFlowDetail.status === '已解冻' ? 'cancel' : 'review')">{{ fundFlowDetail.status }}</span></div>
+      <div class="l2">{{ fundFlowDetail.row.job }} · 用工单 WR{{ fundFlowDetail.wr.id }}</div>
+      <div class="l3"><span>流水号 {{ fundFlowDetail.row.id }}</span><span>{{ wrFullTime(fundFlowDetail.row.at) }}</span></div>
+    </div>
+
+    <div class="wr-sec">
+      <div class="wr-sec-t">用工信息</div>
+      <div class="st-kv">
+        <div><div class="k">用工单位</div><div class="v">{{ fundFlowDetail.wr.client || '—' }}</div></div>
+        <div><div class="k">岗位名称</div><div class="v">{{ fundFlowDetail.row.job || '—' }}</div></div>
+        <div><div class="k">用工日期</div><div class="v num">{{ fundFlowDetail.wr.id ? wrDateFullList(fundFlowDetail.wr) : '—' }}</div></div>
+        <div><div class="k">每日工时</div><div class="v num">{{ fundFlowDetail.wr.id ? fundFlowDetail.wr.hours + ' 小时 · 共 ' + fundFlowDetail.wr.days + ' 天' : '—' }}</div></div>
+      </div>
+    </div>
+
+    <div class="wr-sec">
+      <div class="wr-sec-t">资金完整流程<span class="ex">接单冻结 → 结算转付 → 差额/取消解冻</span></div>
+      <div class="wr-flow">
+        <div v-for="(f, i) in fundFlowDetail.chain" :key="i" class="wr-flow-item on">
+          <b>{{ fundFlowChainTitle(f) }}</b><span class="t">{{ wrFullTime(f.at) }}</span>
+          <div><span class="fund-money">{{ fjMoney(f.amount) }}</span><span class="fund-dim" style="margin-left:6px">{{ fundFlowRoute(f) }}</span></div>
+          <div v-if="f.note">{{ f.note }}</div>
+        </div>
+        <div v-if="fundFlowDetail.status === '冻结中'" class="wr-flow-item pending">
+          <b>等待结算</b><span class="t">—</span>
+          <div>资金仍冻结中；结算审核通过后按结算金额转付员工，差额自动解冻退回可用余额</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wr-sec">
+      <div class="wr-sec-t">资金汇总</div>
+      <div class="st-kv">
+        <div><div class="k">冻结金额</div><div class="v num">{{ fjMoney(fundFlowDetail.sum.freeze) }}</div></div>
+        <div><div class="k">转付员工</div><div class="v num">{{ fjMoney(fundFlowDetail.sum.settle) }}</div></div>
+        <div><div class="k">退回可用</div><div class="v num">{{ fjMoney(fundFlowDetail.sum.back) }}</div></div>
+        <div><div class="k">当前冻结中</div><div class="v num">{{ fjMoney(fundFlowDetail.sum.frozen) }}</div></div>
+      </div>
+    </div>
+  </template>
+</el-drawer>
 
 <!-- ===== 薪酬档案页（财务管理） ===== -->
 <div class="page-body" id="salaryFilePage" v-if="currentPage === 'salaryFile'">
@@ -7176,6 +7683,376 @@ function fjMoney(n) {
   const v = Number(n) || 0;
   return '¥' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+// ===== 财务管理：充值记录 / 灵工资金流水 =====
+const FUND_METHODS = ['支付宝', '对公转账', '银行转账'];
+const FUND_ACCOUNTS = [
+  '深圳唯臻人力资源有限公司',
+  '深圳唯臻供应链管理有限公司',
+];
+const FUND_FLOW_KINDS = [
+  { value: '', label: '全部' },
+  { value: 'lf', label: '灵工' },
+  { value: 'recharge', label: '充值' },
+  { value: 'wage', label: '发薪' },
+];
+const FUND_FLOW_STATES = [
+  { value: '', label: '全部' },
+  { value: 'freeze', label: '冻结' },
+  { value: 'unfreeze', label: '解冻' },
+];
+// 解冻去向：settle = 冻结金额转付员工（不回到可用余额）；back = 差额/取消退回可用余额
+const FUND_RELEASE_DIRS = ['settle', 'back'];
+let __fundRechargeSeq = 0, __fundFlowSeq = 0;
+function fundRound(n) { return Math.round((Number(n) || 0) * 100) / 100; }
+function fundBlankRechargeFilter() { return { method: '', account: '', status: '', range: [] }; }
+function fundBlankFlowFilter() { return { kind: '', state: '', name: '', ref: '', range: [] }; }
+// 流水发生时间快捷筛选：近 7 天 / 近 30 天 / 本月
+function fundFlowRangeShortcuts() {
+  const mk = function (days, text) {
+    return {
+      text: text,
+      onClick(picker) {
+        const end = new Date(), start = new Date();
+        start.setDate(start.getDate() - days + 1);
+        picker.$emit('pick', [start, end]);
+      },
+    };
+  };
+  return {
+    shortcuts: [
+      mk(7, '近 7 天'),
+      mk(30, '近 30 天'),
+      {
+        text: '本月',
+        onClick(picker) {
+          const d = new Date();
+          picker.$emit('pick', [new Date(d.getFullYear(), d.getMonth(), 1), d]);
+        },
+      },
+    ],
+  };
+}
+// 充值流水号：195 + yyyyMMdd + 4 位序号（15 位纯数字，与支付渠道回单号同格式）
+function fundRechargeNoAt(at) {
+  __fundRechargeSeq += 1;
+  const d = String(at || wrNow()).replace(/[^0-9]/g, '').slice(0, 8) || '20260101';
+  return '195' + d + String(__fundRechargeSeq).padStart(4, '0');
+}
+// 灵工流水号：FL + yyyyMMdd + 4 位序号
+function fundFlowNoAt(at) {
+  __fundFlowSeq += 1;
+  const d = String(at || wrNow()).replace(/[^0-9]/g, '').slice(0, 8) || '20260101';
+  return 'FL' + d + String(__fundFlowSeq).padStart(4, '0');
+}
+// 充值凭证：用 SVG 生成一张回单缩略图（离线可用，可点开预览）
+function fundVoucherSvg(seed, method) {
+  const pals = [['#e6f4ff', '#1677ff'], ['#fff7e6', '#fa8c16'], ['#f6ffed', '#52c41a'], ['#fff2f0', '#f5222d']];
+  const p = pals[Math.abs(Number(seed) || 0) % pals.length];
+  const m = String(method || '转账');
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">'
+    + '<rect width="120" height="120" fill="' + p[0] + '"/>'
+    + '<rect x="16" y="18" width="88" height="84" rx="6" fill="#fff" stroke="' + p[1] + '" stroke-width="1.5"/>'
+    + '<rect x="26" y="30" width="34" height="5" rx="2.5" fill="' + p[1] + '"/>'
+    + '<rect x="26" y="44" width="68" height="3" rx="1.5" fill="#d9d9d9"/>'
+    + '<rect x="26" y="53" width="52" height="3" rx="1.5" fill="#d9d9d9"/>'
+    + '<rect x="26" y="62" width="60" height="3" rx="1.5" fill="#d9d9d9"/>'
+    + '<text x="60" y="86" font-size="12" font-weight="600" text-anchor="middle" fill="' + p[1] + '" font-family="PingFang SC,Microsoft YaHei,sans-serif">' + m + '</text>'
+    + '</svg>';
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+// 客服二维码：SVG 生成的伪二维码占位（离线可用，中心为「客」）
+function fundKfQrSvg() {
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const cells = [];
+  for (let y = 0; y < 25; y++) {
+    for (let x = 0; x < 25; x++) {
+      const inFinder = (x < 7 && y < 7) || (x > 17 && y < 7) || (x < 7 && y > 17);
+      if (!inFinder && rnd() > 0.55) cells.push('<rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="1" height="1"/>');
+    }
+  }
+  const finder = (x, y) => '<rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="7" height="7" fill="none" stroke="#1f2329" stroke-width="1"/><rect x="' + (x + 4) + '" y="' + (y + 4) + '" width="3" height="3"/>';
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 29 29" shape-rendering="crispEdges">'
+    + '<rect width="29" height="29" fill="#fff"/>'
+    + '<g fill="#1f2329">' + cells.join('') + finder(0, 0) + finder(18, 0) + finder(0, 18) + '</g>'
+    + '<rect x="10.5" y="10.5" width="8" height="8" rx="1.5" fill="#fff"/>'
+    + '<text x="14.5" y="15.8" font-size="5" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-weight="700" fill="#07c160" text-anchor="middle">客</text></svg>';
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+// 支出流水：结算转付员工与工资发放才真正离开账户，解冻退回不计支出
+function isFundOutflow(r) {
+  if (!r) return false;
+  if (r.type === 'wage' || r.type === 'pay') return true;
+  return r.type === 'release' && r.dir === 'settle';
+}
+// 关联对象：充值/解冻退回（含取消单）是商户账户自身资金；冻结/灵工结算/发薪都归属员工
+function fundFlowParty(r) {
+  if (!r) return '—';
+  if (r.type === 'recharge' || r.type === 'pay' || (r.type === 'release' && r.dir !== 'settle')) return '商户账户';
+  return r.name || '—';
+}
+// 类型：灵工（冻结/解冻）/ 充值 / 发薪
+function fundFlowKindLabel(row) {
+  if (!row) return '';
+  if (row.type === 'recharge') return '充值';
+  if (row.type === 'wage') return '发薪';
+  return '灵工';
+}
+function fundFlowKindCls(row) {
+  if (!row) return '';
+  if (row.type === 'recharge') return 'recharge';
+  if (row.type === 'wage') return 'wage';
+  return 'lf';
+}
+// 资金状态：仅冻结 / 解冻（充值、发薪行无此状态）
+function fundFlowStateLabel(row) {
+  if (!row) return '—';
+  if (row.type === 'freeze') return '冻结';
+  if (row.type === 'release' || row.type === 'pay') return '解冻';
+  return '—';
+}
+function fundFlowStateCls(row) {
+  if (!row) return '';
+  if (row.type === 'freeze') return 'freeze';
+  if (row.type === 'release' || row.type === 'pay') return 'release';
+  return '';
+}
+// 资金流向：充值→可用 / 可用→冻结 / 冻结→员工 / 冻结→可用 / 可用→员工
+function fundFlowRoute(row) {
+  if (!row) return '';
+  if (row.type === 'recharge') return '充值 → 可用';
+  if (row.type === 'freeze') return '可用 → 冻结';
+  if (row.type === 'wage') return '可用 → 员工';
+  if (row.type === 'release' || row.type === 'pay') return row.dir === 'settle' ? '冻结 → 员工' : '冻结 → 可用';
+  return '';
+}
+// 灵工流水详情：按用工单串联冻结 → 结算转付 → 差额/取消解冻
+function fundFlowChainTitle(f) {
+  if (!f) return '';
+  if (f.type === 'freeze') return '接单冻结';
+  if (f.type === 'release' || f.type === 'pay') {
+    if (f.dir === 'settle') return '灵工结算 · 转付员工';
+    return String(f.note || '').indexOf('取消') > -1 ? '取消接单 · 全额解冻' : '差额解冻 · 退回可用';
+  }
+  return '';
+}
+function openFundFlowDetail(row) {
+  if (!row || fundFlowKindLabel(row) !== '灵工') return;
+  const chain = (VM.fundFlows || []).filter(f => f.wrId === row.wrId && (f.type === 'freeze' || f.type === 'release' || f.type === 'pay'))
+    .slice().sort((a, b) => String(a.at).localeCompare(String(b.at)) || String(a.id).localeCompare(String(b.id)));
+  const sum = { freeze: 0, settle: 0, back: 0, frozen: 0 };
+  chain.forEach(function (f) {
+    if (f.type === 'freeze') sum.freeze = fundRound(sum.freeze + f.amount);
+    else if (f.dir === 'settle') sum.settle = fundRound(sum.settle + f.amount);
+    else sum.back = fundRound(sum.back + f.amount);
+  });
+  sum.frozen = fundRound(sum.freeze - sum.settle - sum.back);
+  const settled = chain.some(f => f.type !== 'freeze' && f.dir === 'settle');
+  const unfrozen = !settled && chain.some(f => f.type !== 'freeze');
+  const status = settled ? '已结算' : (unfrozen ? '已解冻' : '冻结中');
+  const wr = (VM.wrAll || []).find(w => w.id === row.wrId) || {};
+  VM.fundFlowDetail = { visible: true, row: row, chain: chain, sum: sum, status: status, wr: wr };
+}
+// 资金变动口径：冻结=可用转冻结；解冻（退回）=冻结转可用；解冻（转付员工）=冻结转已支出；工资发放=直接扣可用
+function fundFlowAxis(type, amount, dir) {
+  const s = fjMoney(amount);
+  if (type === 'freeze') return [{ k: '可用余额', v: '-' + s }, { k: '冻结中', v: '+' + s }];
+  if (type === 'release' || type === 'pay') {
+    if (dir === 'settle') return [{ k: '冻结中', v: '-' + s }, { k: '已支出', v: '+' + s }];
+    return [{ k: '可用余额', v: '+' + s }, { k: '冻结中', v: '-' + s }];
+  }
+  if (type === 'wage') return [{ k: '可用余额', v: '-' + s }, { k: '已支出', v: '+' + s }];
+  return [{ k: '冻结中', v: '-' + s }, { k: '已支出', v: '+' + s }];
+}
+// 写一条资金流水（业务动作统一入口，保证流水与账户数值同步）
+function fundPushFlow(o) {
+  if (!VM || !VM.fundFlows) return null;
+  const ref = o.refId == null ? '' : (typeof o.refId === 'number' ? 'WR' + o.refId : String(o.refId));
+  const amt = fundRound(o.amount);
+  const row = {
+    id: fundFlowNoAt(o.at),
+    type: o.type,
+    dir: o.dir || '',
+    refType: o.refType || '用工记录',
+    refId: ref,
+    wrId: o.wrId || '',
+    name: o.name || '',
+    job: o.job || '',
+    amount: amt,
+    at: o.at || wrNow(),
+    note: o.note || '',
+    balanceAfter: fundRound(VM.fjBalance),
+    frozenAfter: fundRound(VM.fjFrozen),
+    axis: fundFlowAxis(o.type, amt, o.dir),
+  };
+  VM.fundFlows.unshift(row);
+  return row;
+}
+// 解冻：冻结金额转回可用余额（结束用工差额、取消接单等场景）
+function wrRelease(r, amount, note, at) {
+  const amt = fundRound(amount);
+  if (!r || !(amt > 0)) return 0;
+  r.releasedAmt = fundRound((Number(r.releasedAmt) || 0) + amt);
+  VM.fjFrozen = fundRound(VM.fjFrozen - amt);
+  VM.fjBalance = fundRound(VM.fjBalance + amt);
+  fundPushFlow({
+    type: 'release', dir: 'back', refType: '用工记录', refId: r.id, wrId: r.id,
+    name: r.name, job: r.job, amount: amt, at: at || wrNow(),
+    note: note || '冻结资金解冻，退回可用余额',
+  });
+  return amt;
+}
+// 初始化财务页：从用工记录 / 结算单派生历史流水，再按「累计充值 = 可用 + 冻结中 + 已支出」配平充值记录
+function fundSeed() {
+  if (!VM || (VM.fundRecharge && VM.fundRecharge.length)) return;
+  const flows = [];
+  const push = function (o) {
+    const ref = o.refId == null ? '' : (typeof o.refId === 'number' ? 'WR' + o.refId : String(o.refId));
+    flows.push(Object.assign({
+      id: fundFlowNoAt(o.at), refType: '用工记录', refId: ref, wrId: '',
+      name: '', job: '', note: '', balanceAfter: 0,
+    }, o, { refId: ref }));
+  };
+  (VM.wrAll || []).forEach(function (r) {
+    if (r.status === '审核通过') {
+      const amt = fundRound(wrFreezeAmount(r));
+      push({
+        type: 'freeze', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: amt,
+        at: r.auditAt || r.applyAt, note: '接单审核通过，按「员工单价 × 应做工时」冻结',
+      });
+      // 打款完成时一次性处理资金：结算单金额转付员工 + 该单冻结额差额解冻（支持一条记录多张结算单）
+      (VM.stAll || []).filter(s => s.wrId === r.id && s.status === '已结算').forEach(function (s) {
+        const stFrozen = s.frozenAmt != null ? fundRound(s.frozenAmt) : amt;
+        const paidAt = s.paidAt || s.auditedAt || r.submittedAt;
+        push({
+          type: 'release', dir: 'settle', refType: '结算单', refId: s.id, wrId: r.id, name: r.name, job: r.job,
+          amount: fundRound(s.amount), at: paidAt,
+          note: '结算打款，冻结资金转付员工',
+        });
+        const back = fundRound(stFrozen - fundRound(s.amount));
+        if (back > 0) {
+          push({
+            type: 'release', dir: 'back', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: back,
+            at: paidAt, note: '结算打款，结算金额低于冻结额，差额解冻',
+          });
+        }
+      });
+      // 结算单「待打款 / 待审核」：仅冻结，打款时才产生解冻流水
+    } else if (r.status === '已取消' && r.auditAt) {
+      // 审核通过后被员工取消：先冻结，再全额解冻
+      const amt = fundRound(wrFreezeAmount(r));
+      push({
+        type: 'freeze', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: amt,
+        at: r.auditAt, note: '接单审核通过，按「员工单价 × 应做工时」冻结',
+      });
+      push({
+        type: 'release', dir: 'back', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: amt,
+        at: r.cancelAt || r.auditAt, note: '员工取消接单，冻结资金全额解冻',
+      });
+    }
+  });
+  // 工资条代发（不属于灵工结算）：直接扣可用余额
+  [
+    { name: '张伟', amount: 1200, at: '2026-11-10 16:20:00', refId: 'PS20261110001' },
+    { name: '李静', amount: 980, at: '2026-10-10 16:05:00', refId: 'PS20261010001' },
+  ].forEach(function (w) {
+    push({ type: 'wage', refType: '工资条', refId: w.refId, name: w.name, amount: w.amount, at: w.at, note: '工资条代发' });
+  });
+  const sumOf = function (t) { return fundRound(flows.filter(f => f.type === t).reduce((s, f) => s + f.amount, 0)); };
+  const sumDir = function (t, d) { return fundRound(flows.filter(f => f.type === t && f.dir === d).reduce((s, f) => s + f.amount, 0)); };
+  const F = sumOf('freeze'), R = sumOf('release'), W = sumOf('wage');
+  const S = sumDir('release', 'settle');                     // 解冻后转付员工（离开账户）
+  VM.fjFrozen = Math.max(0, fundRound(F - R));               // 冻结中 = 冻结 - 已解冻（含转付与退回）
+  const startBal = fundRound(VM.fjBalance + F - R + S + W);  // 初始充值额 = 可用 + 冻结中 + 已支出
+
+  // 充值记录：已支付合计 = 初始充值额，保证「充值 - 支出 = 可用 + 冻结中」对账成立
+  const total = Math.max(0, startBal);
+  const parts = [];
+  if (total > 10000) parts.push([2000, '2026-09-30 13:02:49'], [3000, '2026-10-08 10:12:35'], [5000, '2026-10-21 15:40:02'], [fundRound(total - 10000), '2026-11-02 09:18:44']);
+  else if (total > 5000) parts.push([2000, '2026-09-30 13:02:49'], [3000, '2026-10-08 10:12:35'], [fundRound(total - 5000), '2026-10-21 15:40:02']);
+  else if (total > 2000) parts.push([2000, '2026-09-30 13:02:49'], [fundRound(total - 2000), '2026-10-08 10:12:35']);
+  else parts.push([total, '2026-09-30 13:02:49']);
+  const list = parts.filter(p => p[0] > 0).map(function (p, i) {
+    const isBank = p[0] >= 3000;
+    return {
+      id: fundRechargeNoAt(p[1]),
+      method: isBank ? '对公转账' : '支付宝',
+      account: i % 2 === 0 ? FUND_ACCOUNTS[0] : FUND_ACCOUNTS[1],
+      amount: fundRound(p[0]), arrived: fundRound(p[0]), status: '已支付',
+      voucher: fundVoucherSvg(i + 1, isBank ? '对公回单' : '支付宝'), at: p[1], note: '',
+    };
+  });
+  // 待支付示例：不影响资金余额与累计充值
+  list.push({
+    id: fundRechargeNoAt('2026-11-20 11:30:45'), method: '对公转账', account: FUND_ACCOUNTS[1],
+    amount: 5000, arrived: null, status: '待支付', voucher: '', at: '2026-11-20 11:30:45', note: '等待财务确认到账',
+  });
+  list.sort((a, b) => String(b.at).localeCompare(String(a.at)));
+  VM.fundRecharge = list;
+
+  // 已支付充值计入资金流水（资金状态：充值，充值 → 可用）；待支付不入账
+  list.filter(rc => rc.status === '已支付').forEach(function (rc) {
+    push({
+      type: 'recharge', refType: '充值', refId: rc.id, amount: fundRound(rc.arrived == null ? rc.amount : rc.arrived),
+      at: rc.at, note: '充值到账（' + rc.method + '），可用金额增加',
+    });
+  });
+
+  flows.sort((a, b) => String(a.at).localeCompare(String(b.at)) || String(a.id).localeCompare(String(b.id)));
+  // 按发生时间重排流水号，保证列表倒序时编号也单调
+  flows.forEach(function (f, i) {
+    f.id = 'FL' + String(f.at).replace(/[^0-9]/g, '').slice(0, 8) + String(i + 1).padStart(4, '0');
+  });
+  __fundFlowSeq = flows.length;
+  // 余额轨迹从 0 起：充值增加可用，冻结扣可用，解冻退回加可用，发薪扣可用（灵工结算不动可用）
+  let bal = 0;
+  flows.forEach(function (f) {
+    if (f.type === 'recharge') bal = fundRound(bal + f.amount);
+    else if (f.type === 'freeze') bal = fundRound(bal - f.amount);
+    else if (f.type === 'release' && f.dir !== 'settle') bal = fundRound(bal + f.amount);
+    else if (f.type === 'wage') bal = fundRound(bal - f.amount);
+    f.balanceAfter = bal;
+    f.axis = fundFlowAxis(f.type, f.amount, f.dir);
+  });
+  let froz = 0;
+  flows.forEach(function (f) {
+    if (f.type === 'freeze') froz = fundRound(froz + f.amount);
+    else if (f.type === 'release') froz = fundRound(froz - f.amount);
+    f.frozenAfter = froz;
+  });
+  VM.fundFlows = flows.slice().sort(function (a, b) {
+    const t = String(b.at).localeCompare(String(a.at));      // 时间倒序
+    return t !== 0 ? t : String(a.id).localeCompare(String(b.id));   // 同一时刻：先转付、后退回
+  });
+}
+function fundTabChange() { VM.fundRechargePage = 1; VM.fundFlowPage = 1; }
+function fundSearch() {
+  if (VM.fundTab === 'recharge') {
+    VM.fundRechargeQuery = Object.assign({}, VM.fundRechargeFilter, { range: (VM.fundRechargeFilter.range || []).slice() });
+    VM.fundRechargePage = 1;
+  } else {
+    VM.fundFlowQuery = Object.assign({}, VM.fundFlowFilter, { range: (VM.fundFlowFilter.range || []).slice() });
+    VM.fundFlowPage = 1;
+  }
+}
+function fundReset() {
+  if (VM.fundTab === 'recharge') {
+    VM.fundRechargeFilter = fundBlankRechargeFilter();
+    VM.fundRechargeQuery = fundBlankRechargeFilter();
+    VM.fundRechargePage = 1;
+  } else {
+    VM.fundFlowFilter = fundBlankFlowFilter();
+    VM.fundFlowQuery = fundBlankFlowFilter();
+    VM.fundFlowPage = 1;
+  }
+}
+function fundExport() {
+  const isRc = VM.fundTab === 'recharge';
+  const n = isRc ? VM.fundRechargeFiltered.length : VM.fundFlowsFiltered.length;
+  showToast('已导出 ' + n + ' 条' + (isRc ? '充值记录' : '灵工资金流水'));
+}
+function openFundRechargeDlg() { VM.fundRechargeDlg = { visible: true }; }
+
 // ===== 工作时间：区间归一化 / 重叠校验 / 合并工时 =====
 // "HH:mm" → 当日分钟数；非法返回 -1
 function fjTimeMin(str) {
@@ -7317,7 +8194,22 @@ function fjConfirmRecharge() {
   const dlg = VM.fjRechargeDlg;
   const amt = Number(dlg.amount);
   if (!(amt > 0)) { VM.$message.warning('请输入正确的充值金额'); return; }
+  const now = wrNow();
   VM.fjBalance = Math.round((VM.fjBalance + amt) * 100) / 100;
+  // 充值成功后同步写一条充值记录，财务页与账户余额保持一致
+  if (VM.fundRecharge) {
+    VM.fundRecharge.unshift({
+      id: fundRechargeNoAt(now),
+      method: dlg.payType,
+      account: FUND_ACCOUNTS[0],
+      amount: fundRound(amt),
+      arrived: fundRound(amt),
+      status: '已支付',
+      voucher: fundVoucherSvg(VM.fundRecharge.length + 1, dlg.payType),
+      at: now,
+      note: '线上充值',
+    });
+  }
   dlg.visible = false;
   showToast((dlg.payType === '支付宝' ? '支付宝充值成功 ' : '对公转账已登记入账 ') + fjMoney(amt) + '，当前余额 ' + fjMoney(VM.fjBalance));
 }
@@ -7422,21 +8314,20 @@ function fjAuditLogs(r) {
   return logs;
 }
 
-// ===== 灵工统一状态模型（结算审核通过即完成，不再有发薪环节）=====
+// ===== 灵工统一状态模型（结算审核确认 → 待打款 → 打款完成即结算完成）=====
 // 员工端使用英文码；本后台展示沿用中文标签，通过下方映射函数对齐到统一码，不落库存储、避免状态失配。
 const LF_STATUS = {
   apply_review:    { label: '接单审核中', color: 'wait' },
   apply_rejected:  { label: '接单未通过', color: 'fail' },
   ready:           { label: '待开工',     color: 'doing' },
   working:         { label: '做工中',     color: 'doing' },
-  settle_review:   { label: '结算审核中', color: 'wait' },
-  settle_rejected: { label: '结算未通过', color: 'fail' },
+  pay_wait:        { label: '待打款',     color: 'wait' },
   settled:         { label: '结算完成',   color: 'pass' },
   cancelled:       { label: '已取消',     color: 'cancel' },
 };
-// 结算单层（ST）：待审核 / 已驳回 / 已结算 → 统一码（历史数据里的待发薪、已发薪一并归为结算完成）
+// 结算单层（ST）：待审核 / 待打款 / 已结算 → 统一码（完工提交未结算审核时记录仍为做工中；历史「已驳回」归为做工中可重新审核）
 function stStatusCode(r) {
-  const map = { '待审核': 'settle_review', '已驳回': 'settle_rejected', '已结算': 'settled', '待发薪': 'settled', '已发薪': 'settled' };
+  const map = { '待审核': 'working', '待打款': 'pay_wait', '已结算': 'settled', '已驳回': 'working', '待发薪': 'settled', '已发薪': 'settled' };
   return r ? (map[r.status] || '') : '';
 }
 // 结算层统一显示标签/配色（仅用于展示，内部 status 值与判断逻辑保持不变）
@@ -7454,12 +8345,96 @@ function wrStatusCode(r) {
 }
 function wrStatusLabel(r) { const c = wrStatusCode(r); return LF_STATUS[c] ? LF_STATUS[c].label : ''; }
 function wrStatusCls(r) { const c = wrStatusCode(r); return lfStatusCls(c, 'wait'); }
-// 状态列下方的驳回理由（接单驳回 / 结算驳回各取一条）
+// 状态列下方的驳回理由（仅接单驳回；打款驳回理由记录在审核记录时间线中）
 function wrStatusReason(r) {
   if (!r) return '';
   if (r.status === '审核驳回') return r.rejectReason || '';
+  return '';
+}
+
+// ===== 列表双状态：用工状态（业务生命周期） + 审核状态（接单审核结果） =====
+// 用工状态：接单待审 / 已取消 / 做工中 / 待结算 / 已结算；接单驳回尚未进入用工阶段，展示「—」
+// 做工中 = 审核通过且尚未打款（含未生成结算单、结算单待审核）；待结算 = 结算单已确认金额、等待打款
+const WR_WORK_STATUS = {
+  apply_wait:  { label: '接单待审', cls: 'wait' },
+  cancelled:   { label: '已取消',   cls: 'cancel' },
+  working:     { label: '做工中',   cls: 'doing' },
+  wait_settle: { label: '待结算',   cls: 'review' },
+  settled:     { label: '已结算',   cls: 'pass' },
+};
+// 审核状态：接单待审核 / 通过 / 驳回 / 取消（只看接单审核结果，与用工阶段解耦）
+const WR_AUDIT_STATUS = {
+  audit_wait:   { label: '待审核', cls: 'wait' },
+  audit_pass:   { label: '通过',       cls: 'pass' },
+  audit_reject: { label: '驳回',       cls: 'fail' },
+  audit_cancel: { label: '取消',       cls: 'cancel' },
+};
+const WR_WORK_STATUS_OPTIONS = [
+  { value: 'apply_wait', label: '接单待审' },
+  { value: 'cancelled', label: '已取消' },
+  { value: 'working', label: '做工中' },
+  { value: 'wait_settle', label: '待结算' },
+  { value: 'settled', label: '已结算' },
+];
+const WR_AUDIT_STATUS_OPTIONS = [
+  { value: 'audit_wait', label: '待审核' },
+  { value: 'audit_pass', label: '通过' },
+  { value: 'audit_reject', label: '驳回' },
+  { value: 'audit_cancel', label: '取消' },
+];
+// ===== 结算单与记录日期关系（支持一条记录拆多张结算单、提前结算部分日期） =====
+function wrStSettlementsOf(r) {
+  if (!r || typeof VM === 'undefined' || !VM || !VM.stAll) return [];
+  return VM.stAll.filter(s => s.wrId === r.id);
+}
+function wrSettledDatesOf(r) {
+  const done = [];
+  wrStSettlementsOf(r).forEach(s => (s.dates || []).forEach(d => { if (done.indexOf(d) < 0) done.push(d); }));
+  return done;
+}
+function wrUnsettledDatesOf(r) {
+  const done = wrSettledDatesOf(r);
+  return (r && r.dates ? r.dates : []).filter(d => done.indexOf(d) < 0);
+}
+function wrAllDatesSettled(r) {
+  const ds = (r && r.dates) || [];
+  const done = wrSettledDatesOf(r);
+  return ds.length > 0 && ds.every(d => done.indexOf(d) > -1);
+}
+function wrWorkCode(r) {
+  if (!r) return '';
+  if (r.status === '待审核') return 'apply_wait';
+  if (r.status === '已取消') return 'cancelled';
+  if (r.status === '审核驳回') return '';          // 未进入用工阶段
+  const list = wrStSettlementsOf(r);
+  if (wrAllDatesSettled(r)) {
+    if (list.some(s => s.status === '待打款')) return 'wait_settle';
+    if (list.length && list.every(s => s.status === '已结算')) return 'settled';
+  }
+  return 'working';                                  // 仍有未结算日期，或结算单仍待审核
+}
+function wrWorkLabel(r) { const m = WR_WORK_STATUS[wrWorkCode(r)]; return m ? m.label : '—'; }
+function wrWorkCls(r) { const m = WR_WORK_STATUS[wrWorkCode(r)]; return m ? m.cls : 'cancel'; }
+function wrAuditCode(r) {
+  if (!r) return '';
+  if (r.status === '已取消') return 'audit_cancel';
+  if (r.status === '审核驳回') return 'audit_reject';
+  if (r.status === '审核通过') return 'audit_pass';
+  return 'audit_wait';
+}
+function wrAuditLabel(r) { const m = WR_AUDIT_STATUS[wrAuditCode(r)]; return m ? m.label : ''; }
+function wrAuditCls(r) { const m = WR_AUDIT_STATUS[wrAuditCode(r)]; return m ? m.cls : 'wait'; }
+// 完成时间：已打款取结算时间，否则取员工完工提交时间（全部记录列表展示用）
+function wrDoneTime(r) {
+  if (!r) return '';
   const st = rowStOf(r);
-  return st && st.status === '已驳回' ? (st.rejectReason || '') : '';
+  if (st && st.paidAt) return st.paidAt;
+  return r.submittedAt || '';
+}
+// 日期对象 → yyyy-MM-dd（日期选择器禁用已接单日期用）
+function wrFmtDate(d) {
+  const p = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
 }
 
 // ===== 灵活用工 · 用工记录（参考员工端「灵工接单记录」数据口径） =====
@@ -7492,6 +8467,11 @@ const WR_SEED = [
   ['唐国强', '男', '13866778899', '武汉联想产业基地', '深圳市天地劳务派遣有限公司', '搬运工', '2026-11-07', 4, '08:00-18:00', 10, '日薪', 230, 260, '每周五结算', '小时结算：1元/小时', '刘经理', '审核通过', '', '2026-11-05 17:05:44', '2026-11-05 17:48:12', '刘经理', '2026-11-11 18:30', 4, 0, ''],
   ['段小燕', '女', '13588990011', '深圳市华工新能源服务有限公司', '深圳市云智工网络科技有限公司', '夜班巡检', '2026-11-04', 5, '20:00-08:00', 12, '时薪', 30, 36, '次月10号发薪', '单次结算：500元', '冯国鲜', '审核通过', '', '2026-11-02 18:40:26', '2026-11-02 19:15:33', '冯国鲜', '2026-11-09 08:10', 5, 0, ''],
   ['董伟', '男', '13722334466', '武汉天马微电子有限公司', '武汉永辉科技有限公司', '保安', '2026-11-10', 3, '20:00-08:00', 12, '日薪', 210, 240, '次月10号发薪', '小时结算：1元/小时', '测试2号', '审核通过', '', '2026-11-08 20:12:39', '2026-11-08 21:03:07', '测试2号', '2026-11-13 08:20', 3, 0, ''],
+  // ===== 演示补充数据：多次结算 / 已延长工期 / 已结算含退回 / 打款驳回后待审核 =====
+  ['宋文杰', '男', '13599882201', '深圳市华工新能源服务有限公司', '深圳市天地劳务派遣有限公司', '装配普工', '2026-11-17', 5, '08:00-18:00', 8, '时薪', 30, 36, 'T+1 发放', '单次结算：500元', '测试2号', '审核通过', '', '2026-11-15 10:12:33', '2026-11-15 14:20:05', '测试2号', '', 0, 0, ''],
+  ['梁晓峰', '男', '13711223344', '武汉天马微电子有限公司', '武汉永辉科技有限公司', '质检员', '2026-11-18', 3, '08:30-18:30', 10, '时薪', 26, 31, '每周五结算', '小时结算：1元/小时', '王秋玲', '审核通过', '', '2026-11-16 09:30:18', '2026-11-16 11:05:42', '王秋玲', '', 0, 0, ''],
+  ['许文静', '女', '13655667788', '深圳市佳润洗涤服务有限公司', '深圳市云智工网络科技有限公司', '保洁', '2026-11-10', 5, '08:00-14:00', 6, '时薪', 26, 30, '次月10号发薪', '小时结算：1元/小时', '冯国鲜', '审核通过', '', '2026-11-08 13:20:11', '2026-11-08 15:40:27', '冯国鲜', '', 0, 0, ''],
+  ['韩雪', '女', '13866779900', '鄂州三安光电有限公司', '深圳市智灵工科技有限公司', '包装工', '2026-11-19', 3, '08:00-16:00', 8, '时薪', 28, 34, 'T+1 发放', '单次结算：500元', '刘经理', '审核通过', '', '2026-11-17 16:22:40', '2026-11-17 18:10:19', '刘经理', '', 0, 0, ''],
 ];
 function wrAddDays(start, n) {
   const p = String(start || '').split('-').map(Number);
@@ -7544,6 +8524,7 @@ function wrBuildRows() {
       ? WR_AUDIT_HISTORY[i].map(a => Object.assign({}, a))
       : (s[16] === '审核通过' ? [{ result: 'pass', auditor: o.auditor, time: o.auditAt }]
         : s[16] === '审核驳回' ? [{ result: 'reject', auditor: o.auditor, time: o.auditAt, reason: o.rejectReason }] : []);
+    o.extendLogs = [];                         // 延长做工记录（运行时写入：{time, days, amount}）
     // 审核通过的记录预置实做工时与实发金额（含请假扣减），供结算管理按实做核算
     o.dates = dates;
     o.days = dates.length;                     // 实际用工天数（剔除休息/请假天后）
@@ -7556,7 +8537,7 @@ function wrBuildRows() {
     return o;
   });
 }
-function wrBlankFilter() { return { name: '', phone: '', client: '', employer: '', job: '', status: '', applyRange: [], submitRange: [] }; }
+function wrBlankFilter() { return { name: '', phone: '', client: '', employer: '', job: '', workStatus: '', auditStatus: '', applyRange: [], submitRange: [] }; }
 function wrDateRuns(r) {
   const ds = (r && r.dates && r.dates.length) ? r.dates : (r && r.start ? [r.start] : []);
   const runs = [];
@@ -7586,12 +8567,16 @@ function wrDateFull(r) {
     return x[0] === x[1] ? a : a + '~' + b;   // 单日不显示区间
   }).join('、');
 }
+// 工期气泡：逐日列出全部用工日期（不合并区间、不省略）
+// 详情用：逐日列出完整年月日（不合并区间、不省略）
+function wrDateFullList(r) {
+  const ds = (r && r.dates && r.dates.length) ? r.dates : [];
+  return ds.length ? ds.join('、') : '—';
+}
 function wrDateTip(r) {
-  const runs = wrDateRuns(r);
-  if (!runs.length) return '';
-  return '用工日期：' + runs.map(function (x) {
-    return x[0] === x[1] ? x[0] : (x[0] + ' 至 ' + x[1]);
-  }).join('；');
+  const ds = (r && r.dates && r.dates.length) ? r.dates : [];
+  if (!ds.length) return '';
+  return '用工日期：' + ds.join('、');
 }
 function wrShiftTags(r) { return String(r.shift || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 5); }
 function wrShiftMore(r) { return Math.max(0, String(r.shift || '').split(',').map(s => s.trim()).filter(Boolean).length - 5); }
@@ -7631,7 +8616,7 @@ function wrFreezeSum(rows) {
     return s + (r && r.frozenAmt == null ? wrFreezeAmount(r) : 0);
   }, 0) * 100) / 100;
 }
-// 实际扣减：先写行上的冻结额，再调整账户两个口径（冻结后不释放）
+// 实际扣减：逐条写行上的冻结额 + 资金流水，并同步账户两个口径
 function wrFreezeApply(rows, now) {
   let sum = 0;
   (rows || []).forEach(function (r) {
@@ -7639,10 +8624,15 @@ function wrFreezeApply(rows, now) {
     r.frozenAmt = wrFreezeAmount(r);
     r.frozenAt = now;
     sum += r.frozenAmt;
+    VM.fjBalance = fundRound(VM.fjBalance - r.frozenAmt);
+    VM.fjFrozen = fundRound(VM.fjFrozen + r.frozenAmt);
+    fundPushFlow({
+      type: 'freeze', refType: '用工记录', refId: r.id, wrId: r.id,
+      name: r.name, job: r.job, amount: r.frozenAmt, at: now,
+      note: '接单审核通过，按「员工单价 × 应做工时」冻结',
+    });
   });
-  sum = Math.round(sum * 100) / 100;
-  VM.fjBalance = Math.round((VM.fjBalance - sum) * 100) / 100;
-  VM.fjFrozen = Math.round((VM.fjFrozen + sum) * 100) / 100;
+  sum = fundRound(sum);
   return sum;
 }
 function wrFreezeTip(need) {
@@ -7650,13 +8640,42 @@ function wrFreezeTip(need) {
 }
 // ===== 合并后的行辅助：接单记录 + 它的结算单（按 wrId 查表，不把 st 挂到 wr 行上）=====
 function rowStOf(row) {
-  const m = (VM && VM.stByWr) || {};
+  // VM 在根实例初始化完成前为 undefined（首屏计算属性会先跑一次），此处做存在性兜底
+  const m = (typeof VM !== 'undefined' && VM && VM.stByWr) || {};
   return (row && m[row.id]) || null;
 }
 function rowStStatus(row) { const s = rowStOf(row); return s ? s.status : ''; }
+// 退回金额 = 当前活跃结算单的退回金额（提前结算按本单冻结额计）
+function wrRefundAmt(r) {
+  const st = rowStOf(r);
+  return st ? stBackOf(st) : 0;
+}
+// 结算/打款驳回理由（结算记录、详情展示用）
+function stRejectReason(st) {
+  if (!st) return '';
+  const rounds = st.auditRounds || [];
+  for (let i = rounds.length - 1; i >= 0; i--) {
+    const a = rounds[i];
+    if ((a.result === 'pay_reject' || a.result === 'reject') && a.reason) return a.reason;
+  }
+  return st.payRejectReason || '';
+}
+// 结算记录展示状态：已打款 / 待打款 / 打款驳回 / 待审核
+function stDisplayStatus(st) {
+  if (!st) return { label: '', cls: 'wait' };
+  if (st.status === '已结算') return { label: '已打款', cls: 'pass' };
+  if (st.status === '待打款') return { label: '待打款', cls: 'wait' };
+  if ((st.auditRounds || []).some(a => a.result === 'pay_reject')) return { label: '打款驳回', cls: 'fail' };
+  return { label: '待审核', cls: 'wait' };
+}
+// 部分已结算：仍在做工中，已有结算单打款，但仍有未结算日期（列表不再展示该状态，保留判断函数备用）
+function wrPartialSettle(r) {
+  if (!r || wrWorkCode(r) !== 'working') return false;
+  return wrStSettlementsOf(r).some(s => s.status === '已结算') && wrUnsettledDatesOf(r).length > 0;
+}
 function rowStLabel(row) { const s = rowStOf(row); return s ? stStatusLabel(s) : ''; }
 function rowStCls(row) { const s = rowStOf(row); return s ? stStatusCls(s) : 'cancel'; }
-// 详情用：六段流程（提交接单 → 接单审核 → 做工 → 完工 → 结算审核 → 结算完成）
+// 详情用：六段流程（提交接单 → 接单审核 → 做工 → 结算审核 → 结算打款 → 结算完成）
 // state: done 已完成 / doing 当前 / todo 待进行 / fail 异常 / stop 已终止
 function wrDetailFlow(row) {
   const r = row || {}, st = rowStOf(r);
@@ -7685,37 +8704,41 @@ function wrDetailFlow(row) {
   else if (r.submittedAt) out.push({ title: '做工', time: r.submittedAt, who: r.endedByMerchant ? '商户' : (r.name || ''),
     text: r.endedByMerchant ? '商户主动结束用工，做工结束' : '员工完成 ' + (r.days || 0) + ' 天用工', state: 'done' });
   else out.push({ title: '做工', time: '', who: '', text: '员工正在用工中，可等待完工或由商户结束用工', state: 'doing' });
-  // 4 完工
-  if (r.submittedAt) {
-    out.push({ title: '完工', time: r.submittedAt, who: r.endedByMerchant ? '商户' : (r.name || ''),
-      text: r.endedByMerchant
-        ? ('商户主动结束用工' + (r.endNote ? '：' + r.endNote : '') + '，按实做工时进入结算')
-        : '员工提交完工，进入结算审核',
-      state: 'done' });
-  } else if (dead) {
-    out.push({ title: '完工', time: '', who: '', text: '流程已终止', state: 'stop' });
+  // 4 结算审核（完工提交后即可结算审核，确认后进入待打款，资金不动）
+  if (dead) {
+    out.push({ title: '结算审核', time: '', who: '', text: '流程已终止', state: 'stop' });
+  } else if (st && st.status === '待审核') {
+    out.push({ title: '结算审核', time: '', who: '', text: '完工已提交，等待商户结算审核（可修改结算金额）', state: 'doing' });
+  } else if (st && st.auditedAt) {
+    out.push({ title: '结算审核', time: st.auditedAt, who: st.auditedBy || '',
+      text: '结算审核确认（' + (st.auditedBy || '商户') + '），结算金额 ' + fjMoney(st.amount), state: 'done' });
   } else {
-    out.push({ title: '完工', time: '', who: '', text: '待员工提交完工，或由商户结束用工', state: 'todo' });
+    out.push({ title: '结算审核', time: '', who: '', text: '完工后进入结算审核', state: 'todo' });
   }
-  // 5 结算审核
-  if (st && st.status === '待审核') {
-    out.push({ title: '结算审核', time: '', who: '', text: '等待商户审核结算', state: 'doing' });
-  } else if (st && st.status === '已驳回') {
-    out.push({ title: '结算审核', time: st.settleAt || '', who: st.settler || '',
-      text: '结算未通过：' + (st.rejectReason || '未填写理由'), state: 'fail' });
-  } else if (st) {
-    out.push({ title: '结算审核', time: st.settleAt || '', who: st.settler || '',
-      text: '结算审核通过（' + fjMoney(st.amount) + '）', state: 'done' });
+  // 5 结算打款（打款完成时资金才从冻结中划出；驳回则回到做工中重新审核）
+  if (dead) {
+    out.push({ title: '结算打款', time: '', who: '', text: '流程已终止', state: 'stop' });
+  } else if (st && st.status === '待打款') {
+    out.push({ title: '结算打款', time: '', who: '', text: '等待商户打款，打款前资金保持冻结', state: 'doing' });
+  } else if (st && st.status === '已结算') {
+    out.push({ title: '结算打款', time: st.paidAt || '', who: st.paidBy || '',
+      text: '打款完成（' + (st.paidBy || '商户') + '），结算金额已转付员工', state: 'done' });
+  } else if (st && st.status === '待审核' && (st.auditRounds || []).some(a => a.result === 'pay_reject')) {
+    const lastRej = (st.auditRounds || []).filter(a => a.result === 'pay_reject').pop();
+    out.push({ title: '结算打款', time: (lastRej && lastRej.time) || '', who: (lastRej && lastRej.auditor) || '',
+      text: '打款被驳回：' + ((lastRej && lastRej.reason) || '未填写理由') + '，可重新结算审核', state: 'fail' });
   } else {
-    out.push({ title: '结算审核', time: '', who: '', text: dead ? '流程已终止' : '完工后进入结算审核', state: dead ? 'stop' : 'todo' });
+    out.push({ title: '结算打款', time: '', who: '', text: '结算审核确认后进行打款', state: 'todo' });
   }
-  // 6 结算完成（结算审核通过即完成，不再有发薪环节）
+  // 6 结算完成（打款完成即结算完成）
   if (st && st.status === '已结算') {
-    out.push({ title: '结算完成', time: '', who: st.settler || '', text: '已按 ' + fjMoney(st.amount) + ' 结清', state: 'done' });
-  } else if (st && st.status === '已驳回') {
-    out.push({ title: '结算完成', time: '', who: '', text: '结算未通过，等待重新提交', state: 'stop' });
+    const back = fundRound(stFrozenOf(st) - stReleasedOf(st) - fundRound(st.amount));
+    out.push({ title: '结算完成', time: st.paidAt || '', who: st.paidBy || '',
+      text: '已按 ' + fjMoney(st.amount) + ' 结清' + (back > 0 ? '，差额 ' + fjMoney(back) + ' 已退回可用余额' : ''), state: 'done' });
+  } else if (dead) {
+    out.push({ title: '结算完成', time: '', who: '', text: '流程已终止', state: 'stop' });
   } else {
-    out.push({ title: '结算完成', time: '', who: '', text: dead ? '流程已终止' : '结算审核通过后完成', state: dead ? 'stop' : 'todo' });
+    out.push({ title: '结算完成', time: '', who: '', text: '结算打款完成后完成', state: dead ? 'stop' : 'todo' });
   }
   return out;
 }
@@ -7752,6 +8775,11 @@ function wrApplySteps(row) {
       out.push({ title: '接单审核通过', who: a.auditor || '商户', time: a.time || '', state: '已通过', cls: 'ok', done: true,
         note: '通过后按「员工单价 × 应做工时」冻结资金' });
     }
+  });
+  // 延长工期记录：紧跟审核通过之后，按发生时间排列
+  (r.extendLogs || []).forEach(function (e) {
+    out.push({ title: '延长工期', who: '商户', time: e.time || '', state: '已延长', cls: 'ok', done: true,
+      note: '延长 ' + e.days + ' 天工期，追加冻结 ' + fjMoney(e.amount) });
   });
   if (r.status === '已取消') {
     out.push({ title: '员工取消接单', who: r.name || '员工', time: r.cancelAt || '', state: '已取消', cls: 'wait', done: true,
@@ -7798,18 +8826,12 @@ function wrConfirmEnd() {
   r.actualQty = unit > 0 ? Math.round(amount / unit * 100) / 100 : wrQty(r);
   e.visible = false;
   const added = stSyncFromWr();
-  showToast('已结束用工' + (added ? '，生成结算单 ' + fjMoney(r.actualAmount) + '，待结算审核' : ''));
+  showToast('已结束用工，生成结算单 ' + fjMoney(r.actualAmount) + (added ? '，可在列表中结算审核' : ''));
   VM.$nextTick(() => relayoutTables());
 }
 // 审核记录：接单审核 / 结算审核两个模块上下展示，统一用同一套流程样式
 function wrOpenLog(row) {
   VM.wrLog = { visible: true, row: row };
-}
-// 批量结算审核：勾选的是接单行，内部换成对应结算单
-function wrBatchSettleAudit() {
-  const rows = VM.wrSelectedSettle;
-  if (!rows.length) { VM.$message.warning('请先勾选结算待审的记录'); return; }
-  stOpenAudit(rows);
 }
 function wrOpenAudit(row) {
   const rows = Array.isArray(row) ? row : [row];
@@ -7859,8 +8881,10 @@ function stRowFromWr(r) {
     shift: r.shift, price: r.price, priceType: r.priceType, ins: r.ins, payNote: r.payNote,
     planQty: wrQty(r), actualQty: wrActualQty(r), skipDay: r.skipDay || 0, skipNote: r.skipNote || '',
     amount: wrAmount(r),
+    // 结算单自身冻结额（按本单覆盖的日期计），支持同一记录拆成多张结算单
+    frozenAmt: Math.round(Number(r.price) * wrQty(r) * 100) / 100, releasedAmt: 0,
     submitAt: r.submittedAt,
-    status: '待审核', settleAt: '', settler: '', rejectReason: '', settleNote: '',
+    status: '待审核', auditedAt: '', auditedBy: '', paidAt: '', paidBy: '', payNote: '', settleNote: '',
     auditRounds: [],
     photoDays: Number(r.photoDays || r.days || 0),
   };
@@ -7876,27 +8900,130 @@ function stFromWr(rows) {
 function stInit(rows) {
   const list = stFromWr(rows).sort((a, b) => String(b.submitAt).localeCompare(String(a.submitAt)));
   list.forEach((r, i) => { r.id = 'ST' + (20261117001 + i); });
-  // 预置几笔历史单据，便于演示「结算完成 / 已驳回」；rounds 为结算审核轮次（含多轮驳回后重新提交）
+  const byName = {};
+  rows.forEach(r => { byName[r.name] = r; });
+  // 预置历史单据（按姓名匹配，避免新增种子数据后下标错位）
+  // 待打款 4 条（其中 2 条结算金额低于冻结额，打款时产生退回）、已结算 2 条、打款驳回后回待审核 1 条
   [
-    { i: 1, status: '已结算', settleAt: '2026-11-17 09:12:33', settler: '测试2号',
+    { name: '刘美玲', status: '待打款', auditedAt: '2026-11-18 09:20:14', auditedBy: '测试2号', amount: 620,
+      rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-18 09:20:14' }] },
+    { name: '林志豪', status: '待打款', auditedAt: '2026-11-18 10:05:47', auditedBy: '王秋玲', amount: 552,
+      rounds: [{ result: 'pass', auditor: '王秋玲', time: '2026-11-18 10:05:47' }] },
+    { name: '范晓丽', status: '待打款', auditedAt: '2026-11-18 11:12:03', auditedBy: '朱轩均', amount: 660,
+      rounds: [{ result: 'pass', auditor: '朱轩均', time: '2026-11-18 11:12:03' }] },
+    { name: '董伟', status: '待打款', auditedAt: '2026-11-18 14:36:28', auditedBy: '测试2号', amount: 630,
+      rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-18 14:36:28' }] },
+    { name: '陈志强', status: '已结算', auditedAt: '2026-11-17 09:12:33', auditedBy: '测试2号', paidAt: '2026-11-17 09:12:33', paidBy: '测试2号',
       rounds: [
         { result: 'reject', auditor: '测试2号', time: '2026-11-16 20:20:11', reason: '完工照片不清晰，请重新上传', resubmitAt: '2026-11-17 08:40:00' },
         { result: 'pass', auditor: '测试2号', time: '2026-11-17 09:12:33' },
+        { result: 'pay', auditor: '测试2号', time: '2026-11-17 09:12:33' },
       ] },
-    { i: 3, status: '已结算', settleAt: '2026-11-17 10:05:08', settler: '王秋玲',
-      rounds: [{ result: 'pass', auditor: '王秋玲', time: '2026-11-17 10:05:08' }] },
-    { i: 5, status: '已驳回', settleAt: '2026-11-17 11:22:51', settler: '朱轩均', rejectReason: '工时与排班不一致，请核对后重新提交',
+    { name: '高雪', status: '已结算', auditedAt: '2026-11-17 10:05:08', auditedBy: '王秋玲', paidAt: '2026-11-17 10:05:08', paidBy: '王秋玲',
+      rounds: [
+        { result: 'pass', auditor: '王秋玲', time: '2026-11-17 10:05:08' },
+        { result: 'pay', auditor: '王秋玲', time: '2026-11-17 10:05:08' },
+      ] },
+    { name: '李海燕', status: '待审核', auditedAt: '2026-11-17 11:22:51', auditedBy: '朱轩均', paidAt: '', paidBy: '',
       rounds: [
         { result: 'reject', auditor: '朱轩均', time: '2026-11-16 10:20:11', reason: '缺少第 2 天工作图片', resubmitAt: '2026-11-17 09:05:00' },
-        { result: 'reject', auditor: '朱轩均', time: '2026-11-17 11:22:51', reason: '工时与排班不一致，请核对后重新提交' },
+        { result: 'pass', auditor: '朱轩均', time: '2026-11-17 11:22:51' },
+        { result: 'pay_reject', auditor: '朱轩均', time: '2026-11-17 11:40:26', reason: '实做工时与排班不一致，请核对后重新发起' },
       ] },
   ].forEach(function (p) {
-    const t = list[p.i];
+    const t = list.find(s => s.name === p.name);
     if (!t) return;
-    t.status = p.status; t.settleAt = p.settleAt; t.settler = p.settler;
-    t.rejectReason = p.rejectReason || '';
+    t.status = p.status; t.auditedAt = p.auditedAt || ''; t.auditedBy = p.auditedBy || '';
+    t.paidAt = p.paidAt || ''; t.paidBy = p.paidBy || '';
+    if (p.amount != null) t.amount = fundRound(p.amount);   // 允许演示数据指定结算金额（低于冻结额即产生退回金额）
     t.auditRounds = p.rounds.map(a => Object.assign({}, a));
+    // 已结算记录：总冻结已结清，记录剩余冻结归零（退回额 = 本单冻结 − 结算金额）
+    if (p.status === '已结算') {
+      const wr = byName[p.name];
+      if (wr) {
+        wr.frozenAmt = 0;
+        wr.releasedAmt = Math.max(0, fundRound((t.frozenAmt != null ? Number(t.frozenAmt) : 0) - fundRound(t.amount)));
+      }
+    }
   });
+
+  // ===== 演示补充：多次结算 / 已延长工期 / 已结算含退回 / 打款驳回后待审核 =====
+  let stSeq = 0;
+  const addSt = function (wr, dates, status, o) {
+    o = o || {};
+    const perDay = wr.priceType === '日薪' ? Number(wr.price) : Number(wr.price) * Number(wr.hours);
+    const frozen = fundRound(perDay * dates.length);
+    const amount = o.amount != null ? fundRound(o.amount) : frozen;
+    const qty = wr.priceType === '日薪' ? dates.length : dates.length * Number(wr.hours);
+    const s = {
+      id: 'ST' + (20261117001 + list.length + stSeq++),
+      wrId: wr.id, name: wr.name, gender: wr.gender, phone: wr.phone,
+      client: wr.client, job: wr.job, dates: dates.slice(), start: dates[0], days: dates.length,
+      hours: wr.hours, shift: wr.shift, price: wr.price, priceType: wr.priceType, ins: wr.ins,
+      payNote: wr.payNote, planQty: qty, actualQty: qty, skipDay: 0, skipNote: '',
+      amount: amount, frozenAmt: frozen,
+      releasedAmt: status === '已结算' ? Math.max(0, fundRound(frozen - amount)) : 0,
+      submitAt: o.submitAt || '', status: status,
+      auditedAt: o.auditedAt || '', auditedBy: o.auditedBy || '',
+      paidAt: o.paidAt || '', paidBy: o.paidBy || '',
+      payNote: o.payNote || '', settleNote: o.settleNote || '',
+      auditRounds: (o.rounds || []).map(a => Object.assign({}, a)), photoDays: 0,
+    };
+    list.push(s);
+    return s;
+  };
+  // 1) 多次结算：宋文杰 5 天 → 前 2 天已结算（已打款）、第 3 天待打款、剩 2 天未结算
+  const song = byName['宋文杰'];
+  if (song) {
+    addSt(song, ['2026-11-17', '2026-11-18'], '已结算', {
+      amount: 480, submitAt: '2026-11-19 17:30:00', auditedAt: '2026-11-19 18:00:00', auditedBy: '测试2号',
+      paidAt: '2026-11-20 09:12:00', paidBy: '测试2号', settleNote: '先结算前 2 天',
+      rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-19 18:00:00' }, { result: 'pay', auditor: '测试2号', time: '2026-11-20 09:12:00' }],
+    });
+    addSt(song, ['2026-11-19'], '待打款', {
+      amount: 240, submitAt: '2026-11-22 17:40:00', auditedAt: '2026-11-22 18:05:00', auditedBy: '测试2号',
+      rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-22 18:05:00' }],
+    });
+    song.frozenAmt = 720;            // 总冻结 1,200 − 已打款 480
+  }
+  // 2) 已延长工期：梁晓峰 原 3 天 + 追加 2 天（日期不连续）
+  const liang = byName['梁晓峰'];
+  if (liang) {
+    const ext = ['2026-11-23', '2026-11-24'];
+    liang.dates = liang.dates.concat(ext).sort();
+    liang.days = liang.dates.length;
+    liang.end = liang.dates[liang.dates.length - 1];
+    liang.frozenAmt = 1300;          // 780 + 520
+    liang.extendLogs = [{ time: '2026-11-21 15:00:00', days: 2, amount: 520, dates: ext.slice() }];
+    liang.actualQty = wrActualQty(liang);
+    liang.actualAmount = Math.round(Number(liang.price) * liang.actualQty * 100) / 100;
+  }
+  // 3) 已结算且含退回金额：许文静 冻结 780 → 结算 620 → 退回 160
+  const xu = byName['许文静'];
+  if (xu) {
+    xu.submittedAt = '2026-11-15 18:00:00';
+    addSt(xu, xu.dates.slice(), '已结算', {
+      amount: 620, submitAt: '2026-11-15 18:00:00', auditedAt: '2026-11-16 09:30:00', auditedBy: '冯国鲜',
+      paidAt: '2026-11-16 10:15:00', paidBy: '冯国鲜', settleNote: '按实做工时核减',
+      rounds: [{ result: 'pass', auditor: '冯国鲜', time: '2026-11-16 09:30:00' }, { result: 'pay', auditor: '冯国鲜', time: '2026-11-16 10:15:00' }],
+    });
+    xu.frozenAmt = 0;
+    xu.releasedAmt = 160;
+  }
+  // 4) 打款驳回后回到待审核：韩雪
+  const han = byName['韩雪'];
+  if (han) {
+    han.submittedAt = '2026-11-22 18:00:00';
+    const rejectReason = '打款账户信息有误，请核对后重新发起';
+    const hs = addSt(han, han.dates.slice(), '待审核', {
+      submitAt: '2026-11-22 18:00:00', auditedAt: '2026-11-22 19:10:00', auditedBy: '刘经理',
+      rounds: [
+        { result: 'pass', auditor: '刘经理', time: '2026-11-22 19:10:00' },
+        { result: 'pay_reject', auditor: '刘经理', time: '2026-11-23 09:00:00', reason: rejectReason },
+      ],
+    });
+    hs.payRejectReason = rejectReason;
+  }
   return list;
 }
 // 用工记录审核通过后，若该笔已提交完工，自动补进结算管理
@@ -7913,27 +9040,38 @@ function stSyncFromWr() {
   });
   return added;
 }
-// 结算审核记录步骤（同款序号时间线）
+// 结算审核 + 打款记录步骤（同款序号时间线，按 auditRounds 顺序渲染多轮）
 function stAuditSteps(r) {
   if (!r || !r.id) return [];
   const wr = (VM.wrAll || []).find(w => w.id === r.wrId);
   const ended = !!(wr && wr.endedByMerchant);
+  const frozen = wr ? fundRound(Number(wr.frozenAmt) || wrFreezeAmount(wr)) : fundRound(r.amount);
+  const released = wr ? fundRound(Number(wr.releasedAmt) || 0) : 0;
   const steps = [{
     title: ended ? '商户结束用工' : '员工提交完工',
     who: ended ? (wr.endedBy || '商户') : (r.name || '员工'),
     time: r.submitAt || '', state: ended ? '已结束' : '已提交', cls: 'ok', done: true,
     note: ended ? (wr.endNote ? '结束原因：' + wr.endNote : '商户主动结束用工，按实做工时结算') : '',
   }];
+  (r.auditRounds || []).forEach(function (a) {
+    if (a.result === 'reject') {
+      steps.push({ title: '结算审核驳回', who: a.auditor || '审核人', time: a.time || '', state: '已驳回', cls: 'fail', done: true, reject: true, note: a.reason ? '驳回理由：' + a.reason : '' });
+    } else if (a.result === 'pass') {
+      const refund = a.refund != null ? a.refund : Math.max(0, fundRound(frozen - released - r.amount));
+      steps.push({ title: '结算审核确认', who: a.auditor || '审核人', time: a.time || r.auditedAt || '', state: '已确认', cls: 'ok', done: true,
+        note: '结算金额 ' + fjMoney(r.amount) + ' 已确认，退回金额 ' + fjMoney(refund) + ' 待打款时解冻' });
+    } else if (a.result === 'pay_reject') {
+      steps.push({ title: '打款驳回', who: a.auditor || '操作人', time: a.time || '', state: '已驳回', cls: 'fail', done: true, reject: true, note: a.reason ? '驳回理由：' + a.reason : '' });
+    } else if (a.result === 'pay') {
+      steps.push({ title: '打款完成', who: a.auditor || '操作人', time: a.time || r.paidAt || '', state: '已打款', cls: 'ok', done: true,
+        note: '结算金额 ' + fjMoney(r.amount) + ' 已从冻结中转付员工' });
+    }
+  });
   if (r.status === '待审核') {
-    steps.push({ title: '商家审核', who: '待分配', time: '', state: '待审核', cls: 'wait', note: '审核通过即完成结算' });
-    return steps;
+    steps.push({ title: '结算审核', who: '待分配', time: '', state: '待审核', cls: 'wait', note: '确认结算金额后进入待打款' });
+  } else if (r.status === '待打款') {
+    steps.push({ title: '结算打款', who: '待分配', time: '', state: '待打款', cls: 'wait', note: '打款完成后资金从冻结中转付员工' });
   }
-  if (r.status === '已驳回') {
-    steps.push({ title: '商家审核', who: r.settler || '审核人', time: r.settleAt || '', state: '已驳回', cls: 'fail', done: true, reject: true, note: r.rejectReason ? '驳回理由：' + r.rejectReason : '' });
-    return steps;
-  }
-  steps.push({ title: '商家审核', who: r.settler || '审核人', time: r.settleAt || '', state: '已同意', cls: 'ok', done: true });
-  steps.push({ title: '结算完成', who: '系统', time: '', state: '已结算', cls: 'ok', done: true, note: '结算金额 ' + fjMoney(r.amount) + ' 已确认' });
   return steps;
 }
 function stCls(s) { return s === '已结算' ? 'pass' : (s === '已驳回' ? 'fail' : 'wait'); }
@@ -7975,56 +9113,221 @@ function stOpenDetail(row) {
   if (wr) { VM.wrDetail = { visible: true, row: wr }; return; }
   VM.stDetail = { visible: true, row: row };
 }
+// 结算审核（去通过/驳回）：确认结算金额 → 结算单进入「待打款」，资金不动
 function stOpenAudit(row) {
-  const rows = Array.isArray(row) ? row : [row];
-  if (!rows.length) { VM.$message.warning('请先勾选待审核的结算单'); return; }
-  if (rows.some(r => r.status !== '待审核')) { VM.$message.warning('仅「待审核」的结算单可以审核'); return; }
-  const total = Math.round(rows.reduce((s, r) => s + Number(r.amount || 0), 0) * 100) / 100;
-  VM.stAudit = { visible: true, mode: 'pass', rows: rows, reason: '', batch: rows.length > 1, amount: total, note: rows.length === 1 ? (rows[0].settleNote || '') : '' };
+  const st = Array.isArray(row) ? row[0] : row;
+  if (!st || st.status !== '待审核') { VM.$message.warning('仅完工提交后、尚未结算审核的记录可以结算审核'); return; }
+  VM.stAudit = { visible: true, row: st, amount: fundRound(st.amount), note: st.settleNote || '' };
   VM.stDetail.visible = false;
+  VM.wrDetail.visible = false;
 }
+// 结算金额上限 = 本结算单冻结额 - 已退回金额（一条记录可拆多张结算单，故按单计算）
+function stFrozenOf(st) {
+  if (!st) return 0;
+  if (st.frozenAmt != null) return fundRound(st.frozenAmt);
+  const wr = (VM.wrAll || []).find(w => w.id === st.wrId);
+  return wr ? fundRound(Number(wr.frozenAmt) || wrFreezeAmount(wr)) : fundRound(st.amount);
+}
+function stReleasedOf(st) {
+  if (!st) return 0;
+  if (st.releasedAmt != null) return fundRound(st.releasedAmt);
+  const wr = (VM.wrAll || []).find(w => w.id === st.wrId);
+  return wr ? fundRound(Number(wr.releasedAmt) || 0) : 0;
+}
+// 结算单退回金额 = 本单冻结额 − 已退回 − 结算金额
+function stBackOf(st) { return st ? Math.max(0, fundRound(stFrozenOf(st) - stReleasedOf(st) - fundRound(st.amount))) : 0; }
 function stSubmitAudit() {
-  const a = VM.stAudit, reason = String(a.reason || '').trim(), note = String(a.note || '').trim();
-  if (a.mode === 'reject' && !reason) { VM.$message.warning('请填写驳回理由'); return; }
+  const a = VM.stAudit, st = a.row;
+  if (!st || st.status !== '待审核') return;
   const amount = Number(a.amount);
-  if (a.mode === 'pass' && (!isFinite(amount) || amount < 0)) { VM.$message.warning('请填写正确的结算金额'); return; }
+  const cap = fundRound(stFrozenOf(st) - stReleasedOf(st));
+  if (!isFinite(amount) || amount <= 0) { VM.$message.warning('请填写正确的结算金额'); return; }
+  if (amount > cap) { VM.$message.warning('结算金额不能超过冻结余额 ' + fjMoney(cap)); return; }
   const now = wrNow(), who = (VM.authUser && VM.authUser.contact) || '系统管理员';
-  const total = Math.round(amount * 100) / 100;
-  const origSum = a.rows.reduce((s, r) => s + Number(r.amount || 0), 0);
-  let remain = total;
-  a.rows.forEach(function (r, i) {
-    r.status = a.mode === 'pass' ? '已结算' : '已驳回';
-    r.settleAt = now;
-    r.settler = who;
-    r.rejectReason = a.mode === 'reject' ? reason : '';
-    if (a.mode === 'pass') {
-      // 审核时可直接改结算金额：单笔即改后金额；批量按原应发占比分摊，尾差归最后一笔
-      r.settleNote = note;
-      if (a.rows.length === 1) r.amount = total;
-      else {
-        const isLast = i === a.rows.length - 1;
-        const share = origSum > 0 ? Math.round(total * Number(r.amount || 0) / origSum * 100) / 100 : Math.round(total / a.rows.length * 100) / 100;
-        r.amount = isLast ? Math.round(remain * 100) / 100 : share;
-        remain = Math.round((remain - share) * 100) / 100;
-      }
-    }
-    r.auditRounds.push({ result: a.mode === 'pass' ? 'pass' : 'reject', auditor: who, time: now, reason: r.rejectReason });
-  });
-  const n = a.rows.length;
+  st.status = '待打款';
+  st.amount = fundRound(amount);
+  st.settleNote = String(a.note || '').trim();
+  st.auditedAt = now;
+  st.auditedBy = who;
+  st.auditRounds.push({ result: 'pass', auditor: who, time: now, refund: fundRound(cap - fundRound(amount)) });
   a.visible = false;
-  VM.wrSelected = [];
-  if (VM.$refs.wrTable) VM.$refs.wrTable.clearSelection();
-  showToast(a.mode === 'pass' ? '已通过 ' + n + ' 笔结算，结算完成' : '已驳回 ' + n + ' 笔结算单，理由已同步员工端');
+  showToast('结算审核已确认，进入待打款（打款前不会动用资金）');
   VM.$nextTick(() => relayoutTables());
 }
-function wrBatchPass() {
-  const rows = VM.wrSelected.filter(r => r.status === '待审核');
-  if (!rows.length) { VM.$message.warning('请先勾选待审核的用工记录'); return; }
-  // 余额不足在确认框之前就拦下，避免「确认成功→随即报错」
-  const need = wrFreezeSum(rows);
-  if (need > VM.fjBalance) { VM.$message.error(wrFreezeTip(need)); return; }
-  VM.$confirm('确认通过选中的 ' + rows.length + ' 条用工记录吗？通过后将冻结 ' + fjMoney(need) + '，并同步至员工端与结算记录。', '批量审核', { type: 'warning', confirmButtonText: '确认通过' })
-    .then(() => wrApplyAudit(rows, 'pass', '', null)).catch(() => {});
+// ===== 结算打款：通过（选账户 + 短信验证码）或驳回（填理由） =====
+function wrOpenPay(row) {
+  const st = Array.isArray(row) ? row[0] : row;
+  if (!st || st.status !== '待打款') { VM.$message.warning('仅「待打款」的结算单可以打款'); return; }
+  wrStopPayTimerFor(VM.wrPay);
+  VM.wrPay = { visible: true, row: st, mode: 'pass', account: '', code: '', left: 0, timer: null, reason: '', note: st.payNote || '' };
+  VM.stDetail.visible = false;
+  VM.wrDetail.visible = false;
+}
+function stSubmitPay() {
+  const a = VM.wrPay, st = a.row;
+  if (!st || st.status !== '待打款') return;
+  if (!a.account) { VM.$message.warning('请选择打款账户'); return; }
+  if (String(a.code || '').trim() !== WR_PAY_DEMO_CODE) { VM.$message.warning('短信验证码不正确（演示验证码 123456）'); return; }
+  const wr = (VM.wrAll || []).find(w => w.id === st.wrId);
+  if (!wr) { VM.$message.error('未找到关联的用工记录'); return; }
+  const now = wrNow(), who = (VM.authUser && VM.authUser.contact) || '系统管理员';
+  const stFrozen = stFrozenOf(st);                     // 本次结算单的冻结额（提前结算按所选日期计）
+  const back = Math.max(0, fundRound(stFrozen - stReleasedOf(st) - fundRound(st.amount)));
+  st.status = '已结算';
+  st.paidAt = now;
+  st.paidBy = who;
+  st.payNote = String(a.note || '').trim();
+  // 资金处理：结算金额从冻结中划转给员工（不回可用余额）；差额解冻回可用余额，单独记一条
+  VM.fjFrozen = Math.max(0, fundRound(VM.fjFrozen - st.amount));
+  fundPushFlow({
+    type: 'release', dir: 'settle', refType: '结算单', refId: st.id, wrId: st.wrId,
+    name: st.name, job: st.job, amount: st.amount, at: now,
+    note: '结算打款，冻结资金转付员工（打款账户：' + a.account + '）',
+  });
+  if (back > 0) {
+    wrRelease(wr, back, '结算打款，结算金额低于冻结额，差额解冻', now);
+    st.releasedAmt = fundRound((Number(st.releasedAmt) || 0) + back);
+  }
+  // 记录总冻结额扣减本张结算单覆盖部分（剩余日期仍保留冻结，供后续结算）
+  wr.frozenAmt = Math.max(0, fundRound((wr.frozenAmt != null ? Number(wr.frozenAmt) : wrFreezeAmount(wr)) - stFrozen));
+  st.auditRounds.push({ result: 'pay', auditor: who, time: now });
+  wrStopPayTimerFor(a);
+  a.visible = false;
+  showToast('打款完成，结算金额 ' + fjMoney(st.amount) + ' 已转付员工');
+  VM.$nextTick(() => relayoutTables());
+}
+function stRejectPay() {
+  const a = VM.wrPay, st = a.row;
+  if (!st || st.status !== '待打款') return;
+  const reason = String(a.reason || '').trim();
+  if (!reason) { VM.$message.warning('请填写驳回理由'); return; }
+  const now = wrNow(), who = (VM.authUser && VM.authUser.contact) || '系统管理员';
+  st.status = '待审核';                       // 回到待审核，可重新发起结算；冻结金额不变
+  st.payRejectReason = reason;
+  st.auditRounds.push({ result: 'pay_reject', auditor: who, time: now, reason: reason });
+  a.visible = false;
+  showToast('已驳回，结算单回到待审核，可重新结算');
+  VM.$nextTick(() => relayoutTables());
+}
+// ===== 结算（支持提前结算部分日期） =====
+// 结算单价口径：日薪按天、时薪按「员工单价 × 每天工时」，与冻结口径一致
+function wrStDateQty(r, dates) {
+  const n = (dates || []).length;
+  if (!r || !n) return 0;
+  return r.priceType === '日薪' ? n : n * Number(r.hours);
+}
+function wrStDateAmount(r, dates) {
+  if (!r) return 0;
+  return fundRound(Number(r.price) * wrStDateQty(r, dates));
+}
+// 可结算日期：员工已提交完工（结算单待审核）时取其覆盖日期，否则取尚未进入结算的日期
+function wrSettleAvailDates(r) {
+  if (!r || !r.id) return [];
+  const st = rowStOf(r);
+  if (st && st.status === '待审核') return (st.dates || []).slice();
+  return wrUnsettledDatesOf(r);
+}
+function wrCanSettle(r) {
+  if (!r || r.status !== '审核通过') return false;
+  if (wrWorkCode(r) !== 'working') return false;
+  const st = rowStOf(r);
+  if (st && st.status === '待打款') return false;            // 已有待打款单据，先完成打款
+  return wrSettleAvailDates(r).length > 0;
+}
+function wrOpenSettle(row) {
+  if (!wrCanSettle(row)) { VM.$message.warning('该记录当前不可结算'); return; }
+  const dates = wrSettleAvailDates(row).slice();
+  VM.wrSettle = { visible: true, row: row, dates: dates, amount: wrStDateAmount(row, dates), note: '' };
+  VM.wrDetail.visible = false;
+}
+function wrSettlePickChange() { VM.wrSettle.amount = wrStDateAmount(VM.wrSettle.row, VM.wrSettle.dates); }
+function wrSubmitSettle() {
+  const a = VM.wrSettle, r = a.row;
+  if (!r || !r.id) return;
+  const avail = (VM.wrSettleAvail || []).slice();
+  const dates = (a.dates || []).slice().sort();
+  if (!dates.length) { VM.$message.warning('请选择要结算的日期'); return; }
+  if (dates.some(d => avail.indexOf(d) < 0)) { VM.$message.warning('所选日期中包含不可结算的日期'); return; }
+  const cap = wrStDateAmount(r, dates);
+  const amount = Number(a.amount);
+  if (!isFinite(amount) || amount <= 0) { VM.$message.warning('请填写正确的结算金额'); return; }
+  if (amount > cap) { VM.$message.warning('结算金额不能超过所选日期的冻结金额 ' + fjMoney(cap)); return; }
+  const now = wrNow(), who = (VM.authUser && VM.authUser.contact) || '系统管理员';
+  const qty = wrStDateQty(r, dates);
+  const round = { result: 'pass', auditor: who, time: now, refund: fundRound(cap - fundRound(amount)) };
+  const st = rowStOf(r);
+  if (st && st.status === '待审核') {
+    // 员工已提交完工：确认本次结算的日期与金额，结算单进入待打款
+    st.dates = dates; st.start = dates[0]; st.days = dates.length;
+    st.planQty = qty; st.actualQty = qty;
+    st.amount = fundRound(amount); st.frozenAmt = cap; st.releasedAmt = 0;
+    st.status = '待打款'; st.auditedAt = now; st.auditedBy = who;
+    st.settleNote = String(a.note || '').trim();
+    st.auditRounds.push(round);
+  } else {
+    // 提前结算部分日期：新建结算单（本单冻结额按所选日期计），直接进入待打款
+    VM.stAll.push({
+      id: 'ST' + (20261117001 + VM.stAll.length),
+      wrId: r.id, name: r.name, gender: r.gender, phone: r.phone,
+      client: r.client, job: r.job, dates: dates.slice(), start: dates[0], days: dates.length,
+      hours: r.hours, shift: r.shift, price: r.price, priceType: r.priceType, ins: r.ins,
+      payNote: r.payNote, planQty: qty, actualQty: qty, skipDay: 0, skipNote: '',
+      amount: fundRound(amount), frozenAmt: cap, releasedAmt: 0,
+      submitAt: now, status: '待打款', auditedAt: now, auditedBy: who,
+      paidAt: '', paidBy: '', payNote: '', settleNote: String(a.note || '').trim(),
+      auditRounds: [round], photoDays: 0, early: true,
+    });
+  }
+  a.visible = false;
+  showToast('已结算 ' + dates.length + ' 天（' + fjMoney(amount) + '），进入待结算打款');
+  VM.$nextTick(() => relayoutTables());
+}
+// ===== 延长工期：按日期延长，已接单日期不可重复选择 =====
+function wrCanExtend(r) {
+  if (!r || r.status !== '审核通过' || wrWorkCode(r) !== 'working') return false;
+  const st = rowStOf(r);
+  if (st && st.status === '待打款') return false;   // 待打款期间冻结额已锁定，先完成打款
+  return true;
+}
+function wrCanExtendInSettle(r) { return wrCanExtend(r); }
+function wrExtendCalc(r, dates) { return wrStDateAmount(r, Array.isArray(dates) ? dates : []); }
+function wrOpenExtend(row) {
+  if (!wrCanExtend(row)) { VM.$message.warning('仅做工中的记录可以延长工期'); return; }
+  VM.wrExtend = { visible: true, row: row, dates: [] };
+  VM.wrDetail.visible = false;
+}
+function wrSubmitExtend() {
+  const a = VM.wrExtend, r = a.row;
+  if (!r) return;
+  const picked = (a.dates || []).slice().sort();
+  if (!picked.length) { VM.$message.warning('请选择要延长的日期'); return; }
+  const busy = (r.dates || []).slice();
+  if (picked.some(d => busy.indexOf(d) > -1)) { VM.$message.warning('所选日期包含已接单日期，请重新选择'); return; }
+  const add = wrStDateAmount(r, picked);
+  if (add > VM.fjBalance) {
+    VM.$message.error('账户可用余额不足：本次需追加冻结 ' + fjMoney(add) + '，当前可用 ' + fjMoney(VM.fjBalance) + '，请先充值');
+    return;
+  }
+  const now = wrNow();
+  const baseFrozen = fundRound(r.frozenAmt != null ? Number(r.frozenAmt) : wrFreezeAmount(r));   // 先取原冻结基数（延长前口径）
+  r.dates = busy.concat(picked).sort();
+  r.days = r.dates.length;
+  r.end = r.dates[r.dates.length - 1];
+  r.frozenAmt = fundRound(baseFrozen + add);
+  VM.fjBalance = fundRound(VM.fjBalance - add);
+  VM.fjFrozen = fundRound(VM.fjFrozen + add);
+  fundPushFlow({
+    type: 'freeze', refType: '用工记录', refId: r.id, wrId: r.id,
+    name: r.name, job: r.job, amount: add, at: now,
+    note: '延长工期 ' + picked.length + ' 天（' + picked.join('、') + '），按「员工单价 × 延长工时」追加冻结',
+  });
+  r.actualQty = null;                          // 清空核定值，按延长后的工期重算
+  r.actualQty = wrActualQty(r);
+  r.actualAmount = Math.round(Number(r.price) * r.actualQty * 100) / 100;
+  r.extendLogs.push({ time: now, days: picked.length, amount: add, dates: picked.slice() });
+  a.visible = false;
+  showToast('已延长 ' + picked.length + ' 天工期，追加冻结 ' + fjMoney(add));
+  VM.$nextTick(() => relayoutTables());
 }
 function wrSubmitAudit() {
   const a = VM.wrAudit;
@@ -8032,6 +9335,126 @@ function wrSubmitAudit() {
   if (a.mode === 'reject' && !String(a.reason).trim()) { VM.$message.error('请填写驳回理由'); return; }
   if (wrApplyAudit(a.rows, a.mode, a.reason, a) === false) return;   // 余额不足：弹窗保持打开
   a.visible = false;
+}
+// ===== 待结算打款 · 打款/驳回（演示：短信验证码固定 123456，不接真实短信通道） =====
+const WR_PAY_DEMO_CODE = '123456';
+// 通用倒计时：单个 / 批量打款弹窗各自独立
+function wrStopPayTimerFor(dlg) {
+  if (!dlg) return;
+  if (dlg.timer) { clearInterval(dlg.timer); dlg.timer = null; }
+  dlg.left = 0;
+}
+function wrStopPayTimer() { wrStopPayTimerFor(VM && VM.wrBatchPay); }
+function wrSendPayCodeFor(dlg) {
+  if (!dlg || !dlg.visible) return;
+  if (!dlg.account) { VM.$message.warning('请先选择打款账户'); return; }
+  wrStopPayTimerFor(dlg);
+  dlg.left = 60;
+  dlg.timer = setInterval(function () {
+    if (!dlg.visible) { wrStopPayTimerFor(dlg); return; }
+    dlg.left -= 1;
+    if (dlg.left <= 0) wrStopPayTimerFor(dlg);
+  }, 1000);
+  VM.$message.success('验证码已发送至绑定手机 138****8000（演示验证码 ' + WR_PAY_DEMO_CODE + '）');
+}
+function wrSendPayCode() { wrSendPayCodeFor(VM.wrBatchPay); }
+function wrSendPayCodeSingle() { wrSendPayCodeFor(VM.wrPay); }
+function wrOpenBatchPay() {
+  const rows = VM.wrSelected.filter(r => rowStStatus(r) === '待打款');
+  if (!rows.length) { VM.$message.warning('请先勾选「待打款」的结算单'); return; }
+  wrStopPayTimer();
+  VM.wrBatchPay = { visible: true, rows: rows, mode: 'pass', account: '', code: '', left: 0, timer: null, reason: '' };
+  VM.wrDetail.visible = false;
+}
+// 批量打款：通过 = 逐条处理资金并落流水；驳回 = 整批回到待审核
+function wrSubmitBatchPay() {
+  const a = VM.wrBatchPay;
+  if (!a.visible || !a.rows.length) return;
+  const now = wrNow(), who = (VM.authUser && VM.authUser.contact) || '系统管理员';
+  if (a.mode === 'reject') {
+    const reason = String(a.reason || '').trim();
+    if (!reason) { VM.$message.warning('请填写驳回理由'); return; }
+    let cnt = 0;
+    a.rows.forEach(function (r) {
+      const st = rowStOf(r);
+      if (!st || st.status !== '待打款') return;
+      st.status = '待审核';
+      st.payRejectReason = reason;
+      st.auditRounds.push({ result: 'pay_reject', auditor: who, time: now, reason: reason });
+      cnt++;
+    });
+    a.visible = false;
+    wrClearSelect();
+    showToast('已驳回 ' + cnt + ' 条结算单，回到待审核，可重新结算');
+    VM.$nextTick(() => relayoutTables());
+    return;
+  }
+  if (!a.account) { VM.$message.warning('请选择打款账户'); return; }
+  if (String(a.code || '').trim() !== WR_PAY_DEMO_CODE) { VM.$message.warning('短信验证码不正确（演示验证码 123456）'); return; }
+  let paid = 0, backSum = 0, cnt = 0;
+  a.rows.forEach(function (r) {
+    const st = rowStOf(r);
+    if (!st || st.status !== '待打款') return;
+    const frozen = stFrozenOf(st);            // 按结算单冻结额（提前结算为所选日期）
+    const released = stReleasedOf(st);
+    const amount = fundRound(st.amount);
+    st.status = '已结算';
+    st.paidAt = now;
+    st.paidBy = who;
+    st.payNote = '批量打款';
+    VM.fjFrozen = Math.max(0, fundRound(VM.fjFrozen - amount));
+    fundPushFlow({
+      type: 'release', dir: 'settle', refType: '结算单', refId: st.id, wrId: st.wrId,
+      name: st.name, job: st.job, amount: amount, at: now,
+      note: '批量打款，冻结资金转付员工（打款账户：' + a.account + '）',
+    });
+    const back = fundRound(frozen - released - amount);
+    if (back > 0) {
+      wrRelease(r, back, '批量打款，结算金额低于冻结额，差额解冻', now);
+      st.releasedAmt = fundRound((Number(st.releasedAmt) || 0) + back);
+      backSum = fundRound(backSum + back);
+    }
+    // 记录总冻结额扣减本张结算单覆盖部分
+    r.frozenAmt = Math.max(0, fundRound((r.frozenAmt != null ? Number(r.frozenAmt) : wrFreezeAmount(r)) - frozen));
+    st.auditRounds.push({ result: 'pay', auditor: who, time: now });
+    paid = fundRound(paid + amount);
+    cnt++;
+  });
+  wrStopPayTimer();
+  a.visible = false;
+  wrClearSelect();
+  showToast('已打款 ' + cnt + ' 条，打款金额 ' + fjMoney(paid) + (backSum > 0 ? '，退回 ' + fjMoney(backSum) : ''));
+  VM.$nextTick(() => relayoutTables());
+}
+// ===== 结算记录（待结算打款页签）：展示每张结算单的操作人/时间/金额 =====
+function wrStLogOpText(st) {
+  if (!st) return '';
+  if (st.status === '已结算') return '打款';
+  if (st.status === '待打款') return '结算通过';
+  return '待审核';
+}
+function wrOpenStLog(row) {
+  if (!row || !row.id) return;
+  VM.wrStLog = { visible: true, row: row };
+}
+// ===== 列表金额口径：预计结算总金额 / 已结算金额 / 待结算金额 =====
+function wrEstimatedTotal(r) { return r ? wrCalcAmount(r) : 0; }
+function wrPaidStAmountOf(r) {
+  return fundRound(wrStSettlementsOf(r).filter(s => s.status === '已结算').reduce((s, x) => s + Number(x.amount || 0), 0));
+}
+function wrPendingSettleAmount(r) {
+  if (!r) return 0;
+  // 待结算 = 预计总金额 − 已打款 − 已退回（已结算记录不会残留待结算金额）
+  return Math.max(0, fundRound(wrEstimatedTotal(r) - wrPaidStAmountOf(r) - fundRound(Number(r.releasedAmt) || 0)));
+}
+// 结算弹窗：全选 / 清空可结算日期
+function wrSettlePickAll() {
+  VM.wrSettle.dates = (VM.wrSettleAvail || []).slice();
+  wrSettlePickChange();
+}
+function wrSettlePickNone() {
+  VM.wrSettle.dates = [];
+  wrSettlePickChange();
 }
 
 const SIDE_MENU = [
@@ -8047,7 +9470,7 @@ const SIDE_MENU = [
   { title: '灵活用工', icon: 'el-icon-s-flag', items: ['互联网平台','岗位管理','用工记录','用工管理','项目管理'] },
 ];
 // ===== 菜单路由 =====
-const ROUTE_PAGES = { '进入工作台': 'workbench', '员工档案': 'emp', '考勤记录': 'att', '岗位列表': 'job', '计薪提成': 'payComm', '岗位标签': 'jobTag', '招聘顾问': 'advisor', '面试管理': 'interview', '用工单位': 'client', '邀请规则': 'invite', '邀请记录': 'inviteRecord', '结算模板': 'stpl', '薪酬档案': 'salaryFile', '一键算薪': 'oneClickPay', '智能算薪': 'salaryCalc', '订单管理': 'order', '岗位管理': 'flexJob', '用工记录': 'workRecord' };   // 已实现的页面
+const ROUTE_PAGES = { '进入工作台': 'workbench', '员工档案': 'emp', '考勤记录': 'att', '岗位列表': 'job', '计薪提成': 'payComm', '岗位标签': 'jobTag', '招聘顾问': 'advisor', '面试管理': 'interview', '用工单位': 'client', '邀请规则': 'invite', '邀请记录': 'inviteRecord', '结算模板': 'stpl', '薪酬档案': 'salaryFile', '一键算薪': 'oneClickPay', '智能算薪': 'salaryCalc', '订单管理': 'order', '岗位管理': 'flexJob', '用工记录': 'workRecord', '充值记录': 'fund' };   // 已实现的页面
 // 用工记录与结算记录已合并为一个页面，旧链接静默改写到「用工记录」
 const ROUTE_ALIAS = { '结算管理': '用工记录' };
 const AUTH_PAGES = { '登录': 'login', '注册': 'register', '企业认证': 'ent' };   // 独立整屏页，不参与页签与侧栏
@@ -13572,13 +14995,19 @@ const FN_BRIDGE = {
   openFjEdit, closeFjEdit, saveFjJob, saveFjDraft, fjCopy, fjDelete, fjRevoke, openFjDetail, openFjAuditLog,
   fjOpenReview, fjSubmitReview, fjAuditTimeText, fjAuditSteps,
   addFjWorkTime, removeFjWorkTime, handleFjImageChange, handleFjImageRemove, handleFjVideoChange, handleFjVideoRemove,
-  wrOnSelect, wrClearSelect, wrTabChange, wrSearch, wrReset, wrExport, wrOpenDetail, wrOpenLog, wrOpenAudit, wrSubmitAudit, wrBatchPass,
-  stOpenDetail, stOpenAudit, stSubmitAudit, stSyncFromWr,
-  rowStOf, rowStStatus, rowStLabel, rowStCls, wrDetailFlow, wrBatchSettleAudit,
-  wrApplySteps, wrStatusCode, wrStatusLabel, wrStatusCls, wrStatusReason, wrFlowNow, fsShortTime, fsNodeTitle,
-  wrQtyUnit, wrQtyText, wrCanEnd, wrOpenEnd, wrConfirmEnd,
+  wrOnSelect, wrClearSelect, wrTabChange, wrSearch, wrReset, wrExport, wrOpenDetail, wrOpenLog, wrOpenAudit, wrSubmitAudit,
+  stOpenDetail, stOpenAudit, stSubmitAudit, stSyncFromWr, wrOpenPay, stSubmitPay, stRejectPay,
+  wrOpenBatchPay, wrSendPayCode, wrSendPayCodeSingle, wrSubmitBatchPay, wrStopPayTimer, wrStopPayTimerFor,
+  wrOpenStLog, wrStLogOpText, wrSettlePickAll, wrSettlePickNone, wrEstimatedTotal, wrPaidStAmountOf, wrPendingSettleAmount,
+  fundTabChange, fundSearch, fundReset, fundExport, openFundRechargeDlg, fundFlowKindLabel, fundFlowKindCls, fundFlowStateLabel, fundFlowStateCls, fundFlowRoute, openFundFlowDetail, fundFlowChainTitle,
+  fundFlowParty,
+  rowStOf, rowStStatus, rowStLabel, rowStCls, wrDetailFlow,
+  wrRefundAmt, wrFreezeAmount, wrExtendCalc,
+  wrApplySteps, wrStatusCode, wrStatusLabel, wrStatusCls, wrStatusReason, wrWorkLabel, wrWorkCls, wrAuditLabel, wrAuditCls, wrDoneTime, wrFlowNow, fsShortTime, fsNodeTitle,
+  wrQtyUnit, wrQtyText, wrCanEnd, wrOpenEnd, wrConfirmEnd, wrCanExtend, wrCanExtendInSettle, wrOpenExtend, wrSubmitExtend,
+  wrCanSettle, wrOpenSettle, wrSubmitSettle, wrSettlePickChange, stFrozenOf, stReleasedOf, stBackOf, stRejectReason, stDisplayStatus,
   stCls, stPlanQtyText, stActualQtyText, stDateText, stDateFull, stDateTip, stPhotoSvg, stPhotoGroups,
-  wrDateText, wrDateFull, wrDateTip, wrShiftTags, wrShiftMore, wrShortTime, wrFullTime, wrDatePart, wrTimePart, wrCls, wrPriceText, wrQty, wrCalcAmount, wrAmount, wrEnterprise,
+  wrDateText, wrDateFull, wrDateFullList, wrDateTip, wrShiftTags, wrShiftMore, wrShortTime, wrFullTime, wrDatePart, wrTimePart, wrCls, wrPriceText, wrQty, wrCalcAmount, wrAmount, wrEnterprise,
   stStatusCode, stStatusLabel, lfStatusCls, stStatusCls,
   fjMoney, openFjAgreeDlg, signFjAgreement, openFjRechargeDlg, fjConfirmRecharge, fjCopyText, fjCopyAcct,
   addJobSalaryRow, addJobOnboardRow, removeJobSalary, removeJobOnboard, removeJobAddr,
@@ -13964,7 +15393,7 @@ Vue.component('stpl-equation', {
 });
 
 // ===== 根实例 =====
-const VM = new Vue({
+var VM = new Vue({
   el: '#app',
   data: {
     tenant: '测-深圳市辉煌达人力资源管理有限公司 | 高级版',
@@ -14064,6 +15493,16 @@ const VM = new Vue({
     fjAgreeDlg: { visible: false, signing: false, host: 'open', targetId: null },
     fjRechargeDlg: { visible: false, payType: '支付宝', amount: '' },
     fjRechargeQuick: FJ_RECHARGE_QUICK,
+    // 财务管理 · 充值记录 / 灵工资金流水
+    fundTab: 'recharge',
+    fundRecharge: [], fundFlows: [],
+    fundMethods: FUND_METHODS, fundAccounts: FUND_ACCOUNTS, fundFlowKinds: FUND_FLOW_KINDS, fundFlowStates: FUND_FLOW_STATES,
+    fundRechargeDlg: { visible: false }, fjBankAcct: FJ_BANK_ACCT, kfQrSrc: fundKfQrSvg(),
+    fundFlowDetail: { visible: false, row: {}, chain: [], sum: { freeze: 0, settle: 0, back: 0, frozen: 0 }, status: '', wr: {} },
+    fundRechargeFilter: fundBlankRechargeFilter(), fundRechargeQuery: fundBlankRechargeFilter(),
+    fundFlowFilter: fundBlankFlowFilter(), fundFlowQuery: fundBlankFlowFilter(), fundFlowPickerOptions: fundFlowRangeShortcuts(),
+    fundRechargePage: 1, fundRechargePageSize: 10,
+    fundFlowPage: 1, fundFlowPageSize: 10,
     fjDetailDlg: { visible: false, row: {} }, fjAuditDlg: { visible: false, row: {} },
     fjReview: { visible: false, row: {}, mode: 'pass', reason: '' },
     // 灵活用工 · 用工记录（已合并原「结算管理」）
@@ -14071,29 +15510,38 @@ const VM = new Vue({
     wrTabs: [
       { key: 'all', label: '全部记录' },
       { key: 'apply', label: '接单待审' },
-      { key: 'settle', label: '结算待审' },
+      { key: 'settle', label: '做工中' },
+      { key: 'pay', label: '待结算打款' },
     ],
     wrAll: wrBuildRows(), wrFilter: wrBlankFilter(), wrQuery: wrBlankFilter(),
     wrPage: 1, wrPageSize: 10, wrSelected: [],
     wrClients: FJ_CLIENTS, wrEmployers: FJ_EMPLOYERS, wrJobs: WR_JOBS,
-    // 接单 + 结算合并后的统一状态（取值同 LF_STATUS 的码）
-    wrStatusOptions: [
-      { value: 'apply_review', label: '接单审核中' },
-      { value: 'working', label: '做工中' },
-      { value: 'settle_review', label: '结算审核中' },
-      { value: 'settle_rejected', label: '结算未通过' },
-      { value: 'settled', label: '结算完成' },
-      { value: 'apply_rejected', label: '接单未通过' },
-      { value: 'cancelled', label: '已取消' },
-    ],
+    // 列表双状态筛选项：用工状态（业务生命周期） + 审核状态（接单审核结果）
+    wrWorkStatusOptions: WR_WORK_STATUS_OPTIONS,
+    wrAuditStatusOptions: WR_AUDIT_STATUS_OPTIONS,
     wrDetail: { visible: false, row: {} },
     wrLog: { visible: false, row: {} },
+    // 结算记录（待结算打款页签）：按结算单展示操作人 / 时间 / 金额
+    wrStLog: { visible: false, row: {} },
     wrAudit: { visible: false, mode: 'pass', rows: [], reason: '', batch: false },
     wrEnd: { visible: false, row: {}, amount: '', reason: '' },
+    // 结算（支持提前结算部分日期）：dates 为勾选的结算日期
+    wrSettle: { visible: false, row: {}, dates: [], amount: 0, note: '' },
+    // 延长工期：dates 为选择的延长日期（已接单日期不可选）
+    wrExtend: { visible: false, row: {}, dates: [] },
+    // 结算打款：通过（打款账户 + 短信验证码）或驳回（驳回理由）
+    wrPay: { visible: false, row: {}, mode: 'pass', account: '', code: '', left: 0, timer: null, reason: '', note: '' },
+    // 批量打款：打款账户可选值 + 弹窗状态（left 为验证码倒计时秒数，timer 为定时器句柄）
+    wrPayAccounts: [
+      '深圳唯臻人力资源有限公司（招商银行 7559****2210）',
+      '深圳唯臻供应链管理有限公司（工商银行 4000****8866）',
+      '支付宝企业账户（zhilingong@alipay.com）',
+    ],
+    wrBatchPay: { visible: false, rows: [], mode: 'pass', account: '', code: '', left: 0, timer: null, reason: '' },
     // 结算单：由用工记录派生（wrId 关联），不再有独立页签与列表
     stAll: [],
     stDetail: { visible: false, row: {} },
-    stAudit: { visible: false, mode: 'pass', rows: [], reason: '', batch: false, amount: 0, note: '' },
+    stAudit: { visible: false, row: {}, amount: 0, note: '' },
     // 岗位
     jobAll: JOB_RAW, jobFiltered: JOB_RAW.slice(), jobPage: 1, jobPageSize: 10, jobNextId: 1,
     jobFilter: { name: '', employer: '', postType: '', workType: '', audit: '', shelf: '', full: '', dept: '', range: [] },
@@ -14295,17 +15743,25 @@ const VM = new Vue({
     fjTableHeight() { return Math.max(240, this.winH - 430); },
     // 结算单按 wrId 映射：一条接单记录最多一张结算单，列表里靠它展示结算状态
     stByWr() {
+      // 一条记录可能有多张结算单（提前结算部分日期）：优先挂「待打款 / 待审核」的活跃单据，历史已结算单据兜底
+      const rank = s => s.status === '待打款' ? 3 : s.status === '待审核' ? 2 : 1;
       const m = {};
-      this.stAll.forEach(s => { if (s.wrId != null) m[s.wrId] = s; });
+      this.stAll.forEach(s => {
+        if (s.wrId == null) return;
+        const cur = m[s.wrId];
+        if (!cur || rank(s) >= rank(cur)) m[s.wrId] = s;
+      });
       return m;
     },
     wrCount() {
-      const c = { all: this.wrAll.length, apply: 0, settle: 0 };
+      const c = { all: this.wrAll.length, apply: 0, settle: 0, pay: 0 };
       const byWr = this.stByWr;
       this.wrAll.forEach(r => {
         if (r.status === '待审核') c.apply++;
+        const code = wrWorkCode(r);
+        if (code === 'working') c.settle++;                        // 做工中页签
         const s = byWr[r.id];
-        if (s && s.status === '待审核') c.settle++;
+        if (s && s.status === '待打款') c.pay++;
       });
       return c;
     },
@@ -14314,8 +15770,10 @@ const VM = new Vue({
       return this.wrAll.filter(r => {
         const st = byWr[r.id] || null;
         if (tab === 'apply' && r.status !== '待审核') return false;
-        if (tab === 'settle' && (!st || st.status !== '待审核')) return false;
-        if (q.status && wrStatusCode(r) !== q.status) return false;
+        if (tab === 'settle' && wrWorkCode(r) !== 'working') return false;   // 做工中页签 = 用工状态为做工中
+        if (tab === 'pay' && (!st || st.status !== '待打款')) return false;
+        if (q.workStatus && wrWorkCode(r) !== q.workStatus) return false;
+        if (q.auditStatus && wrAuditCode(r) !== q.auditStatus) return false;
         if (q.name && String(r.name).indexOf(q.name) < 0) return false;
         if (q.phone && String(r.phone).indexOf(q.phone) < 0) return false;
         if (q.client && r.client !== q.client) return false;
@@ -14333,7 +15791,12 @@ const VM = new Vue({
         return true;
       }).sort((a, b) => {
         if (tab === 'settle') {
-          const sa = (byWr[a.id] || {}).submitAt || '', sb = (byWr[b.id] || {}).submitAt || '';
+          // 做工中页签：已提交完工的按完工提交时间倒序，未提交的按接单时间兜底
+          const sa = (byWr[a.id] || {}).submitAt || a.applyAt || '', sb = (byWr[b.id] || {}).submitAt || b.applyAt || '';
+          return String(sb).localeCompare(String(sa));
+        }
+        if (tab === 'pay') {
+          const sa = (byWr[a.id] || {}).auditedAt || '', sb = (byWr[b.id] || {}).auditedAt || '';
           return String(sb).localeCompare(String(sa));
         }
         return String(b.applyAt).localeCompare(String(a.applyAt));
@@ -14346,9 +15809,9 @@ const VM = new Vue({
       const s = (this.wrPage - 1) * this.wrPageSize;
       return this.wrFiltered.slice(s, s + this.wrPageSize);
     },
-    // 勾选行按可执行动作派生（同一份 wrSelected 支撑三组批量操作）
+    // 勾选行按可执行动作派生
     wrSelectedApply() { return this.wrSelected.filter(r => r.status === '待审核'); },
-    wrSelectedSettle() { return this.wrSelected.map(r => rowStOf(r)).filter(s => s && s.status === '待审核'); },
+    wrSelectedPay() { return this.wrSelected.filter(r => rowStStatus(r) === '待打款'); },
     wrMonthAmount() {
       return this.wrAll.filter(r => r.status === '审核通过' && String(r.applyAt).slice(0, 7) === '2026-11')
         .reduce((s, r) => s + wrAmount(r), 0);
@@ -14361,10 +15824,77 @@ const VM = new Vue({
     wrCur() { return this.wrDetail.row || {}; },
     stCur() { return this.stDetail.row || {}; },
     wrDrawerSize() { return Math.min(720, Math.max(420, this.winW - 160)) + 'px'; },
-    stAuditTotal() { return this.stAudit.rows.reduce((s, r) => s + Number(r.amount || 0), 0); },
+    // 结算审核弹窗：结算金额上限 = 冻结金额 - 已退回金额；退回金额实时联动
+    stAuditFrozen() {
+      const st = this.stAudit.row || {};
+      return st.wrId != null ? stFrozenOf(st) : 0;
+    },
+    stAuditCap() { return fundRound(this.stAuditFrozen - (this.stAudit.row && this.stAudit.row.wrId != null ? stReleasedOf(this.stAudit.row) : 0)); },
+    stAuditBack() { return Math.max(0, fundRound(this.stAuditCap - (Number(this.stAudit.amount) || 0))); },
+    // 结算打款弹窗：三笔金额只读展示（按结算单口径）
+    stPayFrozen() {
+      const st = this.wrPay.row || {};
+      return st.wrId != null ? stFrozenOf(st) : 0;
+    },
+    stPayBack() {
+      const st = this.wrPay.row || {};
+      return st.wrId != null ? stBackOf(st) : 0;
+    },
+    // 结算弹窗：可结算日期、本次冻结额、退回金额
+    wrSettleAvail() { return wrSettleAvailDates(this.wrSettle.row); },
+    wrSettleCap() { return wrStDateAmount(this.wrSettle.row, this.wrSettle.dates); },
+    wrSettleBack() { return Math.max(0, fundRound(this.wrSettleCap - (Number(this.wrSettle.amount) || 0))); },
+    // 延长工期弹窗：按所选日期计算追加冻结；日历中禁用已接单日期
+    wrExtendAdd() {
+      const r = this.wrExtend.row || {};
+      return r.id ? wrStDateAmount(r, this.wrExtend.dates) : 0;
+    },
+    wrExtendShort() { return Math.max(0, Math.round((this.wrExtendAdd - this.fjBalance) * 100) / 100); },
+    wrExtendBusyText() {
+      const r = this.wrExtend.row || {};
+      return (r.dates && r.dates.length) ? r.dates.join('、') : '—';
+    },
+    wrExtendPicker() {
+      const busy = ((this.wrExtend.row || {}).dates || []).slice();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayTs = today.getTime();
+      return {
+        disabledDate: function (time) {
+          return busy.indexOf(wrFmtDate(time)) > -1 || time.getTime() < todayTs;   // 已接单日期与今天之前不可选
+        },
+      };
+    },
     // 审核弹窗：本次需冻结金额、还差多少（余额不足时禁用确认通过）
     wrFreezeNeed() { return this.wrAudit.visible ? wrFreezeSum(this.wrAudit.rows) : 0; },
     wrFreezeShort() { return Math.max(0, Math.round((this.wrFreezeNeed - this.fjBalance) * 100) / 100); },
+    // 批量打款弹窗：总冻结 / 打款 / 退回金额与员工清单（按各结算单口径）
+    wrBatchPayFrozen() {
+      return fundRound(this.wrBatchPay.rows.reduce((s, r) => s + stFrozenOf(rowStOf(r)), 0));
+    },
+    wrBatchPayAmount() {
+      return fundRound(this.wrBatchPay.rows.reduce((s, r) => { const st = rowStOf(r); return s + fundRound(st ? st.amount : 0); }, 0));
+    },
+    wrBatchPayBack() {
+      return fundRound(this.wrBatchPay.rows.reduce((s, r) => s + stBackOf(rowStOf(r)), 0));
+    },
+    wrBatchPayEmps() {
+      return this.wrBatchPay.rows.map(r => r.name + '（' + r.gender + ' · ' + r.phone + '）').join('、');
+    },
+    // 结算记录弹窗：本记录的结算单列表与累计已打款金额（只统计已结算）
+    wrStLogList() { return wrStSettlementsOf(this.wrStLog.row); },
+    wrStLogTotal() {
+      return fundRound(wrStSettlementsOf(this.wrStLog.row)
+        .filter(s => s.status === '已结算')
+        .reduce((s, x) => s + Number(x.amount || 0), 0));
+    },
+    // 用工详情：本记录全部结算记录（含待审核/待打款/打款驳回）；累计已打款只统计已结算
+    wrStList() { return wrStSettlementsOf(this.wrCur); },
+    wrStTotal() {
+      return fundRound(wrStSettlementsOf(this.wrCur)
+        .filter(s => s.status === '已结算')
+        .reduce((s, x) => s + Number(x.amount || 0), 0));
+    },
     // 结束用工弹窗：冻结金额即结算金额上限（员工单价 × 应做工时）
     wrEndFrozen() {
       const r = this.wrEnd.row || {};
@@ -14377,6 +15907,61 @@ const VM = new Vue({
       if (!r.id || !p || amt <= 0) return '按金额反算实做工时';
       const q = Math.round(amt / p * 100) / 100;
       return '≈ 实做 ' + q + ' ' + wrQtyUnit(r);
+    },
+    // ===== 财务管理：充值记录 / 流水记录 =====
+    fundRechargeFiltered() {
+      const q = this.fundRechargeQuery;
+      return this.fundRecharge.filter(r => {
+        if (q.method && r.method !== q.method) return false;
+        if (q.account && r.account !== q.account) return false;
+        if (q.status && r.status !== q.status) return false;
+        if (q.range && q.range.length === 2 && q.range[0] && q.range[1]) {
+          const d = String(r.at).slice(0, 10);
+          if (d < q.range[0] || d > q.range[1]) return false;
+        }
+        return true;
+      }).sort((a, b) => String(b.at).localeCompare(String(a.at)));
+    },
+    fundRechargeRows() {
+      const s = (this.fundRechargePage - 1) * this.fundRechargePageSize;
+      return this.fundRechargeFiltered.slice(s, s + this.fundRechargePageSize);
+    },
+    fundRechargeTotal() {
+      return fundRound(this.fundRecharge.filter(r => r.status === '已支付')
+        .reduce((s, r) => s + Number(r.arrived == null ? r.amount : r.arrived), 0));
+    },
+    fundFlowsFiltered() {
+      const q = this.fundFlowQuery;
+      return this.fundFlows.filter(r => {
+        if (q.kind) {
+          const isLf = r.type === 'freeze' || r.type === 'release' || r.type === 'pay';
+          if (q.kind === 'lf' && !isLf) return false;
+          if (q.kind === 'recharge' && r.type !== 'recharge') return false;
+          if (q.kind === 'wage' && r.type !== 'wage') return false;
+        }
+        if (q.state) {
+          const st = r.type === 'freeze' ? 'freeze' : ((r.type === 'release' || r.type === 'pay') ? 'unfreeze' : '');
+          if (st !== q.state) return false;
+        }
+        if (q.ref && String(r.id).indexOf(q.ref) < 0) return false;
+        if (q.name && String(r.name || '').indexOf(q.name) < 0 && fundFlowParty(r).indexOf(q.name) < 0) return false;
+        if (q.range && q.range.length === 2 && q.range[0] && q.range[1]) {
+          const d = String(r.at).slice(0, 10);
+          if (d < q.range[0] || d > q.range[1]) return false;
+        }
+        return true;
+      }).sort((a, b) => {
+        const t = String(b.at).localeCompare(String(a.at));
+        return t !== 0 ? t : String(a.id).localeCompare(String(b.id));
+      });
+    },
+    fundFlowRows() {
+      const s = (this.fundFlowPage - 1) * this.fundFlowPageSize;
+      return this.fundFlowsFiltered.slice(s, s + this.fundFlowPageSize);
+    },
+    fundPayTotal() {
+      return fundRound(this.fundFlows.filter(isFundOutflow)
+        .reduce((s, r) => s + Number(r.amount || 0), 0));
     },
     jobPageRows() { const s = (this.jobPage - 1) * this.jobPageSize; return this.jobFiltered.slice(s, s + this.jobPageSize); },
     jobTableHeight() { return Math.max(240, this.winH - 442); },
@@ -14893,7 +16478,7 @@ const VM = new Vue({
     window.addEventListener('hashchange', handleRoute);
     window.addEventListener('resize', this.onWinResize);
     // VM 尚未完成初始化（TDZ），必须推迟到下一个微任务再走路由
-    this.$nextTick(() => { payrollSeedRows(); oneClickLoad(); this.stAll = stInit(this.wrAll); handleRoute(); applyFilter(); });
+    this.$nextTick(() => { payrollSeedRows(); oneClickLoad(); this.stAll = stInit(this.wrAll); try { fundSeed(); } catch (e) { console.warn('fundSeed failed', e); } handleRoute(); applyFilter(); });
   },
   methods: {
     onWinResize() { this.winH = window.innerHeight; this.winW = window.innerWidth; payrollRelayout(); },
