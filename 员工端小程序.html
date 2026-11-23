@@ -713,15 +713,27 @@
         #view-wallet .wf.on { color: var(--blue); font-weight: 700; }
         #view-wallet .wf::after { content: ''; flex: none; width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-top: 4.5px solid currentColor; opacity: .6; margin-top: 2px; }
         #view-wallet .wf input[type=date], #view-wallet .wf select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; border: none; cursor: pointer; font-size: 12px; }
-        #view-wallet .fl-i { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+        #view-wallet .fl-i { padding: 12px 14px; border-bottom: 1px solid var(--line); cursor: pointer; }
         #view-wallet .fl-i:last-child { border-bottom: none; }
         #view-wallet .fl-r1 { display: flex; align-items: baseline; gap: 10px; }
         #view-wallet .fl-t { font-size: 14px; font-weight: 600; }
         #view-wallet .fl-amt { margin-left: auto; flex: none; font-size: 15px; font-weight: 800; letter-spacing: .2px; color: #1F2329; }
         #view-wallet .fl-amt.in { color: #1F2329; }
+        #view-wallet .fl-ar { flex: none; color: #C0C5CE; font-size: 17px; line-height: 1; }
         #view-wallet .fl-sub { font-size: 11.5px; color: #A6ABB5; margin-top: 3px; }
         #view-wallet .fl-time { font-size: 11px; color: #C2C7D0; margin-top: 1px; }
         #view-wallet .wal-empty { padding: 36px 0 32px; text-align: center; font-size: 12.5px; color: #A6ABB5; }
+
+        /* ---- 资金明细 ---- */
+        #view-flow .fld-body { padding: 12px; }
+        #view-flow .fld-card { background: #fff; border-radius: 14px; padding: 4px 16px; box-shadow: 0 2px 10px rgba(31,35,41,.04); }
+        #view-flow .fld-row { display: flex; align-items: flex-start; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+        #view-flow .fld-row:last-child { border-bottom: none; }
+        #view-flow .fld-row > span { flex: none; width: 68px; font-size: 12.5px; color: #8A8F99; line-height: 1.6; }
+        #view-flow .fld-row > b { flex: 1; min-width: 0; font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.6; word-break: break-word; }
+        #view-flow .fld-row.amount { align-items: center; }
+        #view-flow .fld-row.amount > b { font-size: 24px; font-weight: 800; letter-spacing: .2px; }
+        #view-flow .fld-empty { padding: 48px 0; text-align: center; font-size: 12.5px; color: #A6ABB5; }
 
         /* ---- 提现 ---- */
         #view-withdraw .page { padding-bottom: 100px; }
@@ -1500,9 +1512,12 @@
                         <div class="wf" id="wf-type"><span>全部类型</span>
                             <select onchange="onFlowType(this.value)">
                                 <option value="all">全部类型</option>
-                                <option value="wage">工资入账</option>
+                                <option value="labor_settle">灵工结算</option>
+                                <option value="share_reward">分享奖励</option>
+                                <option value="composite_pay">综合代发</option>
                                 <option value="withdraw">提现</option>
-                                <option value="fee">手续费</option>
+                                <option value="transfer_out">转出</option>
+                                <option value="transfer_in">转入</option>
                             </select>
                         </div>
                     </div>
@@ -1559,6 +1574,17 @@
                     <p>4、申请提现后，打款处理时限为7个工作日</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ============ 视图：资金明细 ============ -->
+    <div class="view" id="view-flow">
+        <div class="page">
+            <div class="pnav">
+                <div class="pnav-back" onclick="backFlowDetail()">‹</div>
+                <div class="pnav-t">资金明细</div>
+            </div>
+            <div class="fld-body" id="flow-detail-body"></div>
         </div>
     </div>
 
@@ -2090,20 +2116,22 @@ const viewOrderEl = document.getElementById('view-order');
 const viewRDetailEl = document.getElementById('view-rdetail');
 const viewWalletEl = document.getElementById('view-wallet');
 const viewWithdrawEl = document.getElementById('view-withdraw');
+const viewFlowEl = document.getElementById('view-flow');
 const dockTabEl = document.getElementById('dock-tab');
 const dockDetailEl = document.getElementById('dock-detail');
 const dockDDetailEl = document.getElementById('dock-ddetail');
 const dockRDetailEl = document.getElementById('dock-rdetail');
 const dockWalletEl = document.getElementById('dock-wallet');
-const ALL_VIEWS = [viewHomeEl, viewDetailEl, viewWorkEl, viewHistoryEl, viewDailyEl, viewDDetailEl, viewOrderEl, viewRDetailEl, viewWalletEl, viewWithdrawEl];
-const VIEW_MAP = { home: viewHomeEl, work: viewWorkEl, detail: viewDetailEl, history: viewHistoryEl, daily: viewDailyEl, ddetail: viewDDetailEl, order: viewOrderEl, rdetail: viewRDetailEl, wallet: viewWalletEl, withdraw: viewWithdrawEl };
+const ALL_VIEWS = [viewHomeEl, viewDetailEl, viewWorkEl, viewHistoryEl, viewDailyEl, viewDDetailEl, viewOrderEl, viewRDetailEl, viewWalletEl, viewWithdrawEl, viewFlowEl];
+const VIEW_MAP = { home: viewHomeEl, work: viewWorkEl, detail: viewDetailEl, history: viewHistoryEl, daily: viewDailyEl, ddetail: viewDDetailEl, order: viewOrderEl, rdetail: viewRDetailEl, wallet: viewWalletEl, withdraw: viewWithdrawEl, flow: viewFlowEl };
 let curView = '';
-const scrollMap = { home: 0, work: 0, daily: 0, wallet: 0, withdraw: 0 };   // 各 Tab 离开时的滚动位置
+const scrollMap = { home: 0, work: 0, daily: 0, wallet: 0, withdraw: 0, flow: 0 };   // 各 Tab 离开时的滚动位置
 let directDetail = false; // 是否直接通过 hash/参数进入详情（无首页历史）
 
 function parseHash() {
     const h = location.hash.slice(1);
     if (h.indexOf('djob-') === 0) return { view: 'ddetail', key: decodeURIComponent(h.slice(5)) };
+    if (h.indexOf('flow-') === 0) return { view: 'flow', key: decodeURIComponent(h.slice(5)) };
     if (h.indexOf('rec-') === 0) return { view: 'rdetail', key: h.slice(4) };
     if (h === 'order') return { view: 'order' };
     if (h.indexOf('job-') === 0) return { view: 'detail', key: decodeURIComponent(h.slice(4)) };
@@ -2718,6 +2746,7 @@ function normalizeAll() {
     });
 }
 let curRecId = '';
+let curFlowId = '';
 let rdTab = 'finish';
 let curPhotoDay = '';
 let newRecSeq = 0;
@@ -3777,12 +3806,14 @@ function payRec(id) {
     updateHisChips();
     renderWbCal();
     setHisTab('all');
-    /* 工资入账到钱包 */
+    /* 兼容旧入口：按记录金额入账，新的结算单打款走 creditSettlement */
+    const payAt = walStamp();
     WALLET.avail = Math.round((WALLET.avail + r.amount) * 100) / 100;
     WALLET.flow.unshift({
-        type: 'wage', t: '工资入账',
-        sub: r.title.replace(' · ', ' · ') + '(' + r.date + ')',
-        amt: r.amount, time: walStamp()
+        id: nextFlowId(), type: 'composite_pay', t: '综合代发',
+        sub: r.title + '(' + r.date + ')',
+        remark: r.title + '(' + r.date + ')',
+        amt: r.amount, createdAt: payAt, time: payAt
     });
     renderWallet();
     renderRecDetail(id);
@@ -3809,19 +3840,43 @@ function rejectApply(id) {
 const WALLET = {
     avail: 2661,
     flow: [
-        { type: 'withdraw', t: '提现', sub: '招商银行（尾号 4015）· 朱轩均', amt: -500, time: '2026-11-17 14:20:36' },
-        { type: 'fee', t: '提现手续费', sub: '银行卡提现每笔 5 元', amt: -5, time: '2026-11-17 14:20:36' },
-        { type: 'wage', t: '工资入账', sub: '顺丰速运 · 分拣临时工（11-15）', amt: 112, time: '2026-11-16 09:30:12' },
-        { type: 'wage', t: '工资入账', sub: '京东仓储 · 打包员（11-12 ~ 11-14）', amt: 648, time: '2026-11-15 10:15:40' },
-        { type: 'wage', t: '工资入账', sub: '比亚迪 · 线束车间操作工（11-08 ~ 11-11）', amt: 1296, time: '2026-11-12 10:40:05' },
-        { type: 'wage', t: '工资入账', sub: '中通快递 · 装卸工（11-05 ~ 11-06）', amt: 360, time: '2026-11-06 18:20:33' },
-        { type: 'wage', t: '工资入账', sub: '立讯精密 · 组装线普工（11-01 ~ 11-03）', amt: 750, time: '2026-11-04 09:50:21' },
-        { type: 'wage', t: '工资入账', sub: '美团买菜 · 分拣打包（11-01 ~ 11-02）', amt: 416, time: '2026-11-03 10:00:12' },
-        { type: 'wage', t: '工资入账', sub: '美团买菜 · 分拣打包（11-03 ~ 11-04）', amt: 416, time: '2026-11-05 10:00:30' },
-        { type: 'wage', t: '工资入账', sub: '立讯精密 · 组装线普工（11-16 ~ 11-17）', amt: 624, time: '2026-11-19 10:00:12' }
+        { id: 'FL20261119001', type: 'labor_settle', t: '灵工结算', sub: '立讯精密工业（武汉）有限公司 · 组装线普工 · 2026-11-19', remark: '立讯精密工业（武汉）有限公司 · 组装线普工 · 2026-11-19', amt: 624, createdAt: '2026-11-19 10:00:12', time: '2026-11-19 10:00:12', settlementId: 'ST20261123001', sourceType: 'settlement', workRecordId: 'r7' },
+        { id: 'FL20261117001', type: 'withdraw', t: '提现', sub: '招商银行（尾号 4015）· 朱轩均', remark: '提现至招商银行（尾号 4015）', amt: -500, createdAt: '2026-11-17 14:20:36', time: '2026-11-17 14:20:36' },
+        { id: 'FL20261117002', type: 'withdraw', t: '提现手续费', sub: '银行卡提现每笔 5 元', remark: '银行卡提现手续费', amt: -5, createdAt: '2026-11-17 14:20:36', time: '2026-11-17 14:20:36' },
+        { id: 'FL20261116001', type: 'composite_pay', t: '综合代发', sub: '顺丰速运 · 分拣临时工（11-15）', remark: '顺丰速运 · 分拣临时工（11-15）', amt: 112, createdAt: '2026-11-16 09:30:12', time: '2026-11-16 09:30:12' },
+        { id: 'FL20261115001', type: 'composite_pay', t: '综合代发', sub: '京东仓储 · 打包员（11-12 ~ 11-14）', remark: '京东仓储 · 打包员（11-12 ~ 11-14）', amt: 648, createdAt: '2026-11-15 10:15:40', time: '2026-11-15 10:15:40' },
+        { id: 'FL20261112001', type: 'composite_pay', t: '综合代发', sub: '比亚迪 · 线束车间操作工（11-08 ~ 11-11）', remark: '比亚迪 · 线束车间操作工（11-08 ~ 11-11）', amt: 1296, createdAt: '2026-11-12 10:40:05', time: '2026-11-12 10:40:05' },
+        { id: 'FL20261106001', type: 'composite_pay', t: '综合代发', sub: '中通快递 · 装卸工（11-05 ~ 11-06）', remark: '中通快递 · 装卸工（11-05 ~ 11-06）', amt: 360, createdAt: '2026-11-06 18:20:33', time: '2026-11-06 18:20:33' },
+        { id: 'FL20261104001', type: 'composite_pay', t: '综合代发', sub: '立讯精密 · 组装线普工（11-01 ~ 11-03）', remark: '立讯精密 · 组装线普工（11-01 ~ 11-03）', amt: 750, createdAt: '2026-11-04 09:50:21', time: '2026-11-04 09:50:21' },
+        { id: 'FL20261103001', type: 'composite_pay', t: '综合代发', sub: '美团买菜 · 分拣打包（11-01 ~ 11-02）', remark: '美团买菜 · 分拣打包（11-01 ~ 11-02）', amt: 416, createdAt: '2026-11-03 10:00:12', time: '2026-11-03 10:00:12' },
+        { id: 'FL20261105001', type: 'composite_pay', t: '综合代发', sub: '美团买菜 · 分拣打包（11-03 ~ 11-04）', remark: '美团买菜 · 分拣打包（11-03 ~ 11-04）', amt: 416, createdAt: '2026-11-05 10:00:30', time: '2026-11-05 10:00:30' }
     ]
 };
 const flowFilter = { from: '', to: '', type: 'all' };
+const FLOW_TYPE_LABEL = {
+    share_reward: '分享奖励',
+    composite_pay: '综合代发',
+    withdraw: '提现',
+    transfer_out: '转出',
+    transfer_in: '转入',
+    labor_settle: '灵工结算'
+};
+let nextFlowSeq = 100;
+function nextFlowId() { return 'FL' + (nextFlowSeq++); }
+function flowTypeLabel(f) { return FLOW_TYPE_LABEL[f.type] || f.typeLabel || f.t || '—'; }
+function flowFullTime(t) {
+    const s = String(t || '');
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s;
+    if (/^\d{2}-\d{2}\s/.test(s)) return WB_YEAR + '-' + s;
+    return s || '—';
+}
+function flowSettleDate(st) {
+    const raw = String(st.auditedAt || st.paidAt || '').trim();
+    if (!raw) return '—';
+    if (/^\d{4}-\d{2}-\d{2}/.test(raw)) return raw.slice(0, 10);
+    if (/^\d{2}-\d{2}/.test(raw)) return WB_YEAR + '-' + raw.slice(0, 5);
+    return raw.slice(0, 10);
+}
 
 /* 不可用余额 = 结算审核中 + 待发薪（按结算单维度，不按记录金额） */
 function walFrozen() {
@@ -3855,6 +3910,30 @@ function walStamp() {
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' +
         p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
 }
+/* 结算单打款成功 → 生成一条灵工结算流水（按结算单幂等） */
+function creditSettlement(st, r) {
+    if (!st || st.status !== '已结算') return;
+    if (WALLET.flow.some(function (f) { return f.settlementId === st.id; })) return;
+    const site = siteOf(r || {});
+    const remark = [site.company || '—', jobNameOf(r || {}), flowSettleDate(st)].join(' · ');
+    const at = flowFullTime(st.paidAt || st.auditedAt || walStamp());
+    WALLET.flow.unshift({
+        id: nextFlowId(),
+        type: 'labor_settle',
+        t: '灵工结算',
+        amount: round2(Number(st.amount) || 0),
+        amt: round2(Number(st.amount) || 0),
+        remark: remark,
+        sub: remark,
+        createdAt: at,
+        time: at,
+        settlementId: st.id,
+        sourceType: 'settlement',
+        workRecordId: st.wrId
+    });
+    WALLET.avail = round2(WALLET.avail + (Number(st.amount) || 0));
+    renderWallet();
+}
 function goWallet() { location.hash = '#wallet'; }
 function backWallet() {
     if (history.length > 1) history.back();
@@ -3882,7 +3961,7 @@ function renderFlow() {
     if (!box) return;
     const list = WALLET.flow.filter(function (f) {
         if (flowFilter.type !== 'all' && f.type !== flowFilter.type) return false;
-        const day = f.time.slice(0, 10);
+        const day = String(f.createdAt || f.time || '').slice(0, 10);
         if (flowFilter.from && day < flowFilter.from) return false;
         if (flowFilter.to && day > flowFilter.to) return false;
         return true;
@@ -3892,14 +3971,45 @@ function renderFlow() {
         return;
     }
     box.innerHTML = list.map(function (f) {
-        return '<div class="fl-i">' +
+        const when = f.createdAt || f.time || '—';
+        return '<div class="fl-i" onclick="openFlowDetail(\'' + f.id + '\')">' +
             '<div class="fl-r1"><span class="fl-t">' + f.t + '</span>' +
             '<span class="fl-amt' + (f.amt < 0 ? ' out' : ' in') + '">' +
-            (f.amt < 0 ? '-' : '') + '¥' + walMoney(f.amt) + '</span></div>' +
-            '<div class="fl-sub">' + f.sub + '</div>' +
-            '<div class="fl-time">' + f.time + '</div>' +
+            (f.amt < 0 ? '-' : '+') + '¥' + walMoney(Math.abs(f.amt)) + '</span>' +
+            '<span class="fl-ar">›</span></div>' +
+            '<div class="fl-sub">' + (f.remark || f.sub || '—') + '</div>' +
+            '<div class="fl-time">' + when + '</div>' +
             '</div>';
     }).join('');
+}
+
+function openFlowDetail(id) {
+    if (!id) return;
+    curFlowId = id;
+    location.hash = '#flow-' + encodeURIComponent(id);
+}
+function backFlowDetail() {
+    if (history.length > 1) history.back();
+    else location.hash = '#wallet';
+}
+function renderFlowDetail(id) {
+    curFlowId = id;
+    const body = document.getElementById('flow-detail-body');
+    if (!body) return;
+    const f = WALLET.flow.filter(function (x) { return x.id === id; })[0];
+    if (!f) {
+        body.innerHTML = '<div class="fld-empty">资金明细不存在</div>';
+        return;
+    }
+    const when = flowFullTime(f.createdAt || f.time);
+    const sign = f.amt < 0 ? '-' : '+';
+    const amount = sign + '¥' + walMoney(Math.abs(f.amt));
+    body.innerHTML = '<div class="fld-card">' +
+        '<div class="fld-row amount"><span>总金额</span><b>' + amount + '</b></div>' +
+        '<div class="fld-row"><span>类型</span><b>' + flowTypeLabel(f) + '</b></div>' +
+        '<div class="fld-row"><span>备注</span><b>' + (f.remark || f.sub || '—') + '</b></div>' +
+        '<div class="fld-row"><span>创建时间</span><b>' + when + '</b></div>' +
+        '</div>';
 }
 
 function onFlowDate(which, val) {
@@ -4035,9 +4145,9 @@ function doWithdraw(amount, fee) {
     const stamp = walStamp();
     WALLET.avail = Math.round((WALLET.avail - amount) * 100) / 100;
     if (fee) {
-        WALLET.flow.unshift({ type: 'fee', t: '提现手续费', sub: '银行卡提现每笔 ' + fee + ' 元', amt: -fee, time: stamp });
+        WALLET.flow.unshift({ id: nextFlowId(), type: 'withdraw', t: '提现手续费', sub: '银行卡提现每笔 ' + fee + ' 元', remark: '银行卡提现手续费', amt: -fee, createdAt: stamp, time: stamp });
     }
-    WALLET.flow.unshift({ type: 'withdraw', t: '提现', sub: '招商银行（尾号 4015）· 朱轩均', amt: -amount, time: stamp });
+    WALLET.flow.unshift({ id: nextFlowId(), type: 'withdraw', t: '提现', sub: '招商银行（尾号 4015）· 朱轩均', remark: '提现至招商银行（尾号 4015）', amt: -amount, createdAt: stamp, time: stamp });
     closeModal();
     renderWallet();
     toast('提现申请已提交，¥' + walMoney(amount - fee) + ' 将在 7 个工作日内到账');
@@ -4051,6 +4161,7 @@ function switchView(name, anim) {
     if (curView === 'daily') scrollMap.daily = viewDailyEl.scrollTop;
     if (curView === 'wallet') scrollMap.wallet = viewWalletEl.scrollTop;
     if (curView === 'withdraw') scrollMap.withdraw = viewWithdrawEl.scrollTop;
+    if (curView === 'flow') scrollMap.flow = viewFlowEl.scrollTop;
     ALL_VIEWS.forEach(v => v.classList.remove('active', 'anim-push', 'anim-pop'));
     const el = VIEW_MAP[name];
     el.classList.add('active');
@@ -4098,6 +4209,10 @@ function route() {
         if (curView === 'withdraw') return;
         renderWithdraw();
         switchView('withdraw', 'anim-push');
+    } else if (t.view === 'flow') {
+        renderFlowDetail(t.key);
+        if (curView === 'flow') viewFlowEl.scrollTop = 0;
+        else switchView('flow', 'anim-push');
     } else if (t.view === 'rdetail') {
         if (curView === 'rdetail') { viewRDetailEl.scrollTop = 0; }
         else switchView('rdetail', 'anim-push');
