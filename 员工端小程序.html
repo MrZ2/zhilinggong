@@ -345,32 +345,31 @@
         .rec { background: #fff; border-radius: 14px; padding: 12px 13px; box-shadow: 0 3px 12px rgba(31,35,41,.05); margin-bottom: 10px; cursor: pointer; }
         .rec-head { display: flex; align-items: center; gap: 8px; }
         .rec-title { flex: 1; min-width: 0; font-size: 13.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .rec-money { flex: none; font-size: 15.5px; font-weight: 800; color: var(--red); }
-        .rec-money em { font-style: normal; font-size: 10.5px; font-weight: 600; color: var(--sub); margin-right: 2px; }
-        .rec-money.off { color: #9AA0AA; font-weight: 700; text-decoration: line-through; }
-        .rec-date { display: flex; align-items: center; gap: 6px; margin-top: 7px; font-size: 13px; font-weight: 700; color: var(--text); }
-        .rec-days { flex: none; font-size: 10.5px; font-weight: 700; color: var(--blue); background: #EAF0FF; border-radius: 4px; padding: 1px 5px; }
-        .rec-sub { font-size: 12px; color: var(--sub); margin-top: 4px; }
-        .rec-note { margin-top: 8px; padding: 8px 10px; background: #F7F8FA; border-radius: 8px; font-size: 12px; color: #5A6170; line-height: 1.55; }
+        .rec-head .st { margin-left: auto; }
+        .rec-info { margin-top: 8px; }
+        .rec-info-row { display: flex; align-items: flex-start; font-size: 12.5px; line-height: 1.7; color: #1F2329; }
+        .rec-info-row span { width: 64px; flex: none; color: #1F2329; }
+        .rec-info-row b { flex: 1; min-width: 0; font-weight: 400; color: #1F2329; }
+        .rec-info-row b.rec-company { font-weight: 400; word-break: break-all; }
         .rec-foot { display: flex; align-items: center; gap: 8px; margin-top: 9px; padding-top: 9px; border-top: 1px dashed var(--line); font-size: 11.5px; color: #9AA0AA; }
-        .rec-foot > span:nth-child(2) { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .rec-link { margin-left: auto; color: var(--blue); font-weight: 600; }
         .st { flex: none; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; }
         .st-wait { background: #FFF3E6; color: #E86A10; }       /* 审核中 */
         .st-pass { background: #E8F8EE; color: var(--green); }  /* 已完成 */
         .st-fail { background: #FEEAEA; color: var(--red); }    /* 结算未通过 */
         .st-doing { background: #EAF0FF; color: var(--blue); }  /* 待完成 */
+        .st-review { background: #F0EDFF; color: #6B4EFF; }    /* 待结算 */
         .st-cancel { background: #F0F1F3; color: #7C828C; }     /* 已取消 */
         .rec-more { text-align: center; font-size: 12.5px; color: var(--sub); padding: 6px 0 4px; cursor: pointer; }
 
         /* ===== 灵工日结：接单日历（按天筛选） ===== */
         #view-workbench .wb-cal { margin: 0 12px 10px; background: #fff; border-radius: 14px; padding: 12px 12px 10px; box-shadow: 0 3px 12px rgba(31,35,41,.05); }
-        #view-workbench .wcal-top { display: flex; align-items: center; margin-bottom: 6px; }
+        #view-workbench .wcal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        #view-workbench .wcal-monthnav { display: flex; align-items: center; gap: 10px; }
         #view-workbench .wcal-m { font-size: 14.5px; font-weight: 800; letter-spacing: .2px; }
-        #view-workbench .wcal-nav { margin-left: auto; display: flex; align-items: center; gap: 6px; }
-        #view-workbench .wcal-nav span { height: 26px; min-width: 26px; padding: 0 8px; border-radius: 999px; background: #F2F4F7; color: #5A6170; font-size: 12.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-        #view-workbench .wcal-nav span:active { background: #E7EAF0; }
-        #view-workbench .wcal-nav .wcal-toggle { background: #EAF0FF; color: var(--blue); padding: 0 10px; font-size: 11.5px; }
+        #view-workbench .wcal-arrow { width: 26px; height: 26px; border-radius: 50%; background: #F2F4F7; color: #5A6170; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+        #view-workbench .wcal-arrow:active { background: #E7EAF0; }
+        #view-workbench .wcal-toggle { height: 26px; min-width: 26px; padding: 0 10px; border-radius: 999px; background: #EAF0FF; color: var(--blue); font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
         #view-workbench .wcal-wk { display: grid; grid-template-columns: repeat(7, 1fr); font-size: 11px; color: #A6ABB5; text-align: center; padding: 4px 0 2px; }
         #view-workbench .wcal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
         #view-workbench .wcal-d { height: 34px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 13px; color: var(--text); cursor: pointer; }
@@ -383,9 +382,6 @@
         #view-workbench .wcal-d.on { background: var(--blue); color: #fff; box-shadow: 0 3px 8px rgba(46,107,255,.3); }
         #view-workbench .wcal-d.on i { color: #fff; }
         #view-workbench .wcal-d.on b { background: #fff; }
-        #view-workbench .wcal-sum { display: flex; align-items: center; gap: 8px; margin-top: 7px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 11.5px; color: var(--sub); }
-        #view-workbench .wcal-sum b { color: var(--blue); font-weight: 700; }
-        #view-workbench .wcal-clear { margin-left: auto; color: var(--blue); font-weight: 600; cursor: pointer; }
         #view-workbench .wb-daily-list .rec[hidden] { display: none; }
 
         /* ===== 历史记录页（#view-history） ===== */
@@ -527,19 +523,19 @@
         #view-rdetail.has-dock .page { padding-bottom: 96px; }
         #dock-rdetail .rd-foot { background: rgba(255,255,255,.97); backdrop-filter: blur(10px); border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; padding: 9px 14px calc(9px + env(safe-area-inset-bottom)); }
         #dock-rdetail .rd-foot-tip { flex: 1; min-width: 0; font-size: 11px; line-height: 1.45; color: var(--sub); }
+        #dock-rdetail .rd-foot-tip:empty { display: none; }
         #dock-rdetail .rd-foot-tip b { display: block; font-size: 12px; font-weight: 700; color: #E86A10; margin-bottom: 1px; }
         #dock-rdetail .rd-foot-cancel { flex: none; min-width: 108px; height: 44px; border-radius: 22px; border: 1px solid #E6E8EC; background: #fff; color: #5A6170; font-size: 14px; font-weight: 700; cursor: pointer; }
         #dock-rdetail .rd-foot-cancel:active { background: #F5F6F8; }
         #dock-rdetail .rd-foot-cancel.wide { flex: 1; }
-        #dock-rdetail .rd-foot-main { flex: 1; height: 44px; border: none; border-radius: 22px; background: linear-gradient(90deg,#FF8A2A,#FF5722); color: #fff; font-size: 15px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 5px 14px rgba(255,87,34,.3); cursor: pointer; }
+        #dock-rdetail .rd-foot-main { flex: 1; height: 48px; border: none; border-radius: 10px; background: var(--blue); color: #fff; font-size: 16px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 5px 14px rgba(46,107,255,.28); cursor: pointer; }
+        #dock-rdetail .rd-foot-main:active { background: #1F55D8; }
 
         /* ===== 接单记录卡：行内操作按钮（取消接单 / 开始做工） ===== */
-        .rec-acts { display: flex; align-items: center; gap: 6px; flex: none; }
+        .rec-acts { display: flex; align-items: center; gap: 6px; flex: none; margin-left: auto; }
         .rec-acts button { height: 24px; padding: 0 11px; border-radius: 999px; font-size: 11.5px; font-weight: 700; line-height: 1; cursor: pointer; white-space: nowrap; }
         .rec-acts .rec-cancel { border: 1px solid #E6E8EC; background: #fff; color: #6B7280; }
         .rec-acts .rec-cancel:active { background: #F5F6F8; }
-        .rec-acts .rec-start { border: none; background: var(--blue); color: #fff; box-shadow: 0 3px 8px rgba(46,107,255,.26); }
-        .rec-acts .rec-start:active { background: #1F55D8; }
 
         #view-rdetail .rd-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
         #view-rdetail .rd-tag { font-size: 10.5px; color: #5A6170; background: #F4F5F7; border-radius: 5px; padding: 2px 7px; }
@@ -555,8 +551,9 @@
         #view-rdetail .rd-sec-t { font-size: 14.5px; font-weight: 800; margin-bottom: 9px; }
         #view-rdetail .rd-desc { font-size: 13px; color: #3D434D; line-height: 1.75; margin-top: 4px; }
         #view-rdetail .rd-row { display: flex; font-size: 13px; padding: 6px 0; align-items: flex-start; line-height: 1.6; }
-        #view-rdetail .rd-row span { width: 72px; flex: none; color: #8A8F99; }
+        #view-rdetail .rd-row > span { width: 72px; flex: none; color: #8A8F99; }
         #view-rdetail .rd-row b { font-weight: 600; color: var(--text); }
+        #view-rdetail .rd-date-item { display: inline-block; white-space: nowrap; margin-right: 4px; }
         #view-rdetail .rd-flow { display: flex; align-items: flex-start; margin: 14px 0 4px; }
         #view-rdetail .rd-flow.top { margin: 12px 0 4px; }
         #view-rdetail .flow-i { flex: 1; text-align: center; position: relative; }
@@ -567,6 +564,11 @@
         #view-rdetail .flow-i.on i { background: var(--blue); color: #fff; }
         #view-rdetail .flow-i span { display: block; font-size: 10.5px; color: #9AA0AA; margin-top: 4px; }
         #view-rdetail .flow-i.on span { color: var(--text); font-weight: 700; }
+        #view-rdetail .flow-i.fail i { background: var(--red); color: #fff; }
+        #view-rdetail .flow-i.stop i { background: #C8CDD5; color: #fff; }
+        #view-rdetail .flow-i.fail span { color: var(--red); font-weight: 700; }
+        #view-rdetail .flow-i.stop span { color: #9AA0AA; }
+        #view-rdetail .flow-i .flow-time { display: block; font-style: normal; font-size: 8.5px; color: #A6ABB5; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         #view-rdetail .rd-up { border: 1.5px dashed #C9D5F5; border-radius: 12px; background: #F8FAFF; padding: 17px 10px; text-align: center; cursor: pointer; }
         #view-rdetail .rd-up .cam { font-size: 26px; line-height: 1; }
         #view-rdetail .rd-up b { display: block; font-size: 13px; color: var(--blue); margin-top: 5px; }
@@ -587,7 +589,29 @@
         #view-rdetail .rd-settle-note span { display: block; font-size: 11px; color: #8A8F99; margin-bottom: 2px; }
         #view-rdetail .rd-row b.rd-settle-amt { color: var(--red); font-size: 16px; font-weight: 800; letter-spacing: .3px; }
         #view-rdetail .rd-demo { width: 100%; margin-top: 8px; border: 1px dashed #B9C4D8; background: #fff; color: #5A6170; border-radius: 10px; padding: 9px; font-size: 11.5px; cursor: pointer; }
-        #view-rdetail .rd-note { margin-top: 10px; padding: 10px 11px; border-radius: 10px; background: #FFF7EC; color: #8A5A16; font-size: 11.5px; line-height: 1.6; }
+        /* ===== 结算记录 / 延期记录 Tab ===== */
+        #view-rdetail .rd-tabs { display: flex; gap: 6px; background: #F4F5F7; border-radius: 10px; padding: 3px; margin-bottom: 10px; }
+        #view-rdetail .rd-tab { flex: 1; text-align: center; font-size: 12.5px; font-weight: 700; color: #8A8F99; padding: 8px 0; border-radius: 8px; cursor: pointer; }
+        #view-rdetail .rd-tab.on { background: #fff; color: #1F2329; box-shadow: 0 2px 6px rgba(31,35,41,.08); }
+        #view-rdetail .rd-tab em { font-style: normal; font-size: 10.5px; color: #A6ABB5; margin-left: 2px; }
+        #view-rdetail .rd-tab.on em { color: var(--blue); }
+        #view-rdetail .rd-st { border: 1px solid #EEF0F3; border-radius: 12px; padding: 11px 12px; margin-bottom: 9px; }
+        #view-rdetail .rd-st:last-child { margin-bottom: 0; }
+        #view-rdetail .rd-st-h { display: flex; align-items: center; gap: 8px; }
+        #view-rdetail .rd-st-h b { font-size: 19px; font-weight: 800; color: var(--red); letter-spacing: .3px; }
+        #view-rdetail .rd-ext .rd-st-h b { color: #34518F; }
+        #view-rdetail .rd-st-h .st { margin-left: auto; }
+        #view-rdetail .rd-st-sub { font-size: 11.5px; color: #8A8F99; margin-top: 4px; }
+        #view-rdetail .rd-st-sub em { font-style: normal; color: #E86A10; background: #FFF3E6; border-radius: 4px; padding: 1px 5px; margin-left: 4px; font-size: 10px; }
+        #view-rdetail .rd-st .rd-row { padding: 3px 0; font-size: 12px; }
+        #view-rdetail .rd-st .rd-row > span { width: 64px; }
+        #view-rdetail .rd-st-note { margin-top: 7px; padding: 7px 9px; background: #F7F8FA; border-radius: 7px; font-size: 11.5px; color: #5A6170; line-height: 1.6; }
+        #view-rdetail .rd-st-note span { color: #8A8F99; margin-right: 4px; }
+        #view-rdetail .rd-st-reject { margin-top: 7px; padding: 7px 9px; background: #FEF1F0; border-radius: 7px; font-size: 11.5px; color: #C0322A; line-height: 1.6; }
+        #view-rdetail .rd-empty { text-align: center; padding: 22px 0; font-size: 12px; color: #A6ABB5; }
+        #view-rdetail .rd-day-st { margin-left: auto; font-size: 10.5px; }
+        #view-rdetail .rd-day-h .rd-day-st + span { margin-left: 6px; }
+        #view-rdetail .rd-lock-hint { font-size: 11px; color: #A6ABB5; }        #view-rdetail .rd-note { margin-top: 10px; padding: 10px 11px; border-radius: 10px; background: #FFF7EC; color: #8A5A16; font-size: 11.5px; line-height: 1.6; }
         #view-rdetail .rd-note.ok { background: #E8F8EE; color: #167C46; }
         #view-rdetail .rd-note.fail { background: #FEEAEA; color: #C0322A; }
         .rd-file { display: none; }
@@ -653,6 +677,98 @@
         .sheet-sum b { color: var(--red); font-size: 16px; font-weight: 800; }
         .sheet-ok { margin-left: auto; border: none; border-radius: 22px; padding: 11px 24px; background: var(--blue); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
         .sheet-ok:disabled { background: #C9D2E3; }
+        /* ============================================================
+           钱包模块：我的钱包 / 提现
+           ============================================================ */
+        .pnav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.96); backdrop-filter: blur(8px); display: flex; align-items: center; gap: 10px; padding: calc(10px + env(safe-area-inset-top)) 14px 10px; border-bottom: 1px solid var(--line); }
+        .pnav-back { width: 32px; height: 32px; border-radius: 50%; background: #F2F3F5; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; cursor: pointer; color: var(--text); }
+        .pnav-t { font-size: 16px; font-weight: 700; }
+
+        /* ---- 余额卡 ---- */
+        #view-wallet .wal-body { padding: 12px; }
+        #view-wallet .wal-card { background: linear-gradient(135deg,#FFFCF5 0%,#FFF5E4 58%,#FFEED6 100%); border-radius: 14px; padding: 16px 16px 0; box-shadow: 0 4px 16px rgba(230,150,30,.12); position: relative; overflow: hidden; }
+        #view-wallet .wal-card::after { content: ''; position: absolute; right: -34px; top: -50px; width: 132px; height: 132px; border-radius: 50%; background: rgba(255,199,105,.20); }
+        #view-wallet .wal-top { display: flex; align-items: flex-start; position: relative; z-index: 1; }
+        #view-wallet .wal-lab { font-size: 12.5px; color: #94795A; }
+        #view-wallet .wal-coin { margin-left: auto; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #FFDC8C, #FFB01F 62%, #E0800A); box-shadow: 0 4px 10px rgba(224,128,10,.32), inset 0 0 0 3px rgba(255,255,255,.38); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 17px; font-weight: 800; }
+        #view-wallet .wal-amt { position: relative; z-index: 1; font-size: 31px; font-weight: 800; color: #2A2118; letter-spacing: .5px; line-height: 1.2; margin-top: 1px; }
+        #view-wallet .wal-amt i { font-size: 18px; font-style: normal; font-weight: 700; margin-right: 2px; }
+        #view-wallet .wal-btns { display: flex; gap: 14px; margin: 15px 0 13px; position: relative; z-index: 1; }
+        #view-wallet .wal-btns button { flex: 1; height: 38px; border-radius: 19px; border: 1px solid rgba(46,107,255,.42); background: rgba(255,255,255,.92); color: var(--blue); font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
+        #view-wallet .wal-btns button:active { background: #EAF0FF; }
+        #view-wallet .wal-split { display: flex; align-items: center; border-top: 1px solid rgba(196,164,112,.24); margin: 0 -16px; padding: 11px 0 12px; }
+        #view-wallet .wal-si { flex: 1; text-align: center; cursor: pointer; }
+        #view-wallet .wal-si span { display: block; font-size: 11.5px; color: #94795A; }
+        #view-wallet .wal-si b { font-size: 15px; font-weight: 800; color: #2A2118; }
+        #view-wallet .wal-si b.fz { color: var(--red); }
+        #view-wallet .wal-vline { width: 1px; height: 26px; background: rgba(196,164,112,.28); }
+
+        /* ---- 流水记录 ---- */
+        #view-wallet .wal-sec { background: #fff; border-radius: 14px; margin-top: 12px; box-shadow: 0 2px 10px rgba(31,35,41,.04); overflow: hidden; }
+        #view-wallet .wal-sec-h { display: flex; align-items: center; padding: 14px 14px 7px; }
+        #view-wallet .wal-sec-h span { font-size: 15px; font-weight: 700; }
+        #view-wallet .wal-reset { margin-left: auto; font-size: 12.5px; color: var(--blue); font-weight: 600; cursor: pointer; }
+        #view-wallet .wal-filter { display: flex; align-items: center; gap: 16px; padding: 0 14px 9px; border-bottom: 1px solid var(--line); }
+        #view-wallet .wf { position: relative; display: flex; align-items: center; gap: 4px; font-size: 12px; color: #6B7280; cursor: pointer; white-space: nowrap; }
+        #view-wallet .wf.on { color: var(--blue); font-weight: 700; }
+        #view-wallet .wf::after { content: ''; flex: none; width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-top: 4.5px solid currentColor; opacity: .6; margin-top: 2px; }
+        #view-wallet .wf input[type=date], #view-wallet .wf select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; border: none; cursor: pointer; font-size: 12px; }
+        #view-wallet .fl-i { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+        #view-wallet .fl-i:last-child { border-bottom: none; }
+        #view-wallet .fl-r1 { display: flex; align-items: baseline; gap: 10px; }
+        #view-wallet .fl-t { font-size: 14px; font-weight: 600; }
+        #view-wallet .fl-amt { margin-left: auto; flex: none; font-size: 15px; font-weight: 800; letter-spacing: .2px; color: #1F2329; }
+        #view-wallet .fl-amt.in { color: #1F2329; }
+        #view-wallet .fl-sub { font-size: 11.5px; color: #A6ABB5; margin-top: 3px; }
+        #view-wallet .fl-time { font-size: 11px; color: #C2C7D0; margin-top: 1px; }
+        #view-wallet .wal-empty { padding: 36px 0 32px; text-align: center; font-size: 12.5px; color: #A6ABB5; }
+
+        /* ---- 提现 ---- */
+        #view-withdraw .page { padding-bottom: 100px; }
+        #view-withdraw .wd-body { padding: 12px; }
+        #view-withdraw .wd-card { background: #fff; border-radius: 14px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(31,35,41,.04); }
+        #view-withdraw .wd-h { display: flex; align-items: center; gap: 3px; font-size: 13.5px; font-weight: 700; }
+        #view-withdraw .wd-h .req { color: var(--red); font-size: 14px; }
+        #view-withdraw .wd-h em { margin-left: auto; font-style: normal; font-size: 11.5px; font-weight: 400; color: #A6ABB5; }
+        #view-withdraw .wd-h em b { color: var(--red); font-weight: 700; font-size: 12.5px; }
+        #view-withdraw .wd-bank { display: flex; align-items: center; gap: 11px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); cursor: pointer; }
+        #view-withdraw .wd-bank-ico { width: 40px; height: 40px; border-radius: 9px; background: linear-gradient(135deg,#FF8A4C,#F0301F); color: #fff; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.2; flex: none; }
+        #view-withdraw .wd-bank-main { flex: 1; min-width: 0; }
+        #view-withdraw .wd-bank-main b { display: block; font-size: 13.5px; line-height: 1.4; }
+        #view-withdraw .wd-bank-main span { display: block; font-size: 11.5px; color: #8A8F99; margin-top: 1px; letter-spacing: .5px; }
+        #view-withdraw .wd-arrow { flex: none; color: #C0C5CE; font-size: 19px; }
+        #view-withdraw .wd-amtrow { display: flex; align-items: center; gap: 6px; margin-top: 8px; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+        #view-withdraw .wd-amtrow i { font-style: normal; font-size: 19px; font-weight: 700; }
+        #view-withdraw .wd-amtrow input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 25px; font-weight: 800; color: var(--text); font-family: inherit; letter-spacing: .5px; }
+        #view-withdraw .wd-amtrow input::placeholder { color: #C7CBD2; font-weight: 700; }
+        #view-withdraw .wd-amtrow input::-webkit-outer-spin-button, #view-withdraw .wd-amtrow input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        #view-withdraw .wd-all { flex: none; font-size: 12.5px; color: var(--blue); font-weight: 600; cursor: pointer; }
+        #view-withdraw .wd-limit { font-size: 11.5px; color: #A6ABB5; margin-top: 9px; }
+        #view-withdraw .wd-vrow { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 11px 12px; background: var(--fill); border-radius: 10px; }
+        #view-withdraw .wd-vrow input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 13.5px; color: var(--text); font-family: inherit; letter-spacing: 2px; }
+        #view-withdraw .wd-vrow input::placeholder { letter-spacing: 0; color: #A6ABB5; }
+        #view-withdraw .wd-send { flex: none; font-size: 12.5px; color: var(--blue); font-weight: 700; cursor: pointer; }
+        #view-withdraw .wd-send.off { color: #B9BEC7; cursor: default; }
+        #view-withdraw .wd-tips { padding: 2px 4px 4px; }
+        #view-withdraw .wd-tips-t { font-size: 12.5px; font-weight: 700; color: #5A6170; margin-bottom: 4px; }
+        #view-withdraw .wd-tips p { font-size: 11.5px; color: #8A8F99; line-height: 1.9; }
+
+        /* ---- 提现底栏 ---- */
+        #dock-wallet .dw-bar { background: rgba(255,255,255,.97); backdrop-filter: blur(10px); border-top: 1px solid var(--line); display: flex; align-items: center; gap: 12px; padding: 9px 14px calc(9px + env(safe-area-inset-bottom)); }
+        #dock-wallet .dw-info { flex: 1; min-width: 0; }
+        #dock-wallet .dw-info span { display: block; font-size: 11px; color: #8A8F99; line-height: 1.55; }
+        #dock-wallet .dw-info b { color: var(--red); font-size: 13px; font-weight: 800; }
+        #dock-wallet .dw-submit { flex: none; min-width: 130px; height: 44px; border: none; border-radius: 22px; background: var(--blue); color: #fff; font-size: 15px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 5px 14px rgba(46,107,255,.3); cursor: pointer; }
+        #dock-wallet .dw-submit:active { background: #1F55D8; }
+
+        /* ---- 弹窗内余额明细 ---- */
+        .m-list { text-align: left; }
+        .m-li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+        .m-li:last-child { border-bottom: none; }
+        .m-li span { color: #5A6170; font-weight: 600; min-width: 0; }
+        .m-li b { margin-left: auto; flex: none; font-weight: 800; white-space: nowrap; }
+        .m-li i { display: block; font-style: normal; font-weight: 400; font-size: 11px; color: #A6ABB5; margin-top: 1px; line-height: 1.5; }
+
     </style>
 </head>
 <body>
@@ -807,7 +923,7 @@
                         <div class="wb-cell-name">收款方式</div>
                         <div class="wb-cell-sub">用于收款</div>
                     </div>
-                    <div class="wb-cell" onclick="toast('我的钱包')">
+                    <div class="wb-cell" onclick="goWallet()">
                         <div class="wb-cell-ico t-blue">👛</div>
                         <div class="wb-cell-name">我的钱包</div>
                         <div class="wb-cell-sub">资金收益</div>
@@ -855,121 +971,113 @@
                 <!-- 接单日历：默认收起只显示当周，展开可看整月；标记待做工日期 -->
                 <div class="wb-cal" id="wb-cal">
                     <div class="wcal-top">
-                        <div class="wcal-m" id="wcal-title">2026年11月</div>
-                        <div class="wcal-nav">
-                            <span onclick="calMove(-1)">‹</span>
-                            <span onclick="calBackToday()">今天</span>
-                            <span onclick="calMove(1)">›</span>
-                            <span class="wcal-toggle" id="wcal-toggle" onclick="toggleWcal()">展开 ▾</span>
+                        <div class="wcal-monthnav">
+                            <span class="wcal-arrow" onclick="calMove(-1)">‹</span>
+                            <div class="wcal-m" id="wcal-title">2026年11月</div>
+                            <span class="wcal-arrow" onclick="calMove(1)">›</span>
                         </div>
+                        <span class="wcal-toggle" id="wcal-toggle" onclick="toggleWcal()">展开 ▾</span>
                     </div>
                     <div class="wcal-wk"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
                     <div class="wcal-grid" id="wcal-body"></div>
-                    <div class="wcal-sum" id="wcal-sum"></div>
                 </div>
 
                 <div class="wb-daily-list">
                     <div class="rec" data-rec-id="r6" onclick="openRecDetail('r6')">
                         <div class="rec-head">
                             <span class="rec-title">武汉得物客服</span>
-                            <span class="rec-money"><em>预计</em> ¥100</span>
+                            <span class="rec-money">¥100</span>
                         </div>
-                        <div class="rec-date"><b>11-19</b><span class="rec-days">单日</span></div>
-                        <div class="rec-sub">8:00~12:00 · 预计5小时 · 20元/时</div>
+                        <div class="rec-date"><b>11-19</b><span class="rec-days">共1日</span></div>
                         <div class="rec-foot">
                             <span class="st st-wait">接单审核中</span>
-                            <span>11-16 20:10 提交接单申请</span>
                         </div>
                     </div>
                     <div class="rec" data-rec-id="r7" onclick="openRecDetail('r7')">
                         <div class="rec-head">
                             <span class="rec-title">立讯精密 · 组装线普工（5天）</span>
-                            <span class="rec-money"><em>预计</em> ¥1300</span>
+                            <span class="rec-money">¥1560</span>
                         </div>
                         <div class="rec-date"><b>11-16 ~ 11-20</b><span class="rec-days">共5天</span></div>
-                        <div class="rec-sub">08:00-20:00 · 每天12小时 · 26元/时</div>
                         <div class="rec-foot">
                             <span class="st st-doing">做工中</span>
-                            <span>11-20 前按天上传工作图片</span>
+                        </div>
+                    </div>
+                    <div class="rec" data-rec-id="r11" onclick="openRecDetail('r11')">
+                        <div class="rec-head">
+                            <span class="rec-title">顺丰速运 · 分拣临时工</span>
+                            <span class="rec-money">¥224</span>
+                        </div>
+                        <div class="rec-date"><b>11-21 ~ 11-22</b><span class="rec-days">共2天</span></div>
+                        <div class="rec-note">有一笔发放被驳回：打款账户信息有误，商家将重新处理。</div>
+                        <div class="rec-foot">
+                            <span class="st st-wait">结算审核中</span>
                         </div>
                     </div>
                     <div class="rec" data-rec-id="r1" onclick="openRecDetail('r1')">
                         <div class="rec-head">
                             <span class="rec-title">立讯精密 · 组装线普工</span>
-                            <span class="rec-money"><em>预计</em> ¥750</span>
+                            <span class="rec-money">¥750</span>
                         </div>
                         <div class="rec-date"><b>11-16 ~ 11-18</b><span class="rec-days">共3天</span></div>
-                        <div class="rec-sub">08:00-18:00 · 每天10小时 · 25元/时</div>
                         <div class="rec-foot">
                             <span class="st st-doing">待开工</span>
-                            <span>明天 08:00 上岗</span>
                         </div>
                     </div>
 
                     <div class="rec" data-rec-id="r2" onclick="openRecDetail('r2')">
                         <div class="rec-head">
                             <span class="rec-title">京东仓储 · 打包员</span>
-                            <span class="rec-money"><em>预计</em> ¥648</span>
+                            <span class="rec-money">¥648</span>
                         </div>
                         <div class="rec-date"><b>11-15 ~ 11-17</b><span class="rec-days">共3天</span></div>
-                        <div class="rec-sub">08:00-17:00 · 每天9小时 · 24元/时</div>
                         <div class="rec-foot">
                             <span class="st st-wait">结算审核中</span>
-                            <span>11-16 18:12 提交完工</span>
                         </div>
                     </div>
 
                     <div class="rec" data-rec-id="r3" onclick="openRecDetail('r3')">
                         <div class="rec-head">
                             <span class="rec-title">顺丰速运 · 分拣临时工</span>
-                            <span class="rec-money"><em>预计</em> ¥112</span>
+                            <span class="rec-money">¥112</span>
                         </div>
-                        <div class="rec-date"><b>11-16</b><span class="rec-days">单日</span></div>
-                        <div class="rec-sub">19:00-23:00 · 4小时 · 28元/时</div>
+                        <div class="rec-date"><b>11-16</b><span class="rec-days">共1日</span></div>
                         <div class="rec-foot">
                             <span class="st st-doing">待开工</span>
-                            <span>今晚 19:00 上岗</span>
                         </div>
                     </div>
 
                     <div class="rec" data-rec-id="r4" onclick="openRecDetail('r4')">
                         <div class="rec-head">
                             <span class="rec-title">比亚迪 · 线束车间操作工</span>
-                            <span class="rec-money"><em>预计</em> ¥972</span>
+                            <span class="rec-money">¥972</span>
                         </div>
                         <div class="rec-date"><b>11-14 ~ 11-16</b><span class="rec-days">共3天</span></div>
-                        <div class="rec-sub">08:00-20:00 · 每天12小时 · 27元/时</div>
                         <div class="rec-foot">
                             <span class="st st-wait">结算审核中</span>
-                            <span>11-16 20:30 提交完工</span>
                         </div>
                     </div>
 
                     <div class="rec" data-rec-id="r10" onclick="openRecDetail('r10')">
                         <div class="rec-head">
                             <span class="rec-title">小米科技 · 装配临时工</span>
-                            <span class="rec-money"><em>预计</em> ¥520</span>
+                            <span class="rec-money">¥520</span>
                         </div>
                         <div class="rec-date"><b>11-13 ~ 11-14</b><span class="rec-days">共2天</span></div>
-                        <div class="rec-sub">08:00-18:00 · 每天10小时 · 26元/时</div>
                         <div class="rec-foot">
                             <span class="st st-wait">待发薪</span>
-                            <span>结算审核已通过，待发薪</span>
                         </div>
                     </div>
                     <div class="rec" data-rec-id="r5" onclick="openRecDetail('r5')">
                         <div class="rec-head">
                             <span class="rec-title">中通快递 · 装卸工</span>
-                            <span class="rec-money"><em>预计</em> ¥360</span>
+                            <span class="rec-money">¥360</span>
                         </div>
                         <div class="rec-date"><b>11-16 ~ 11-17</b><span class="rec-days">共2天</span></div>
-                        <div class="rec-sub">20:00-02:00 · 每天6小时 · 30元/时</div>
                         <div class="rec-foot">
                             <span class="st st-doing">待开工</span>
-                            <span>今晚 20:00 上岗</span>
                         </div>
                     </div>
-
                 </div>
                 <div class="wb-empty" id="wb-daily-empty" hidden>
                     <div class="wb-empty-ico">📋</div>
@@ -990,14 +1098,14 @@
             <div class="h-filter">
                 <div class="h-selwrap">
                     <select class="h-sel" id="his-status" onchange="setHisTab(this.value)">
-                        <option value="all">全部状态 (9)</option>
-                        <option value="paid">已发薪 (5)</option>
+                        <option value="all">全部状态 (10)</option>
+                        <option value="paid">已结算 (6)</option>
                         <option value="settle_rejected">结算未通过 (2)</option>
                         <option value="cancelled">已取消 (1)</option>
                         <option value="apply_rejected">接单未通过 (1)</option>
                     </select>
                 </div>
-                <div class="h-count" id="his-count">共 9 条</div>
+                <div class="h-count" id="his-count">共 10 条</div>
             </div>
 
             <div class="h-list" id="his-list">
@@ -1007,11 +1115,9 @@
                         <span class="rec-title">顺丰速运 · 分拣临时工</span>
                         <span class="rec-money">¥112</span>
                     </div>
-                    <div class="rec-date"><b>11-15</b><span class="rec-days">单日</span></div>
-                    <div class="rec-sub">19:00-23:00 · 4小时 · 28元/时</div>
-                    <div class="rec-foot">
+                    <div class="rec-date"><b>11-15</b><span class="rec-days">共1日</span></div>
+                        <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span>11-16 09:30 已到账</span>
                         <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
@@ -1022,10 +1128,8 @@
                         <span class="rec-money">¥648</span>
                     </div>
                     <div class="rec-date"><b>11-12 ~ 11-14</b><span class="rec-days">共3天</span></div>
-                    <div class="rec-sub">08:00-17:00 · 每天9小时 · 24元/时</div>
-                    <div class="rec-foot">
+                        <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span>11-15 10:05 已到账</span>
                         <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
@@ -1036,10 +1140,8 @@
                         <span class="rec-money">¥1296</span>
                     </div>
                     <div class="rec-date"><b>11-08 ~ 11-11</b><span class="rec-days">共4天</span></div>
-                    <div class="rec-sub">08:00-20:00 · 每天12小时 · 27元/时</div>
-                    <div class="rec-foot">
+                        <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span>11-12 11:20 已到账</span>
                         <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
@@ -1050,10 +1152,8 @@
                         <span class="rec-money">¥360</span>
                     </div>
                     <div class="rec-date"><b>11-05 ~ 11-06</b><span class="rec-days">共2天</span></div>
-                    <div class="rec-sub">20:00-02:00 · 每天6小时 · 30元/时</div>
-                    <div class="rec-foot">
+                        <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span>11-07 09:15 已到账</span>
                         <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
@@ -1064,10 +1164,21 @@
                         <span class="rec-money">¥750</span>
                     </div>
                     <div class="rec-date"><b>11-01 ~ 11-03</b><span class="rec-days">共3天</span></div>
-                    <div class="rec-sub">08:00-18:00 · 每天10小时 · 25元/时</div>
-                    <div class="rec-foot">
+                        <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span>11-04 10:40 已到账</span>
+                        <span class="rec-link">明细 ›</span>
+                    </div>
+                </div>
+
+                <!-- 多结算已发薪 -->
+                <div class="rec" data-st="paid" data-rec-id="h9" onclick="openRecDetail('h9')">
+                    <div class="rec-head">
+                        <span class="rec-title">美团买菜 · 分拣打包</span>
+                        <span class="rec-money">¥832</span>
+                    </div>
+                    <div class="rec-date"><b>11-01 ~ 11-04</b><span class="rec-days">共4天</span></div>
+                        <div class="rec-foot">
+                        <span class="st st-pass">已发薪</span>
                         <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
@@ -1078,13 +1189,11 @@
                         <span class="rec-title">美团买菜 · 夜班理货</span>
                         <span class="rec-money off">¥208</span>
                     </div>
-                    <div class="rec-date"><b>11-13</b><span class="rec-days">单日</span></div>
-                    <div class="rec-sub">22:00-06:00 · 8小时 · 26元/时</div>
-                    <div class="rec-note">结算未通过原因：打卡工时与排班不符（实到 6.5 小时），请联系驻场补录后重新提交。</div>
+                    <div class="rec-date"><b>11-13</b><span class="rec-days">共1日</span></div>
+                        <div class="rec-note">结算未通过原因：打卡工时与排班不符（实到 6.5 小时），请联系驻场补录后重新提交。</div>
                     <div class="rec-foot">
                         <span class="st st-fail">结算未通过</span>
-                        <span>11-14 10:20 审核</span>
-                        <span class="rec-link">去补录 ›</span>
+                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1093,13 +1202,11 @@
                         <span class="rec-title">顺丰速运 · 分拣临时工</span>
                         <span class="rec-money off">¥112</span>
                     </div>
-                    <div class="rec-date"><b>11-09</b><span class="rec-days">单日</span></div>
-                    <div class="rec-sub">19:00-23:00 · 4小时 · 28元/时</div>
-                    <div class="rec-note">结算未通过原因：缺少离场打卡记录，驻场确认工时后可重新提交。</div>
+                    <div class="rec-date"><b>11-09</b><span class="rec-days">共1日</span></div>
+                        <div class="rec-note">结算未通过原因：缺少离场打卡记录，驻场确认工时后可重新提交。</div>
                     <div class="rec-foot">
                         <span class="st st-fail">结算未通过</span>
-                        <span>11-10 09:05 审核</span>
-                        <span class="rec-link">去补录 ›</span>
+                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1109,12 +1216,10 @@
                         <span class="rec-title">富士康 · 质检员</span>
                         <span class="rec-money off">¥207</span>
                     </div>
-                    <div class="rec-date"><b>11-17</b><span class="rec-days">单日</span></div>
-                    <div class="rec-sub">08:00-17:00 · 每天9小时 · 23元/时</div>
-                    <div class="rec-note">接单未通过原因：该岗位本批次已满员，本次接单申请未通过，可查看其他岗位重新接单。</div>
+                    <div class="rec-date"><b>11-17</b><span class="rec-days">共1日</span></div>
+                        <div class="rec-note">接单未通过原因：该岗位本批次已满员，本次接单申请未通过，可查看其他岗位重新接单。</div>
                     <div class="rec-foot">
                         <span class="st st-fail">接单未通过</span>
-                        <span>商家审核未通过</span>
                         <span class="rec-link">详情 ›</span>
                     </div>
                 </div>
@@ -1125,12 +1230,10 @@
                         <span class="rec-title">美团买菜 · 分拣打包</span>
                         <span class="rec-money off">¥208</span>
                     </div>
-                    <div class="rec-date"><b>11-08</b><span class="rec-days">单日</span></div>
-                    <div class="rec-sub">06:00-14:00 · 8小时 · 26元/时</div>
-                    <div class="rec-note">取消原因：临时有事，无法按时到岗。</div>
+                    <div class="rec-date"><b>11-08</b><span class="rec-days">共1日</span></div>
+                        <div class="rec-note">取消原因：临时有事，无法按时到岗。</div>
                     <div class="rec-foot">
                         <span class="st st-cancel">已取消</span>
-                        <span>11-07 19:20 取消</span>
                         <span class="rec-link">详情 ›</span>
                     </div>
                 </div>
@@ -1312,12 +1415,12 @@
                     <div class="dd-sec-t">温馨提示</div>
                     <div class="tip-item">
                         <strong>1. 接单与审核</strong>
-                        <p><b>接单审核：</b>提交接单申请后，商家审核通过即进入「待开工」；若未通过则显示「接单未通过」，可重新接单。审核结果通过系统通知告知。</p>
-                        <p><b>取消规则：</b>接单后、开始做工前（接单审核中 / 待开工）均可取消接单；点击「开始做工」后不可取消，如遇特殊情况请联系驻场顾问。</p>
+                        <p><b>接单审核：</b>提交接单申请后，商家审核通过即进入「做工中」，无需再点击开始做工；若未通过则显示「接单未通过」，可重新接单。审核结果通过系统通知告知。</p>
+                        <p><b>取消规则：</b>仅「接单审核中」可取消接单；审核通过进入「做工中」后不可取消，如遇特殊情况请联系驻场顾问。</p>
                     </div>
                     <div class="tip-item">
                         <strong>2. 结算与报酬</strong>
-                        <p><b>结算与发薪：</b>完工提交后进入结算审核，商家核对考勤工时与结算金额；通过后依次为「待发薪」「已发薪」，工资发放至平台钱包。若结算未通过，可补录后重新提交。</p>
+                        <p><b>结算与发薪：</b>完工提交后进入结算审核，商家核对考勤工时与结算金额；结算记录会显示「待审核」「待打款」「已打款」，工资发放至平台钱包。若打款被驳回，商家将重新处理。</p>
                         <p><b>提现须知：</b>请您自行操作提现，申请后平台会尽快处理。</p>
                     </div>
                     <div class="tip-item">
@@ -1352,6 +1455,110 @@
                 <div class="o-nav-t" id="o-nav-t">实名认证</div>
             </div>
             <div class="o-body" id="o-body"></div>
+        </div>
+    </div>
+
+    <!-- ============ 视图：我的钱包 ============ -->
+    <div class="view" id="view-wallet">
+        <div class="page">
+            <div class="pnav">
+                <div class="pnav-back" onclick="backWallet()">‹</div>
+                <div class="pnav-t">我的钱包</div>
+            </div>
+            <div class="wal-body">
+                <div class="wal-card">
+                    <div class="wal-top">
+                        <div class="wal-lab">账户余额（元）</div>
+                        <div class="wal-coin">¥</div>
+                    </div>
+                    <div class="wal-amt"><i>¥</i><span id="wal-avail-big">0.00</span></div>
+                    <div class="wal-btns">
+                        <button onclick="goWithdraw()">去提现</button>
+                        <button onclick="toast('转账功能暂未开放')">去转账</button>
+                    </div>
+                    <div class="wal-split">
+                        <div class="wal-si" onclick="toast('可用余额：已完成发薪、可随时提现的金额')">
+                            <span>可用余额</span>
+                            <b id="wal-avail">¥0.00</b>
+                        </div>
+                        <div class="wal-vline"></div>
+                        <div class="wal-si" onclick="showFrozen()">
+                            <span>不可用余额</span>
+                            <b class="fz" id="wal-frozen">¥0.00 ›</b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wal-sec">
+                    <div class="wal-sec-h">
+                        <span>流水记录</span>
+                        <div class="wal-reset" onclick="resetFlow()">重置</div>
+                    </div>
+                    <div class="wal-filter">
+                        <div class="wf" id="wf-from"><span>交易开始</span><input type="date" onchange="onFlowDate('from', this.value)"></div>
+                        <div class="wf" id="wf-to"><span>交易结束</span><input type="date" onchange="onFlowDate('to', this.value)"></div>
+                        <div class="wf" id="wf-type"><span>全部类型</span>
+                            <select onchange="onFlowType(this.value)">
+                                <option value="all">全部类型</option>
+                                <option value="wage">工资入账</option>
+                                <option value="withdraw">提现</option>
+                                <option value="fee">手续费</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="wal-list" id="wal-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ 视图：提现 ============ -->
+    <div class="view" id="view-withdraw">
+        <div class="page">
+            <div class="pnav">
+                <div class="pnav-back" onclick="backWithdraw()">‹</div>
+                <div class="pnav-t">提现</div>
+            </div>
+            <div class="wd-body">
+                <div class="wd-card">
+                    <div class="wd-h"><span class="req">*</span>收款方式<em>若需修改，请至收款方式中修改账户</em></div>
+                    <div class="wd-bank" onclick="toast('请至「我的 - 收款方式」修改提现账户')">
+                        <div class="wd-bank-ico">招商<br>银行</div>
+                        <div class="wd-bank-main">
+                            <b>招商银行</b>
+                            <span>朱轩均</span>
+                            <span>6214 8502 7443 4015</span>
+                        </div>
+                        <div class="wd-arrow">›</div>
+                    </div>
+                </div>
+
+                <div class="wd-card">
+                    <div class="wd-h"><span class="req">*</span>提现金额<em>可用余额 <b id="wd-avail">¥ 0.00</b></em></div>
+                    <div class="wd-amtrow">
+                        <i>¥</i>
+                        <input id="wd-amt" type="number" inputmode="decimal" placeholder="0.00" oninput="calcFee()">
+                        <div class="wd-all" onclick="fillAll()">全部提现</div>
+                    </div>
+                    <div class="wd-limit">单笔提现金额：0 ~ 1000元</div>
+                </div>
+
+                <div class="wd-card">
+                    <div class="wd-h"><span class="req">*</span>验证码</div>
+                    <div class="wd-vrow">
+                        <input id="wd-code" maxlength="6" inputmode="numeric" placeholder="请输入验证码">
+                        <div class="wd-send" id="wd-send" onclick="sendCode()">发送验证码</div>
+                    </div>
+                </div>
+
+                <div class="wd-tips">
+                    <div class="wd-tips-t">温馨提示</div>
+                    <p>1、提现仅支持提现至银行卡、支付宝</p>
+                    <p>2、银行卡收款，每笔收取5元手续费；支付宝收款每笔服务费3%，最多50元</p>
+                    <p>3、提现金额不可大于可用余额</p>
+                    <p>4、申请提现后，打款处理时限为7个工作日</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1443,6 +1650,17 @@
             <div class="rd-foot-tip" id="rd-foot-tip"><b>接单审核中</b>开工前可取消接单</div>
             <button class="rd-foot-cancel" id="rd-foot-cancel" onclick="cancelCurRec()">取消接单</button>
             <button class="rd-foot-main" id="rd-foot-main">开始做工</button>
+        </div>
+    </div>
+
+    <!-- 提现页底部操作栏 -->
+    <div class="dock" id="dock-wallet">
+        <div class="dw-bar">
+            <div class="dw-info">
+                <span>实际到账 <b id="dw-real">¥ 0.00</b></span>
+                <span>手续费 <b id="dw-fee">¥ 0.00</b></span>
+            </div>
+            <button class="dw-submit" onclick="submitWithdraw()">提交</button>
         </div>
     </div>
 
@@ -1870,14 +2088,17 @@ const viewDailyEl = document.getElementById('view-daily');
 const viewDDetailEl = document.getElementById('view-ddetail');
 const viewOrderEl = document.getElementById('view-order');
 const viewRDetailEl = document.getElementById('view-rdetail');
+const viewWalletEl = document.getElementById('view-wallet');
+const viewWithdrawEl = document.getElementById('view-withdraw');
 const dockTabEl = document.getElementById('dock-tab');
 const dockDetailEl = document.getElementById('dock-detail');
 const dockDDetailEl = document.getElementById('dock-ddetail');
 const dockRDetailEl = document.getElementById('dock-rdetail');
-const ALL_VIEWS = [viewHomeEl, viewDetailEl, viewWorkEl, viewHistoryEl, viewDailyEl, viewDDetailEl, viewOrderEl, viewRDetailEl];
-const VIEW_MAP = { home: viewHomeEl, work: viewWorkEl, detail: viewDetailEl, history: viewHistoryEl, daily: viewDailyEl, ddetail: viewDDetailEl, order: viewOrderEl, rdetail: viewRDetailEl };
+const dockWalletEl = document.getElementById('dock-wallet');
+const ALL_VIEWS = [viewHomeEl, viewDetailEl, viewWorkEl, viewHistoryEl, viewDailyEl, viewDDetailEl, viewOrderEl, viewRDetailEl, viewWalletEl, viewWithdrawEl];
+const VIEW_MAP = { home: viewHomeEl, work: viewWorkEl, detail: viewDetailEl, history: viewHistoryEl, daily: viewDailyEl, ddetail: viewDDetailEl, order: viewOrderEl, rdetail: viewRDetailEl, wallet: viewWalletEl, withdraw: viewWithdrawEl };
 let curView = '';
-const scrollMap = { home: 0, work: 0, daily: 0 };   // 各 Tab 离开时的滚动位置
+const scrollMap = { home: 0, work: 0, daily: 0, wallet: 0, withdraw: 0 };   // 各 Tab 离开时的滚动位置
 let directDetail = false; // 是否直接通过 hash/参数进入详情（无首页历史）
 
 function parseHash() {
@@ -1889,6 +2110,8 @@ function parseHash() {
     if (h === 'work') return { view: 'work' };
     if (h === 'daily') return { view: 'daily' };
     if (h === 'history') return { view: 'history' };
+    if (h === 'wallet') return { view: 'wallet' };
+    if (h === 'withdraw') return { view: 'withdraw' };
     return { view: 'home' };
 }
 function getQuery(k) {
@@ -2083,7 +2306,7 @@ function addRecordFromOrder(days) {
     const r = {
         id: id, title: '武汉得物客服',
         date: dayList.length > 1 ? dayList[0] + ' ~ ' + dayList[dayList.length - 1] : dayList[0],
-        days: dayList.length > 1 ? '共' + dayList.length + '天' : '单日',
+        days: dayList.length > 1 ? '共' + dayList.length + '天' : '共1日',
         dayList: dayList,
         time: '8:00~12:00 · 预计5小时 · 20元/时', rate: '20元/小时',
         amount: 100 * dayList.length,
@@ -2091,16 +2314,9 @@ function addRecordFromOrder(days) {
     };
     RECORD_MAP[id] = r;
     const list = document.querySelector('.wb-daily-list');
-    const div = document.createElement('div');
-    div.className = 'rec';
-    div.dataset.recId = id;
-    div.onclick = function () { openRecDetail(id); };
-    div.innerHTML = '<div class="rec-head"><span class="rec-title">' + r.title + '</span><span class="rec-money"><em>预计</em> ¥' + r.amount + '</span></div>' +
-        '<div class="rec-date"><b>' + r.date + '</b><span class="rec-days">' + r.days + '</span></div>' +
-        '<div class="rec-sub">' + r.time + '</div>' +
-        '<div class="rec-foot"><span class="st st-wait">接单审核中</span><span>' + r.hint + '</span></div>';
-    list.insertBefore(div, list.firstChild);
-    syncRecCard(r);
+    const box = document.createElement('div');
+    box.innerHTML = recCardHtml(r, 'active');
+    list.insertBefore(box.firstElementChild, list.firstChild);
     renderWbCal();
 }
 
@@ -2129,28 +2345,50 @@ function photoSrc(p) { return typeof p === 'string' ? p : (p && p.src) || ''; }
 function photoTime(p) { return typeof p === 'string' ? '' : ((p && p.t) || ''); }
 function hhmm(t) { return t ? t.slice(-5) : ''; }
 const RECORD_MAP = {
-    r1: { id: 'r1', title: '立讯精密 · 组装线普工', date: '11-16 ~ 11-18', days: '共3天', dayList: ['11-16', '11-17', '11-18'], time: '08:00-18:00 · 每天10小时 · 25元/时', rate: '25元/小时', amount: 750, status: 'ready', hint: '接单审核通过，明天 08:00 上岗', dayPhotos: {} },
+    r1: { id: 'r1', title: '立讯精密 · 组装线普工', date: '11-16 ~ 11-18', days: '共3天', dayList: ['11-16', '11-17', '11-18'], time: '08:00-18:00 · 每天10小时 · 25元/时', rate: '25元/小时', amount: 750, status: 'working', hint: '接单审核通过，做工中', dayPhotos: {} },
     r2: {
         id: 'r2', title: '京东仓储 · 打包员', date: '11-15 ~ 11-17', days: '共3天', dayList: ['11-15', '11-16', '11-17'], time: '08:00-17:00 · 每天9小时 · 24元/时', rate: '24元/小时', amount: 648, status: 'settle_review', hint: '11-16 18:12 提交完工，结算审核中', submittedAt: '11-16 18:12',
         dayPhotos: { '11-15': [demoPhoto('11-15 现场'), demoPhoto('11-15 打卡')], '11-16': [demoPhoto('11-16 现场')], '11-17': [demoPhoto('11-17 现场')] }
     },
-    r3: { id: 'r3', title: '顺丰速运 · 分拣临时工', date: '11-16', days: '单日', dayList: ['11-16'], time: '19:00-23:00 · 4小时 · 28元/时', rate: '28元/小时', amount: 112, status: 'ready', hint: '接单审核通过，今晚 19:00 上岗', dayPhotos: {} },
+    r3: { id: 'r3', title: '顺丰速运 · 分拣临时工', date: '11-16', days: '共1日', dayList: ['11-16'], time: '19:00-23:00 · 4小时 · 28元/时', rate: '28元/小时', amount: 112, status: 'working', hint: '接单审核通过，做工中', dayPhotos: {} },
     r4: {
         id: 'r4', title: '比亚迪 · 线束车间操作工', date: '11-14 ~ 11-16', days: '共3天', dayList: ['11-14', '11-15', '11-16'], time: '08:00-20:00 · 每天12小时 · 27元/时', rate: '27元/小时', amount: 972, status: 'settle_review', hint: '11-16 20:30 提交完工，结算审核中', submittedAt: '11-16 20:30',
         dayPhotos: { '11-14': [demoPhoto('11-14 现场')], '11-15': [demoPhoto('11-15 现场'), demoPhoto('11-15 车间')], '11-16': [demoPhoto('11-16 现场')] }
     },
-    r7: { id: 'r7', title: '立讯精密 · 组装线普工（5天）', date: '11-16 ~ 11-20', days: '共5天', dayList: ['11-16', '11-17', '11-18', '11-19', '11-20'], time: '08:00-20:00 · 每天12小时 · 26元/时', rate: '26元/小时', amount: 1300, status: 'working', hint: '11-20 前按天上传工作图片', dayPhotos: {} },
-    r5: { id: 'r5', title: '中通快递 · 装卸工', date: '11-16 ~ 11-17', days: '共2天', dayList: ['11-16', '11-17'], time: '20:00-02:00 · 每天6小时 · 30元/时', rate: '30元/小时', amount: 360, status: 'ready', hint: '接单审核通过，今晚 20:00 上岗', dayPhotos: {} },
-    r6: { id: 'r6', title: '武汉得物客服', date: '11-19', days: '单日', dayList: ['11-19'], time: '8:00~12:00 · 预计5小时 · 20元/时', rate: '20元/小时', amount: 100, status: 'apply_review', hint: '11-16 20:10 提交接单申请', dayPhotos: {} },
+    r7: {
+        id: 'r7', title: '立讯精密 · 组装线普工（5天）', date: '11-16 ~ 11-20', days: '共5天',
+        dayList: ['11-16', '11-17', '11-18', '11-19', '11-20'],
+        time: '08:00-20:00 · 每天12小时 · 26元/时', rate: '26元/小时',
+        amount: 1560, estAmount: 1560, status: 'working', hint: '剩余 2 天，已发薪 1 笔',
+        submittedAt: '11-21 18:10',
+        extendLogs: [{ time: '11-18 16:00', days: 2, dates: ['11-19', '11-20'], by: '王秋玲' }],
+        dayPhotos: {
+            '11-16': [demoPhoto('11-16 现场')], '11-17': [demoPhoto('11-17 现场')],
+            '11-18': [demoPhoto('11-18 现场')], '11-19': [demoPhoto('11-19 现场')]
+        },
+        savedDays: { '11-16': true, '11-17': true, '11-18': true, '11-19': true },
+        sts: [
+            { id: 'ST20261123001', wrId: 'r7', dates: ['11-16', '11-17'], days: 2, amount: 624, status: '已结算',
+              submitAt: '11-18 18:00', auditedAt: '11-19 09:10', auditedBy: '测试2号', paidAt: '11-19 10:00', paidBy: '测试2号',
+              settleNote: '先结算前 2 天',
+              auditRounds: [{ result: 'pass', auditor: '测试2号', time: '11-19 09:10' }, { result: 'pay', auditor: '测试2号', time: '11-19 10:00' }] },
+            { id: 'ST20261123002', wrId: 'r7', dates: ['11-18'], days: 1, amount: 312, status: '待打款',
+              submitAt: '11-21 18:10', auditedAt: '11-22 09:15', auditedBy: '测试2号',
+              settleNote: '按 1 天核定',
+              auditRounds: [{ result: 'pass', auditor: '测试2号', time: '11-22 09:15' }] }
+        ]
+    },
+    r5: { id: 'r5', title: '中通快递 · 装卸工', date: '11-16 ~ 11-17', days: '共2天', dayList: ['11-16', '11-17'], time: '20:00-02:00 · 每天6小时 · 30元/时', rate: '30元/小时', amount: 360, status: 'working', hint: '接单审核通过，做工中', dayPhotos: {} },
+    r6: { id: 'r6', title: '武汉得物客服', date: '11-19', days: '共1日', dayList: ['11-19'], time: '8:00~12:00 · 预计5小时 · 20元/时', rate: '20元/小时', amount: 100, status: 'apply_review', hint: '11-16 20:10 提交接单申请', dayPhotos: {} },
     /* ---- 新增演示：接单未通过 / 待发薪 ---- */
-    r9: { id: 'r9', title: '富士康 · 质检员', date: '11-17', days: '单日', dayList: ['11-17'], time: '08:00-17:00 · 每天9小时 · 23元/时', rate: '23元/小时', amount: 207, status: 'apply_rejected', hint: '接单未通过，可重新接单', rejectReason: '该岗位本批次已满员，本次接单申请未通过，可查看其他岗位重新接单。', dayPhotos: {} },
+    r9: { id: 'r9', title: '富士康 · 质检员', date: '11-17', days: '共1日', dayList: ['11-17'], time: '08:00-17:00 · 每天9小时 · 23元/时', rate: '23元/小时', amount: 207, status: 'apply_rejected', hint: '接单未通过，可重新接单', rejectReason: '该岗位本批次已满员，本次接单申请未通过，可查看其他岗位重新接单。', dayPhotos: {} },
     r10: {
         id: 'r10', title: '小米科技 · 装配临时工', date: '11-13 ~ 11-14', days: '共2天', dayList: ['11-13', '11-14'], time: '08:00-18:00 · 每天10小时 · 26元/时', rate: '26元/小时', amount: 520, status: 'pay_pending', hint: '结算审核已通过，待发薪', submittedAt: '11-14 18:20', settleAt: '11-15 10:30', settleNote: '按 2 天 × 10 小时核定，考勤完整，实发 520 元，待商家发薪。',
         dayPhotos: { '11-13': [demoPhoto('11-13 现场')], '11-14': [demoPhoto('11-14 现场')] }
     },
     /* ---- 历史记录（已发薪 / 结算未通过 / 已取消 / 接单未通过） ---- */
     h1: {
-        id: 'h1', title: '顺丰速运 · 分拣临时工', date: '11-15', days: '单日', dayList: ['11-15'], time: '19:00-23:00 · 4小时 · 28元/时', rate: '28元/小时', amount: 112, status: 'paid', hint: '工资已到账', submittedAt: '11-15 23:40', settleAt: '11-16 09:30', settleNote: '按 11-15 单日实际出勤 4 小时核定，无异常考勤，实发 112 元。',
+        id: 'h1', title: '顺丰速运 · 分拣临时工', date: '11-15', days: '共1日', dayList: ['11-15'], time: '19:00-23:00 · 4小时 · 28元/时', rate: '28元/小时', amount: 112, status: 'paid', hint: '工资已到账', submittedAt: '11-15 23:40', settleAt: '11-16 09:30', settleNote: '按 11-15 单日实际出勤 4 小时核定，无异常考勤，实发 112 元。',
         dayPhotos: { '11-15': [demoPhoto('11-15 现场'), demoPhoto('11-15 打卡')] }
     },
     h2: {
@@ -2170,22 +2408,321 @@ const RECORD_MAP = {
         dayPhotos: { '11-01': [demoPhoto('11-01 产线')], '11-02': [demoPhoto('11-02 产线')], '11-03': [demoPhoto('11-03 产线')] }
     },
     h6: {
-        id: 'h6', title: '美团买菜 · 夜班理货', date: '11-13', days: '单日', dayList: ['11-13'], time: '22:00-06:00 · 8小时 · 26元/时', rate: '26元/小时', amount: 208, status: 'settle_rejected', hint: '结算未通过，可补录后重新提交', submittedAt: '11-13 06:40',
+        id: 'h6', title: '美团买菜 · 夜班理货', date: '11-13', days: '共1日', dayList: ['11-13'], time: '22:00-06:00 · 8小时 · 26元/时', rate: '26元/小时', amount: 208, status: 'settle_rejected', hint: '结算未通过，可补录后重新提交', submittedAt: '11-13 06:40',
         failReason: '打卡工时与排班不符（实到 6.5 小时），请联系驻场补录后重新提交。',
         dayPhotos: { '11-13': [demoPhoto('11-13 现场')] }
     },
     h7: {
-        id: 'h7', title: '顺丰速运 · 分拣临时工', date: '11-09', days: '单日', dayList: ['11-09'], time: '19:00-23:00 · 4小时 · 28元/时', rate: '28元/小时', amount: 112, status: 'settle_rejected', hint: '结算未通过，可补录后重新提交', submittedAt: '11-09 23:30',
+        id: 'h7', title: '顺丰速运 · 分拣临时工', date: '11-09', days: '共1日', dayList: ['11-09'], time: '19:00-23:00 · 4小时 · 28元/时', rate: '28元/小时', amount: 112, status: 'settle_rejected', hint: '结算未通过，可补录后重新提交', submittedAt: '11-09 23:30',
         failReason: '缺少离场打卡记录，驻场确认工时后可重新提交。',
         dayPhotos: { '11-09': [demoPhoto('11-09 现场')] }
     },
-    h8: { id: 'h8', title: '美团买菜 · 分拣打包', date: '11-08', days: '单日', dayList: ['11-08'], time: '06:00-14:00 · 8小时 · 26元/时', rate: '26元/小时', amount: 208, status: 'cancelled', hint: '开工前已取消接单', cancelAt: '11-07 19:20', cancelReason: '临时有事，无法按时到岗', dayPhotos: {} }
+    h8: { id: 'h8', title: '美团买菜 · 分拣打包', date: '11-08', days: '共1日', dayList: ['11-08'], time: '06:00-14:00 · 8小时 · 26元/时', rate: '26元/小时', amount: 208, status: 'cancelled', hint: '开工前已取消接单', cancelAt: '11-07 19:20', cancelReason: '临时有事，无法按时到岗', dayPhotos: {} },
+    /* ---- 新增：多结算已发薪 / 打款驳回 ---- */
+    h9: {
+        id: 'h9', title: '美团买菜 · 分拣打包', date: '11-01 ~ 11-04', days: '共4天',
+        dayList: ['11-01', '11-02', '11-03', '11-04'],
+        time: '06:00-14:00 · 8小时 · 26元/时', rate: '26元/小时',
+        amount: 832, status: 'paid', hint: '工资已到账', submittedAt: '11-04 14:20',
+        dayPhotos: {
+            '11-01': [demoPhoto('11-01 现场')], '11-02': [demoPhoto('11-02 现场')],
+            '11-03': [demoPhoto('11-03 现场')], '11-04': [demoPhoto('11-04 现场')]
+        },
+        sts: [
+            { id: 'ST20261123003', wrId: 'h9', dates: ['11-01', '11-02'], days: 2, amount: 416, status: '已结算',
+              submitAt: '11-02 14:10', auditedAt: '11-03 09:30', auditedBy: '测试2号', paidAt: '11-03 10:00', paidBy: '测试2号',
+              settleNote: '按 2 天核定' },
+            { id: 'ST20261123004', wrId: 'h9', dates: ['11-03', '11-04'], days: 2, amount: 416, status: '已结算',
+              submitAt: '11-04 14:20', auditedAt: '11-05 09:30', auditedBy: '测试2号', paidAt: '11-05 10:00', paidBy: '测试2号',
+              settleNote: '按 2 天核定' }
+        ]
+    },
+    r11: {
+        id: 'r11', title: '顺丰速运 · 分拣临时工', date: '11-21 ~ 11-22', days: '共2天',
+        dayList: ['11-21', '11-22'],
+        time: '19:00-23:00 · 4小时 · 28元/时', rate: '28元/小时',
+        amount: 224, status: 'pay_pending', hint: '结算审核已通过，待发薪', submittedAt: '11-22 23:30',
+        dayPhotos: { '11-21': [demoPhoto('11-21 现场')], '11-22': [demoPhoto('11-22 现场')] },
+        sts: [
+            { id: 'ST20261123005', wrId: 'r11', dates: ['11-21', '11-22'], days: 2, amount: 224, status: '待审核',
+              submitAt: '11-22 23:30', auditedAt: '11-23 09:00', auditedBy: '测试2号',
+              payRejectReason: '打款账户信息有误，请核对后重新发起',
+              auditRounds: [
+                  { result: 'pass', auditor: '测试2号', time: '11-23 09:00' },
+                  { result: 'pay_reject', auditor: '测试2号', time: '11-23 09:20', reason: '打款账户信息有误，请核对后重新发起' }
+              ] }
+        ]
+    }
 };
+/* ============================================================
+   多结算 / 延期记录：数据与派生
+   ============================================================ */
+let nextStSeq = 100;
+function round2(n) { return Math.round((Number(n) || 0) * 100) / 100; }
+function amtText(n) {
+    const v = round2(n);
+    return Math.abs(v - Math.round(v)) < 0.005 ? String(Math.round(v)) : v.toFixed(2);
+}
+function stOf(r) { return (r && r.sts) || []; }
+function stSettledDatesOf(r) {
+    const out = [];
+    stOf(r).forEach(function (st) {
+        (st.dates || []).forEach(function (d) { if (out.indexOf(d) < 0) out.push(d); });
+    });
+    return out;
+}
+function stUnsettledDatesOf(r) {
+    const done = stSettledDatesOf(r);
+    return ((r && r.dayList) || []).filter(function (d) { return done.indexOf(d) < 0; });
+}
+function stAllSettled(r) {
+    const ds = (r && r.dayList) || [];
+    const done = stSettledDatesOf(r);
+    return ds.length > 0 && ds.every(function (d) { return done.indexOf(d) > -1; });
+}
+function stOfDay(r, d) {
+    const list = stOf(r);
+    for (let i = 0; i < list.length; i++) {
+        if ((list[i].dates || []).indexOf(d) > -1) return list[i];
+    }
+    return null;
+}
+function stPaidAmt(r) {
+    return round2(stOf(r).filter(function (s) { return s.status === '已结算'; })
+        .reduce(function (n, s) { return n + Number(s.amount || 0); }, 0));
+}
+function stPendingAmt(r) {
+    return round2(stOf(r).filter(function (s) { return s.status === '待审核' || s.status === '待打款'; })
+        .reduce(function (n, s) { return n + Number(s.amount || 0); }, 0));
+}
+function stAmtByStatus(r, status) {
+    return round2(stOf(r).filter(function (s) { return s.status === status; })
+        .reduce(function (n, s) { return n + Number(s.amount || 0); }, 0));
+}
+function stCountByStatus(r, status) {
+    return stOf(r).filter(function (s) { return s.status === status; }).length;
+}
+function dayAmount(r) {
+    if (!r) return 0;
+    if (r.priceType === '日薪') return round2(Number(r.price) || 0);
+    return round2((Number(jobRate(r)) || 0) * (Number(jobHours(r)) || 0));
+}
+function stRemainAmt(r) {
+    return round2(dayAmount(r) * stUnsettledDatesOf(r).length);
+}
+function recEstTotal(r) {
+    return round2(stPaidAmt(r) + stPendingAmt(r) + stRemainAmt(r));
+}
+function stPayRejectReason(st) {
+    if (!st) return '';
+    const rounds = st.auditRounds || [];
+    for (let i = rounds.length - 1; i >= 0; i--) {
+        if (rounds[i].result === 'pay_reject' && rounds[i].reason) return rounds[i].reason;
+    }
+    return st.payRejectReason || '';
+}
+function stDisplay(st) {
+    if (!st) return { label: '', cls: 'st-wait' };
+    if (st.status === '已结算') return { label: '已打款', cls: 'st-pass' };
+    if (st.status === '待打款') return { label: '待打款', cls: 'st-wait' };
+    if ((st.auditRounds || []).some(function (a) { return a.result === 'pay_reject'; })) {
+        return { label: '打款驳回', cls: 'st-fail' };
+    }
+    return { label: '待审核', cls: 'st-wait' };
+}
+function recHasPayReject(r) {
+    return stOf(r).some(function (s) { return stDisplay(s).label === '打款驳回'; });
+}
+function recPayRejectReason(r) {
+    const list = stOf(r);
+    for (let i = list.length - 1; i >= 0; i--) {
+        const reason = stPayRejectReason(list[i]);
+        if (reason) return reason;
+    }
+    return '';
+}
+function recStatusKey(r) {
+    if (!r) return '';
+    if (r.legacyStatus === 'settle_rejected') return 'settle_rejected';
+    if (r.status === 'apply_review') return 'apply_review';
+    if (r.status === 'apply_rejected') return 'apply_rejected';
+    if (r.status === 'cancelled') return 'cancelled';
+    const sts = stOf(r);
+    if (r.status === 'ready' && !sts.length) return 'ready';
+    if (stAllSettled(r)) {
+        if (sts.length && sts.every(function (s) { return s.status === '已结算'; })) return 'paid';
+        if (sts.some(function (s) { return s.status === '待打款'; })) return 'pay_pending';
+        return 'settle_review';
+    }
+    return 'working';
+}
+function recStatusLabel(r) {
+    const key = recStatusKey(r);
+    if (key === 'apply_review') return '接单审核中';
+    if (key === 'apply_rejected') return '接单未通过';
+    if (key === 'ready') return '待开工';
+    if (key === 'cancelled') return '已取消';
+    if (key === 'working') return '做工中';
+    if (key === 'settle_review') return '结算审核中';
+    if (key === 'pay_pending') return '待发薪';
+    if (key === 'paid') return '已发薪';
+    if (key === 'settle_rejected') return '结算未通过（历史）';
+    return '处理中';
+}
+function recStatusCls(r) {
+    const key = recStatusKey(r);
+    if (key === 'apply_rejected' || key === 'settle_rejected') return 'st-fail';
+    if (key === 'ready' || key === 'working') return 'st-doing';
+    if (key === 'paid') return 'st-pass';
+    if (key === 'cancelled') return 'st-cancel';
+    return 'st-wait';
+}
+/* 列表状态使用后台“用工状态”口径：接单待审 / 做工中 / 待结算 / 已结算 / 已取消 */
+function recWorkStatusKey(r) {
+    if (!r) return '';
+    if (r.legacyStatus === 'settle_rejected') return 'settle_rejected';
+    if (r.status === 'settle_rejected') return 'settle_rejected';
+    if (r.status === 'apply_review') return 'apply_wait';
+    if (r.status === 'cancelled') return 'cancelled';
+    if (r.status === 'apply_rejected') return 'apply_rejected';
+    const sts = stOf(r);
+    if (stAllSettled(r)) {
+        if (sts.some(function (s) { return s.status === '待打款'; })) return 'wait_settle';
+        if (sts.length && sts.every(function (s) { return s.status === '已结算'; })) return 'settled';
+    }
+    return 'working';
+}
+function recWorkStatusLabel(r) {
+    const key = recWorkStatusKey(r);
+    if (key === 'apply_wait') return '接单待审';
+    if (key === 'cancelled') return '已取消';
+    if (key === 'apply_rejected') return '接单未通过';
+    if (key === 'working') return '做工中';
+    if (key === 'wait_settle') return '待结算';
+    if (key === 'settled') return '已结算';
+    if (key === 'settle_rejected') return '结算未通过（历史）';
+    return '—';
+}
+function recWorkStatusCls(r) {
+    const key = recWorkStatusKey(r);
+    if (key === 'apply_rejected' || key === 'settle_rejected') return 'st-fail';
+    if (key === 'cancelled') return 'st-cancel';
+    if (key === 'working') return 'st-doing';
+    if (key === 'wait_settle') return 'st-review';
+    if (key === 'settled') return 'st-pass';
+    return 'st-wait';
+}
+function recStatusHint(r) {
+    const key = recStatusKey(r);
+    const sts = stOf(r);
+    const paid = stPaidAmt(r);
+    if (key === 'apply_review') return '商家正在审核您的接单申请';
+    if (key === 'apply_rejected') return '接单未通过，可重新接单';
+    if (key === 'ready') return '接单审核通过，待开工';
+    if (key === 'cancelled') return '开工前已取消接单';
+    if (key === 'settle_rejected') return '结算未通过（历史）';
+    if (key === 'settle_review') {
+        let s = '';
+        if (paid > 0) s += '已发薪 ' + stCountByStatus(r, '已结算') + ' 笔 ¥' + amtText(paid) + ' · ';
+        s += stCountByStatus(r, '待审核') + ' 笔结算审核中 · 合计 ¥' + amtText(stAmtByStatus(r, '待审核'));
+        return s;
+    }
+    if (key === 'pay_pending') {
+        let s = '';
+        if (paid > 0) s += '已发薪 ' + stCountByStatus(r, '已结算') + ' 笔 ¥' + amtText(paid) + ' · ';
+        s += stCountByStatus(r, '待打款') + ' 笔待发薪 · 合计 ¥' + amtText(stAmtByStatus(r, '待打款'));
+        if (stCountByStatus(r, '待审核')) {
+            s += ' · ' + stCountByStatus(r, '待审核') + ' 笔审核中 ¥' + amtText(stAmtByStatus(r, '待审核'));
+        }
+        return s;
+    }
+    if (key === 'paid') return '共 ' + sts.length + ' 笔 · 累计 ¥' + amtText(paid);
+    const left = stUnsettledDatesOf(r).length;
+    let s = '剩余 ' + left + ' 天未结算';
+    const paidN = sts.filter(function (x) { return x.status === '已结算'; }).length;
+    if (paidN) s += ' · 已发薪 ' + paidN + ' 笔';
+    if (stCountByStatus(r, '待打款')) s += ' · 待发薪 ¥' + amtText(stAmtByStatus(r, '待打款'));
+    if (stCountByStatus(r, '待审核')) s += ' · 审核中 ¥' + amtText(stAmtByStatus(r, '待审核'));
+    return s;
+}
+function recWorkStep(r) {
+    const key = recStatusKey(r);
+    if (key === 'apply_review') return 2;
+    if (key === 'apply_rejected' || key === 'cancelled') return 2;
+    if (key === 'ready' || key === 'working') return 3;
+    return 4;
+}
+function stDateText(st) {
+    const ds = (st && st.dates) || [];
+    if (!ds.length) return '—';
+    if (ds.length === 1) return ds[0];
+    const p = function (s) { const a = String(s).split('-'); return Number(a[0]) * 31 + Number(a[1]); };
+    let contiguous = true;
+    for (let i = 1; i < ds.length; i++) {
+        if (p(ds[i]) - p(ds[i - 1]) !== 1) { contiguous = false; break; }
+    }
+    return contiguous ? (ds[0] + ' ~ ' + ds[ds.length - 1] + ' · ' + ds.length + ' 天')
+        : (ds.join('、') + ' · ' + ds.length + ' 天');
+}
+function stCardHtml(st, idx) {
+    const d = stDisplay(st);
+    return '<div class="rd-st">' +
+        '<div class="rd-st-h"><b>¥' + amtText(st.amount) + '</b><span class="st ' + d.cls + '">' + d.label + '</span></div>' +
+        '<div class="rd-row"><span>结算时间</span><b>' + (st.auditedAt || '—') + '</b></div>' +
+        '<div class="rd-row"><span>打款时间</span><b>' + (st.paidAt || '—') + '</b></div>' +
+        '</div>';
+}
+function extCardHtml(e, idx, r) {
+    return '<div class="rd-st rd-ext">' +
+        '<div class="rd-st-h"><b>' + (e.days || (e.dates || []).length) + ' 天</b></div>' +
+        '<div class="rd-row"><span>延期日期</span><b>' + ((e.dates || []).join('、') || '—') + '</b></div>' +
+        '<div class="rd-row"><span>操作时间</span><b>' + (e.time || '—') + '</b></div>' +
+        '</div>';
+}
+function makeSt(r, dates, amount, status, o) {
+    o = o || {};
+    const ds = (dates || []).slice();
+    return {
+        id: 'ST' + (nextStSeq++), wrId: r.id, dates: ds, days: ds.length, amount: round2(amount),
+        status: status, submitAt: o.submitAt || '', auditedAt: o.auditedAt || '', auditedBy: o.auditedBy || '',
+        paidAt: o.paidAt || '', paidBy: o.paidBy || '', settleNote: o.settleNote || '',
+        payNote: o.payNote || '', payRejectReason: o.payRejectReason || '', auditRounds: o.auditRounds || []
+    };
+}
+function normalizeAll() {
+    Object.keys(RECORD_MAP).forEach(function (k) {
+        const r = RECORD_MAP[k];
+        if (!r) return;
+        if (!r.sts) r.sts = [];
+        const legacy = r.status;
+        if (!r.sts.length) {
+            if (legacy === 'settle_review') {
+                r.sts.push(makeSt(r, r.dayList, r.amount, '待审核', { submitAt: r.submittedAt }));
+            } else if (legacy === 'pay_pending') {
+                r.sts.push(makeSt(r, r.dayList, r.amount, '待打款', {
+                    submitAt: r.submittedAt, auditedAt: r.settleAt, auditedBy: r.auditedBy || '测试2号', settleNote: r.settleNote
+                }));
+            } else if (legacy === 'paid') {
+                r.sts.push(makeSt(r, r.dayList, r.amount, '已结算', {
+                    submitAt: r.submittedAt, auditedAt: r.settleAt, auditedBy: r.auditedBy || '测试2号',
+                    paidAt: r.payAt || r.settleAt, paidBy: r.paidBy || '测试2号', settleNote: r.settleNote
+                }));
+            } else if (legacy === 'settle_rejected') {
+                r.legacyStatus = 'settle_rejected';
+            }
+        }
+        if (legacy === 'settle_review' || legacy === 'pay_pending' || legacy === 'paid') {
+            r.status = 'working';
+        }
+        r.hint = recStatusHint(r);
+    });
+}
 let curRecId = '';
+let rdTab = 'finish';
 let curPhotoDay = '';
 let newRecSeq = 0;
 
-function openRecDetail(id) { curRecId = id; location.hash = '#rec-' + id; }
+function openRecDetail(id) { rdTab = 'finish'; curRecId = id; location.hash = '#rec-' + id; }
 function backRecDetail() {
     if (history.length > 1) history.back();
     else location.hash = '#work';
@@ -2213,8 +2750,8 @@ function statusClass(s) {
     return 'st-wait';
 }
 /* 三个审核节点：接单审核(apply_review) → 做工 → 完工 → 结算审核(settle_review) → 发薪(pay_pending)
-   取消接单仅允许在「开始做工」之前：apply_review / ready */
-function canCancel(r) { return !!r && (r.status === 'apply_review' || r.status === 'ready'); }
+   取消接单仅允许「接单审核中」（apply_review）；待开工 / 已开工不提供取消 */
+function canCancel(r) { return !!r && r.status === 'apply_review'; }
 function isStarted(r) { return !!r && (r.status === 'working' || r.status === 'settle_review' || r.status === 'settle_rejected' || r.status === 'pay_pending' || r.status === 'paid'); }
 /* 流程进度（7 步：提交接单 / 接单审核 / 做工 / 完工 / 结算审核 / 待发薪 / 已发薪） */
 function recStep(r) {
@@ -2236,27 +2773,46 @@ function photoCount(r) {
     return Object.keys(r.dayPhotos).reduce(function (n, k) { return n + (r.dayPhotos[k] || []).length; }, 0);
 }
 function metaLine(r) {
-    const total = r.dayList.length;
-    const skipN = r.dayList.filter(function (d) { return (r.daySkip || {})[d]; }).length;
-    const doneN = total - skipN;
-    return '共 ' + photoCount(r) + ' 张 · 完成 ' + doneN + '/' + total + ' 天' + (skipN ? '（未完成 ' + skipN + ' 天）' : '');
+    const total = (r.dayList || []).length;
+    let paid = 0, pending = 0, review = 0, rejected = 0;
+    (r.dayList || []).forEach(function (d) {
+        const st = stOfDay(r, d);
+        if (!st) return;
+        if (st.status === '已结算') paid++;
+        else if (st.status === '待打款') pending++;
+        else if (stDisplay(st).label === '打款驳回') rejected++;
+        else review++;
+    });
+    const left = total - paid - pending - review - rejected;
+    let s = '共 ' + photoCount(r) + ' 张图片';
+    if (paid) s += ' · 已发薪 ' + paid + ' 天';
+    if (pending) s += ' · 待发薪 ' + pending + ' 天';
+    if (review) s += ' · 审核中 ' + review + ' 天';
+    if (rejected) s += ' · 打款驳回 ' + rejected + ' 天';
+    if (left) s += ' · 剩余 ' + left + ' 天';
+    return s;
 }
-/* 完工提交时间：单独一行强调 */
+/* 最近一次保存时间：每笔结算的保存时间在完工/结算卡片内 */
 function submitTimeLine(r) {
     if (!r.submittedAt) return '';
     return '<div class="rd-time-row">' +
         '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>' +
-        '<span class="lb">完工提交时间</span><b>' + r.submittedAt + '</b></div>';
+        '<span class="lb">最近保存</span><b>' + r.submittedAt + '</b></div>';
 }
 function dayBlock(r, d, i, editable) {
     const skip = (r.daySkip || {})[d];
     const arr = r.dayPhotos[d] || [];
     const label = r.dayList.length > 1 ? ('第' + (i + 1) + '天 · ' + d) : (d + ' 当天');
+    const covered = stOfDay(r, d);
+    const locked = !!covered;
+    const canEdit = !!editable && !locked;
+    const savedAt = covered && covered.submitAt ? covered.submitAt : '';
+    const timeTag = savedAt ? '<span class="rd-day-time">' + savedAt + '</span>' : '';
 
     if (skip) {
-        return '<div class="rd-day skip"><div class="rd-day-h"><b>' + label + '</b><span class="no">未完成</span></div>' +
+        return '<div class="rd-day skip"><div class="rd-day-h"><b>' + label + '</b>' + timeTag + '</div>' +
             '<div class="rd-skip-reason">未完成原因：' + skip + '</div>' +
-            (editable ? '<div class="rd-day-foot"><button class="day-save" onclick="undoSkip(\'' + d + '\')">改为已完成</button></div>' : '') +
+            (canEdit ? '<div class="rd-day-foot"><button class="day-save" onclick="undoSkip(\'' + d + '\')">改为已完成</button></div>' : '') +
             '</div>';
     }
 
@@ -2264,32 +2820,18 @@ function dayBlock(r, d, i, editable) {
         const tm = hhmm(photoTime(ph));
         return '<div class="rd-photo"><img src="' + photoSrc(ph) + '">' +
             (tm ? '<i class="rd-photo-t">' + tm + '</i>' : '') +
-            (editable ? '<em onclick="removeDayPhoto(\'' + d + '\',' + k + ')">✕</em>' : '') + '</div>';
+            (canEdit ? '<em onclick="removeDayPhoto(\'' + d + '\',' + k + ')">✕</em>' : '') + '</div>';
     }).join('');
-    if (editable && arr.length < 3) {
+    if (canEdit && arr.length < 3) {
         cells += '<div class="rd-add" onclick="pickPhotosFor(\'' + d + '\')"><span>＋</span><small>上传</small></div>';
     }
-    const meta = arr.length ? '<span class="ok">已上传 ' + arr.length + ' 张</span>' : '<span>待上传</span>';
-    let foot = '';
-    if (editable) {
-        const saveTxt = r.dayList.length > 1 ? '保存第' + (i + 1) + '天图片' : '保存图片';
-        foot = '<div class="rd-day-foot"><button class="day-save" onclick="saveDay(\'' + d + '\')">' + saveTxt + '</button></div>';
-    }
-    return '<div class="rd-day"><div class="rd-day-h"><b>' + label + '</b>' + meta + '</div>' +
-        '<div class="rd-day-grid">' + cells + '</div>' + foot + '</div>';
-}
-function saveDay(day) {
-    const r = RECORD_MAP[curRecId];
-    if (!r) return;
-    if (!(r.dayPhotos[day] || []).length) { toast('请先上传该天的工作图片'); return; }
-    r.savedDays = r.savedDays || {};
-    r.savedDays[day] = true;
-    renderRecDetail(curRecId);
-    const idx = r.dayList.indexOf(day) + 1;
-    toast(r.dayList.length > 1 ? ('第 ' + idx + ' 天图片已保存') : '工作图片已保存');
+    return '<div class="rd-day"><div class="rd-day-h"><b>' + label + '</b>' + timeTag + '</div>' +
+        '<div class="rd-day-grid">' + cells + '</div></div>';
 }
 function undoSkip(day) {
     const r = RECORD_MAP[curRecId];
+    if (!r) return;
+    if (stOfDay(r, day)) { toast('该天已进入结算，不可修改'); return; }
     if (r.daySkip) delete r.daySkip[day];
     renderRecDetail(curRecId);
 }
@@ -2342,11 +2884,30 @@ const SITE_MAP = {
         need: '100人', sex: '不限', age: '20 ~ 29岁', ins: '3.00元/天',
         tags: ['在线客服', '室内坐班', '包工作餐', '双休', '不限经验'],
         desc: '负责平台在线客服接待，解答商品咨询、售后与物流问题，按话术规范记录工单并跟进处理结果。室内坐班，提供岗前培训。'
+    },
+    '小米': {
+        addr: '湖北省武汉市东湖高新区小米武汉总部',
+        company: '小米科技（武汉）有限公司', meet: '园区 1 号门集合，驻场带队入场', contact: '王工 138****5566',
+        need: '40人', sex: '不限', age: '18 ~ 40岁', ins: '3.00元/天',
+        tags: ['装配', '室内作业', '包工作餐', '不限经验'],
+        desc: '负责智能硬件的装配、点检与包装，按产线节拍完成当日产量。室内作业，提供岗前培训与工服。'
+    },
+    '富士康': {
+        addr: '湖北省武汉市江夏区富士康科技园',
+        company: '富士康科技集团（武汉）有限公司', meet: '园区南门集合，统一乘车入场', contact: '刘工 139****7788',
+        need: '100人', sex: '不限', age: '18 ~ 45岁', ins: '3.00元/天',
+        tags: ['质检', '厂内住宿', '包吃住', '有夜班'],
+        desc: '负责产线来料与成品质检、记录与异常上报，按班组安排轮岗。入职前有安全与质量培训。'
     }
+};
+const SITE_FALLBACK = {
+    addr: '以实际通知为准', company: '—', meet: '—', contact: '—',
+    need: '—', sex: '—', age: '—', ins: '—', tags: [],
+    desc: '岗位信息以商家通知为准；如有疑问请联系驻场顾问。'
 };
 function siteOf(r) {
     for (const k in SITE_MAP) { if (r.title.indexOf(k) > -1) return SITE_MAP[k]; }
-    return SITE_MAP['得物'];
+    return SITE_FALLBACK;
 }
 function jobRate(r) {
     const m = /(\d+)\s*元\s*\/\s*(?:小时|时)/.exec(r.rate || '');
@@ -2366,7 +2927,243 @@ const BN_ICO = {
     check: '<svg viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
     block: '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM4 12a8 8 0 0 1 12.9-6.32L5.68 16.9A7.96 7.96 0 0 1 4 12zm8 8a7.96 7.96 0 0 1-4.9-1.68L18.32 7.1A7.96 7.96 0 0 1 12 20z"/></svg>'
 };
+/* ============================================================
+   新版接单详情：结算只读 + 结算记录 / 延期记录两个 Tab
+   ============================================================ */
+function switchRdTab(k) {
+    rdTab = k;
+    const root = document.getElementById('rd-body');
+    if (!root) return;
+    root.querySelectorAll('.rd-tab').forEach(function (el) {
+        el.classList.toggle('on', el.dataset.tab === k);
+    });
+    ['finish', 'st', 'ext'].forEach(function (name) {
+        const panel = document.getElementById('rd-panel-' + name);
+        if (panel) panel.hidden = (name !== k);
+    });
+}
+function recSettlePanel(r) {
+    const sts = stOf(r).slice().sort(function (a, b) {
+        return String(a.submitAt || a.auditedAt || '').localeCompare(String(b.submitAt || b.auditedAt || ''));
+    });
+    const paid = stPaidAmt(r);
+    const review = stAmtByStatus(r, '待审核');
+    const wait = stAmtByStatus(r, '待打款');
+    let summary = '共 ' + sts.length + ' 笔';
+    if (paid > 0) summary += ' · 累计已打款 ¥' + amtText(paid);
+    if (review > 0) summary += ' · 待审核 ¥' + amtText(review);
+    if (wait > 0) summary += ' · 待打款 ¥' + amtText(wait);
+    return '<div class="rd-imgmeta" style="margin:0 0 9px">' + summary + '</div>' +
+        (sts.length ? sts.map(function (s, i) { return stCardHtml(s, i); }).join('')
+            : '<div class="rd-empty">暂无结算记录</div>');
+}
+function recExtPanel(r) {
+    const exts = r.extendLogs || [];
+    return exts.length ? exts.map(function (e, i) { return extCardHtml(e, i, r); }).join('')
+        : '<div class="rd-empty">暂无延期记录</div>';
+}
+function recDetailMod(r, key) {
+    const left = stUnsettledDatesOf(r);
+    if (key === 'apply_review') {
+        return '<div class="rd-card"><div class="o-h">接单审核</div>' +
+            '<div class="o-desc">商家审核通过后记录变为「待开工」，可按时到岗开工；开工前可以在下方取消接单。</div></div>';
+    }
+    if (key === 'apply_rejected') {
+        return '<div class="rd-card"><div class="o-h">接单未通过</div>' +
+            '<div class="rd-row"><span>驳回原因</span><b>' + (r.rejectReason || '商家未通过本次接单申请') + '</b></div>' +
+            '<div class="o-desc">本次接单申请未通过，不产生任何费用。可查看其他岗位重新接单。</div>' +
+            '<button class="rd-submit" onclick="reorderJob()">重新接单</button></div>';
+    }
+    if (key === 'ready') {
+        return '<div class="rd-card"><div class="o-h">到岗开工</div>' +
+            '<div class="rd-row"><span>上岗时间</span><b>' + jobTimeRange(r) + '</b></div>' +
+            '<div class="rd-row"><span>工作日期</span><b>' + r.date + ' · ' + r.days + '</b></div>' +
+            '<div class="o-desc">到达现场后点击底部「开始做工」，系统开始记录工时；如需帮助请联系驻场顾问。</div></div>';
+    }
+    if (key === 'cancelled') {
+        return '<div class="rd-card"><div class="o-h">取消记录</div>' +
+            '<div class="rd-row"><span>取消时间</span><b>' + (r.cancelAt || '—') + '</b></div>' +
+            (r.cancelReason ? '<div class="rd-row"><span>取消原因</span><b>' + r.cancelReason + '</b></div>' : '') +
+            '<div class="rd-row"><span>结算状态</span><b>未产生费用</b></div>' +
+            '<button class="rd-submit" onclick="reorderJob()">重新接单</button></div>';
+    }
+    if (key === 'settle_rejected') {
+        return '<div class="rd-card"><div class="o-h">结算未通过（历史）</div>' +
+            '<div class="rd-row"><span>未通过原因</span><b>' + (r.failReason || '—') + '</b></div>' +
+            '<div class="o-desc">该记录为历史数据，当前结算只读，无需在员工端操作。</div></div>';
+    }
+    /* working / pay_pending / paid：已上传图片；已进入结算单的天只读 */
+    const editable = key === 'working' && left.length > 0;
+    return '<div class="rd-card"><div class="o-h">' + (editable ? '上传工作图片' : '已上传图片') + '</div>' +
+        '<div class="rd-imgmeta">' + metaLine(r) + '</div>' + submitTimeLine(r) +
+        '<div class="rd-days">' + r.dayList.map(function (d, i) {
+            return dayBlock(r, d, i, editable && left.indexOf(d) > -1);
+        }).join('') + '</div>' +
+        (editable ? '<div class="rd-dock-hint">按天上传并保存图片，完成后点击底部「提交剩余 ' + left.length + ' 天」</div>' : '') +
+        '</div>';
+}
+function recActiveSt(r) {
+    let cur = null, rank = 0;
+    stOf(r).forEach(function (s) {
+        const rk = s.status === '待打款' ? 3 : s.status === '待审核' ? 2 : 1;
+        if (!cur || rk >= rank) { cur = s; rank = rk; }
+    });
+    return cur;
+}
+/* 与后台 wrDetailFlow 一致的 6 段进度 */
+function recDetailFlow(r) {
+    const key = recStatusKey(r);
+    const st = recActiveSt(r);
+    const dead = key === 'apply_rejected' || key === 'cancelled' || key === 'settle_rejected';
+    const passed = key !== 'apply_review' && key !== 'apply_rejected' && key !== 'cancelled';
+    const out = [];
+    out.push({ title: '提交接单', state: 'done', time: r.applyAt || '' });
+    if (key === 'apply_rejected') {
+        out.push({ title: '接单审核', state: 'fail', time: r.auditAt || '' });
+    } else if (key === 'cancelled' && !r.auditAt) {
+        out.push({ title: '接单审核', state: 'stop', time: '' });
+    } else if (key === 'apply_review') {
+        out.push({ title: '接单审核', state: 'on', time: '' });
+    } else {
+        out.push({ title: '接单审核', state: 'done', time: r.auditAt || '' });
+    }
+    if (dead) {
+        out.push({ title: '做工', state: 'stop', time: '' });
+    } else if (!passed) {
+        out.push({ title: '做工', state: 'todo', time: '' });
+    } else if (r.submittedAt || stAllSettled(r)) {
+        out.push({ title: '做工', state: 'done', time: r.submittedAt || '' });
+    } else {
+        out.push({ title: '做工', state: 'on', time: '' });
+    }
+    if (dead) {
+        out.push({ title: '结算审核', state: 'stop', time: '' });
+    } else if (st && st.status === '待审核') {
+        out.push({ title: '结算审核', state: 'on', time: '' });
+    } else if (st && st.auditedAt) {
+        out.push({ title: '结算审核', state: 'done', time: st.auditedAt });
+    } else {
+        out.push({ title: '结算审核', state: 'todo', time: '' });
+    }
+    if (dead) {
+        out.push({ title: '结算打款', state: 'stop', time: '' });
+    } else if (st && st.status === '待打款') {
+        out.push({ title: '结算打款', state: 'on', time: '' });
+    } else if (st && st.status === '已结算') {
+        out.push({ title: '结算打款', state: 'done', time: st.paidAt || '' });
+    } else if (st && st.status === '待审核' && (st.auditRounds || []).some(function (a) { return a.result === 'pay_reject'; })) {
+        const rej = (st.auditRounds || []).filter(function (a) { return a.result === 'pay_reject'; }).pop();
+        out.push({ title: '结算打款', state: 'fail', time: rej ? rej.time : '' });
+    } else {
+        out.push({ title: '结算打款', state: 'todo', time: '' });
+    }
+    if (st && st.status === '已结算') {
+        out.push({ title: '结算完成', state: 'done', time: st.paidAt || '' });
+    } else if (dead) {
+        out.push({ title: '结算完成', state: 'stop', time: '' });
+    } else {
+        out.push({ title: '结算完成', state: 'todo', time: '' });
+    }
+    return out;
+}
+function recFlowStep(nodes) {
+    let i = nodes.findIndex(function (n) { return n.state === 'on'; });
+    if (i < 0) i = nodes.findIndex(function (n) { return n.state === 'fail'; });
+    if (i < 0) i = nodes.findIndex(function (n) { return n.state === 'stop'; });
+    return i >= 0 ? i + 1 : nodes.length;
+}
+function flowHtml(nodes) {
+    return '<div class="rd-flow top">' + nodes.map(function (n, i) {
+        const cls = n.state === 'done' ? 'done' : n.state === 'on' ? 'on' : n.state === 'fail' ? 'fail' : n.state === 'stop' ? 'stop' : '';
+        const ico = n.state === 'done' ? '✓' : n.state === 'fail' ? '!' : n.state === 'stop' ? '×' : (i + 1);
+        return '<div class="flow-i ' + cls + '"><i>' + ico + '</i><span>' + n.title + '</span></div>';
+    }).join('') + '</div>';
+}
+function recFinishPanel(r, key) {
+    const left = stUnsettledDatesOf(r);
+    const editable = key === 'working' && left.length > 0;
+    if (!editable && photoCount(r) === 0) return '<div class="rd-empty">暂无完工记录</div>';
+    return '<div class="rd-days">' + r.dayList.map(function (d, i) {
+        return dayBlock(r, d, i, editable && left.indexOf(d) > -1);
+    }).join('') + '</div>';
+}
 function renderRecDetail(id) {
+    const r = RECORD_MAP[id];
+    const body = document.getElementById('rd-body');
+    if (!r) { body.innerHTML = '<div class="rd-card">记录不存在</div>'; return; }
+    curRecId = id;
+
+    const key = recStatusKey(r);
+    const sts = stOf(r), exts = r.extendLogs || [];
+    const flowTop = flowHtml(recDetailFlow(r));
+    const site = siteOf(r);
+    const tags = (site.tags || []).map(function (t) { return '<span class="rd-tag">' + t + '</span>'; }).join('');
+
+    const jobCard = '<div class="rd-card">' +
+        '<div class="rd-head"><span class="rd-title">' + r.title + '</span></div>' +
+        '<div class="rd-tags">' + tags + '</div>' +
+        '<div class="rd-loc" onclick="toast(\'查看地图位置\')"><span>📍 ' + site.addr + '</span><span class="ar">›</span></div>' +
+        '<div class="rd-sec-t" style="margin-top:14px">接单信息</div>' +
+        '<div class="rd-row"><span>用工单位</span><b>' + site.company + '</b></div>' +
+        '<div class="rd-row"><span>用工日期</span><b>' + recDateFull(r) + '</b></div>' +
+        '<div class="rd-row"><span>工作时间</span><b>' + jobTimeRange(r) + '</b></div>' +
+        '<div class="rd-row"><span>每天工时</span><b>' + jobHours(r) + '小时</b></div>' +
+        '<div class="rd-row"><span>用工单价</span><b>' + jobRate(r) + '元/小时</b></div>' +
+        '<div class="rd-row"><span>商业险</span><b>' + site.ins + '</b></div>' +
+        '</div>';
+
+    const flowCard = '<div class="rd-card"><div class="rd-sec-t">用工进度</div>' + flowTop + '</div>';
+    const tabsCard = '<div class="rd-card">' +
+        '<div class="rd-tabs">' +
+        '<div class="rd-tab' + (rdTab === 'finish' ? ' on' : '') + '" data-tab="finish" onclick="switchRdTab(\'finish\')">完工记录</div>' +
+        '<div class="rd-tab' + (rdTab === 'st' ? ' on' : '') + '" data-tab="st" onclick="switchRdTab(\'st\')">结算记录 <em>' + sts.length + '</em></div>' +
+        '<div class="rd-tab' + (rdTab === 'ext' ? ' on' : '') + '" data-tab="ext" onclick="switchRdTab(\'ext\')">延期记录 <em>' + exts.length + '</em></div>' +
+        '</div>' +
+        '<div class="rd-panel" id="rd-panel-finish"' + (rdTab !== 'finish' ? ' hidden' : '') + '>' + recFinishPanel(r, key) + '</div>' +
+        '<div class="rd-panel" id="rd-panel-st"' + (rdTab !== 'st' ? ' hidden' : '') + '>' + recSettlePanel(r) + '</div>' +
+        '<div class="rd-panel" id="rd-panel-ext"' + (rdTab !== 'ext' ? ' hidden' : '') + '>' + recExtPanel(r) + '</div>' +
+        '</div>';
+
+    body.innerHTML = flowCard + jobCard + tabsCard;
+    renderRdDock(r);
+}
+function renderRdDock(r) {
+    const view = document.getElementById('view-rdetail');
+    const dock = document.getElementById('dock-rdetail');
+    if (!view || !dock) return;
+    const left = stUnsettledDatesOf(r || {});
+    const canSubmit = !!r && r.status === 'working' && left.length > 0;
+    const show = !!r && (canCancel(r) || canSubmit);
+    view.classList.toggle('has-dock', show);
+    dock.classList.toggle('show', show && curView === 'rdetail');
+    const tip = document.getElementById('rd-foot-tip');
+    const main = document.getElementById('rd-foot-main');
+    const cancelBtn = document.getElementById('rd-foot-cancel');
+    if (!show) {
+        main.textContent = '';
+        tip.innerHTML = '';
+        cancelBtn.style.display = 'none';
+        return;
+    }
+
+    main.onclick = null;
+    main.style.display = '';
+    cancelBtn.style.display = '';
+    cancelBtn.classList.remove('wide');
+
+    if (r.status === 'apply_review') {
+        tip.innerHTML = '<b>接单审核中</b>审核通过前可随时取消接单';
+        main.textContent = '';
+        main.style.display = 'none';
+        cancelBtn.classList.add('wide');
+    } else if (canSubmit) {
+        tip.innerHTML = '';
+        main.textContent = '保存';
+        main.onclick = function () { submitWork(r.id); };
+        cancelBtn.style.display = 'none';
+    }
+}
+function renderRecDetailOld(id) {
     const r = RECORD_MAP[id];
     if (!r) { document.getElementById('rd-body').innerHTML = '<div class="rd-card">记录不存在</div>'; return; }
     curRecId = id;
@@ -2504,8 +3301,8 @@ function renderRecDetail(id) {
 
     renderRdDock(r);
 }
-/* 详情页底部固定操作栏：仅在「开始做工」之前显示（可取消接单） */
-function renderRdDock(r) {
+/* 详情页底部操作栏：接单审核中可取消；待开工可开始做工；做工中可提交剩余天数 */
+function renderRdDockOld(r) {
     const view = document.getElementById('view-rdetail');
     const dock = document.getElementById('dock-rdetail');
     if (!view || !dock) return;
@@ -2525,12 +3322,14 @@ function renderRdDock(r) {
 
     if (r.status === 'apply_review') {
         tip.innerHTML = '<b>接单审核中</b>审核通过前可随时取消接单';
+        main.textContent = '';
         main.style.display = 'none';
         cancelBtn.classList.add('wide');
     } else if (r.status === 'ready') {
-        tip.innerHTML = '<b>已通过接单审核</b>开始做工后不可取消接单';
+        tip.innerHTML = '<b>已通过接单审核</b>请到岗后点击「开始做工」';
         main.textContent = '开始做工';
         main.onclick = function () { startWorking(r.id); };
+        cancelBtn.style.display = 'none';
     } else {
         tip.innerHTML = '<b>做工中</b>按天上传现场图片，全部完成后提交结算';
         main.textContent = '提交完工';
@@ -2561,12 +3360,15 @@ function doStartWorking(id) {
     toast('已开始做工，完工后请上传工作图片');
 }
 function pickPhotosFor(day) {
+    const r = RECORD_MAP[curRecId];
+    if (r && stOfDay(r, day)) { toast('该天已进入结算，不可修改'); return; }
     curPhotoDay = day;
     document.getElementById('rd-file').click();
 }
 function onPhotosPicked(input) {
     const r = RECORD_MAP[curRecId];
     if (!r) return;
+    if (stOfDay(r, curPhotoDay)) { toast('该天已进入结算，不可修改'); input.value = ''; return; }
     const arr = r.dayPhotos[curPhotoDay] || (r.dayPhotos[curPhotoDay] = []);
     const room = 3 - arr.length;
     Array.prototype.slice.call(input.files, 0, room).forEach(function (f) {
@@ -2580,103 +3382,113 @@ function onPhotosPicked(input) {
 function removeDayPhoto(day, i) {
     const r = RECORD_MAP[curRecId];
     if (!r || !r.dayPhotos[day]) return;
+    if (stOfDay(r, day)) { toast('该天已进入结算，不可修改'); return; }
     r.dayPhotos[day].splice(i, 1);
     renderRecDetail(curRecId);
+}
+const JOB_NAMES = {
+    r1: '组装线普工', r2: '打包员', r3: '分拣临时工', r4: '线束车间操作工', r5: '装卸工', r6: '客服',
+    r7: '组装线普工', r9: '质检员', r10: '装配临时工', r11: '分拣临时工',
+    h1: '分拣临时工', h2: '打包员', h3: '线束车间操作工', h4: '装卸工', h5: '组装线普工',
+    h6: '夜班理货', h7: '分拣临时工', h8: '分拣打包', h9: '分拣打包'
+};
+function jobNameOf(r) {
+    if (!r) return '';
+    if (JOB_NAMES[r.id]) return JOB_NAMES[r.id];
+    const parts = String(r.title || '').split(' · ');
+    let name = parts.length > 1 ? parts[parts.length - 1] : String(r.title || '');
+    name = name.replace(/（[^）]*）/g, '').trim();
+    if (name.indexOf('得物客服') > -1) return '客服';
+    return name;
+}
+function recDateFull(r) {
+    const ds = (r && r.dayList) || [];
+    if (!ds.length) return (r && r.date) || '—';
+    return ds.map(function (d, i) {
+        return '<span class="rd-date-item">' + WB_YEAR + '-' + d + (i < ds.length - 1 ? ' / ' : '') + '</span>';
+    }).join('');
+}
+function recUnitPrice(r) {
+    return (r && r.rate) ? r.rate : (jobRate(r) + '元/小时');
+}
+function recCardHtml(r, mode) {
+    const key = recStatusKey(r);
+    const isHistory = mode === 'history';
+    const employer = (siteOf(r) && siteOf(r).company) || '—';
+    let acts = '';
+    if (!isHistory && r.status === 'apply_review') {
+        acts += '<button type="button" class="rec-cancel" onclick="event.stopPropagation();cancelRec(\'' + r.id + '\')">取消接单</button>';
+    }
+    let foot = '';
+    if (acts) {
+        foot = '<div class="rec-foot"><div class="rec-acts">' + acts + '</div></div>';
+    } else if (isHistory) {
+        foot = '<div class="rec-foot"><span class="rec-link" onclick="event.stopPropagation();openRecDetail(\'' + r.id + '\')">明细 ›</span></div>';
+    }
+    return '<div class="rec" data-rec-id="' + r.id + '" data-st="' + key + '" onclick="openRecDetail(\'' + r.id + '\')">' +
+        '<div class="rec-head"><span class="rec-title">' + jobNameOf(r) + '</span>' +
+        '<span class="st ' + recWorkStatusCls(r) + '">' + recWorkStatusLabel(r) + '</span></div>' +
+        '<div class="rec-info">' +
+        '<div class="rec-info-row"><span>用工单位</span><b class="rec-company">' + employer + '</b></div>' +
+        '<div class="rec-info-row"><span>工期</span><b>' + r.days + '</b></div>' +
+        '<div class="rec-info-row"><span>员工单价</span><b>' + recUnitPrice(r) + '</b></div>' +
+        '</div>' + foot + '</div>';
+}
+function renderRecCards() {
+    const activeIds = ['r6', 'r7', 'r11', 'r1', 'r2', 'r3', 'r4', 'r10', 'r5'];
+    const historyIds = ['h1', 'h2', 'h3', 'h4', 'h5', 'h9', 'h6', 'h7', 'r9', 'h8'];
+    const wb = document.querySelector('.wb-daily-list');
+    if (wb) {
+        wb.innerHTML = activeIds.map(function (id) { return RECORD_MAP[id]; }).filter(Boolean)
+            .map(function (r) { return recCardHtml(r, 'active'); }).join('');
+    }
+    const his = document.getElementById('his-list');
+    if (his) {
+        his.innerHTML = historyIds.map(function (id) { return RECORD_MAP[id]; }).filter(Boolean)
+            .map(function (r) { return recCardHtml(r, 'history'); }).join('') +
+            '<div class="h-empty" id="his-empty" hidden>暂无该状态的记录</div>';
+    }
 }
 function syncRecCard(r) {
     const card = document.querySelector('#view-workbench .rec[data-rec-id="' + r.id + '"]');
     if (!card) return;
-    const st = card.querySelector('.st');
-    if (st) { st.className = 'st ' + statusClass(r.status); st.textContent = statusText(r.status); }
-    const foot = card.querySelector('.rec-foot');
-    if (foot && foot.children[1]) foot.children[1].textContent = r.hint;
-    syncRecActs(card, r);
-}
-/* 列表卡片上的「取消接单」：仅开工前出现 */
-function syncRecActs(card, r) {
-    const foot = card.querySelector('.rec-foot');
-    if (!foot) return;
-    let acts = foot.querySelector('.rec-acts');
-    const can = canCancel(r);
-    const canStart = !!r && r.status === 'ready';
-    if (!can && !canStart) { if (acts) acts.remove(); return; }
-    if (!acts) {
-        acts = document.createElement('div');
-        acts.className = 'rec-acts';
-        foot.appendChild(acts);
-    }
-    let html = '';
-    if (can) html += '<button type="button" class="rec-cancel">取消接单</button>';
-    if (canStart) html += '<button type="button" class="rec-start">开始做工</button>';
-    acts.innerHTML = html;
-    const cBtn = acts.querySelector('.rec-cancel');
-    if (cBtn) cBtn.onclick = function (e) { e.stopPropagation(); cancelRec(r.id); };
-    const sBtn = acts.querySelector('.rec-start');
-    if (sBtn) sBtn.onclick = function (e) { e.stopPropagation(); startWorking(r.id); };
+    const mode = card.closest('#his-list') ? 'history' : 'active';
+    card.outerHTML = recCardHtml(r, mode);
 }
 function submitWork(id) {
     const r = RECORD_MAP[id];
-    // 已上传但未保存的天
-    const noSave = [];
-    r.dayList.forEach(function (d, i) {
-        if (r.daySkip && r.daySkip[d]) return;
-        if ((r.dayPhotos[d] || []).length && !(r.savedDays && r.savedDays[d])) noSave.push(i + 1);
+    const pend = stUnsettledDatesOf(r);
+    if (!pend.length) { toast('没有待保存的日期'); return; }
+    const doneDates = pend.filter(function (d) {
+        return (r.dayPhotos[d] || []).length && !(r.daySkip && r.daySkip[d]);
     });
-    if (noSave.length) { toast('第 ' + noSave[0] + ' 天的图片还未保存'); return; }
+    if (!doneDates.length) { toast('请先上传工作图片'); return; }
+    doSubmitWork(id, doneDates);
+}
+function doSubmitWork(id, doneDates) {
+    const r = RECORD_MAP[id];
+    const pend = stUnsettledDatesOf(r);
+    doneDates = (doneDates || []).filter(function (d) { return pend.indexOf(d) > -1; });
+    if (!doneDates.length) { toast('请先上传工作图片'); return; }
 
-    // 没有上传图片的天 → 提交前统一说明原因
-    const missing = r.dayList.filter(function (d) {
-        return !(r.dayPhotos[d] || []).length && !(r.daySkip && r.daySkip[d]);
-    });
-    if (missing.length) { askSkipThenSubmit(id, missing); return; }
-    doSubmitWork(id);
-}
-function askSkipThenSubmit(id, missing) {
-    const r = RECORD_MAP[id];
-    const days = missing.map(function (d) {
-        return '第' + (r.dayList.indexOf(d) + 1) + '天（' + d + '）';
-    }).join('、');
-    const rest = r.dayList.length - missing.length;
-    showModal('填写未完成原因',
-        '<div class="skip-hint">' + days + ' 没有上传工作图片' +
-        (rest > 0 ? '，提交后按实际完成的 ' + rest + ' 天结算' : '') + '。请填写未完成原因：</div>' +
-        '<div class="skip-box"><textarea id="skip-reason" maxlength="60" placeholder="如：临时请假、身体不适"></textarea>' +
-        '<div class="skip-count"><span id="skip-len">0</span>/60</div></div>',
-        '提交完工',
-        function () {
-            const el = document.getElementById('skip-reason');
-            const v = ((el && el.value) || '').trim();
-            if (!v) { toast('请填写未完成原因'); return; }
-            r.daySkip = r.daySkip || {};
-            missing.forEach(function (d) { r.daySkip[d] = v; delete r.dayPhotos[d]; });
-            closeModal();
-            doSubmitWork(id);
-        });
-    const ta = document.getElementById('skip-reason');
-    if (ta) ta.addEventListener('input', function () {
-        document.getElementById('skip-len').textContent = ta.value.length;
-    });
-}
-function doSubmitWork(id) {
-    const r = RECORD_MAP[id];
-    const doneDays = r.dayList.filter(function (d) { return !(r.daySkip && r.daySkip[d]); }).length;
-    const skipDays = r.dayList.length - doneDays;
-    if (doneDays === 0) { toast('请至少完成一天并上传图片'); return; }
-    const perDay = r.amount / r.dayList.length;
-    r.amount = Math.round(perDay * doneDays);
-    r.doneDays = doneDays;
-    r.skipDays = skipDays;
-    r.status = 'settle_review';
-    r.submittedAt = nowLabel();
-    r.hint = skipDays > 0
-        ? ('已提交 ' + doneDays + ' 天 / 未完成 ' + skipDays + ' 天，结算审核中')
-        : '完工图片已提交，结算审核中';
+    const st = {
+        id: 'ST' + (nextStSeq++), wrId: r.id,
+        dates: doneDates.slice(), days: doneDates.length,
+        amount: round2(dayAmount(r) * doneDates.length),
+        status: '待审核', submitAt: nowLabel(),
+        skipDay: 0, skipNote: '',
+        auditRounds: []
+    };
+    r.sts = r.sts || [];
+    r.sts.push(st);
+    r.submittedAt = st.submitAt;
+    r.hint = recStatusHint(r);
     syncRecCard(r);
     renderWbCal();
     renderRecDetail(id);
-    toast('完工已提交，等待结算审核');
+    toast('保存成功');
 }
-/* ---- 取消接单（仅开工前：接单审核中 / 待开工） ---- */
+/* 取消接单仅允许「接单审核中」；待开工 / 已开工不提供取消 */
 function cancelRec(id) {
     const r = RECORD_MAP[id];
     if (!r) return;
@@ -2690,24 +3502,15 @@ function cancelRec(id) {
         '<div class="skip-hint">' + (isApply
             ? '取消后该接单申请将撤回，不再等待平台审核，本单不计入接单记录。'
             : '本单已通过接单审核但还未开工，取消后将释放排班名额' + (n ? '，已上传的 ' + n + ' 张工作图片一并作废' : '') + '，不计入结算。') +
-        '如需上岗可重新接单。</div>' +
-        '<div class="skip-box"><textarea id="cancel-reason" maxlength="60" placeholder="选填：说明取消原因，如临时有事"></textarea>' +
-        '<div class="skip-count"><span id="cancel-len">0</span>/60</div></div>',
+        '如需上岗可重新接单。</div>',
         '确认取消',
-        function () {
-            const el = document.getElementById('cancel-reason');
-            doCancelRec(id, ((el && el.value) || '').trim());
-        });
-    const ta = document.getElementById('cancel-reason');
-    if (ta) ta.addEventListener('input', function () {
-        document.getElementById('cancel-len').textContent = ta.value.length;
-    });
+        function () { doCancelRec(id); });
 }
-function doCancelRec(id, reason) {
+function doCancelRec(id) {
     const r = RECORD_MAP[id];
     r.status = 'cancelled';
     r.cancelAt = nowLabel();
-    r.cancelReason = reason || '';
+    r.cancelReason = '';
     r.hint = '开工前已取消接单';
     r.savedDays = {};
     const card = document.querySelector('#view-workbench .rec[data-rec-id="' + id + '"]');
@@ -2729,23 +3532,9 @@ function addHisCard(r) {
     if (!his) return;
     const old = his.querySelector('.rec[data-rec-id="' + r.id + '"]');
     if (old) old.remove();
-    const isDone = r.status === 'paid';
-    const note = (r.status === 'cancelled' && r.cancelReason)
-        ? '<div class="rec-note">取消原因：' + r.cancelReason + '</div>'
-        : ((r.status === 'settle_rejected' && r.failReason) ? '<div class="rec-note">结算未通过原因：' + r.failReason + '</div>'
-        : ((r.status === 'apply_rejected' && r.rejectReason) ? '<div class="rec-note">接单未通过原因：' + r.rejectReason + '</div>' : ''));
-    const div = document.createElement('div');
-    div.className = 'rec';
-    div.dataset.st = r.status;
-    div.dataset.recId = r.id;
-    div.onclick = function () { openRecDetail(r.id); };
-    div.innerHTML = '<div class="rec-head"><span class="rec-title">' + r.title + '</span>' +
-        '<span class="rec-money' + (isDone ? '' : ' off') + '">¥' + r.amount + '</span></div>' +
-        '<div class="rec-date"><b>' + r.date + '</b><span class="rec-days">' + r.days + '</span></div>' +
-        '<div class="rec-sub">' + r.time + '</div>' + note +
-        '<div class="rec-foot"><span class="st ' + statusClass(r.status) + '">' + statusText(r.status) + '</span>' +
-        '<span>' + (r.hint || '') + '</span><span class="rec-link">' + (isDone ? '明细 ›' : '详情 ›') + '</span></div>';
-    his.insertBefore(div, his.firstChild);
+    const box = document.createElement('div');
+    box.innerHTML = recCardHtml(r, 'history');
+    his.insertBefore(box.firstElementChild, his.firstChild);
 }
 function resubmitRec(id) {
     const r = RECORD_MAP[id];
@@ -2785,24 +3574,24 @@ function wbRecs() {
     return out;
 }
 function recMonth(ds) { return ds.slice(0, 2); }
-/* 每天待做工的接单数：只统计「待开工 / 做工中」 */
+/* 仍在排班中的日期：待开工取全部日期；做工中只取未结算日期 */
+function recOpenDates(r) {
+    if (!r || (r.status !== 'ready' && r.status !== 'working')) return [];
+    if (r.status === 'ready') return (r.dayList || []).slice();
+    return stUnsettledDatesOf(r);
+}
+/* 每天待做工的接单数：只统计「待开工 / 做工中」的未结算日期 */
 function wbDayStat() {
     const map = {};
     wbRecs().forEach(function (r) {
-        if (r.status !== 'ready' && r.status !== 'working') return;
-        r.dayList.forEach(function (d) { map[d] = (map[d] || 0) + 1; });
+        recOpenDates(r).forEach(function (d) { map[d] = (map[d] || 0) + 1; });
     });
     return map;
 }
 /* 收起时翻「周」，展开时翻「月」 */
 function calMove(n) {
-    if (wcalOpen) {
-        wcalAnchor = new Date(wcalAnchor.getFullYear(), wcalAnchor.getMonth() + n, 1);
-    } else {
-        const d = new Date(wcalAnchor.getTime());
-        d.setDate(d.getDate() + n * 7);
-        wcalAnchor = d;
-    }
+    /* 收起 / 展开都按“月”切换，标题始终显示年/月 */
+    wcalAnchor = new Date(wcalAnchor.getFullYear(), wcalAnchor.getMonth() + n, 1);
     wcalPick = '';
     renderWbCal();
 }
@@ -2826,10 +3615,11 @@ function renderWbCal() {
     const today = new Date();
     const todayKey = dateKey(today);
     const cells = [];
+    const titleY = wcalAnchor.getFullYear(), titleM = wcalAnchor.getMonth();
+    document.getElementById('wcal-title').textContent = titleY + '年' + (titleM + 1) + '月';
 
     if (wcalOpen) {
         const y = wcalAnchor.getFullYear(), m = wcalAnchor.getMonth();
-        document.getElementById('wcal-title').textContent = y + '年' + (m + 1) + '月';
         const firstDow = new Date(y, m, 1).getDay();      /* 0=周日，与周标题一致 */
         const total = new Date(y, m + 1, 0).getDate();
         for (let i = 0; i < firstDow; i++) cells.push(null);
@@ -2843,9 +3633,6 @@ function renderWbCal() {
             d.setDate(sun.getDate() + i);
             cells.push(d);
         }
-        const end = cells[6];
-        document.getElementById('wcal-title').textContent =
-            (sun.getMonth() + 1) + '.' + sun.getDate() + ' - ' + (end.getMonth() + 1) + '.' + end.getDate();
     }
     document.getElementById('wcal-toggle').textContent = wcalOpen ? '收起 ▴' : '展开 ▾';
 
@@ -2860,26 +3647,6 @@ function renderWbCal() {
         html += '<div class="' + cls + '" onclick="calPickDay(\'' + ds + '\',' + y + ')"><i>' + c.getDate() + '</i><b></b></div>';
     });
     grid.innerHTML = html;
-
-    /* 汇总 / 已选日期提示 */
-    const sum = document.getElementById('wcal-sum');
-    if (wcalPick) {
-        const n = wbRecs().filter(function (r) {
-            return (r.status === 'ready' || r.status === 'working') && r.dayList.indexOf(wcalPick) > -1;
-        }).length;
-        sum.innerHTML = '<span><b>' + wcalPick + '</b> 待做工 ' + n + ' 单</span>' +
-            '<span class="wcal-clear" onclick="calClearPick()">取消筛选 ↺</span>';
-    } else {
-        const viewKeys = {};
-        cells.forEach(function (c) { if (c && c.getFullYear() === WB_YEAR) viewKeys[dateKey(c)] = 1; });
-        const recN = wbRecs().filter(function (r) {
-            return (r.status === 'ready' || r.status === 'working') &&
-                r.dayList.some(function (d) { return viewKeys[d]; });
-        }).length;
-        const dayN = Object.keys(viewKeys).filter(function (k) { return (stat[k] || 0) > 0; }).length;
-        sum.innerHTML = '<span>' + (wcalOpen ? '本月 ' : '本周 ') +
-            '<b>' + recN + '</b> 单待做工 · <b>' + dayN + '</b> 天</span>';
-    }
     applyWbFilter();
 }
 /* 列表按「当前月 / 选中日期」过滤；选中日期时只保留待开工与做工中 */
@@ -2895,9 +3662,10 @@ function applyWbFilter() {
         let ok = false;
         if (r) {
             if (wcalPick) {
-                ok = (r.status === 'ready' || r.status === 'working') && r.dayList.indexOf(wcalPick) > -1;
+                ok = recOpenDates(r).indexOf(wcalPick) > -1;
             } else if (yy === WB_YEAR) {
-                ok = r.dayList.some(function (d) { return recMonth(d) === mm; });
+                /* 默认按月份展示全部进行中接单（含待发薪），日历圆点只统计未结算日期 */
+                ok = (r.dayList || []).some(function (d) { return recMonth(d) === mm; });
             }
         }
         card.hidden = !ok;
@@ -2920,17 +3688,9 @@ function syncDailyEmpty() {
 function addActiveCard(r) {
     const list = document.querySelector('.wb-daily-list');
     if (!list || document.querySelector('#view-workbench .rec[data-rec-id="' + r.id + '"]')) return;
-    const div = document.createElement('div');
-    div.className = 'rec';
-    div.dataset.recId = r.id;
-    div.onclick = function () { openRecDetail(r.id); };
-    div.innerHTML = '<div class="rec-head"><span class="rec-title">' + r.title + '</span>' +
-        '<span class="rec-money"><em>预计</em> ¥' + r.amount + '</span></div>' +
-        '<div class="rec-date"><b>' + r.date + '</b><span class="rec-days">' + r.days + '</span></div>' +
-        '<div class="rec-sub">' + r.time + '</div>' +
-        '<div class="rec-foot"><span class="st ' + statusClass(r.status) + '">' + statusText(r.status) + '</span><span>' + r.hint + '</span></div>';
-    list.insertBefore(div, list.firstChild);
-    syncRecCard(r);
+    const box = document.createElement('div');
+    box.innerHTML = recCardHtml(r, 'active');
+    list.insertBefore(box.firstElementChild, list.firstChild);
     renderWbCal();
 }
 function updateHisChips() {
@@ -2944,7 +3704,7 @@ function updateHisChips() {
             if (o) o.textContent = t;
         };
         setTxt('all', '全部状态 (' + (paidN + rejectN + cancelN + applyRejN) + ')');
-        setTxt('paid', '已发薪 (' + paidN + ')');
+        setTxt('paid', '已结算 (' + paidN + ')');
         setTxt('settle_rejected', '结算未通过 (' + rejectN + ')');
         setTxt('cancelled', '已取消 (' + cancelN + ')');
         setTxt('apply_rejected', '接单未通过 (' + applyRejN + ')');
@@ -2953,11 +3713,12 @@ function updateHisChips() {
 }
 function approveApply(id) {
     const r = RECORD_MAP[id];
-    r.status = 'ready';
-    r.hint = '接单审核通过，待开工';
+    r.status = 'working';
+    r.startAt = nowLabel();
+    r.hint = '接单审核通过，做工中';
     syncRecCard(r);
     renderRecDetail(id);
-    toast('接单审核已通过，请按时到岗后开始做工');
+    toast('接单审核已通过，已进入做工中');
 }
 function approveRec(id) {
     const r = RECORD_MAP[id];
@@ -3016,6 +3777,14 @@ function payRec(id) {
     updateHisChips();
     renderWbCal();
     setHisTab('all');
+    /* 工资入账到钱包 */
+    WALLET.avail = Math.round((WALLET.avail + r.amount) * 100) / 100;
+    WALLET.flow.unshift({
+        type: 'wage', t: '工资入账',
+        sub: r.title.replace(' · ', ' · ') + '(' + r.date + ')',
+        amt: r.amount, time: walStamp()
+    });
+    renderWallet();
     renderRecDetail(id);
     toast('工资 ¥' + r.amount + ' 已发放至平台钱包');
 }
@@ -3034,11 +3803,254 @@ function rejectApply(id) {
     toast('接单未通过，可在历史记录中查看');
 }
 
+/* ============================================================
+   钱包：余额 / 流水记录 / 提现
+   ============================================================ */
+const WALLET = {
+    avail: 2661,
+    flow: [
+        { type: 'withdraw', t: '提现', sub: '招商银行（尾号 4015）· 朱轩均', amt: -500, time: '2026-11-17 14:20:36' },
+        { type: 'fee', t: '提现手续费', sub: '银行卡提现每笔 5 元', amt: -5, time: '2026-11-17 14:20:36' },
+        { type: 'wage', t: '工资入账', sub: '顺丰速运 · 分拣临时工（11-15）', amt: 112, time: '2026-11-16 09:30:12' },
+        { type: 'wage', t: '工资入账', sub: '京东仓储 · 打包员（11-12 ~ 11-14）', amt: 648, time: '2026-11-15 10:15:40' },
+        { type: 'wage', t: '工资入账', sub: '比亚迪 · 线束车间操作工（11-08 ~ 11-11）', amt: 1296, time: '2026-11-12 10:40:05' },
+        { type: 'wage', t: '工资入账', sub: '中通快递 · 装卸工（11-05 ~ 11-06）', amt: 360, time: '2026-11-06 18:20:33' },
+        { type: 'wage', t: '工资入账', sub: '立讯精密 · 组装线普工（11-01 ~ 11-03）', amt: 750, time: '2026-11-04 09:50:21' },
+        { type: 'wage', t: '工资入账', sub: '美团买菜 · 分拣打包（11-01 ~ 11-02）', amt: 416, time: '2026-11-03 10:00:12' },
+        { type: 'wage', t: '工资入账', sub: '美团买菜 · 分拣打包（11-03 ~ 11-04）', amt: 416, time: '2026-11-05 10:00:30' },
+        { type: 'wage', t: '工资入账', sub: '立讯精密 · 组装线普工（11-16 ~ 11-17）', amt: 624, time: '2026-11-19 10:00:12' }
+    ]
+};
+const flowFilter = { from: '', to: '', type: 'all' };
+
+/* 不可用余额 = 结算审核中 + 待发薪（按结算单维度，不按记录金额） */
+function walFrozen() {
+    const review = [], pending = [];
+    Object.keys(RECORD_MAP).forEach(function (k) {
+        const r = RECORD_MAP[k];
+        if (!r) return;
+        stOf(r).forEach(function (st) {
+            if (st.status === '待审核') review.push({ r: r, st: st });
+            else if (st.status === '待打款') pending.push({ r: r, st: st });
+        });
+    });
+    const sum = function (arr) {
+        return round2(arr.reduce(function (n, x) { return n + Number(x.st.amount || 0); }, 0));
+    };
+    const reviewAmt = sum(review), pendingAmt = sum(pending);
+    return {
+        review: review, pending: pending,
+        reviewAmt: reviewAmt, pendingAmt: pendingAmt,
+        total: round2(reviewAmt + pendingAmt)
+    };
+}
+
+function walMoney(n) {
+    const arr = Math.abs(n).toFixed(2).split('.');
+    arr[0] = arr[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return arr.join('.');
+}
+function walStamp() {
+    const d = new Date(), p = function (n) { return ('0' + n).slice(-2); };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' +
+        p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+}
+function goWallet() { location.hash = '#wallet'; }
+function backWallet() {
+    if (history.length > 1) history.back();
+    else location.hash = '#work';
+}
+function goWithdraw() { location.hash = '#withdraw'; }
+function backWithdraw() {
+    if (history.length > 1) history.back();
+    else location.hash = '#wallet';
+}
+
+function renderWallet() {
+    const big = document.getElementById('wal-avail-big');
+    if (!big) return;
+    big.textContent = walMoney(WALLET.avail);
+    document.getElementById('wal-avail').textContent = '¥' + walMoney(WALLET.avail);
+    document.getElementById('wal-frozen').textContent = '¥' + walMoney(walFrozen().total) + ' ›';
+    const wd = document.getElementById('wd-avail');
+    if (wd) wd.textContent = '¥ ' + walMoney(WALLET.avail);
+    renderFlow();
+}
+
+function renderFlow() {
+    const box = document.getElementById('wal-list');
+    if (!box) return;
+    const list = WALLET.flow.filter(function (f) {
+        if (flowFilter.type !== 'all' && f.type !== flowFilter.type) return false;
+        const day = f.time.slice(0, 10);
+        if (flowFilter.from && day < flowFilter.from) return false;
+        if (flowFilter.to && day > flowFilter.to) return false;
+        return true;
+    });
+    if (!list.length) {
+        box.innerHTML = '<div class="wal-empty">没有符合条件的流水记录</div>';
+        return;
+    }
+    box.innerHTML = list.map(function (f) {
+        return '<div class="fl-i">' +
+            '<div class="fl-r1"><span class="fl-t">' + f.t + '</span>' +
+            '<span class="fl-amt' + (f.amt < 0 ? ' out' : ' in') + '">' +
+            (f.amt < 0 ? '-' : '') + '¥' + walMoney(f.amt) + '</span></div>' +
+            '<div class="fl-sub">' + f.sub + '</div>' +
+            '<div class="fl-time">' + f.time + '</div>' +
+            '</div>';
+    }).join('');
+}
+
+function onFlowDate(which, val) {
+    flowFilter[which] = val;
+    const el = document.getElementById('wf-' + which);
+    const txt = el.querySelector('span');
+    txt.textContent = val
+        ? (val.slice(5, 7) + '/' + val.slice(8, 10))
+        : (which === 'from' ? '交易开始' : '交易结束');
+    el.classList.toggle('on', !!val);
+    renderFlow();
+}
+function onFlowType(v) {
+    flowFilter.type = v;
+    const el = document.getElementById('wf-type');
+    const opt = el.querySelector('option[value="' + v + '"]');
+    el.querySelector('span').textContent = opt ? opt.textContent : '全部类型';
+    el.classList.toggle('on', v !== 'all');
+    renderFlow();
+}
+function resetFlow() {
+    flowFilter.from = '';
+    flowFilter.to = '';
+    flowFilter.type = 'all';
+    document.querySelectorAll('#view-wallet .wf input[type=date]').forEach(function (i) { i.value = ''; });
+    const sel = document.querySelector('#wf-type select');
+    if (sel) sel.value = 'all';
+    document.querySelector('#wf-from span').textContent = '交易开始';
+    document.querySelector('#wf-to span').textContent = '交易结束';
+    document.querySelector('#wf-type span').textContent = '全部类型';
+    document.querySelectorAll('#view-wallet .wf').forEach(function (e) { e.classList.remove('on'); });
+    renderFlow();
+    toast('筛选条件已重置');
+}
+function showFrozen() {
+    const fz = walFrozen();
+    const brief = function (arr) {
+        return arr.length
+            ? arr.map(function (x) {
+                return x.r.title.split(' · ')[0] + ' ' + stDateText(x.st) + ' ¥' + amtText(x.st.amount);
+            }).join(' · ')
+            : '暂无';
+    };
+    const rows = [
+        { t: '结算审核中（' + fz.review.length + ' 笔）', amt: fz.reviewAmt, d: brief(fz.review) },
+        { t: '待发薪（' + fz.pending.length + ' 笔）', amt: fz.pendingAmt, d: brief(fz.pending) }
+    ].map(function (d) {
+        return '<div class="m-li"><span>' + d.t + '<i>' + d.d + '</i></span>' +
+            '<b>¥' + walMoney(d.amt) + '</b></div>';
+    }).join('');
+    showModal('不可用余额 ¥' + walMoney(fz.total),
+        '<div class="m-list">' + rows + '</div>' +
+        '<div class="skip-hint" style="margin-top:8px">商家完成结算打款后，金额会自动转入可用余额。</div>',
+        '知道了', closeModal, true);
+}
+
+/* ---- 提现 ---- */
+let wdFee = 0;
+let wdTimer = null;
+function renderWithdraw() {
+    renderWallet();
+    const amt = document.getElementById('wd-amt');
+    if (amt) amt.value = '';
+    const code = document.getElementById('wd-code');
+    if (code) code.value = '';
+    wdFee = 0;
+    updateWadCalc(0);
+}
+function wdAmount() {
+    const el = document.getElementById('wd-amt');
+    const v = el ? parseFloat(el.value) : 0;
+    return (isNaN(v) || v < 0) ? 0 : v;
+}
+/* 银行卡每笔 5 元；支付宝 3%，最多 50 元。原型固定招商银行卡 */
+function wdFeeOf(amount) {
+    if (!amount) return 0;
+    return 5;
+}
+function updateWadCalc(amount) {
+    const fee = wdFeeOf(amount);
+    wdFee = fee;
+    const real = Math.max(amount - fee, 0);
+    const r = document.getElementById('dw-real');
+    const f = document.getElementById('dw-fee');
+    if (r) r.textContent = '¥ ' + walMoney(real);
+    if (f) f.textContent = '¥ ' + walMoney(fee);
+}
+function calcFee() { updateWadCalc(wdAmount()); }
+function fillAll() {
+    const e = document.getElementById('wd-amt');
+    if (!e) return;
+    e.value = Math.min(WALLET.avail, 1000).toFixed(2);
+    updateWadCalc(wdAmount());
+}
+function sendCode() {
+    const btn = document.getElementById('wd-send');
+    if (!btn || btn.classList.contains('off')) return;
+    toast('验证码已发送（原型：任意 6 位数字）');
+    let n = 60;
+    btn.classList.add('off');
+    btn.textContent = n + 's 后重发';
+    wdTimer = setInterval(function () {
+        n--;
+        if (n <= 0) {
+            clearInterval(wdTimer);
+            wdTimer = null;
+            btn.classList.remove('off');
+            btn.textContent = '发送验证码';
+        } else {
+            btn.textContent = n + 's 后重发';
+        }
+    }, 1000);
+}
+function submitWithdraw() {
+    const amount = wdAmount();
+    const codeEl = document.getElementById('wd-code');
+    const code = codeEl ? codeEl.value.trim() : '';
+    if (amount <= 0) { toast('请输入提现金额'); return; }
+    if (amount > 1000) { toast('单笔提现不得超过 1000 元'); return; }
+    if (amount > WALLET.avail) { toast('提现金额不可大于可用余额'); return; }
+    if (!/^\d{6}$/.test(code)) { toast('请输入 6 位验证码'); return; }
+    const fee = wdFeeOf(amount);
+    if (amount <= fee) { toast('提现金额需大于手续费 ' + fee + ' 元'); return; }
+
+    showModal('确认提现',
+        '<div class="skip-hint">提现 <b>¥' + walMoney(amount) + '</b> 至 招商银行（尾号 4015）<br>' +
+        '手续费 ¥' + walMoney(fee) + '，实际到账 <b>¥' + walMoney(amount - fee) + '</b>。<br>' +
+        '申请后 7 个工作日内到账。</div>',
+        '确认提交',
+        function () { doWithdraw(amount, fee); });
+}
+function doWithdraw(amount, fee) {
+    const stamp = walStamp();
+    WALLET.avail = Math.round((WALLET.avail - amount) * 100) / 100;
+    if (fee) {
+        WALLET.flow.unshift({ type: 'fee', t: '提现手续费', sub: '银行卡提现每笔 ' + fee + ' 元', amt: -fee, time: stamp });
+    }
+    WALLET.flow.unshift({ type: 'withdraw', t: '提现', sub: '招商银行（尾号 4015）· 朱轩均', amt: -amount, time: stamp });
+    closeModal();
+    renderWallet();
+    toast('提现申请已提交，¥' + walMoney(amount - fee) + ' 将在 7 个工作日内到账');
+    location.hash = '#wallet';
+}
+
 function switchView(name, anim) {
     closeCs();
     if (curView === 'home') scrollMap.home = viewHomeEl.scrollTop;
     if (curView === 'work') scrollMap.work = viewWorkEl.scrollTop;
     if (curView === 'daily') scrollMap.daily = viewDailyEl.scrollTop;
+    if (curView === 'wallet') scrollMap.wallet = viewWalletEl.scrollTop;
+    if (curView === 'withdraw') scrollMap.withdraw = viewWithdrawEl.scrollTop;
     ALL_VIEWS.forEach(v => v.classList.remove('active', 'anim-push', 'anim-pop'));
     const el = VIEW_MAP[name];
     el.classList.add('active');
@@ -3048,6 +4060,7 @@ function switchView(name, anim) {
     dockDetailEl.classList.toggle('show', name === 'detail');
     dockDDetailEl.classList.toggle('show', name === 'ddetail');
     dockRDetailEl.classList.toggle('show', false);   // 接单详情底栏由 renderRdDock 按状态决定
+    dockWalletEl.classList.toggle('show', name === 'withdraw');
     dockTabEl.querySelectorAll('.tb-item').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
     curView = name;
 }
@@ -3077,6 +4090,14 @@ function route() {
         if (curView === 'order') return;
         switchView('order', 'anim-push');
         renderOrder();
+    } else if (t.view === 'wallet') {
+        if (curView === 'wallet') return;
+        renderWallet();
+        switchView('wallet', 'anim-push');
+    } else if (t.view === 'withdraw') {
+        if (curView === 'withdraw') return;
+        renderWithdraw();
+        switchView('withdraw', 'anim-push');
     } else if (t.view === 'rdetail') {
         if (curView === 'rdetail') { viewRDetailEl.scrollTop = 0; }
         else switchView('rdetail', 'anim-push');
@@ -3107,14 +4128,14 @@ document.getElementById('nav-back').onclick = backFromDetail;
 /* ============================================================
    初始化
    ============================================================ */
+normalizeAll();
 renderCats();
 renderJobs();
-/* 列表卡片状态与数据对齐（含列表内「取消接单」按钮） */
-document.querySelectorAll('#view-workbench .wb-daily-list .rec').forEach(function (card) {
-    const r = RECORD_MAP[card.dataset.recId];
-    if (r) syncRecCard(r);
-});
+/* 工作台 / 历史列表统一由 recCardHtml 渲染 */
+renderRecCards();
 renderWbCal();
+renderWallet();
+updateHisChips();
 (function init() {
     const t = parseHash();
     const q = getQuery('id');
