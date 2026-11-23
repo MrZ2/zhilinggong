@@ -180,7 +180,7 @@
         .cell { display: flex; flex-direction: column; align-items: center; gap: 7px; cursor: pointer; transition: transform .12s; }
         .cell:active { transform: scale(.92); }
         .cell > span:last-child { font-size: 11.5px; color: #3A3F47; white-space: nowrap; }
-        .ic { width: 42px; height: 42px; border-radius: 13px; display: flex; align-items: center; justify-content: center; flex: none; }
+        .ic { width: 42px; height: 42px; border-radius: 13px; display: flex; align-items: center; justify-content: center; flex: none; position: relative; }
         .ic svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
         .c-blue { background: linear-gradient(135deg, #6B9BFF, #3E6BFF); }
         .c-purple { background: linear-gradient(135deg, #B098FF, #7C5CE0); }
@@ -234,9 +234,9 @@
         .jc-meta { margin-top: 7px; }
         .jc-meta .mi { display: flex; font-size: 12px; line-height: 1.7; color: #3C4149; }
         .jc-meta .mi > span { flex: none; width: 60px; color: var(--sub); }
-        .jc-meta .mi > b { flex: 1; min-width: 0; font-weight: 500; word-break: break-all; }
+        .jc-meta .mi > b { flex: 1; min-width: 0; font-weight: 500; word-break: normal; overflow-wrap: anywhere; }
         .jc-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
-        .chip { font-size: 11px; padding: 2px 8px; border-radius: 5px; background: var(--blue-light); color: var(--blue); font-weight: 600; }
+        .chip { font-size: 11px; padding: 2px 8px; border-radius: 5px; background: var(--blue-light); color: var(--blue); font-weight: 600; white-space: nowrap; }
         .chip.gray { background: var(--fill); color: var(--sub); }
         .jc-log { font-size: 11px; color: #A6ABB5; margin-top: 9px; line-height: 1.6; }
         .jc-log b { color: #6B7078; font-weight: 600; }
@@ -281,7 +281,7 @@
         .kv { display: flex; font-size: 13px; padding: 6px 0; line-height: 1.55; }
         .kv + .kv { border-top: 1px solid #F6F7F9; }
         .kv .k { color: var(--sub); width: 78px; flex: none; }
-        .kv .v { flex: 1; min-width: 0; color: var(--text); word-break: break-all; }
+        .kv .v { flex: 1; min-width: 0; color: var(--text); word-break: normal; overflow-wrap: anywhere; }
         .kv .v .mut { color: #A6ABB5; }
         .subrow { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; margin-bottom: 8px; background: #FCFCFD; }
         .subrow .st { font-size: 13px; font-weight: 700; }
@@ -302,7 +302,7 @@
         .frow { margin-bottom: 13px; }
         .frow > label { display: block; font-size: 12.5px; font-weight: 700; color: #4A4F58; margin-bottom: 6px; }
         .frow > label .req { color: var(--red); margin-right: 2px; }
-        .frow > label .cnt { float: right; font-weight: 400; color: #A6ABB5; font-size: 11px; }
+        .frow > label .cnt, .fg > label .cnt { float: right; font-weight: 400; color: #A6ABB5; font-size: 11px; }
         .fin, .fsel, .fta { width: 100%; border: 1px solid var(--line); background: var(--fill); border-radius: 10px; padding: 9px 11px; font-size: 14px; color: var(--text); font-family: inherit; outline: none; }
         .fin:focus, .fsel:focus, .fta:focus { border-color: var(--blue); background: #fff; }
         .fta { min-height: 76px; resize: none; line-height: 1.6; }
@@ -468,6 +468,7 @@
 
         /* 卡片上的小操作按钮 */
         .jbtns { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+        .jbtns.wrap { flex-wrap: wrap; justify-content: flex-end; row-gap: 6px; }
         .jbtn { font-size: 12px; font-weight: 700; color: #4A4F58; background: var(--fill); border: 1px solid var(--line); padding: 3px 9px; border-radius: 13px; cursor: pointer; }
         .jbtn.pri { color: var(--blue); background: var(--blue-light); border-color: #D6E2FF; }
 
@@ -603,7 +604,7 @@
         .tl-i.warn::before { background: var(--red); box-shadow: 0 0 0 1px #FFECEB; }
         .tl-i.ok::before { background: var(--green); box-shadow: 0 0 0 1px #E8F8EE; }
         .tl-i.wait::before { background: #E6A23C; box-shadow: 0 0 0 1px #FFF4E6; }
-        #view-wr .jc-meta .mi > span, #view-wr-apply .jc-meta .mi > span, #view-wr-settle .jc-meta .mi > span { width: 74px; }
+        #view-wr .jc-meta .mi > span, #view-wr-apply .jc-meta .mi > span, #view-wr-working .jc-meta .mi > span, #view-wr-pay .jc-meta .mi > span { width: 74px; }
         #view-wr-detail .kv .k { width: 88px; }
         .a-run { background: #EAF1FF; color: var(--blue); }
 
@@ -637,6 +638,73 @@
         .end-amt { display: flex; gap: 8px; align-items: center; }
         .end-amt .fin { flex: 1; min-width: 0; }
         .end-amt .u { flex: none; font-size: 13px; color: var(--sub); }
+
+        /* ===== 灵工 · 用工记录（对齐管理后台） ===== */
+        .cell { position: relative; }
+        .menu-badge { position: absolute; top: -5px; right: -6px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; line-height: 16px; text-align: center; }
+        .a-review { background: #F3EEFF; color: #6A5D9B; }
+        .mv-act { margin-left: 8px; font-size: 12px; color: var(--blue); font-weight: 700; cursor: pointer; }
+        .wr-tags { flex: none; display: flex; align-items: center; gap: 4px; }
+        .wr-range { white-space: nowrap; }
+        .wr-tags .atag { white-space: nowrap; }
+        .wr-times { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; margin-top: 8px; font-size: 11.5px; color: var(--sub); }
+        .wr-times.single { grid-template-columns: 1fr; }
+        .wr-times > div { display: flex; gap: 6px; min-width: 0; }
+        .wr-times b { color: #3C4149; font-weight: 600; white-space: nowrap; }
+        .wr-amounts { margin-top: 8px; padding: 7px 10px; background: #F7F9FD; border-radius: 9px; font-size: 12px; line-height: 1.85; color: #4A4F58; }
+        .wr-amounts .row { display: flex; align-items: baseline; }
+        .wr-amounts .row b { margin-left: auto; color: var(--text); font-weight: 700; }
+        .wr-date-chips { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
+        .wr-date-chip { font-size: 12px; padding: 5px 10px; border-radius: 14px; background: var(--fill); color: #4A4F58; border: 1px solid transparent; cursor: pointer; }
+        .wr-date-chip.on { background: var(--blue-light); color: var(--blue); border-color: #C3D6FF; font-weight: 700; }
+        .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .cal-head b { font-size: 14px; font-weight: 800; }
+        .cal-nav { width: 32px; height: 32px; border-radius: 50%; background: var(--fill); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #4A4F58; cursor: pointer; }
+        .cal-week { display: grid; grid-template-columns: repeat(7, 1fr); font-size: 11px; color: var(--sub); text-align: center; margin-bottom: 4px; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .cal-day { height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 13px; color: #3C4149; cursor: pointer; }
+        .cal-day.blank { cursor: default; }
+        .cal-day.dis { color: #C9CDD4; background: #F7F8FA; cursor: not-allowed; }
+        .cal-day.on { background: var(--blue); color: #fff; font-weight: 800; }
+        .wr-sms { display: flex; gap: 8px; align-items: center; }
+        .wr-sms .fin { flex: 1; min-width: 0; }
+        .wr-amt-block { margin: 2px 0 12px; }
+        .wr-amt-label { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; font-weight: 700; color: #4A4F58; margin-bottom: 7px; }
+        .wr-amt-label span { font-size: 11px; font-weight: 400; color: var(--sub); }
+        .wr-amt-field { display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 12px; background: #F7F9FF; border: 1.5px solid #C9D8FF; border-radius: 12px; }
+        .wr-amt-field:focus-within { background: #fff; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(46,107,255,.14); }
+        .wr-amt-field .cur { font-size: 20px; font-weight: 800; color: var(--red); flex: none; }
+        .wr-amt-field input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 28px; font-weight: 800; color: var(--red); font-family: inherit; padding: 0; letter-spacing: .5px; font-variant-numeric: tabular-nums; }
+        .wr-amt-field .unit { font-size: 12.5px; color: var(--sub); flex: none; }
+        .wr-amt-sub { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 6px; font-size: 11.5px; color: var(--sub); }
+        .wr-amt-sub b { color: var(--green); font-weight: 700; }
+        .sb-hd .hd-ops { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+        .hd-ops .fc { padding: 3px 9px; font-size: 11.5px; }
+        .dtab { display: flex; align-items: center; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+        .dtab .t { flex: 1; text-align: center; padding: 9px 0 8px; font-size: 13px; color: var(--sub); font-weight: 600; cursor: pointer; position: relative; }
+        .dtab .t.on { color: var(--blue); font-weight: 800; }
+        .dtab .t.on::after { content: ''; position: absolute; left: 18%; right: 18%; bottom: -1px; height: 2px; border-radius: 2px; background: var(--blue); }
+        .dtab-body { min-height: 20px; }
+        .mini-btn { display: inline-flex; align-items: center; justify-content: center; flex: none; height: 36px; padding: 0 12px; border-radius: 10px; background: var(--blue-light); color: var(--blue); font-size: 12.5px; font-weight: 700; cursor: pointer; }
+        .mini-btn.dis { opacity: .45; pointer-events: none; }
+        .wr-st-head { font-size: 11.5px; color: var(--sub); margin-bottom: 8px; }
+        .wr-st-card { border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; margin-bottom: 8px; background: #FCFCFD; }
+        .wr-st-card:last-child { margin-bottom: 0; }
+        .wr-st-card .h { display: flex; align-items: center; gap: 8px; }
+        .wr-st-card .h b { font-size: 15px; color: var(--red); }
+        .wr-st-card .h .atag { margin-left: auto; }
+        .wr-st-card .ln { display: flex; justify-content: space-between; gap: 8px; font-size: 11.5px; color: var(--sub); margin-top: 3px; flex-wrap: wrap; }
+        .flow-now { margin-top: 10px; font-size: 11.5px; line-height: 1.6; color: #4A4F58; background: #F7F9FD; border-radius: 9px; padding: 8px 10px; }
+        .flow-now b { color: var(--blue); margin-right: 4px; }
+        .flow-now .t { color: var(--sub); margin-left: 6px; }
+        .fs .tm { font-size: 9px; color: #A6ABB5; margin-top: 2px; min-height: 13px; white-space: nowrap; line-height: 1.25; }
+        .tl-i.warn::before { background: var(--red); box-shadow: 0 0 0 1px #FFD6D2; }
+        .tl-i.ok::before { background: var(--green); box-shadow: 0 0 0 1px #CDEFDD; }
+        .wr-oplist { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+        .wr-op { display: flex; align-items: center; padding: 14px 12px; font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--line); cursor: pointer; }
+        .wr-op:last-child { border-bottom: none; }
+        .wr-op span { margin-left: auto; color: #C0C4CC; }
+        .dsec > h4 .tip { font-size: 11px; font-weight: 500; color: var(--sub); margin-left: 4px; }
     </style>
 </head>
 <body>
@@ -973,20 +1041,19 @@
         <span class="mv-back" data-back>‹</span>
         <span class="mv-title">用工记录</span>
         <span class="mv-count" id="wrCountAll"></span>
+        <span class="mv-act" id="wrExportAll">导出</span>
     </div>
     <div class="jtop">
         <div class="jbar">
             <div class="jsearch">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
-                <input id="wrKwAll" placeholder="搜索姓名">
+                <input id="wrKwAll" placeholder="搜索姓名/手机号">
             </div>
-        </div>
-        <div class="jsub">
-            <select class="jsel" id="wrClientAll"></select>
-            <select class="jsel" id="wrStatusAll"></select>
+            <div class="jflt" id="wrFltAll">筛选<span class="bd" id="wrFltNAll" style="display:none">0</span></div>
         </div>
     </div>
     <div id="wrListAll"></div>
+    <div class="loadmore" id="wrMoreAll"></div>
 </div>
 </div>
 
@@ -997,44 +1064,71 @@
         <span class="mv-back" data-back>‹</span>
         <span class="mv-title">接单待审</span>
         <span class="mv-count" id="wrCountApply"></span>
+        <span class="mv-act" id="wrExportApply">导出</span>
     </div>
     <div class="jtop">
         <div class="jbar">
             <div class="jsearch">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
-                <input id="wrKwApply" placeholder="搜索姓名">
+                <input id="wrKwApply" placeholder="搜索姓名/手机号">
             </div>
+            <div class="jflt" id="wrFltApply">筛选<span class="bd" id="wrFltNApply" style="display:none">0</span></div>
             <div class="jflt" id="wrBatchBtnApply">批量</div>
-        </div>
-        <div class="jsub">
-            <select class="jsel" id="wrClientApply"></select>
         </div>
     </div>
     <div id="wrListApply"></div>
+    <div class="loadmore" id="wrMoreApply"></div>
 </div>
 </div>
 
-<!-- ================= 结算待审 ================= -->
-<div class="view" id="view-wr-settle">
+<!-- ================= 做工中 ================= -->
+<div class="view" id="view-wr-working">
 <div class="page pad0">
     <div class="mnav">
         <span class="mv-back" data-back>‹</span>
-        <span class="mv-title">结算待审</span>
-        <span class="mv-count" id="wrCountSettle"></span>
+        <span class="mv-title">做工中</span>
+        <span class="mv-count" id="wrCountWorking"></span>
+        <span class="mv-act" id="wrExportWorking">导出</span>
     </div>
-    <div class="jbar">
-        <div class="jsearch">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
-            <input id="wrKwSettle" placeholder="搜索姓名">
+    <div class="jtop">
+        <div class="jbar">
+            <div class="jsearch">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
+                <input id="wrKwWorking" placeholder="搜索姓名/手机号">
+            </div>
+            <div class="jflt" id="wrFltWorking">筛选<span class="bd" id="wrFltNWorking" style="display:none">0</span></div>
         </div>
-        <div class="jflt" id="wrFltBtnSettle">筛选<span class="bd" id="wrFltNSettle" style="display:none">0</span></div>
-        <div class="jflt" id="wrBatchBtnSettle">批量</div>
     </div>
-    <div id="wrListSettle"></div>
+    <div id="wrListWorking"></div>
+    <div class="loadmore" id="wrMoreWorking"></div>
 </div>
 </div>
 
-<!-- ================= 用工详情（三页共用，只读） ================= -->
+<!-- ================= 结算打款 ================= -->
+<div class="view" id="view-wr-pay">
+<div class="page pad0">
+    <div class="mnav">
+        <span class="mv-back" data-back>‹</span>
+        <span class="mv-title">结算打款</span>
+        <span class="mv-count" id="wrCountPay"></span>
+        <span class="mv-act" id="wrExportPay">导出</span>
+    </div>
+    <div class="jtop">
+        <div class="jbar">
+            <div class="jsearch">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
+                <input id="wrKwPay" placeholder="搜索姓名/手机号">
+            </div>
+            <div class="jflt" id="wrFltPay">筛选<span class="bd" id="wrFltNPay" style="display:none">0</span></div>
+            <div class="jflt" id="wrBatchBtnPay">批量</div>
+        </div>
+    </div>
+    <div id="wrListPay"></div>
+    <div class="loadmore" id="wrMorePay"></div>
+</div>
+</div>
+
+<!-- ================= 用工详情（四页共用，只读） ================= -->
 <div class="view" id="view-wr-detail">
 <div class="page pad0">
     <div class="mnav"><span class="mv-back" data-back>‹</span><span class="mv-title">用工详情</span></div>
@@ -1124,12 +1218,7 @@
 </div>
 <div class="actbar" id="bar-wr-batch" data-view="__off">
     <div class="ab ghost" id="wrBatchExit">取消</div>
-    <div class="ab red" id="wrBatchRej">批量驳回</div>
-    <div class="ab blue" id="wrBatchRun">批量通过（0）</div>
-</div>
-<div class="actbar" id="bar-wr-detail" data-view="view-wr-detail">
-    <div class="ab ghost" id="wrdLog">审核记录</div>
-    <div class="ab ghost" id="wrdEnd">结束用工</div>
+    <div class="ab blue" id="wrBatchRun">批量审核（0）</div>
 </div>
 
 <div class="mask" id="mask"></div>
@@ -1155,12 +1244,7 @@
 <div class="sheet" id="clFilter"></div>
 <div class="sheet" id="pickSheet"></div>
 <div class="sheet" id="fjSheet"></div>
-<div class="sheet" id="wrFilter"></div>
-<div class="sheet" id="stFilter"></div>
-<div class="sheet" id="wrAudit"></div>
-<div class="sheet" id="stAudit"></div>
-<div class="sheet" id="wrLog"></div>
-<div class="sheet" id="wrEnd"></div>
+<div class="sheet" id="wrSheet"></div>
 <div class="sheet" id="stLog"></div>
 <div class="sheet" id="aiSugSheet">
     <div class="sh-head"><b>重新生成</b><span class="x" data-close>✕</span></div>
@@ -1377,8 +1461,8 @@ function switchView(id, anim) {
     el.classList.add('active', anim);
     window.scrollTo(0, 0);
     if (id === 'view-audit') renderAudit();   // 从详情返回时同步最新待审数据
-    if (id === 'view-wr' || id === 'view-wr-apply' || id === 'view-wr-settle') {
-        wrTab = id === 'view-wr' ? 'all' : id === 'view-wr-apply' ? 'apply' : 'settle';
+    if (id === 'view-wr' || id === 'view-wr-apply' || id === 'view-wr-working' || id === 'view-wr-pay') {
+        wrTab = id === 'view-wr' ? 'all' : id === 'view-wr-apply' ? 'apply' : id === 'view-wr-working' ? 'working' : 'pay';
         renderWrList();                       // 返回列表时同步审核结果
     }
     document.getElementById('dock').classList.toggle('show', id === 'view-home' || id === 'view-work');
@@ -1423,7 +1507,9 @@ function applyHash() {
         case 'view-job-detail': openJobs(); break;
         case 'view-wr': openWr('all'); break;
         case 'view-wr-apply': openWr('apply'); break;
-        case 'view-wr-settle': openWr('settle'); break;
+        case 'view-wr-working': openWr('working'); break;
+        case 'view-wr-pay': openWr('pay'); break;
+        case 'view-wr-settle': openWr('working'); break;
         case 'view-wr-detail': openWr('all'); break;
     }
 }
@@ -1742,8 +1828,10 @@ const WORK = [
     ]},
     { title: '灵工管理', items: [
         ['灵工岗位', 'case', 'purple', 'view-fj-jobs'], ['岗位审核', 'badge', 'orange', 'fj-audit-todo'],
-        ['用工记录', 'list', 'green', 'view-wr'],
-        ['接单待审', 'docCheck', 'orange', 'view-wr-apply'], ['结算待审', 'money', 'blue', 'view-wr-settle'],
+        ['用工记录', 'list', 'green', 'view-wr', 'wr_all'],
+        ['接单待审', 'docCheck', 'orange', 'view-wr-apply', 'wr_apply'],
+        ['做工中', 'clock', 'blue', 'view-wr-working', 'wr_working'],
+        ['结算打款', 'wallet', 'orange', 'view-wr-pay', 'wr_pay'],
     ]},
     { title: '财务管理', items: [
         ['发薪记录', 'money', 'orange'], ['发薪明细', 'list', 'green'], ['发薪审核', 'docCheck', 'blue'], ['发薪打款', 'wallet', 'purple'],
@@ -4495,46 +4583,110 @@ document.getElementById('fjFltBtn').onclick = () => renderFjFilter();
 document.getElementById('fjKw').oninput = e => { fjFilter.kw = e.target.value.trim(); renderFjList(); };
 
 /* ============================================================
-   灵工管理 · 灵工岗位 / 用工记录 / 接单待审 / 结算待审
-   口径对齐《灵工业务逻辑说明》（2026-11-19）：
-   · 状态合并为七态单列
-   · 接单审核通过时冻结资金（单价 × 应做工时），余额不足不可通过
-   · 结算审核通过即「结算完成」，无独立发薪环节
-   · 做工中可由商户「结束用工」并生成结算单
-   数据仅存于本文件内存，刷新恢复初始状态。
+   灵工管理 · 用工记录（与商户管理后台同源）
+   · 4 个页签：all 全部 / apply 接单待审 / working 做工中 / pay 结算打款
+   · 双状态：用工状态 + 审核状态（均由接单状态 + 结算单状态实时推导）
+   · 1 条用工 : N 张结算单；支持提前结算部分日期、延长工期
+   · 结算（选日期 + 确认金额）→ 待打款 → 结算打款（转付 + 差额退回 / 驳回）
    ============================================================ */
-const WR_CLIENTS = ['深圳市华工新能源科技有限公司', '深圳市天地劳务派遣有限公司', '顺丰仓储服务有限公司'];
-const WR_JOBS = ['装配普工', '包装工', '叉车工', '质检员', '分拣员', '装卸工', '客服', '保洁'];
+const WR_PAY_DEMO_CODE = '123456';
+const WR_PAGE_SIZE = 10;
+const WR_PAY_ACCOUNTS = [
+    '深圳唯臻人力资源有限公司（招商银行 7559****2210）',
+    '深圳唯臻供应链管理有限公司（工商银行 4000****8866）',
+    '支付宝企业账户（zhilingong@alipay.com）',
+];
 
-/* ---------- 七态（接单侧 + 结算侧合并） ---------- */
-const LF_CLS = {
-    '接单审核中': 'a-other', '做工中': 'a-run', '结算审核中': 'a-other',
-    '结算未通过': 'a-absent', '结算完成': 'a-normal', '接单未通过': 'a-absent', '已取消': 'a-cancel',
+/* ---------- 岗位 / 种子（与后台 WR_SEED 同源） ---------- */
+const WR_JOBS = ['装配普工', '质检员', '包装工', '仓库分拣', 'CNC操作工', '贴片作业员', '保安', '保洁', '叉车司机', '食堂帮厨', '焊工', '搬运工', '夜班巡检'];
+
+// [姓名, 性别, 手机号, 用工单位, 用人单位, 岗位, 开始日期, 天数, 班次, 每天工时, 单价类型, 员工单价, 企业单价, 发薪说明, 提成方式, 归属人, 审核状态, 驳回理由, 接单时间, 审核时间, 审核人, 完工提交时间, 已上传天数, 未完成第N天, 未完成原因]
+const WR_SEED = [
+    ['陈志强', '男', '13538218662', '深圳市华工新能源服务有限公司', '深圳市天地劳务派遣有限公司', '装配普工', '2026-11-12', 5, '08:00-18:00', 10, '时薪', 25, 30, 'T+1 发放', '单次结算：500元', '测试2号', '审核通过', '', '2026-11-10 14:25:47', '2026-11-10 17:41:29', '测试2号', '2026-11-16 19:20', 5, 0, ''],
+    ['李海燕', '女', '13602978431', '深圳市佳润洗涤服务有限公司', '武汉永辉科技有限公司', '保洁', '2026-11-13', 3, '08:00-17:00', 9, '时薪', 22, 26, '每周五结算', '小时结算：1元/小时', '王秋玲', '审核通过', '', '2026-11-11 09:12:03', '2026-11-11 10:02:41', '王秋玲', '2026-11-15 17:30', 3, 0, ''],
+    ['王小军', '男', '13711229845', '武汉华星光电技术有限公司', '武汉华星光电技术有限公司', '质检员', '2026-11-14', 10, '08:30-20:30', 12, '时薪', 24, 30, '次月10号发薪', '单次结算：500元', '朱轩均', '待审核', '', '2026-11-16 10:22:18', '', '', '', 0, 0, ''],
+    ['刘美玲', '女', '13560347712', '武汉天马微电子有限公司', '武汉永辉科技有限公司', '贴片作业员', '2026-11-15', 6, '20:00-02:00', 6, '时薪', 26, 31, '次月10号发薪', '小时结算：1.5元/小时', '刘经理', '审核通过', '', '2026-11-13 11:05:33', '2026-11-13 15:20:10', '刘经理', '2026-11-16 21:10', 4, 5, '员工请假，当天未上岗'],
+    ['张志远', '男', '13823776610', '鄂州三安光电有限公司', '深圳市智灵工科技有限公司', '焊工', '2026-11-11', 4, '08:00-20:00', 12, '时薪', 38, 45, '完工验收后3个工作日内', '单次结算：500元', '冯国鲜', '审核驳回', '工作图片无法证明本人在岗', '2026-11-09 16:40:22', '2026-11-09 18:05:47', '冯国鲜', '', 0, 0, ''],
+    ['赵丽娟', '女', '13927440923', '武汉联想产业基地', '深圳市天地劳务派遣有限公司', '仓库分拣', '2026-11-09', 3, '08:00-17:00', 9, '时薪', 20, 24, '每周五结算', '小时结算：1元/小时', '测试2号', '审核通过', '', '2026-11-07 08:52:11', '2026-11-07 09:31:05', '测试2号', '2026-11-11 18:05', 3, 0, ''],
+    ['周文斌', '男', '13800138000', '深圳市大地半导体科技有限公司', '深圳市天地劳务派遣有限公司', 'CNC操作工', '2026-11-16', 2, '08:00-20:00', 12, '时薪', 32, 38, 'T+1 发放', '单次结算：500元', '王秋玲', '待审核', '', '2026-11-15 21:12:44', '', '', '', 0, 0, ''],
+    ['吴小梅', '女', '13510668820', '深圳市云智工网络科技有限公司', '深圳市云智工网络科技有限公司', '食堂帮厨', '2026-11-10', 5, '06:00-14:00', 8, '时薪', 17, 20, '次月10号发薪', '小时结算：1元/小时', '朱轩均', '审核通过', '', '2026-11-08 07:30:12', '2026-11-08 09:11:36', '朱轩均', '2026-11-14 15:20', 5, 0, ''],
+    ['郑海涛', '男', '13725678841', '深圳市天马人力资源服务有限公司', '武汉永辉科技有限公司', '叉车司机', '2026-11-08', 4, '08:00-18:00', 10, '日薪', 280, 320, 'T+1 发放', '单次结算：500元', '刘经理', '审核通过', '', '2026-11-06 13:26:58', '2026-11-06 14:02:17', '刘经理', '2026-11-11 19:40', 4, 0, ''],
+    ['孙慧', '女', '13691847735', '深圳市华工新能源服务有限公司', '深圳市云智工网络科技有限公司', '夜班巡检', '2026-11-15', 7, '20:00-08:00', 12, '时薪', 30, 36, '次月10号发薪', '小时结算：1.5元/小时', '冯国鲜', '待审核', '', '2026-11-14 19:03:22', '', '', '', 0, 0, ''],
+    ['马国庆', '男', '13827490016', '武汉华星光电技术有限公司', '武汉华星光电技术有限公司', '包装工', '2026-11-01', 3, '08:00-18:00', 10, '日薪', 198, 225, '每周五结算', '单次结算：500元', '测试2号', '审核通过', '', '2026-10-30 10:15:07', '2026-10-30 11:40:15', '测试2号', '2026-11-03 18:22', 3, 0, ''],
+    ['何丽', '女', '13530878452', '深圳市佳润洗涤服务有限公司', '深圳市智灵工科技有限公司', '保安', '2026-10-28', 5, '20:00-08:00', 12, '日薪', 210, 240, '次月10号发薪', '小时结算：1元/小时', '王秋玲', '审核通过', '', '2026-10-26 09:41:30', '2026-10-26 10:33:02', '王秋玲', '2026-11-01 20:10', 5, 0, ''],
+    ['罗建军', '男', '13922334451', '深圳市大地半导体科技有限公司', '深圳市天地劳务派遣有限公司', '搬运工', '2026-11-05', 2, '08:00-20:00', 12, '日薪', 230, 260, 'T+1 发放', '单次结算：500元', '朱轩均', '审核驳回', '未按约定时间上岗，实到工时不足', '2026-11-03 15:12:09', '2026-11-03 17:28:33', '朱轩均', '', 0, 0, ''],
+    ['高雪', '女', '13611227788', '武汉天马微电子有限公司', '武汉永辉科技有限公司', '质检员', '2026-11-13', 4, '08:00-17:00', 9, '时薪', 24, 29, '次月10号发薪', '小时结算：1元/小时', '刘经理', '审核通过', '', '2026-11-11 10:02:45', '2026-11-11 11:15:28', '刘经理', '2026-11-16 17:35', 4, 0, ''],
+    ['林志豪', '男', '13767881234', '深圳市云智工网络科技有限公司', '深圳市智灵工科技有限公司', '装配普工', '2026-11-14', 3, '08:30-17:30', 8, '时薪', 23, 28, '每周五结算', '单次结算：500元', '冯国鲜', '审核通过', '', '2026-11-12 14:50:12', '2026-11-12 16:08:44', '冯国鲜', '2026-11-16 18:02', 3, 0, ''],
+    ['杨帆', '男', '13502221133', '武汉联想产业基地', '深圳市天马人力资源服务有限公司', '叉车司机', '2026-11-16', 1, '08:00-18:00', 10, '日薪', 280, 320, 'T+1 发放', '单次结算：500元', '测试2号', '待审核', '', '2026-11-15 20:41:07', '', '', '', 0, 0, ''],
+    ['谢婷', '女', '13688774455', '深圳市华工新能源服务有限公司', '深圳市天地劳务派遣有限公司', '保洁', '2026-11-06', 3, '08:00-16:00', 8, '时薪', 18, 22, '次月10号发薪', '小时结算：1元/小时', '王秋玲', '审核通过', '', '2026-11-04 09:22:18', '2026-11-04 10:05:36', '王秋玲', '2026-11-08 16:20', 3, 0, ''],
+    ['邓超', '男', '13811667788', '鄂州三安光电有限公司', '武汉永辉科技有限公司', '包装工', '2026-11-02', 6, '08:00-20:00', 12, '时薪', 21, 25, '每周五结算', '单次结算：500元', '朱轩均', '审核通过', '', '2026-10-31 16:12:40', '2026-10-31 17:05:11', '朱轩均', '2026-11-08 20:15', 5, 0, ''],
+    ['范晓丽', '女', '13577889900', '深圳市天马人力资源服务有限公司', '深圳市云智工网络科技有限公司', '贴片作业员', '2026-11-12', 4, '08:00-17:00', 9, '时薪', 19, 23, 'T+1 发放', '小时结算：1元/小时', '刘经理', '审核通过', '', '2026-11-10 11:33:26', '2026-11-10 12:20:09', '刘经理', '2026-11-15 17:50', 4, 0, ''],
+    ['彭磊', '男', '13799887766', '深圳市佳润洗涤服务有限公司', '深圳市智灵工科技有限公司', '焊工', '2026-11-15', 5, '08:00-20:00', 12, '时薪', 38, 45, '次月10号发薪', '单次结算：500元', '冯国鲜', '审核通过', '', '2026-11-13 13:45:02', '2026-11-13 15:12:40', '冯国鲜', '', 0, 0, ''],
+    ['苏敏', '女', '13644556677', '武汉华星光电技术有限公司', '深圳市智灵工科技有限公司', '食堂帮厨', '2026-11-11', 2, '06:00-14:00', 8, '时薪', 17, 20, '每周五结算', '小时结算：1元/小时', '测试2号', '审核通过', '', '2026-11-09 06:58:14', '2026-11-09 08:10:22', '测试2号', '2026-11-12 14:30', 2, 0, ''],
+    ['于海龙', '男', '13900112233', '深圳市大地半导体科技有限公司', '深圳市天地劳务派遣有限公司', 'CNC操作工', '2026-10-30', 3, '08:00-20:00', 12, '时薪', 32, 38, '次月10号发薪', '单次结算：500元', '王秋玲', '审核驳回', '接单手机号与实名信息不一致', '2026-10-28 11:05:38', '2026-10-28 14:22:17', '王秋玲', '', 0, 0, ''],
+    ['崔倩', '女', '13522446688', '深圳市云智工网络科技有限公司', '深圳市云智工网络科技有限公司', '装配普工', '2026-11-17', 1, '08:00-18:00', 10, '时薪', 25, 30, 'T+1 发放', '单次结算：500元', '朱轩均', '待审核', '', '2026-11-16 19:22:05', '', '', '', 0, 0, ''],
+    ['唐国强', '男', '13866778899', '武汉联想产业基地', '深圳市天地劳务派遣有限公司', '搬运工', '2026-11-07', 4, '08:00-18:00', 10, '日薪', 230, 260, '每周五结算', '小时结算：1元/小时', '刘经理', '审核通过', '', '2026-11-05 17:05:44', '2026-11-05 17:48:12', '刘经理', '2026-11-11 18:30', 4, 0, ''],
+    ['段小燕', '女', '13588990011', '深圳市华工新能源服务有限公司', '深圳市云智工网络科技有限公司', '夜班巡检', '2026-11-04', 5, '20:00-08:00', 12, '时薪', 30, 36, '次月10号发薪', '单次结算：500元', '冯国鲜', '审核通过', '', '2026-11-02 18:40:26', '2026-11-02 19:15:33', '冯国鲜', '2026-11-09 08:10', 5, 0, ''],
+    ['董伟', '男', '13722334466', '武汉天马微电子有限公司', '武汉永辉科技有限公司', '保安', '2026-11-10', 3, '20:00-08:00', 12, '日薪', 210, 240, '次月10号发薪', '小时结算：1元/小时', '测试2号', '审核通过', '', '2026-11-08 20:12:39', '2026-11-08 21:03:07', '测试2号', '2026-11-13 08:20', 3, 0, ''],
+    ['宋文杰', '男', '13599882201', '深圳市华工新能源服务有限公司', '深圳市天地劳务派遣有限公司', '装配普工', '2026-11-17', 5, '08:00-18:00', 8, '时薪', 30, 36, 'T+1 发放', '单次结算：500元', '测试2号', '审核通过', '', '2026-11-15 10:12:33', '2026-11-15 14:20:05', '测试2号', '', 0, 0, ''],
+    ['梁晓峰', '男', '13711223344', '武汉天马微电子有限公司', '武汉永辉科技有限公司', '质检员', '2026-11-18', 3, '08:30-18:30', 10, '时薪', 26, 31, '每周五结算', '小时结算：1元/小时', '王秋玲', '审核通过', '', '2026-11-16 09:30:18', '2026-11-16 11:05:42', '王秋玲', '', 0, 0, ''],
+    ['许文静', '女', '13655667788', '深圳市佳润洗涤服务有限公司', '深圳市云智工网络科技有限公司', '保洁', '2026-11-10', 5, '08:00-14:00', 6, '时薪', 26, 30, '次月10号发薪', '小时结算：1元/小时', '冯国鲜', '审核通过', '', '2026-11-08 13:20:11', '2026-11-08 15:40:27', '冯国鲜', '', 0, 0, ''],
+    ['韩雪', '女', '13866779900', '鄂州三安光电有限公司', '深圳市智灵工科技有限公司', '包装工', '2026-11-19', 3, '08:00-16:00', 8, '时薪', 28, 34, 'T+1 发放', '单次结算：500元', '刘经理', '审核通过', '', '2026-11-17 16:22:40', '2026-11-17 18:10:19', '刘经理', '', 0, 0, ''],
+];
+
+function wrAddDays(start, n) {
+    const p = String(start || '').split('-').map(Number);
+    const d = new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+    d.setDate(d.getDate() + n);
+    const pad = v => String(v).padStart(2, '0');
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+// 工期允许不连续：按行序号（0 起）配置要剔除的天次（1 起）
+const WR_GAPS = { 0: [3], 3: [2], 5: [2], 7: [3], 10: [2] };
+// 员工可在开工前自行取消接单：按行序号（0 起）补充取消时间，状态置为「已取消」
+const WR_CANCELS = { 2: '2026-11-16 20:40:12', 10: '2026-11-02 09:15:40' };
+// 多轮审核历史：先被驳回、员工重新提交后再审
+const WR_AUDIT_HISTORY = {
+    0: [
+        { result: 'reject', auditor: '测试2号', time: '2026-11-10 16:05:12', reason: '工作经历填写不完整，请补充后重新提交', resubmitAt: '2026-11-10 17:10:05' },
+        { result: 'pass', auditor: '测试2号', time: '2026-11-10 17:41:29' },
+    ],
+    6: [
+        { result: 'reject', auditor: '王秋玲', time: '2026-11-15 22:30:10', reason: '期望班次与岗位排班不一致', resubmitAt: '2026-11-16 08:30:00' },
+    ],
 };
-const LF_STATUSES = ['接单审核中', '做工中', '结算审核中', '结算未通过', '结算完成', '接单未通过', '已取消'];
+// 工作时间支持一天多个时段（最多 5 段）
+const WR_SHIFTS = {
+    0: '08:00-10:00,10:15-12:00,13:00-15:30,16:00-18:00,19:00-21:00',
+    3: '20:00-00:00,01:00-02:00,03:00-04:30',
+    8: '08:00-10:00,10:15-12:00,13:00-15:30,16:00-18:00',
+};
 
-/* ---------- 日期 / 工时刻度 ---------- */
-function wrAddDays(d, n) {
-    const t = new Date(d + 'T00:00:00');
-    t.setDate(t.getDate() + n);
-    return `${t.getFullYear()}-${pad2(t.getMonth() + 1)}-${pad2(t.getDate())}`;
+/* ---------- 基础工具 ---------- */
+const fundRound = n => Math.round((Number(n) || 0) * 100) / 100;
+const wrP2 = n => String(n).padStart(2, '0');
+const wrTxt = s => esc(s == null ? '' : s);
+function wrNow() {
+    const d = new Date();
+    return d.getFullYear() + '-' + wrP2(d.getMonth() + 1) + '-' + wrP2(d.getDate()) + ' ' + wrP2(d.getHours()) + ':' + wrP2(d.getMinutes()) + ':' + wrP2(d.getSeconds());
 }
-function dateIn(d, from, to) {
-    if (!d) return false;
-    if (from && d < from) return false;
-    if (to && d > to) return false;
-    return true;
+function wrPadTime(t) {
+    let d = String(t || '').trim().replace('T', ' ');
+    if (!d) return '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d)) d += ' 00:00:00';
+    else if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(d)) d += ':00';
+    return d;
 }
-const wrUnit = t => (t === '日薪' ? '天' : '时');
-function wrQty(r) { return r.priceType === '时薪' ? r.days * r.hours : r.days; }
-function wrActual(r) {
-    const days = Math.max(0, r.days - (r.skipDay >= 0 ? 1 : 0));
-    const qty = r.priceType === '时薪' ? days * r.hours : days;
-    return Math.round(qty * 100) / 100;
-}
+const wrFullTime = t => wrPadTime(t) || '—';
+const wrDatePart = t => { const s = wrPadTime(t); return s ? s.slice(0, 10) : '—'; };
+const wrTimePart = t => { const s = wrPadTime(t); return s ? s.slice(11, 19) : ''; };
+const wrMiniTime = t => { const s = wrPadTime(t); return s ? s.slice(5, 16) : '—'; };
+const wrDateNum = t => String(t || '').slice(0, 10);
+
 function wrDateRuns(r) {
+    const ds = (r && r.dates && r.dates.length) ? r.dates : (r && r.start ? [r.start] : []);
     const runs = [];
-    (r.dates || []).forEach(d => {
+    ds.forEach(function (d) {
         const last = runs[runs.length - 1];
         if (last && wrAddDays(last[1], 1) === d) last[1] = d;
         else runs.push([d, d]);
@@ -4542,859 +4694,1526 @@ function wrDateRuns(r) {
     return runs;
 }
 function wrDateText(r) {
-    return wrDateRuns(r).map(([a, b]) => a === b ? a.slice(5) : a.slice(5) + '~' + b.slice(5)).join('、') || '—';
+    const runs = wrDateRuns(r);
+    if (!runs.length) return '—';
+    return runs.map(x => x[0].slice(5) === x[1].slice(5) ? x[0].slice(5) : x[0].slice(5) + '~' + x[1].slice(5)).join('、');
+}
+function wrDateRunsHtml(r) {
+    const runs = wrDateRuns(r);
+    if (!runs.length) return '—';
+    return runs.map(x => `<span class="wr-range">${x[0].slice(5) === x[1].slice(5) ? x[0].slice(5) : x[0].slice(5) + '~' + x[1].slice(5)}</span>`).join('、');
 }
 function wrDateFull(r) {
-    const t = wrDateRuns(r).map(([a, b]) => a === b ? a : a + ' ~ ' + b).join('、');
-    return t + (r.gapped ? '（含间隔）' : '');
+    const runs = wrDateRuns(r);
+    if (!runs.length) return '—';
+    return runs.map((x, i) => {
+        const a = i === 0 ? x[0] : x[0].slice(5), b = x[1].slice(5);
+        return x[0] === x[1] ? a : a + '~' + b;
+    }).join('、');
 }
-function stQtyText(n, s) { return n + (s.priceType === '时薪' ? ' 小时' : ' 天'); }
+function wrDateFullList(r) {
+    const ds = (r && r.dates) || [];
+    return ds.length ? ds.join('、') : '—';
+}
+function wrDateTip(r) {
+    const ds = (r && r.dates) || [];
+    return ds.length ? '用工日期：' + ds.join('、') : '';
+}
+function wrShiftTags(r) {
+    return String(r.shift || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 5);
+}
+function wrShiftMore(r) {
+    return Math.max(0, String(r.shift || '').split(',').map(s => s.trim()).filter(Boolean).length - 5);
+}
+const wrPriceText = r => r.price + ' 元/' + (r.priceType === '日薪' ? '天' : '小时');
+const wrQtyUnit = r => (r.priceType === '日薪' ? '天' : '小时');
+const wrQtyText = r => wrQty(r) + ' ' + wrQtyUnit(r);
 
-/* ---------- 用工记录种子 ---------- */
-// id,姓名,性别,手机,单位,岗位,起始日,总天数,班次,每天工时,单价类型,单价,状态,完工提交,请假天(0基),请假说明
-const WR_SEED = [
-    [9101, '陈志强', '男', '13538218662', 0, '装配普工', '2026-11-12', 5, '08:00-12:00、13:30-18:00', 10, '时薪', 25, '待审核', '', -1, ''],
-    [9102, '刘美玲', '女', '13612345678', 0, '包装工', '2026-11-13', 4, '08:00-18:00', 10, '时薪', 22, '待审核', '2026-11-17 19:02:11', -1, ''],
-    [9114, '曾丽', '女', '13788990011', 0, '质检员', '2026-11-17', 3, '08:00-20:00', 12, '时薪', 26, '待审核', '', -1, ''],
-    [9103, '周文斌', '男', '13801112233', 1, '叉车工', '2026-11-10', 6, '08:00-18:00', 10, '日薪', 280, '审核通过', '2026-11-15 18:40:02', 4, '员工请假，当天未上岗'],
-    [9105, '黄小燕', '女', '13866668888', 1, '分拣员', '2026-11-05', 3, '09:00-19:00', 10, '时薪', 22, '审核通过', '2026-11-09 18:21:05', -1, ''],
-    [9106, '李国强', '男', '13911223344', 2, '装卸工', '2026-11-01', 7, '08:00-20:00', 12, '日薪', 300, '审核通过', '2026-11-08 20:15:44', -1, ''],
-    [9107, '吴敏', '女', '13922334455', 2, '客服', '2026-11-02', 4, '09:00-18:00', 8, '时薪', 24, '审核通过', '2026-11-06 18:03:27', -1, ''],
-    [9108, '郑海涛', '男', '13933445566', 0, '装配普工', '2026-11-15', 5, '08:00-18:00', 10, '时薪', 25, '审核通过', '2026-11-16 18:33:09', -1, ''],
-    [9109, '罗金凤', '女', '13944556677', 1, '保洁', '2026-11-16', 3, '07:30-16:30', 9, '时薪', 18, '审核通过', '2026-11-17 17:22:31', -1, ''],
-    [9104, '张志远', '男', '13955667788', 0, '质检员', '2026-11-08', 5, '08:00-20:00', 12, '时薪', 26, '审核通过', '', -1, ''],
-    [9110, '孙立军', '男', '13966778899', 2, '分拣员', '2026-11-11', 4, '09:00-19:00', 10, '时薪', 21, '审核驳回', '', -1, ''],
-    [9111, '马晓东', '男', '13977889900', 0, '装配普工', '2026-11-06', 5, '08:00-18:00', 10, '时薪', 25, '审核驳回', '', -1, ''],
-    [9112, '何春梅', '女', '13988990011', 1, '包装工', '2026-11-09', 4, '08:00-18:00', 10, '时薪', 22, '已取消', '', -1, ''],
-    [9113, '冯伟', '男', '13999001122', 2, '装卸工', '2026-11-14', 6, '08:00-20:00', 12, '日薪', 290, '已取消', '', -1, ''],
-];
-const WR_GAPPED = { 9101: [3] };
-const WR_HISTORY = {
-    9101: [{ result: 'reject', auditor: ME, time: '2026-11-13 10:30:00', reason: '工作图片无法证明本人在岗', resubmitAt: '2026-11-14 09:20:11' }],
-    9103: [{ result: 'reject', auditor: '王秋玲', time: '2026-11-14 16:10:22', reason: '第 2 天工作图片缺失', resubmitAt: '2026-11-15 09:05:47' },
-           { result: 'pass', auditor: ME, time: '2026-11-15 11:26:18' }],
-    9110: [{ result: 'reject', auditor: ME, time: '2026-11-10 17:20:05', reason: '工作图片无法证明本人在岗' }],
-    9111: [{ result: 'reject', auditor: ME, time: '2026-11-09 14:02:11', reason: '接单信息与岗位要求不符', resubmitAt: '2026-11-10 08:41:29' },
-           { result: 'reject', auditor: ME, time: '2026-11-10 15:37:52', reason: '复查后仍无法确认在职记录' }],
-};
+/* ---------- 行构建 ---------- */
+function wrQty(r) {
+    return r.priceType === '日薪' ? Number(r.days) : Number(r.hours) * Number(r.days);
+}
+function wrActualQty(r) {
+    if (r.actualQty != null) return Number(r.actualQty);
+    const days = Math.max(0, Number(r.days) - (r.skipDay ? 1 : 0));
+    return r.priceType === '日薪' ? days : days * Number(r.hours);
+}
+function wrCalcAmount(r) { return Math.round(Number(r.price) * wrQty(r) * 100) / 100; }
+function wrAmount(r) { return r && r.actualAmount != null ? Number(r.actualAmount) : wrCalcAmount(r || {}); }
+function wrFreezeAmount(r) { return wrCalcAmount(r); }
 
 function wrBuildRows() {
-    return WR_SEED.map((s, i) => {
-        const [id, name, gender, phone, ci, job, start, totalDays, shift, hours, priceType, price, status, submittedAt, skipIdx, skipNote] = s;
-        let dates = [];
-        for (let d = 0; d < totalDays; d++) dates.push(wrAddDays(start, d));
-        const gaps = WR_GAPPED[id] || [];
-        dates = dates.filter((_, idx) => gaps.indexOf(idx) < 0);
-        const row = {
-            id, name, gender, phone, client: WR_CLIENTS[ci], job, start, totalDays, shift, hours,
-            priceType, price, ins: 3, payNote: 'T+1 发放至平台钱包',
-            status, rejectReason: '', applyAt: '', auditAt: '', auditor: '', cancelAt: '', submittedAt,
-            photoDays: submittedAt ? Math.max(1, dates.length - (skipIdx >= 0 ? 1 : 0)) : 0,
-            skipDay: skipIdx, skipNote: skipNote || '',
-            dates, days: dates.length, gapped: gaps.length > 0, end: dates[dates.length - 1],
-            actualQty: 0, actualAmount: 0, auditRounds: [],
-            frozenAmt: 0, frozenAt: '', endedByMerchant: false, endedAt: '', endNote: '',
+    return WR_SEED.map(function (s, i) {
+        const o = {
+            id: 9101 + i, name: s[0], gender: s[1], phone: s[2], client: s[3], employer: s[4], job: s[5],
+            start: s[6], totalDays: s[7], shift: s[8], hours: s[9], priceType: s[10], price: s[11], entPrice: s[12],
+            payNote: s[13], commType: s[14], owner: s[15], status: s[16], rejectReason: s[17] || '',
+            applyAt: s[18], auditAt: s[19] || '', auditor: s[20] || '', submittedAt: s[21] || '',
+            photoDays: s[22] || 0, skipDay: s[23] || 0, skipNote: s[24] || '', ins: 3,
         };
-        row.applyAt = wrAddDays(start, -3) + ' 10:0' + (i % 6) + ':12';
-        row.auditAt = (status === '审核通过' || status === '审核驳回') ? wrAddDays(start, -1) + ' 15:2' + (i % 6) + ':40' : '';
-        row.cancelAt = status === '已取消' ? wrAddDays(start, -2) + ' 11:30:00' : '';
-        (WR_HISTORY[id] || []).forEach(h => row.auditRounds.push(Object.assign({}, h)));
-        if (row.auditRounds.length) {
-            const last = row.auditRounds[row.auditRounds.length - 1];
-            row.auditAt = last.time;
-            row.auditor = last.auditor;
-        } else if (row.auditAt) {
-            row.auditor = ME;
-            row.auditRounds.push({ result: status === '审核通过' ? 'pass' : 'reject', auditor: ME, time: row.auditAt,
-                reason: status === '审核驳回' ? '资料不完整，请补充后重新提交' : '' });
+        const gaps = WR_GAPS[i] || [], total = Number(o.totalDays) || 1, dates = [];
+        for (let k = 1; k <= total; k++) {
+            if (gaps.indexOf(k) < 0) dates.push(wrAddDays(o.start, k - 1));
         }
-        if (status === '审核驳回') {
-            const rej = row.auditRounds.filter(x => x.result === 'reject');
-            row.rejectReason = rej.length ? rej[rej.length - 1].reason : '';
+        if (WR_SHIFTS[i]) o.shift = WR_SHIFTS[i];
+        if (WR_CANCELS[i]) { o.status = '已取消'; o.cancelAt = WR_CANCELS[i]; }
+        o.cancelAt = o.cancelAt || '';
+        o.auditRounds = WR_AUDIT_HISTORY[i]
+            ? WR_AUDIT_HISTORY[i].map(a => Object.assign({}, a))
+            : (s[16] === '审核通过' ? [{ result: 'pass', auditor: o.auditor, time: o.auditAt }]
+                : s[16] === '审核驳回' ? [{ result: 'reject', auditor: o.auditor, time: o.auditAt, reason: o.rejectReason }] : []);
+        o.extendLogs = [];
+        o.dates = dates;
+        o.days = dates.length;
+        o.gapped = dates.length !== total;
+        o.end = dates.length ? dates[dates.length - 1] : o.start;
+        if (s[16] === '审核通过') {
+            o.actualQty = wrActualQty(o);
+            o.actualAmount = Math.round(Number(o.price) * o.actualQty * 100) / 100;
         }
-        if (status === '审核通过') {
-            row.actualQty = wrActual(row);
-            row.actualAmount = Math.round(price * row.actualQty * 100) / 100;
-            row.frozenAmt = Math.round(price * wrQty(row) * 100) / 100;   // 历史已通过 = 已冻结
-            row.frozenAt = row.auditAt || row.applyAt;
-        }
-        return row;
+        return o;
     });
 }
+const WR_ALL = wrBuildRows();
 
-/* ---------- 结算单（与用工记录 1:1） ---------- */
-let stSeq = 0;
+/* ---------- 结算单（1 条用工 : N 张结算单） ---------- */
 function stRowFromWr(r) {
-    const planQty = wrQty(r);
-    const actualQty = r.actualQty || wrActual(r);
     return {
-        id: 'ST' + (20261117001 + stSeq++), wrId: r.id,
-        name: r.name, gender: r.gender, phone: r.phone, client: r.client, job: r.job,
-        dates: r.dates.slice(), start: r.start, days: r.days, hours: r.hours, shift: r.shift,
-        priceType: r.priceType, price: r.price, ins: r.ins, payNote: r.payNote,
-        planQty, actualQty, skipDay: r.skipDay, skipNote: r.skipNote, gapped: r.gapped,
-        amount: Math.round(r.price * actualQty * 100) / 100,
+        id: '', wrId: r.id, name: r.name, gender: r.gender, phone: r.phone,
+        client: r.client, job: r.job, dates: (r.dates || []).slice(), start: r.start, days: r.days,
+        hours: r.hours, shift: r.shift, price: r.price, priceType: r.priceType, ins: r.ins, payNote: r.payNote,
+        planQty: wrQty(r), actualQty: wrActualQty(r), skipDay: r.skipDay || 0, skipNote: r.skipNote || '',
+        gapped: r.gapped, amount: wrAmount(r),
+        frozenAmt: Math.round(Number(r.price) * wrQty(r) * 100) / 100, releasedAmt: 0,
         submitAt: r.submittedAt, status: '待审核',
-        settleAt: '', settler: '', rejectReason: '', settleNote: '',
-        auditRounds: [], photoDays: r.photoDays, endedByMerchant: !!r.endedByMerchant,
+        auditedAt: '', auditedBy: '', paidAt: '', paidBy: '', payNote: '', settleNote: '',
+        auditRounds: [], photoDays: Number(r.photoDays || r.days || 0), endedByMerchant: !!r.endedByMerchant,
     };
 }
-function stInit() {
-    const src = WR_ALL.filter(r => r.status === '审核通过' && r.submittedAt)
-        .sort((a, b) => (a.submittedAt < b.submittedAt ? 1 : -1));
-    const rows = src.map(stRowFromWr);
-    const by = id => rows.find(x => x.wrId === id);
-    const s3 = by(9103);
-    if (s3) {
-        s3.status = '已结算'; s3.settleAt = '2026-11-16 10:15:30'; s3.settler = ME;
-        s3.auditRounds = [
-            { result: 'reject', auditor: ME, time: '2026-11-15 19:10:04', reason: '完工照片不清晰，请重新上传', resubmitAt: '2026-11-16 08:30:12' },
-            { result: 'pass', auditor: ME, time: '2026-11-16 10:15:30', amount: s3.amount },
-        ];
-    }
-    const s8 = by(9108);
-    if (s8) {
-        s8.status = '已结算'; s8.settleAt = '2026-11-17 09:40:18'; s8.settler = ME;
-        s8.auditRounds = [{ result: 'pass', auditor: ME, time: '2026-11-17 09:40:18', amount: s8.amount }];
-    }
-    const s7 = by(9107);
-    if (s7) {
-        s7.status = '已结算'; s7.settleAt = '2026-11-07 10:05:33'; s7.settler = ME;
-        s7.auditRounds = [{ result: 'pass', auditor: ME, time: '2026-11-07 10:05:33', amount: s7.amount }];
-    }
-    const s6 = by(9106);
-    if (s6) {
-        s6.status = '已驳回'; s6.settleAt = '2026-11-09 15:26:41'; s6.settler = ME;
-        s6.auditRounds = [
-            { result: 'reject', auditor: ME, time: '2026-11-08 16:02:19', reason: '缺少第 2 天工作图片', resubmitAt: '2026-11-09 09:18:05' },
-            { result: 'reject', auditor: ME, time: '2026-11-09 15:26:41', reason: '工时与排班不一致，请核对' },
-        ];
-        s6.rejectReason = '工时与排班不一致，请核对';
-    }
-    return rows;
+function stFromWr(rows) {
+    const out = [];
+    (rows || []).forEach(function (r) {
+        if (r.status !== '审核通过' || !r.submittedAt) return;
+        out.push(stRowFromWr(r));
+    });
+    return out;
 }
-function stSyncFromWr(r) {
-    if (!r || r.status !== '审核通过' || !r.submittedAt) return null;
-    if (ST_ALL.some(x => x.wrId === r.id)) return null;
-    const row = stRowFromWr(r);
-    ST_ALL.push(row);
-    return row;
-}
+function stInit(rows) {
+    const list = stFromWr(rows).sort((a, b) => String(b.submitAt).localeCompare(String(a.submitAt)));
+    list.forEach((r, i) => { r.id = 'ST' + (20261117001 + i); });
+    const byName = {};
+    rows.forEach(r => { byName[r.name] = r; });
+    [
+        { name: '刘美玲', status: '待打款', auditedAt: '2026-11-18 09:20:14', auditedBy: '测试2号', amount: 620,
+            rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-18 09:20:14' }] },
+        { name: '林志豪', status: '待打款', auditedAt: '2026-11-18 10:05:47', auditedBy: '王秋玲', amount: 552,
+            rounds: [{ result: 'pass', auditor: '王秋玲', time: '2026-11-18 10:05:47' }] },
+        { name: '范晓丽', status: '待打款', auditedAt: '2026-11-18 11:12:03', auditedBy: '朱轩均', amount: 660,
+            rounds: [{ result: 'pass', auditor: '朱轩均', time: '2026-11-18 11:12:03' }] },
+        { name: '董伟', status: '待打款', auditedAt: '2026-11-18 14:36:28', auditedBy: '测试2号', amount: 630,
+            rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-18 14:36:28' }] },
+        { name: '陈志强', status: '已结算', auditedAt: '2026-11-17 09:12:33', auditedBy: '测试2号', paidAt: '2026-11-17 09:12:33', paidBy: '测试2号',
+            rounds: [
+                { result: 'reject', auditor: '测试2号', time: '2026-11-16 20:20:11', reason: '完工照片不清晰，请重新上传', resubmitAt: '2026-11-17 08:40:00' },
+                { result: 'pass', auditor: '测试2号', time: '2026-11-17 09:12:33' },
+                { result: 'pay', auditor: '测试2号', time: '2026-11-17 09:12:33' },
+            ] },
+        { name: '高雪', status: '已结算', auditedAt: '2026-11-17 10:05:08', auditedBy: '王秋玲', paidAt: '2026-11-17 10:05:08', paidBy: '王秋玲',
+            rounds: [
+                { result: 'pass', auditor: '王秋玲', time: '2026-11-17 10:05:08' },
+                { result: 'pay', auditor: '王秋玲', time: '2026-11-17 10:05:08' },
+            ] },
+        { name: '李海燕', status: '待审核', auditedAt: '2026-11-17 11:22:51', auditedBy: '朱轩均', paidAt: '', paidBy: '',
+            rounds: [
+                { result: 'reject', auditor: '朱轩均', time: '2026-11-16 10:20:11', reason: '缺少第 2 天工作图片', resubmitAt: '2026-11-17 09:05:00' },
+                { result: 'pass', auditor: '朱轩均', time: '2026-11-17 11:22:51' },
+                { result: 'pay_reject', auditor: '朱轩均', time: '2026-11-17 11:40:26', reason: '实做工时与排班不一致，请核对后重新发起' },
+            ] },
+    ].forEach(function (p) {
+        const t = list.find(s => s.name === p.name);
+        if (!t) return;
+        t.status = p.status;
+        t.auditedAt = p.auditedAt || '';
+        t.auditedBy = p.auditedBy || '';
+        t.paidAt = p.paidAt || '';
+        t.paidBy = p.paidBy || '';
+        if (p.amount != null) t.amount = fundRound(p.amount);
+        t.auditRounds = p.rounds.map(a => Object.assign({}, a));
+        if (p.status === '已结算') {
+            const wr = byName[p.name];
+            if (wr) {
+                wr.frozenAmt = 0;
+                wr.releasedAmt = Math.max(0, fundRound((t.frozenAmt != null ? Number(t.frozenAmt) : 0) - fundRound(t.amount)));
+            }
+        }
+    });
 
-const WR_ALL = wrBuildRows();
-const ST_ALL = stInit();
-const findWr = id => WR_ALL.find(r => r.id === id);
-const findSt = id => ST_ALL.find(x => x.id === id);
-const stByWr = id => ST_ALL.find(x => x.wrId === id) || null;
-
-/* ---------- 账户与冻结 ---------- */
-let fjBal = 2000, fjFrozen = 0;      // 可用余额 / 累计冻结（演示值，小程序不可充值）
-const wrFreezeAmt = r => Math.round(r.price * wrQty(r) * 100) / 100;
-const wrFrozenOf = r => Number(r.frozenAmt) || 0;
-const wrNeedFreeze = rows => Math.round(rows.filter(r => !wrFrozenOf(r)).reduce((a, r) => a + wrFreezeAmt(r), 0) * 100) / 100;
-
-/* ---------- 状态推导（七态单列） ---------- */
-function wrStatus(r) {
-    if (r.status === '审核驳回') return '接单未通过';
-    if (r.status === '已取消') return '已取消';
-    if (r.status === '待审核') return '接单审核中';
-    const s = stByWr(r.id);
-    if (!s) return '做工中';
-    if (s.status === '待审核') return '结算审核中';
-    if (s.status === '已驳回') return '结算未通过';
-    return '结算完成';
-}
-
-/* ---------- 页面配置与状态 ---------- */
-const WR_PAGES = {
-    all:    { view: 'view-wr',        list: 'wrListAll',    count: 'wrCountAll',    kw: 'wrKwAll',    fltBtn: null,             fltN: null,             batchBtn: null,             clientSel: 'wrClientAll',   statusSel: 'wrStatusAll' },
-    apply:  { view: 'view-wr-apply',  list: 'wrListApply',  count: 'wrCountApply',  kw: 'wrKwApply',  fltBtn: null,             fltN: null,             batchBtn: 'wrBatchBtnApply', clientSel: 'wrClientApply', statusSel: null },
-    settle: { view: 'view-wr-settle', list: 'wrListSettle', count: 'wrCountSettle', kw: 'wrKwSettle', fltBtn: 'wrFltBtnSettle', fltN: 'wrFltNSettle',   batchBtn: 'wrBatchBtnSettle', clientSel: null,            statusSel: null },
-};
-let wrTab = 'all', wrBatch = false, wrDetailId = null;
-const wrSel = new Set();
-const wrFilter = { kw: '', client: '', job: '', status: '', from: '', to: '', sFrom: '', sTo: '' };
-let wrAuditRows = [], wrAuditMode = 'pass';
-let stAuditRows = [], stAuditMode = 'pass';
-
-/* ---------- 取数 ---------- */
-function wrRows() {
-    if (wrTab === 'apply') return WR_ALL.filter(r => r.status === '待审核');
-    if (wrTab === 'settle') return WR_ALL.filter(r => { const s = stByWr(r.id); return s && s.status === '待审核'; });
-    return WR_ALL.slice();
-}
-function wrSort(rows) {
-    const arr = rows.slice();
-    if (wrTab === 'settle') {
-        return arr.sort((a, b) => {
-            const sa = (stByWr(a.id) || {}).submitAt || '', sb2 = (stByWr(b.id) || {}).submitAt || '';
-            return sa < sb2 ? 1 : -1;
+    // 演示补充：多次结算 / 已延长工期 / 已结算含退回 / 打款驳回后待审核
+    let stSeq = 0;
+    const addSt = function (wr, dates, status, o) {
+        o = o || {};
+        const perDay = wr.priceType === '日薪' ? Number(wr.price) : Number(wr.price) * Number(wr.hours);
+        const frozen = fundRound(perDay * dates.length);
+        const amount = o.amount != null ? fundRound(o.amount) : frozen;
+        const qty = wr.priceType === '日薪' ? dates.length : dates.length * Number(wr.hours);
+        const s = {
+            id: 'ST' + (20261117001 + list.length + stSeq++),
+            wrId: wr.id, name: wr.name, gender: wr.gender, phone: wr.phone,
+            client: wr.client, job: wr.job, dates: dates.slice(), start: dates[0], days: dates.length,
+            hours: wr.hours, shift: wr.shift, price: wr.price, priceType: wr.priceType, ins: wr.ins,
+            payNote: wr.payNote, planQty: qty, actualQty: qty, skipDay: 0, skipNote: '', gapped: false,
+            amount: amount, frozenAmt: frozen,
+            releasedAmt: status === '已结算' ? Math.max(0, fundRound(frozen - amount)) : 0,
+            submitAt: o.submitAt || '', status: status,
+            auditedAt: o.auditedAt || '', auditedBy: o.auditedBy || '',
+            paidAt: o.paidAt || '', paidBy: o.paidBy || '',
+            payNote: o.payNote || '', settleNote: o.settleNote || '',
+            auditRounds: (o.rounds || []).map(a => Object.assign({}, a)),
+            photoDays: 0, endedByMerchant: !!wr.endedByMerchant,
+        };
+        list.push(s);
+        return s;
+    };
+    const song = byName['宋文杰'];
+    if (song) {
+        addSt(song, ['2026-11-17', '2026-11-18'], '已结算', {
+            amount: 480, submitAt: '2026-11-19 17:30:00', auditedAt: '2026-11-19 18:00:00', auditedBy: '测试2号',
+            paidAt: '2026-11-20 09:12:00', paidBy: '测试2号', settleNote: '先结算前 2 天',
+            rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-19 18:00:00' }, { result: 'pay', auditor: '测试2号', time: '2026-11-20 09:12:00' }],
         });
+        const songSt2 = addSt(song, ['2026-11-19'], '待打款', {
+            amount: 240, submitAt: '2026-11-22 17:40:00', auditedAt: '2026-11-22 18:05:00', auditedBy: '测试2号',
+            rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-22 18:05:00' }],
+        });
+        songSt2.photoDays = 2;
+        // 详情演示：再补一张待审核结算单，用于展示「结算记录」Tab
+        const songSt3 = addSt(song, ['2026-11-20'], '待审核', {
+            amount: 240, submitAt: '2026-11-23 09:30:00',
+        });
+        songSt3.photoDays = 1;
+        song.frozenAmt = 720;
     }
-    return arr.sort((a, b) => (a.applyAt < b.applyAt ? 1 : -1));
+    const chen = list.find(s => s.name === '陈志强');
+    if (chen) chen.photoDays = 6;
+    const liang = byName['梁晓峰'];
+    if (liang) {
+        const ext = ['2026-11-23', '2026-11-24'];
+        liang.dates = liang.dates.concat(ext).sort();
+        liang.days = liang.dates.length;
+        liang.end = liang.dates[liang.dates.length - 1];
+        liang.frozenAmt = 1300;
+        // 详情演示：拆成两次延期记录，用于展示「延期记录」Tab
+        liang.extendLogs = [
+            { time: '2026-11-21 15:00:00', days: 1, amount: 260, dates: ['2026-11-23'], by: '测试2号' },
+            { time: '2026-11-21 15:30:00', days: 1, amount: 260, dates: ['2026-11-24'], by: '测试2号' },
+        ];
+        liang.actualQty = null;
+        liang.actualQty = wrActualQty(liang);
+        liang.actualAmount = Math.round(Number(liang.price) * liang.actualQty * 100) / 100;
+    }
+    const xu = byName['许文静'];
+    if (xu) {
+        xu.submittedAt = '2026-11-15 18:00:00';
+        addSt(xu, xu.dates.slice(), '已结算', {
+            amount: 620, submitAt: '2026-11-15 18:00:00', auditedAt: '2026-11-16 09:30:00', auditedBy: '冯国鲜',
+            paidAt: '2026-11-16 10:15:00', paidBy: '冯国鲜', settleNote: '按实做工时核减',
+            rounds: [{ result: 'pass', auditor: '冯国鲜', time: '2026-11-16 09:30:00' }, { result: 'pay', auditor: '冯国鲜', time: '2026-11-16 10:15:00' }],
+        });
+        xu.frozenAmt = 0;
+        xu.releasedAmt = 160;
+    }
+    const han = byName['韩雪'];
+    if (han) {
+        han.submittedAt = '2026-11-22 18:00:00';
+        const rejectReason = '打款账户信息有误，请核对后重新发起';
+        const hs = addSt(han, han.dates.slice(), '待审核', {
+            submitAt: '2026-11-22 18:00:00', auditedAt: '2026-11-22 19:10:00', auditedBy: '刘经理',
+            rounds: [
+                { result: 'pass', auditor: '刘经理', time: '2026-11-22 19:10:00' },
+                { result: 'pay_reject', auditor: '刘经理', time: '2026-11-23 09:00:00', reason: rejectReason },
+            ],
+        });
+        hs.payRejectReason = rejectReason;
+    }
+    return list;
 }
-function wrMatch() {
-    const f = wrFilter;
-    return wrSort(wrRows()).filter(r => {
-        if (f.kw && r.name.indexOf(f.kw) < 0) return false;
-        if (f.client && r.client !== f.client) return false;
-        if (f.job && r.job !== f.job) return false;
-        if (f.status && wrStatus(r) !== f.status) return false;
-        if ((f.from || f.to) && !dateIn((r.applyAt || '').slice(0, 10), f.from, f.to)) return false;
-        if (f.sFrom || f.sTo) {
-            const s = stByWr(r.id);
-            if (!s || !dateIn((s.submitAt || '').slice(0, 10), f.sFrom, f.sTo)) return false;
+const ST_ALL = stInit(WR_ALL);
+
+function stSyncFromWr() {
+    let added = 0;
+    WR_ALL.forEach(function (r) {
+        if (r.status !== '审核通过' || !r.submittedAt) return;
+        if (ST_ALL.some(s => s.wrId === r.id)) return;
+        const row = stRowFromWr(r);
+        row.id = 'ST' + (20261117001 + ST_ALL.length + added);
+        ST_ALL.push(row);
+        added++;
+    });
+    return added;
+}
+
+/* ---------- 资金 ---------- */
+let fjBal = 2000, fjFrozen = 0;
+const FUND_FLOWS = [];
+function fundPush(f) { FUND_FLOWS.push(Object.assign({ at: wrNow() }, f)); }
+function wrFundSeed() {
+    fjFrozen = fundRound(WR_ALL.filter(r => r.status === '审核通过').reduce((s, r) => {
+        return s + (r.frozenAmt != null ? Number(r.frozenAmt) : wrFreezeAmount(r));
+    }, 0));
+}
+wrFundSeed();
+
+function wrFreezeSum(rows) {
+    return fundRound((rows || []).reduce((s, r) => s + (r && r.frozenAmt == null ? wrFreezeAmount(r) : 0), 0));
+}
+function wrFreezeApply(rows, now) {
+    let sum = 0;
+    (rows || []).forEach(function (r) {
+        if (!r || r.frozenAmt != null) return;
+        r.frozenAmt = wrFreezeAmount(r);
+        r.frozenAt = now;
+        sum = fundRound(sum + r.frozenAmt);
+        fjBal = fundRound(fjBal - r.frozenAmt);
+        fjFrozen = fundRound(fjFrozen + r.frozenAmt);
+        fundPush({ type: 'freeze', wrId: r.id, name: r.name, job: r.job, amount: r.frozenAmt, at: now, note: '接单审核通过冻结' });
+    });
+    return fundRound(sum);
+}
+function wrFreezeTip(need) {
+    return '账户可用余额不足：本次需冻结 ' + fjMoney(need) + '，当前可用 ' + fjMoney(fjBal) + '，请先充值后再审核通过';
+}
+function wrRelease(r, amt, note, at) {
+    amt = fundRound(amt);
+    if (!(amt > 0)) return;
+    fjFrozen = Math.max(0, fundRound(fjFrozen - amt));
+    fjBal = fundRound(fjBal + amt);
+    fundPush({ type: 'release', dir: 'back', wrId: r.id, name: r.name, job: r.job, amount: amt, at: at || wrNow(), note: note || '解冻回可用余额' });
+}
+function wrApplyRecharge() {
+    fjBal = fundRound(fjBal + 10000);
+    toast('演示充值成功，可用余额 ' + fjMoney(fjBal));
+}
+
+/* ---------- 状态模型 ---------- */
+const WR_WORK_STATUS = {
+    apply_wait: { label: '接单待审', cls: 'a-late' },
+    cancelled: { label: '已取消', cls: 'a-cancel' },
+    working: { label: '做工中', cls: 'a-run' },
+    wait_settle: { label: '待结算', cls: 'a-review' },
+    settled: { label: '已结算', cls: 'a-normal' },
+};
+const WR_AUDIT_STATUS = {
+    audit_wait: { label: '待审核', cls: 'a-late' },
+    audit_pass: { label: '通过', cls: 'a-normal' },
+    audit_reject: { label: '驳回', cls: 'a-absent' },
+    audit_cancel: { label: '取消', cls: 'a-cancel' },
+};
+const WR_WORK_STATUS_OPTIONS = [
+    { value: 'apply_wait', label: '接单待审' },
+    { value: 'cancelled', label: '已取消' },
+    { value: 'working', label: '做工中' },
+    { value: 'wait_settle', label: '待结算' },
+    { value: 'settled', label: '已结算' },
+];
+const WR_AUDIT_STATUS_OPTIONS = [
+    { value: 'audit_wait', label: '待审核' },
+    { value: 'audit_pass', label: '通过' },
+    { value: 'audit_reject', label: '驳回' },
+    { value: 'audit_cancel', label: '取消' },
+];
+
+function wrStSettlementsOf(r) {
+    if (!r || !r.id) return [];
+    return ST_ALL.filter(s => s.wrId === r.id);
+}
+function wrSettledDatesOf(r) {
+    const done = [];
+    wrStSettlementsOf(r).forEach(s => (s.dates || []).forEach(d => { if (done.indexOf(d) < 0) done.push(d); }));
+    return done;
+}
+function wrUnsettledDatesOf(r) {
+    const done = wrSettledDatesOf(r);
+    return ((r && r.dates) || []).filter(d => done.indexOf(d) < 0);
+}
+function wrAllDatesSettled(r) {
+    const ds = (r && r.dates) || [];
+    const done = wrSettledDatesOf(r);
+    return ds.length > 0 && ds.every(d => done.indexOf(d) > -1);
+}
+function wrWorkCode(r) {
+    if (!r) return '';
+    if (r.status === '待审核') return 'apply_wait';
+    if (r.status === '已取消') return 'cancelled';
+    if (r.status === '审核驳回') return '';
+    const list = wrStSettlementsOf(r);
+    if (wrAllDatesSettled(r)) {
+        if (list.some(s => s.status === '待打款')) return 'wait_settle';
+        if (list.length && list.every(s => s.status === '已结算')) return 'settled';
+    }
+    return 'working';
+}
+function wrWorkLabel(r) { const m = WR_WORK_STATUS[wrWorkCode(r)]; return m ? m.label : '—'; }
+function wrWorkCls(r) { const m = WR_WORK_STATUS[wrWorkCode(r)]; return m ? m.cls : 'a-cancel'; }
+function wrAuditCode(r) {
+    if (!r) return '';
+    if (r.status === '已取消') return 'audit_cancel';
+    if (r.status === '审核驳回') return 'audit_reject';
+    if (r.status === '审核通过') return 'audit_pass';
+    return 'audit_wait';
+}
+function wrAuditLabel(r) { const m = WR_AUDIT_STATUS[wrAuditCode(r)]; return m ? m.label : ''; }
+function wrAuditCls(r) { const m = WR_AUDIT_STATUS[wrAuditCode(r)]; return m ? m.cls : 'a-late'; }
+function wrDoneTime(r) {
+    if (!r) return '';
+    const st = rowStOf(r);
+    if (st && st.paidAt) return st.paidAt;
+    return r.submittedAt || '';
+}
+
+function stByWrMap() {
+    const rank = s => s.status === '待打款' ? 3 : s.status === '待审核' ? 2 : 1;
+    const m = {};
+    ST_ALL.forEach(s => {
+        if (s.wrId == null) return;
+        const cur = m[s.wrId];
+        if (!cur || rank(s) >= rank(cur)) m[s.wrId] = s;
+    });
+    return m;
+}
+function rowStOf(r) { return r ? (stByWrMap()[r.id] || null) : null; }
+function rowStStatus(r) { const s = rowStOf(r); return s ? s.status : ''; }
+function stFrozenOf(st) {
+    if (!st) return 0;
+    if (st.frozenAmt != null) return fundRound(st.frozenAmt);
+    const wr = WR_ALL.find(w => w.id === st.wrId);
+    return wr ? fundRound(Number(wr.frozenAmt) || wrFreezeAmount(wr)) : fundRound(st.amount);
+}
+function stReleasedOf(st) {
+    if (!st) return 0;
+    if (st.releasedAmt != null) return fundRound(st.releasedAmt);
+    const wr = WR_ALL.find(w => w.id === st.wrId);
+    return wr ? fundRound(Number(wr.releasedAmt) || 0) : 0;
+}
+function stBackOf(st) { return st ? Math.max(0, fundRound(stFrozenOf(st) - stReleasedOf(st) - fundRound(st.amount))) : 0; }
+function stRejectReason(st) {
+    if (!st) return '';
+    const rounds = st.auditRounds || [];
+    for (let i = rounds.length - 1; i >= 0; i--) {
+        const a = rounds[i];
+        if ((a.result === 'pay_reject' || a.result === 'reject') && a.reason) return a.reason;
+    }
+    return st.payRejectReason || '';
+}
+function stDisplayStatus(st) {
+    if (!st) return { label: '', cls: 'a-late' };
+    if (st.status === '已结算') return { label: '已打款', cls: 'a-normal' };
+    if (st.status === '待打款') return { label: '待打款', cls: 'a-late' };
+    if ((st.auditRounds || []).some(a => a.result === 'pay_reject')) return { label: '打款驳回', cls: 'a-absent' };
+    return { label: '待审核', cls: 'a-late' };
+}
+function wrEstimatedTotal(r) { return r ? wrCalcAmount(r) : 0; }
+function wrPaidStAmountOf(r) {
+    return fundRound(wrStSettlementsOf(r).filter(s => s.status === '已结算').reduce((s, x) => s + Number(x.amount || 0), 0));
+}
+function wrPendingSettleAmount(r) {
+    if (!r) return 0;
+    return Math.max(0, fundRound(wrEstimatedTotal(r) - wrPaidStAmountOf(r) - fundRound(Number(r.releasedAmt) || 0)));
+}
+
+/* ---------- 结算动作条件 ---------- */
+function wrStDateQty(r, dates) {
+    const n = (dates || []).length;
+    if (!r || !n) return 0;
+    return r.priceType === '日薪' ? n : n * Number(r.hours);
+}
+function wrStDateAmount(r, dates) {
+    if (!r) return 0;
+    return fundRound(Number(r.price) * wrStDateQty(r, dates));
+}
+function wrSettleAvailDates(r) {
+    if (!r || !r.id) return [];
+    const st = rowStOf(r);
+    if (st && st.status === '待审核') return (st.dates || []).slice();
+    return wrUnsettledDatesOf(r);
+}
+function wrCanSettle(r) {
+    if (!r || r.status !== '审核通过') return false;
+    if (wrWorkCode(r) !== 'working') return false;
+    const st = rowStOf(r);
+    if (st && st.status === '待打款') return false;
+    return wrSettleAvailDates(r).length > 0;
+}
+function wrCanExtend(r) {
+    if (!r || r.status !== '审核通过' || wrWorkCode(r) !== 'working') return false;
+    const st = rowStOf(r);
+    if (st && st.status === '待打款') return false;
+    return true;
+}
+function wrCanEnd(r) { return !!r && r.status === '审核通过' && !r.submittedAt && !rowStOf(r); }
+
+/* ---------- 详情流程 / 审核步骤 ---------- */
+function wrDetailFlow(row) {
+    const r = row || {}, st = rowStOf(r);
+    const rejected = r.status === '审核驳回', cancelled = r.status === '已取消';
+    const passed = r.status === '审核通过';
+    const dead = rejected || cancelled;
+    const out = [];
+    out.push({ title: '提交接单', time: r.applyAt || '', who: r.name || '', text: '员工接单 ' + (r.days || 0) + ' 天，每天 ' + (r.hours || 0) + ' 小时', state: 'done' });
+    if (rejected) {
+        out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '', text: '审核驳回：' + (r.rejectReason || '未填写理由'), state: 'fail' });
+    } else if (cancelled && !r.auditAt) {
+        out.push({ title: '接单审核', time: '', who: '', text: '员工在审核前取消了接单，流程终止', state: 'stop' });
+    } else if (passed) {
+        out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '', text: '审核通过（' + (r.auditor || '商户') + '），员工上岗做工', state: 'done' });
+    } else {
+        out.push({ title: '接单审核', time: '', who: '', text: '等待商户审核接单申请', state: 'doing' });
+    }
+    if (dead) out.push({ title: '做工', time: '', who: '', text: '流程已终止', state: 'stop' });
+    else if (!passed) out.push({ title: '做工', time: '', who: '', text: '接单审核通过后开始做工', state: 'todo' });
+    else if (r.submittedAt || wrAllDatesSettled(r)) out.push({ title: '做工', time: r.submittedAt || '', who: r.endedByMerchant ? '商户' : (r.name || ''), text: r.endedByMerchant ? '商户主动结束用工，做工结束' : '员工完成 ' + (r.days || 0) + ' 天用工', state: 'done' });
+    else out.push({ title: '做工', time: '', who: '', text: '员工正在用工中，可等待完工或由商户结束用工', state: 'doing' });
+    if (dead) {
+        out.push({ title: '结算审核', time: '', who: '', text: '流程已终止', state: 'stop' });
+    } else if (st && st.status === '待审核') {
+        out.push({ title: '结算审核', time: '', who: '', text: '完工已提交，等待商户结算审核（可修改结算金额）', state: 'doing' });
+    } else if (st && st.auditedAt) {
+        out.push({ title: '结算审核', time: st.auditedAt, who: st.auditedBy || '', text: '结算审核确认（' + (st.auditedBy || '商户') + '），结算金额 ' + fjMoney(st.amount), state: 'done' });
+    } else {
+        out.push({ title: '结算审核', time: '', who: '', text: '完工后进入结算审核', state: 'todo' });
+    }
+    if (dead) {
+        out.push({ title: '结算打款', time: '', who: '', text: '流程已终止', state: 'stop' });
+    } else if (st && st.status === '待打款') {
+        out.push({ title: '结算打款', time: '', who: '', text: '等待商户打款，打款前资金保持冻结', state: 'doing' });
+    } else if (st && st.status === '已结算') {
+        out.push({ title: '结算打款', time: st.paidAt || '', who: st.paidBy || '', text: '打款完成（' + (st.paidBy || '商户') + '），结算金额已转付员工', state: 'done' });
+    } else if (st && st.status === '待审核' && (st.auditRounds || []).some(a => a.result === 'pay_reject')) {
+        const lastRej = (st.auditRounds || []).filter(a => a.result === 'pay_reject').pop();
+        out.push({ title: '结算打款', time: (lastRej && lastRej.time) || '', who: (lastRej && lastRej.auditor) || '', text: '打款被驳回：' + ((lastRej && lastRej.reason) || '未填写理由') + '，可重新结算审核', state: 'fail' });
+    } else {
+        out.push({ title: '结算打款', time: '', who: '', text: '结算审核确认后进行打款', state: 'todo' });
+    }
+    if (wrWorkCode(r) === 'settled') {
+        out.push({ title: '结算完成', time: st.paidAt || '', who: st.paidBy || '', text: '累计已打款 ' + fjMoney(wrPaidStAmountOf(r)) + '，全部结算完成', state: 'done' });
+    } else if (dead) {
+        out.push({ title: '结算完成', time: '', who: '', text: '流程已终止', state: 'stop' });
+    } else {
+        out.push({ title: '结算完成', time: '', who: '', text: '结算打款完成后完成', state: 'todo' });
+    }
+    return out;
+}
+function wrFlowNow(row) {
+    const list = wrDetailFlow(row);
+    return list.find(n => n.state === 'doing') || list.find(n => n.state === 'fail')
+        || list.find(n => n.state === 'stop') || list[list.length - 1] || null;
+}
+function wrApplySteps(row) {
+    const r = row || {};
+    const out = [{ title: '员工提交接单', who: r.name || '员工', time: r.applyAt || '', state: '已提交', cls: 'ok', done: true, note: '接单 ' + (r.days || 0) + ' 天' }];
+    (r.auditRounds || []).forEach(function (a) {
+        if (a.result === 'reject') {
+            out.push({ title: '接单审核驳回', who: a.auditor || '商户', time: a.time || '', state: '已驳回', cls: 'fail', done: true, reject: true, note: a.reason ? '驳回理由：' + a.reason : '' });
+            if (a.resubmitAt) out.push({ title: '员工重新提交接单', who: r.name || '员工', time: a.resubmitAt, state: '已提交', cls: 'ok', done: true });
+        } else if (a.result === 'pass') {
+            out.push({ title: '接单审核通过', who: a.auditor || '商户', time: a.time || '', state: '已通过', cls: 'ok', done: true, note: '通过后按「员工单价 × 应做工时」冻结资金' });
+        }
+    });
+    (r.extendLogs || []).forEach(function (e) {
+        out.push({ title: '延长做工', who: e.by || '商户', time: e.time || '', state: '已延长', cls: 'ok', done: true, note: '延长 ' + e.days + ' 天做工，追加冻结 ' + fjMoney(e.amount) });
+    });
+    if (r.status === '已取消') {
+        out.push({ title: '员工取消接单', who: r.name || '员工', time: r.cancelAt || '', state: '已取消', cls: 'wait', done: true, note: '员工自行取消，该笔用工不再生效' });
+    } else if (r.status === '待审核') {
+        out.push({ title: '等待商户审核', who: '待处理', time: '', state: '待审核', cls: 'wait', note: '建议 24 小时内处理，通过后冻结资金' });
+    }
+    return out;
+}
+
+/* ---------- 页面状态 ---------- */
+const WR_TABS = {
+    all: { view: 'view-wr', title: '用工记录', list: 'wrListAll', count: 'wrCountAll', kw: 'wrKwAll', flt: 'wrFltAll', fltN: 'wrFltNAll', more: 'wrMoreAll', exp: 'wrExportAll', empty: '没有符合条件的用工记录', batch: false },
+    apply: { view: 'view-wr-apply', title: '接单待审', list: 'wrListApply', count: 'wrCountApply', kw: 'wrKwApply', flt: 'wrFltApply', fltN: 'wrFltNApply', more: 'wrMoreApply', exp: 'wrExportApply', empty: '没有待审核的接单', batch: true },
+    working: { view: 'view-wr-working', title: '做工中', list: 'wrListWorking', count: 'wrCountWorking', kw: 'wrKwWorking', flt: 'wrFltWorking', fltN: 'wrFltNWorking', more: 'wrMoreWorking', exp: 'wrExportWorking', empty: '没有做工中的用工记录', batch: false },
+    pay: { view: 'view-wr-pay', title: '结算打款', list: 'wrListPay', count: 'wrCountPay', kw: 'wrKwPay', flt: 'wrFltPay', fltN: 'wrFltNPay', more: 'wrMorePay', exp: 'wrExportPay', empty: '没有待打款的结算单', batch: true },
+};
+const WR_TAB_KEYS = ['all', 'apply', 'working', 'pay'];
+let wrTab = 'all', wrPage = 1, wrBatch = false, wrDetailId = null;
+let wrDetailTab = 'photos';
+const wrSel = new Set();
+let wrQuery = wrBlankFilter();
+
+function wrBlankFilter() {
+    return { name: '', phone: '', client: '', job: '', workStatus: '', auditStatus: '', applyRange: [], submitRange: [] };
+}
+function wrClone(o) { return JSON.parse(JSON.stringify(o)); }
+function wrFilterCount(q) {
+    return ['name', 'phone', 'client', 'job', 'workStatus', 'auditStatus'].filter(k => q[k]).length
+        + ((q.applyRange && q.applyRange[0]) ? 1 : 0) + ((q.submitRange && q.submitRange[0]) ? 1 : 0);
+}
+function wrCounts() {
+    const c = { all: WR_ALL.length, apply: 0, working: 0, pay: 0 };
+    WR_ALL.forEach(r => {
+        if (r.status === '待审核') c.apply++;
+        if (wrWorkCode(r) === 'working') c.working++;
+        const st = rowStOf(r);
+        if (st && st.status === '待打款') c.pay++;
+    });
+    return c;
+}
+
+/* ---------- 取数 / 筛选 / 排序 ---------- */
+function wrListRows(tab) {
+    const q = wrQuery, map = stByWrMap();
+    const arr = WR_ALL.filter(r => {
+        const st = map[r.id] || null;
+        if (tab === 'apply' && r.status !== '待审核') return false;
+        if (tab === 'working' && wrWorkCode(r) !== 'working') return false;
+        if (tab === 'pay' && (!st || st.status !== '待打款')) return false;
+        if (q.workStatus && wrWorkCode(r) !== q.workStatus) return false;
+        if (q.auditStatus && wrAuditCode(r) !== q.auditStatus) return false;
+        if (q.name && String(r.name).indexOf(q.name) < 0) return false;
+        if (q.phone && String(r.phone).indexOf(q.phone) < 0) return false;
+        if (q.client && r.client !== q.client) return false;
+        if (q.job && r.job !== q.job) return false;
+        if (q.applyRange && q.applyRange[0] && q.applyRange[1]) {
+            const d = wrDateNum(r.applyAt);
+            if (d < q.applyRange[0] || d > q.applyRange[1]) return false;
+        }
+        if (q.submitRange && q.submitRange[0] && q.submitRange[1]) {
+            if (!st || !st.submitAt) return false;
+            const d = wrDateNum(st.submitAt);
+            if (d < q.submitRange[0] || d > q.submitRange[1]) return false;
         }
         return true;
     });
+    return arr.sort((a, b) => {
+        if (tab === 'working') {
+            const sa = (map[a.id] || {}).submitAt || a.applyAt || '';
+            const sb = (map[b.id] || {}).submitAt || b.applyAt || '';
+            return String(sb).localeCompare(String(sa));
+        }
+        if (tab === 'pay') {
+            const sa = (map[a.id] || {}).auditedAt || '';
+            const sb = (map[b.id] || {}).auditedAt || '';
+            return String(sb).localeCompare(String(sa));
+        }
+        return String(b.applyAt).localeCompare(String(a.applyAt));
+    });
 }
-const wrFilterCount = () => ['client', 'job', 'status', 'from', 'to', 'sFrom', 'sTo'].filter(k => wrFilter[k]).length;
 
 /* ---------- 卡片 ---------- */
+function wrTagsHtml(r) {
+    return `<span class="atag ${wrWorkCls(r)}">${wrTxt(wrWorkLabel(r))}</span><span class="atag ${wrAuditCls(r)}">${wrTxt(wrAuditLabel(r))}</span>`;
+}
+function wrTimeGrid(rows, single) {
+    return `<div class="wr-times${single ? ' single' : ''}">${rows.map(x => `<div><span>${x[0]}</span><b>${wrMiniTime(x[1])}</b></div>`).join('')}</div>`;
+}
 function wrCard(r) {
-    const sel = wrSel.has(r.id);
-    const stt = wrStatus(r);
-    const s = stByWr(r.id);
-    const isAll = wrTab === 'all', isApply = wrTab === 'apply', isSettle = wrTab === 'settle';
-    const canBatch = wrBatch && !isAll;
-    const less = s ? s.actualQty < s.planQty : false;
+    const tab = wrTab, st = rowStOf(r), sel = wrSel.has(r.id);
+    const batchable = (tab === 'apply' || tab === 'pay') && wrBatch;
     const lines = [];
-    if (!isSettle) lines.push(['员工', esc(r.gender) + ' · ' + esc(r.phone)]);
-    lines.push(['用工单位', esc(r.client)]);
-    lines.push(['岗位 / 工期', esc(r.job) + ' · ' + r.days + ' 天（' + esc(wrDateText(r)) + (r.gapped ? '，含间隔' : '') + '）']);
-    if (isApply) lines.push(['工作时间', esc(r.shift) + '（每天 ' + r.hours + ' 小时）']);
-    lines.push(['员工单价', r.price + ' 元/' + wrUnit(r.priceType)]);
-    if (isSettle && s) {
-        lines.push(['应做 / 实做', stQtyText(s.planQty, s) + ' / <span style="' + (less ? 'color:#E08A1E;font-weight:700' : '') + '">' + stQtyText(s.actualQty, s) + '</span>']);
+    lines.push(['性别 / 手机', wrTxt(r.gender) + ' · ' + wrTxt(r.phone)]);
+    lines.push(['用工单位', wrTxt(r.client)]);
+    lines.push(['岗位 / 工期', wrTxt(r.job) + ' · ' + r.days + ' 天（' + wrDateRunsHtml(r) + (r.gapped ? '，含间隔' : '') + '）']);
+    if (tab === 'apply') {
+        const tags = wrShiftTags(r).map(s => `<span class="chip">${wrTxt(s)}</span>`).join('');
+        lines.push(['工作时间', tags + (wrShiftMore(r) ? ` <span class="chip gray">+${wrShiftMore(r)}</span>` : '') + ` <span class="mut">每天 ${r.hours} 小时</span>`]);
     }
-    if (isAll) {
-        lines.push(['接单时间', esc(r.applyAt || '—')]);
-        if (r.auditAt) lines.push(['审核时间', esc(r.auditAt)]);
-        if (r.cancelAt) lines.push(['取消时间', esc(r.cancelAt)]);
-    } else if (isApply) {
-        lines.push(['接单时间', esc(r.applyAt || '—')]);
-    } else if (isSettle && s) {
-        lines.push(['提交时间', esc(s.submitAt || '—')]);
+    lines.push(['员工单价', `<b style="color:var(--red)">${r.price}</b> 元/${wrQtyUnit(r)}`]);
+
+    let extra = '';
+    if (tab === 'working') {
+        extra = `<div class="wr-amounts">
+            <div class="row"><span>预计结算总金额</span><b>${fjMoney(wrEstimatedTotal(r))}</b></div>
+            <div class="row"><span>已结算金额</span><b style="color:var(--green)">${fjMoney(wrPaidStAmountOf(r))}</b></div>
+            <div class="row"><span>待结算金额</span><b>${fjMoney(wrPendingSettleAmount(r))}</b></div>
+        </div>`;
+    }
+    if (tab === 'pay' && st) {
+        extra = `<div class="jc-pay">${fjMoney(st.amount)} <small>结算金额</small></div>`;
+    }
+    if (tab === 'all') {
+        extra = wrTimeGrid([['接单时间', r.applyAt]], true);
+    }
+    if (tab === 'apply') {
+        extra = wrTimeGrid([['接单时间', r.applyAt]], true);
     }
 
-    const btns = ['<span class="jbtn" data-log>审核记录</span>'];
-    if (isApply && r.status === '待审核') btns.push('<span class="jbtn pri" data-audit>审核</span>');
-    if (isSettle && s && s.status === '待审核') btns.push('<span class="jbtn pri" data-saudit>结算审核</span>');
-    if (isAll && stt === '做工中') btns.push('<span class="jbtn" data-end>结束用工</span>');
+    const acts = [];
+    if (tab !== 'working') acts.push('<span class="jbtn" data-detail>详情</span>');
+    if (tab === 'all') acts.push('<span class="jbtn" data-log>审核记录</span>');
+    if (tab === 'apply') acts.push('<span class="jbtn pri" data-audit>审核</span>');
+    if (tab === 'working') {
+        acts.push('<span class="jbtn" data-log>审核记录</span>');
+        acts.push('<span class="jbtn" data-stlog>结算记录</span>');
+        acts.push('<span class="jbtn" data-extend>延长做工</span>');
+        acts.push('<span class="jbtn pri" data-settle>结算</span>');
+    }
+    if (tab === 'pay') {
+        acts.push('<span class="jbtn" data-stlog>结算记录</span>');
+        acts.push('<span class="jbtn pri" data-pay>打款</span>');
+    }
 
-    const rejTxt = stt === '接单未通过' ? r.rejectReason : (stt === '结算未通过' && s ? s.rejectReason : '');
+    const rej = (tab === 'all' && r.status === '审核驳回' && r.rejectReason)
+        ? `<div class="jc-log">驳回理由：<b style="color:var(--red)">${wrTxt(r.rejectReason)}</b></div>` : '';
 
     return `<div class="jc ${sel ? 'sel' : ''}" data-id="${r.id}">
         <div class="jc-top">
-            ${canBatch ? `<span class="ck ${sel ? 'on' : ''}"></span>` : ''}
-            <div class="jc-name">${esc(r.name)}</div>
-            <span class="atag ${LF_CLS[stt]}">${stt}</span>
+            ${batchable ? `<span class="ck ${sel ? 'on' : ''}" data-ck></span>` : ''}
+            <div class="jc-name">${wrTxt(r.name)}</div>
+            <div class="wr-tags">${wrTagsHtml(r)}</div>
         </div>
-        <div class="jc-meta">
-            ${lines.map(([k, v]) => `<div class="mi"><span>${k}</span><b>${v}</b></div>`).join('')}
-        </div>
-        ${isSettle && s ? `<div class="jc-pay">${fjMoney(s.amount)} <small>应发金额</small></div>` : ''}
-        ${rejTxt ? `<div class="jc-log">驳回理由：<b style="color:var(--red)">${esc(rejTxt)}</b></div>` : ''}
-        <div class="jc-foot"><span class="jbtns">${btns.join('')}</span></div>
+        <div class="jc-meta">${lines.map(([k, v]) => `<div class="mi"><span>${k}</span><b>${v}</b></div>`).join('')}</div>
+        ${extra}
+        ${rej}
+        <div class="jc-foot"><span class="jbtns${tab === 'working' ? ' wrap' : ''}">${acts.join('')}</span></div>
     </div>`;
 }
 
-/* ---------- 列表 ---------- */
-function wrSelRows() { return Array.from(wrSel).map(findWr).filter(Boolean); }
-function wrSelOk() {
-    return wrSelRows().filter(r => wrTab === 'settle' ? ((stByWr(r.id) || {}).status === '待审核') : r.status === '待审核');
+/* ---------- 列表渲染 ---------- */
+function wrSyncSearchInputs() {
+    Object.keys(WR_TABS).forEach(k => {
+        const el = document.getElementById(WR_TABS[k].kw);
+        if (el && el.value !== wrQuery.name) el.value = wrQuery.name;
+    });
+}
+function wrUpdateBadges() {
+    const c = wrCounts();
+    const map = { wr_all: c.all, wr_apply: c.apply, wr_working: c.working, wr_pay: c.pay };
+    document.querySelectorAll('#view-work [data-badge]').forEach(el => {
+        const v = map[el.dataset.badge];
+        el.textContent = v ? v : '';
+        el.style.display = v ? '' : 'none';
+    });
+}
+function wrUpdateBatchBar() {
+    const bar = document.getElementById('bar-wr-batch');
+    if (!bar) return;
+    const cfg = WR_TABS[wrTab];
+    const show = wrBatch && cfg.batch;
+    bar.dataset.view = show ? cfg.view : '__off';
+    bar.classList.toggle('show', show && curView === cfg.view);
+    const run = document.getElementById('wrBatchRun');
+    if (run) run.textContent = (wrTab === 'pay' ? '批量打款（' : '批量审核（') + wrSel.size + '）';
 }
 function renderWrList() {
-    const cfg = WR_PAGES[wrTab];
-    const cs = cfg.clientSel ? document.getElementById(cfg.clientSel) : null;
-    if (cs) { cs.value = wrFilter.client; cs.classList.toggle('on', !!wrFilter.client); }
-    const ss = cfg.statusSel ? document.getElementById(cfg.statusSel) : null;
-    if (ss) { ss.value = wrFilter.status; ss.classList.toggle('on', !!wrFilter.status); }
-    const n = wrFilterCount();
-    const badge = cfg.fltN ? document.getElementById(cfg.fltN) : null;
-    if (badge) { badge.style.display = n ? 'block' : 'none'; badge.textContent = n; }
-    const list = wrMatch();
-    const cntEl = document.getElementById(cfg.count);
-    if (cntEl) cntEl.textContent = list.length + ' 条';
-    const emptyTxt = wrTab === 'apply' ? '没有待审核的接单' : wrTab === 'settle' ? '没有待审核的结算单' : '没有符合条件的用工记录';
-    document.getElementById(cfg.list).innerHTML = list.length
-        ? list.map(wrCard).join('')
-        : `<div class="empty"><b>🗂</b>${emptyTxt}<br>试试清空筛选</div>`;
+    const cfg = WR_TABS[wrTab];
+    if (!cfg) return;
+    wrSyncSearchInputs();
+    const rows = wrListRows(wrTab);
+    const maxPage = Math.max(1, Math.ceil(rows.length / WR_PAGE_SIZE));
+    if (wrPage > maxPage) wrPage = maxPage;
+    const shown = rows.slice(0, wrPage * WR_PAGE_SIZE);
+    const countEl = document.getElementById(cfg.count);
+    if (countEl) countEl.textContent = '共 ' + rows.length + ' 条';
+    const listEl = document.getElementById(cfg.list);
+    if (!listEl) return;
+    listEl.innerHTML = shown.length
+        ? shown.map(wrCard).join('')
+        : `<div class="empty"><b>🗂</b>${cfg.empty}<br>试试清空筛选</div>`;
+    const moreEl = document.getElementById(cfg.more);
+    if (moreEl) {
+        moreEl.textContent = !rows.length ? '' : (shown.length < rows.length ? '加载更多' : '已全部加载');
+        moreEl.onclick = () => { if (shown.length < rows.length) { wrPage++; renderWrList(); } };
+    }
+    const fN = document.getElementById(cfg.fltN);
+    if (fN) { const n = wrFilterCount(wrQuery); fN.style.display = n ? 'block' : 'none'; fN.textContent = n; }
+    const bb = document.getElementById('wrBatchBtn' + (wrTab === 'apply' ? 'Apply' : 'Pay'));
+    if (bb) { bb.classList.toggle('act', wrBatch); bb.textContent = wrBatch ? '取消' : '批量'; }
 
-    document.querySelectorAll('#' + cfg.list + ' .jc').forEach(card => {
-        const r = findWr(+card.dataset.id);
+    listEl.querySelectorAll('.jc').forEach(card => {
+        const r = WR_ALL.find(x => x.id === +card.dataset.id);
         if (!r) return;
+        const stop = e => { e.stopPropagation(); };
         card.onclick = e => {
-            if (e.target.closest('.jbtns')) return;
-            if (wrBatch && wrTab !== 'all') {
+            if (e.target.closest('.jbtns') || e.target.closest('[data-ck]')) return;
+            if (wrBatch && (wrTab === 'apply' || wrTab === 'pay')) {
                 wrSel.has(r.id) ? wrSel.delete(r.id) : wrSel.add(r.id);
                 renderWrList();
             } else openWrDetail(r.id);
         };
-        card.querySelector('[data-log]').onclick = e => { e.stopPropagation(); wrLogSheet(r); };
-        const aud = card.querySelector('[data-audit]');
-        if (aud) aud.onclick = e => { e.stopPropagation(); wrAuditSheet([r]); };
-        const saud = card.querySelector('[data-saudit]');
-        if (saud) saud.onclick = e => { e.stopPropagation(); stAuditSheet([r]); };
-        const end = card.querySelector('[data-end]');
-        if (end) end.onclick = e => { e.stopPropagation(); wrEndSheet(r); };
+        const ck = card.querySelector('[data-ck]');
+        if (ck) ck.onclick = e => { stop(e); wrSel.has(r.id) ? wrSel.delete(r.id) : wrSel.add(r.id); renderWrList(); };
+        const ad = card.querySelector('[data-detail]');
+        if (ad) ad.onclick = e => { stop(e); openWrDetail(r.id); };
+        const a1 = card.querySelector('[data-log]');
+        if (a1) a1.onclick = e => { stop(e); wrOpenLog(r); };
+        const a2 = card.querySelector('[data-audit]');
+        if (a2) a2.onclick = e => { stop(e); wrOpenAudit([r]); };
+        const a3 = card.querySelector('[data-settle]');
+        if (a3) a3.onclick = e => { stop(e); wrOpenSettle(r); };
+        const a4 = card.querySelector('[data-extend]');
+        if (a4) a4.onclick = e => { stop(e); wrOpenExtend(r); };
+        const a5 = card.querySelector('[data-end]');
+        if (a5) a5.onclick = e => { stop(e); wrOpenEnd(r); };
+        const a6 = card.querySelector('[data-stlog]');
+        if (a6) a6.onclick = e => { stop(e); wrOpenStLog(r); };
+        const a7 = card.querySelector('[data-pay]');
+        if (a7) a7.onclick = e => { stop(e); wrOpenPay([r]); };
     });
-
-    if (cfg.batchBtn) {
-        const btn = document.getElementById(cfg.batchBtn);
-        btn.textContent = wrBatch ? '取消' : '批量';
-        btn.classList.toggle('act', wrBatch);
-        const bar = document.getElementById('bar-wr-batch');
-        bar.dataset.view = wrBatch ? cfg.view : '__off';
-        bar.classList.toggle('show', wrBatch && curView === cfg.view);
-        const m = wrSelOk().length;
-        document.getElementById('wrBatchRun').textContent = (wrTab === 'settle' ? '批量结算通过（' : '批量通过（') + m + '）';
-    }
+    wrUpdateBatchBar();
 }
-
-/* ---------- 筛选 ---------- */
-function renderWrFilter() {
-    const el = document.getElementById('wrFilter');
-    const line = (label, k, opts) => `<div class="fg"><label>${label}</label><div class="fcs">${
-        ['不限'].concat(opts).map(o => `<span class="fc ${(o === '不限' ? !wrFilter[k] : wrFilter[k] === o) ? 'on' : ''}" data-k="${k}" data-v="${o === '不限' ? '' : esc(o)}">${esc(o)}</span>`).join('')}</div></div>`;
-    const dateRow = (label, a, b) => `<div class="fg"><label>${label}</label><div class="f2">
-        <input type="date" class="fin" id="${a}" value="${wrFilter[a]}"><input type="date" class="fin" id="${b}" value="${wrFilter[b]}"></div></div>`;
-    const showApply = wrTab !== 'settle';
-    const showSettle = wrTab !== 'apply';
-    el.innerHTML = `<div class="sb-hd"><b>筛选用工记录</b><span class="x" data-close>✕</span></div>
-        <div class="sb-bd">
-            <div class="fg"><label>用工单位</label>
-                <select class="fsel" id="wrFltClient"><option value="">全部用工单位</option>${
-                    WR_CLIENTS.map(c => `<option ${wrFilter.client === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>
-            </div>
-            ${line('岗位', 'job', WR_JOBS)}
-            ${line('状态', 'status', LF_STATUSES)}
-            ${showApply ? dateRow('接单时间', 'wrFrom', 'wrTo') : ''}
-            ${showSettle ? dateRow('提交时间', 'wrSFrom', 'wrSTo') : ''}
-        </div>
-        <div class="sb-ft"><span class="btn ghost" data-reset>重置</span><span class="btn primary" data-ok>查询</span></div>`;
-    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
-    el.querySelector('#wrFltClient').onchange = e => { wrFilter.client = e.target.value; };
-    el.querySelectorAll('.fc[data-k]').forEach(c => c.onclick = () => {
-        wrFilter[c.dataset.k] = c.dataset.v;
-        el.querySelectorAll(`.fc[data-k="${c.dataset.k}"]`).forEach(x => x.classList.toggle('on', x === c));
-    });
-    const readDates = () => {
-        ['wrFrom', 'wrTo', 'wrSFrom', 'wrSTo'].forEach(id => {
-            const inp = el.querySelector('#' + id);
-            if (!inp) return;
-            if (id === 'wrFrom') wrFilter.from = inp.value;
-            if (id === 'wrTo') wrFilter.to = inp.value;
-            if (id === 'wrSFrom') wrFilter.sFrom = inp.value;
-            if (id === 'wrSTo') wrFilter.sTo = inp.value;
-        });
-    };
-    el.querySelector('[data-reset]').onclick = () => {
-        Object.keys(wrFilter).forEach(k => { wrFilter[k] = ''; });
-        const cfg = WR_PAGES[wrTab];
-        const kw = document.getElementById(cfg.kw); if (kw) kw.value = '';
-        hideSheet(); renderWrList();
-    };
-    el.querySelector('[data-ok]').onclick = () => { readDates(); hideSheet(); renderWrList(); };
-    showSheet(el);
-}
-
-/* ---------- 批量 ---------- */
 function wrSetBatch(on) {
     wrBatch = on;
     if (!on) wrSel.clear();
-    const cfg = WR_PAGES[wrTab];
-    const bar = document.getElementById('bar-wr-batch');
-    bar.dataset.view = on ? cfg.view : '__off';
-    bar.classList.toggle('show', on && curView === cfg.view);
     renderWrList();
 }
-
-/* ---------- 详情 ---------- */
-function openWrDetail(id) {
-    wrDetailId = id;
-    renderWrDetail();
-    pushView('view-wr-detail');
-}
-function wrSteps(r) {
-    const s = stByWr(r.id), stt = wrStatus(r);
-    const list = [
-        { lb: '提交接单', time: r.applyAt || '' },
-        { lb: '接单审核', time: '' },
-        { lb: '做工', time: '' },
-        { lb: '完工', time: '' },
-        { lb: '结算审核', time: '' },
-        { lb: '结算完成', time: '' },
-    ];
-    const pass = (r.auditRounds || []).filter(x => x.result === 'pass').pop();
-    const rej = (r.auditRounds || []).filter(x => x.result === 'reject').pop();
-    if (pass) list[1].time = pass.time;
-    if (r.status === '审核驳回' && rej) list[1].time = rej.time;
-    if (r.status === '已取消') list[2].time = r.cancelAt || '';
-    if (r.submittedAt) list[3].time = r.submittedAt;
-    const sp = s ? (s.auditRounds || []).filter(x => x.result === 'pass').pop() : null;
-    const sr = s ? (s.auditRounds || []).filter(x => x.result === 'reject').pop() : null;
-    if (sp) list[4].time = sp.time;
-    if (s && s.status === '已驳回' && sr) list[4].time = sr.time;
-    if (s && s.status !== '待审核' && s.status !== '已驳回') list[5].time = s.settleAt || (sp ? sp.time : '');
-
-    list.forEach(x => { x.state = 'todo'; });
-    const fill = (a, b, st) => { for (let i = a; i <= b; i++) list[i].state = st; };
-    if (stt === '结算完成') fill(0, 5, 'done');
-    else if (stt === '结算未通过') { fill(0, 3, 'done'); list[4].state = 'err'; list[5].state = 'term'; }
-    else if (stt === '结算审核中') { fill(0, 3, 'done'); list[4].state = 'cur'; }
-    else if (stt === '做工中') { fill(0, 1, 'done'); list[2].state = 'cur'; }
-    else if (stt === '接单审核中') { list[0].state = 'done'; list[1].state = 'cur'; }
-    else if (stt === '接单未通过') { list[0].state = 'done'; list[1].state = 'err'; fill(2, 5, 'term'); }
-    else if (stt === '已取消') {
-        list[0].state = 'done';
-        if (pass) { list[1].state = 'done'; list[2].state = 'done'; fill(3, 5, 'term'); }
-        else { list[1].state = 'term'; fill(2, 5, 'term'); }
-    }
-    return list;
-}
-function flow6Html(r) {
-    return `<div class="flow6">${wrSteps(r).map((x, i) => `<div class="fs ${x.state}">
-        <div class="dot">${x.state === 'done' ? '✓' : x.state === 'err' ? '!' : (i + 1)}</div>
-        <div class="lb">${x.lb}</div>
-    </div>`).join('')}</div>`;
-}
-function stPhotoSvg(s, di, k) {
-    const d = String((s.dates || [])[di] || '').slice(5);
-    return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="120" fill="#E8EFF9"/>
-        <circle cx="96" cy="20" r="8" fill="#FFD666"/>
-        <path d="M0 86 26 62l18 14 24-26 30 30 22-16v56H0z" fill="#B7CBE9"/>
-        <path d="M0 100 30 82l22 10 26-16 42 20v24H0z" fill="#7B9DD3"/>
-        <text x="60" y="112" font-size="10" fill="#fff" text-anchor="middle" font-family="Arial">${esc(d)} · 图${k}</text>
-    </svg>`;
-}
-function stPhotoBlock(s) {
-    if (!s || !s.photoDays) return '<div class="mut">员工暂未上传工作图片</div>';
-    let html = '';
-    const n = Math.min(s.photoDays, (s.dates || []).length);
-    for (let i = 0; i < n; i++) {
-        const imgs = 2 + (i % 2);
-        html += `<div class="ph-day">${esc(String(s.dates[i] || '').slice(5))} · 第 ${i + 1} 天 · 已上传 ${imgs} 张</div>
-            <div class="ph-grid">${Array.from({ length: imgs }, (_, k) => `<div class="ph-item">${stPhotoSvg(s, i, k + 1)}</div>`).join('')}</div>`;
-    }
-    return html;
-}
-function renderWrDetail() {
-    const r = findWr(wrDetailId);
-    if (!r) return;
-    const s = stByWr(r.id);
-    const stt = wrStatus(r);
-    const less = s ? s.actualQty < s.planQty : false;
-    document.getElementById('wrdBody').innerHTML = `
-        <div class="dsec">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-                <span style="font-size:19px;font-weight:800">${esc(r.name)}</span>
-                <span class="atag ${LF_CLS[stt]}">${stt}</span>
-            </div>
-            <div class="mut">${esc(r.job)} · ${esc(r.client)}</div>
-            <div class="mut">用工 ${r.days} 天 · 每天 ${r.hours} 小时 · ${r.price} 元/${wrUnit(r.priceType)}</div>
-        </div>
-        <div class="dsec"><h4>用工流程</h4>${flow6Html(r)}</div>
-        <div class="dsec"><h4>接单信息</h4>
-            ${kv('姓名', esc(r.name))}
-            ${kv('性别', esc(r.gender))}
-            ${kv('手机号', esc(r.phone))}
-            ${kv('接单时间', esc(r.applyAt || '—'))}
-            ${kv('接单审核', r.status === '待审核' ? '待审核' : (stt === '接单未通过' ? '<span style="color:var(--red)">未通过</span>' : '已通过'))}
-            ${r.auditor ? kv('审核人 / 时间', esc(r.auditor) + ' · ' + esc(r.auditAt || '—')) : ''}
-            ${r.rejectReason ? kv('驳回理由', `<span style="color:var(--red)">${esc(r.rejectReason)}</span>`) : ''}
-            ${r.cancelAt ? kv('取消时间', esc(r.cancelAt)) : ''}
-            ${r.endedByMerchant ? kv('结束用工', esc(r.endedAt || '—') + (r.endNote ? ' · ' + esc(r.endNote) : '')) : ''}
-        </div>
-        <div class="dsec"><h4>用工信息</h4>
-            ${kv('用工单位', esc(r.client))}
-            ${kv('岗位名称', esc(r.job))}
-            ${kv('用工日期', esc(wrDateFull(r)))}
-            ${kv('工作时间', esc(r.shift))}
-            ${kv('每天工时', r.hours + ' 小时')}
-            ${kv('员工单价', `<b style="color:var(--red)">${r.price} 元/${wrUnit(r.priceType)}</b>`)}
-            ${kv('商业险', r.ins + ' 元/天')}
-        </div>
-        ${s ? `<div class="dsec"><h4>结算信息</h4>
-            ${kv('应做工时', stQtyText(s.planQty, s))}
-            ${kv('实做工时', `<span style="${less ? 'color:#E08A1E;font-weight:700' : ''}">${stQtyText(s.actualQty, s)}</span>`)}
-            ${less && s.skipNote ? kv('未做说明', `<span style="color:#E08A1E">${esc(s.skipNote)}</span>`) : ''}
-            ${kv('应发金额', `<b class="st-am">${fjMoney(s.amount)}</b>`)}
-            ${kv('结算状态', `<span class="atag ${LF_CLS[wrStatus(r)]}">${s.status === '已结算' ? '结算完成' : s.status === '已驳回' ? '结算未通过' : '结算审核中'}</span>`)}
-            ${kv('提交时间', esc(s.submitAt || '—'))}
-            ${s.settler ? kv('审核人 / 时间', esc(s.settler) + ' · ' + esc(s.settleAt || '—')) : ''}
-            ${s.settleNote ? kv('结算说明', esc(s.settleNote)) : ''}
-            ${s.rejectReason ? kv('驳回理由', `<span style="color:var(--red)">${esc(s.rejectReason)}</span>`) : ''}
-        </div>
-        <div class="dsec"><h4>每日完工图片</h4>${stPhotoBlock(s)}</div>` : ''}`;
-
-    const endBtn = document.getElementById('wrdEnd');
-    endBtn.style.display = stt === '做工中' ? '' : 'none';
+function wrSelectedRows() {
+    return Array.from(wrSel).map(id => WR_ALL.find(r => r.id === id)).filter(Boolean);
 }
 
-/* ---------- 审核记录（上下双模块） ---------- */
-function tlHtml(logs) {
-    return `<div class="tl">${logs.map(l => `<div class="tl-i ${l.cls || ''}">
-        <div class="tt">${esc(l.title)}</div>
-        ${l.time ? `<div class="tm">${esc(l.time)}</div>` : ''}
-        <div class="td">${esc(l.desc || '')}</div></div>`).join('')}</div>`;
-}
-function wrApplyFlow(r) {
-    const logs = [{ title: '员工提交接单申请', time: r.applyAt, desc: r.name + ' 提交了接单申请' }];
-    (r.auditRounds || []).forEach(rd => {
-        if (rd.result === 'reject') {
-            logs.push({ title: '接单审核驳回', time: rd.time, desc: '驳回理由：' + (rd.reason || '未填写理由'), cls: 'warn' });
-            if (rd.resubmitAt) logs.push({ title: '员工重新提交', time: rd.resubmitAt, desc: '修改后重新提交接单申请' });
-        } else {
-            logs.push({ title: '接单审核通过', time: rd.time, desc: (rd.auditor || '审核人') + ' 审核通过，进入做工', cls: 'ok' });
-        }
-    });
-    if (r.status === '已取消') logs.push({ title: '员工取消接单', time: r.cancelAt, desc: '该接单已取消（冻结资金不释放）', cls: 'warn' });
-    else if (r.status === '待审核') logs.push({ title: '待审核', desc: '等待商户审核', cls: 'wait' });
-    return logs;
-}
-function wrSettleFlow(r) {
-    const s = stByWr(r.id);
-    if (!s) return null;
-    const logs = [];
-    if (r.endedByMerchant) logs.push({ title: '商户结束用工', time: r.endedAt, desc: r.endNote ? '结束原因：' + r.endNote : '商户主动结束用工并生成结算单' });
-    else logs.push({ title: '员工提交完工', time: s.submitAt, desc: '已上传 ' + (s.photoDays || 0) + ' 天工作图片' });
-    (s.auditRounds || []).forEach(rd => {
-        if (rd.result === 'reject') {
-            logs.push({ title: '结算审核驳回', time: rd.time, desc: '驳回理由：' + (rd.reason || '未填写理由'), cls: 'warn' });
-            if (rd.resubmitAt) logs.push({ title: '员工重新提交完工', time: rd.resubmitAt, desc: '补齐材料后重新提交' });
-        } else {
-            logs.push({ title: '结算审核通过', time: rd.time, desc: (rd.settler || rd.auditor || '审核人') + ' 确认结算 ' + fjMoney(rd.amount != null ? rd.amount : s.amount), cls: 'ok' });
-        }
-    });
-    if (s.status === '待审核') logs.push({ title: '待审核', desc: '等待商户结算审核', cls: 'wait' });
-    return logs;
-}
-function wrLogSheet(r) {
-    if (!r) return;
-    const settle = wrSettleFlow(r);
-    const el = document.getElementById('wrLog');
-    el.innerHTML = `<div class="sb-hd"><b>审核记录 · ${esc(r.name)}</b><span class="x" data-close>✕</span></div>
+/* ---------- 筛选弹层 ---------- */
+const WR_CLIENT_OPTIONS = Array.from(new Set(WR_SEED.map(s => s[3])));
+const WR_JOB_OPTIONS = Array.from(new Set(WR_SEED.map(s => s[5])));
+function wrOpenFilter() {
+    let d = wrClone(wrQuery);
+    const el = document.getElementById('wrSheet');
+    const render = () => {
+        el.innerHTML = `<div class="sb-hd"><b>筛选用工记录</b><span class="x" data-close>✕</span></div>
         <div class="sb-bd">
-            <div class="log-block"><h5>接单审核<span>${esc(r.applyAt || '')}</span></h5>${tlHtml(wrApplyFlow(r))}</div>
-            <div class="log-block"><h5>结算审核</h5>${
-                settle ? tlHtml(settle) : '<div class="log-ph">员工提交完工（或商户结束用工）后生成结算单，进入结算审核环节。</div>'}</div>
+            <div class="frow"><label>姓名</label><input class="fin" id="wfName" maxlength="20" placeholder="请输入员工姓名" value="${wrTxt(d.name)}"></div>
+            <div class="frow"><label>手机号</label><input class="fin" id="wfPhone" maxlength="11" inputmode="numeric" placeholder="请输入手机号" value="${wrTxt(d.phone)}"></div>
+            <div class="frow"><label>用工单位</label><select class="fsel" id="wfClient"><option value="">全部用工单位</option>${
+                WR_CLIENT_OPTIONS.map(c => `<option ${d.client === c ? 'selected' : ''}>${wrTxt(c)}</option>`).join('')}</select></div>
+            <div class="frow"><label>岗位名称</label><select class="fsel" id="wfJob"><option value="">全部岗位</option>${
+                WR_JOB_OPTIONS.map(j => `<option ${d.job === j ? 'selected' : ''}>${wrTxt(j)}</option>`).join('')}</select></div>
+            <div class="fg"><label>用工状态</label><div class="fcs">${
+                [{ v: '', t: '不限' }].concat(WR_WORK_STATUS_OPTIONS.map(o => ({ v: o.value, t: o.label })))
+                    .map(o => `<span class="fc ${(o.v ? d.workStatus === o.v : !d.workStatus) ? 'on' : ''}" data-ws="${o.v}">${o.t}</span>`).join('')}</div></div>
+            <div class="fg"><label>审核状态</label><div class="fcs">${
+                [{ v: '', t: '不限' }].concat(WR_AUDIT_STATUS_OPTIONS.map(o => ({ v: o.value, t: o.label })))
+                    .map(o => `<span class="fc ${(o.v ? d.auditStatus === o.v : !d.auditStatus) ? 'on' : ''}" data-as="${o.v}">${o.t}</span>`).join('')}</div></div>
+            <div class="frow"><label>接单时间</label><div class="f2">
+                <input type="date" class="fin" id="wfApplyFrom" value="${d.applyRange[0] || ''}">
+                <span class="u">至</span><input type="date" class="fin" id="wfApplyTo" value="${d.applyRange[1] || ''}"></div></div>
+            <div class="frow"><label>提交时间</label><div class="f2">
+                <input type="date" class="fin" id="wfSubmitFrom" value="${d.submitRange[0] || ''}">
+                <span class="u">至</span><input type="date" class="fin" id="wfSubmitTo" value="${d.submitRange[1] || ''}"></div></div>
         </div>
-        <div class="sb-ft"><span class="btn primary" data-close>关闭</span></div>`;
-    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
-    showSheet(el);
+        <div class="sb-ft"><span class="btn ghost" data-reset>重置</span><span class="btn primary" data-ok>查询</span></div>`;
+        el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+        el.querySelector('#wfName').oninput = e => { d.name = e.target.value.trim(); };
+        el.querySelector('#wfPhone').oninput = e => { d.phone = e.target.value.trim(); };
+        el.querySelector('#wfClient').onchange = e => { d.client = e.target.value; };
+        el.querySelector('#wfJob').onchange = e => { d.job = e.target.value; };
+        el.querySelectorAll('[data-ws]').forEach(c => c.onclick = () => {
+            d.workStatus = c.dataset.ws;
+            el.querySelectorAll('[data-ws]').forEach(x => x.classList.toggle('on', x === c));
+        });
+        el.querySelectorAll('[data-as]').forEach(c => c.onclick = () => {
+            d.auditStatus = c.dataset.as;
+            el.querySelectorAll('[data-as]').forEach(x => x.classList.toggle('on', x === c));
+        });
+        const rd = () => {
+            const a1 = el.querySelector('#wfApplyFrom').value, a2 = el.querySelector('#wfApplyTo').value;
+            const s1 = el.querySelector('#wfSubmitFrom').value, s2 = el.querySelector('#wfSubmitTo').value;
+            d.applyRange = (a1 || a2) ? [a1, a2] : [];
+            d.submitRange = (s1 || s2) ? [s1, s2] : [];
+        };
+        el.querySelector('[data-ok]').onclick = () => { rd(); wrQuery = d; wrPage = 1; wrSel.clear(); hideSheet(); renderWrList(); };
+        el.querySelector('[data-reset]').onclick = () => {
+            wrQuery = wrBlankFilter();
+            wrPage = 1;
+            wrSel.clear();
+            const kw = document.getElementById(WR_TABS[wrTab].kw); if (kw) kw.value = '';
+            hideSheet();
+            renderWrList();
+        };
+        showSheet(el);
+    };
+    render();
 }
 
-/* ---------- 接单审核（含资金冻结） ---------- */
-function wrAuditSheet(rows, initMode) {
-    wrAuditRows = rows;
-    wrAuditMode = initMode === 'reject' ? 'reject' : 'pass';
-    const r = rows[0];
-    const need = wrNeedFreeze(rows);
-    const lack = Math.round((need - fjBal) * 100) / 100 > 0;
-    const el = document.getElementById('wrAudit');
+/* ---------- 审核弹层 ---------- */
+function wrOpenAudit(rows) {
+    rows = (rows || []).filter(r => r.status === '待审核');
+    if (!rows.length) { toast('请选择待审核的接单'); return; }
+    let mode = 'pass';
+    const need = wrFreezeSum(rows);
+    const short = Math.max(0, fundRound(need - fjBal));
+    const batch = rows.length > 1;
+    const el = document.getElementById('wrSheet');
     el.innerHTML = `<div class="sb-hd"><b>审核接单</b><span class="x" data-close>✕</span></div>
         <div class="sb-bd">
-            <div class="sum-card">员工：<b>${esc(r.name)}</b>${rows.length > 1 ? ' · 共 ' + rows.length + ' 条' : ''}<br>
-                岗位：${esc(r.job)} · ${esc(r.client)}<br>
-                用工日期：${esc(wrDateText(r))} · 每天 ${r.hours} 小时 · 共 ${r.days} 天</div>
-            <div class="audit2">
-                <div class="au on pass" data-m="pass"><b>审核通过</b></div>
-                <div class="au" data-m="reject"><b>审核驳回</b></div>
-            </div>
-            <div id="wrPassWrap">
+            <div class="sum-card">${batch
+                ? `共 <b>${rows.length}</b> 条用工记录待审核`
+                : `员工：<b>${wrTxt(rows[0].name)}</b> · ${wrTxt(rows[0].gender)} · ${wrTxt(rows[0].phone)}<br>岗位：${wrTxt(rows[0].job)} · ${wrTxt(rows[0].client)}<br>用工日期：${wrTxt(wrDateText(rows[0]))} · 每天 ${rows[0].hours} 小时 · 共 ${rows[0].days} 天`}</div>
+            <div class="audit2"><div class="au on pass" data-m="pass"><b>审核通过</b></div><div class="au" data-m="reject"><b>审核驳回</b></div></div>
+            <div id="waPass">
                 <div class="money-box">
-                    <div class="mb-row"><span>本次需冻结</span><b>${fjMoney(need)}</b></div>
-                    <div class="mb-row"><span>账户可用余额</span><b class="${lack ? 'risk' : ''}">${fjMoney(fjBal)}</b></div>
-                    ${lack ? `<div class="mb-row"><span>还差</span><b class="risk">${fjMoney(Math.round((need - fjBal) * 100) / 100)}</b></div>
-                    <div class="mb-tip">余额不足，无法通过审核。小程序端不支持充值，请前往<b>商户管理后台 → 财务管理 → 账户充值</b>后再试。</div>`
-                    : '<div class="mb-tip">按「员工单价 × 应做工时」冻结，冻结后不随取消或驳回释放。</div>'}
+                    <div class="mb-row"><span>本次需冻结${batch ? '（' + rows.length + ' 条合计）' : ''}</span><b>${fjMoney(need)}</b></div>
+                    <div class="mb-row"><span>账户可用余额</span><b class="${short > 0 ? 'risk' : ''}">${fjMoney(fjBal)}</b></div>
+                    ${short > 0 ? `<div class="mb-row"><span>还差</span><b class="risk">${fjMoney(short)}</b></div>` : ''}
+                    <div class="mb-tip">${short > 0 ? '余额不足，无法通过审核。可点「演示充值」临时补充余额（仅原型辅助）。' : '按「员工单价 × 应做工时」冻结，冻结后不随取消或驳回释放。'}</div>
+                    <div style="margin-top:8px"><span class="mini-btn" id="waRecharge">演示充值 +10000</span></div>
                 </div>
             </div>
-            <div id="wrRejectWrap" style="display:none">
-                <div class="frow"><label><span class="req">*</span>驳回理由<span class="cnt" id="wrRgCnt">0/100</span></label>
-                    <textarea class="fta" id="wrRejectReason" maxlength="100" placeholder="请填写驳回理由，会显示在员工端接单记录中"></textarea></div>
-            </div>
+            <div id="waReject" style="display:none"><div class="frow"><label><span class="req">*</span>驳回理由<span class="cnt" id="waCnt">0/100</span></label>
+                <textarea class="fta" id="waReason" maxlength="100" placeholder="请填写驳回理由，会显示在员工端接单记录中"></textarea></div></div>
         </div>
-        <div class="sb-ft"><span class="btn ghost" data-close>取消</span>
-            <span class="btn primary ${lack ? 'dis' : ''}" id="wrAuditOk">确认通过</span></div>`;
+        <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary ${short > 0 ? 'dis' : ''}" id="waOk">确认通过</span></div>`;
     el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
-    const wrap = el.querySelector('#wrRejectWrap');
-    const passWrap = el.querySelector('#wrPassWrap');
-    const okBtn = el.querySelector('#wrAuditOk');
+    const passWrap = el.querySelector('#waPass'), rejWrap = el.querySelector('#waReject');
+    const ok = el.querySelector('#waOk'), ta = el.querySelector('#waReason');
     const applyMode = () => {
-        const rej = wrAuditMode === 'reject';
-        el.querySelectorAll('.au').forEach(x => x.classList.toggle('on', x.dataset.m === wrAuditMode));
-        wrap.style.display = rej ? '' : 'none';
+        const rej = mode === 'reject';
+        el.querySelectorAll('.au').forEach(x => x.classList.toggle('on', x.dataset.m === mode));
         passWrap.style.display = rej ? 'none' : '';
-        okBtn.textContent = rej ? '确认驳回' : '确认通过';
-        okBtn.classList.toggle('dis', !rej && lack);
+        rejWrap.style.display = rej ? '' : 'none';
+        ok.textContent = rej ? '确认驳回' : '确认通过';
+        ok.classList.toggle('dis', !rej && short > 0);
     };
-    el.querySelectorAll('.au').forEach(card => card.onclick = () => { wrAuditMode = card.dataset.m; applyMode(); });
-    applyMode();
-    const ta = el.querySelector('#wrRejectReason');
-    ta.oninput = () => { el.querySelector('#wrRgCnt').textContent = ta.value.length + '/100'; };
-    okBtn.onclick = () => {
-        if (wrAuditMode === 'pass' && lack) { toast('可用余额不足，请到商户管理后台充值后再审核'); return; }
+    el.querySelectorAll('.au').forEach(c => c.onclick = () => { mode = c.dataset.m; applyMode(); });
+    ta.oninput = () => { el.querySelector('#waCnt').textContent = ta.value.length + '/100'; };
+    el.querySelector('#waRecharge').onclick = () => { wrApplyRecharge(); hideSheet(); wrOpenAudit(rows); };
+    ok.onclick = () => {
+        if (mode === 'pass' && short > 0) { toast('可用余额不足，请先演示充值'); return; }
         const reason = ta.value.trim();
-        if (wrAuditMode === 'reject' && !reason) { toast('请填写驳回理由'); return; }
+        if (mode === 'reject' && !reason) { toast('请填写驳回理由'); return; }
         hideSheet();
-        wrApplyAudit(wrAuditRows, wrAuditMode, reason);
+        wrApplyAudit(rows, mode, reason);
     };
+    applyMode();
     showSheet(el);
 }
 function wrApplyAudit(rows, mode, reason) {
-    const t = nowStamp() + ':00';
-    let gen = 0, frozen = 0;
-    rows.forEach(r => {
+    const now = wrNow();
+    let frozen = 0;
+    if (mode === 'pass') {
+        const need = wrFreezeSum(rows);
+        if (need > fjBal) { toast(wrFreezeTip(need)); return false; }
+        frozen = wrFreezeApply(rows, now);
+    }
+    rows.forEach(function (r) {
         r.status = mode === 'pass' ? '审核通过' : '审核驳回';
         r.auditor = ME;
-        r.auditAt = t;
-        r.rejectReason = mode === 'reject' ? (reason || '') : '';
-        r.auditRounds.push(mode === 'pass'
-            ? { result: 'pass', auditor: ME, time: t }
-            : { result: 'reject', auditor: ME, time: t, reason: reason || '' });
+        r.auditAt = now;
+        r.rejectReason = mode === 'reject' ? String(reason || '').trim() : '';
+        r.auditRounds.push({ result: mode === 'pass' ? 'pass' : 'reject', auditor: ME, time: now, reason: r.rejectReason });
         if (mode === 'pass') {
-            r.actualQty = wrActual(r);
-            r.actualAmount = Math.round(r.price * r.actualQty * 100) / 100;
-            if (!wrFrozenOf(r)) {                      // 幂等：已冻结的跳过
-                const amt = wrFreezeAmt(r);
-                r.frozenAmt = amt;
-                r.frozenAt = t;
-                fjBal = Math.round((fjBal - amt) * 100) / 100;
-                fjFrozen = Math.round((fjFrozen + amt) * 100) / 100;
-                frozen += amt;
-            }
-            if (r.submittedAt && stSyncFromWr(r)) gen++;
+            const qty = wrActualQty(r);
+            r.actualQty = qty;
+            r.actualAmount = Math.round(Number(r.price) * qty * 100) / 100;
         }
     });
+    const added = mode === 'pass' ? stSyncFromWr() : 0;
     toast(mode === 'pass'
-        ? ('已通过 ' + rows.length + ' 条，冻结 ' + fjMoney(frozen) + '，可用余额 ' + fjMoney(fjBal) + (gen ? '，已生成 ' + gen + ' 张结算单' : ''))
-        : ('已驳回 ' + rows.length + ' 条接单，理由已同步员工端'));
-    if (wrBatch) wrSetBatch(false);
+        ? '已通过 ' + rows.length + ' 条用工记录' + (frozen > 0 ? '，冻结 ' + fjMoney(frozen) : '') + (added ? '，其中 ' + added + ' 条已完工生成结算单' : '')
+        : '已驳回 ' + rows.length + ' 条用工记录，理由已同步员工端');
+    wrSetBatch(false);
+    renderWrList();
+    return true;
+}
+
+/* ---------- 结算弹层 ---------- */
+function wrOpenSettle(r) {
+    if (!wrCanSettle(r)) { toast('该记录当前不可结算'); return; }
+    const avail = wrSettleAvailDates(r);
+    let dates = avail.slice();
+    let amount = wrStDateAmount(r, dates);
+    let note = '';
+    const el = document.getElementById('wrSheet');
+    const chips = () => avail.map(d => `<span class="wr-date-chip ${dates.indexOf(d) > -1 ? 'on' : ''}" data-d="${d}">${d.slice(5)}</span>`).join('');
+    const calc = () => {
+        const cap = wrStDateAmount(r, dates);
+        if (!(amount > 0) || amount > cap) amount = cap;
+        const back = Math.max(0, fundRound(cap - amount));
+        return { cap, back };
+    };
+    el.innerHTML = `<div class="sb-hd"><b>结算</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">
+            <div class="sum-card">员工：<b>${wrTxt(r.name)}</b> · ${wrTxt(r.job)}<br>${wrTxt(r.client)}<br>用工日期：${wrTxt(wrDateText(r))} · ${r.days} 天 · 单价 ${r.price} 元/${wrQtyUnit(r)}</div>
+            <div class="fg"><label>选择结算日期<span class="cnt">可只勾选部分日期提前结算</span></label>
+                <div class="wr-date-chips" id="wsDates">${chips()}</div></div>
+            <div class="money-box">
+                <div class="mb-row"><span>本次冻结金额</span><b id="wsCap">—</b></div>
+            </div>
+            <div class="wr-amt-block">
+                <div class="wr-amt-label">结算金额 <span>可修改，上限为本次冻结额</span></div>
+                <div class="wr-amt-field">
+                    <span class="cur">¥</span>
+                    <input id="wsAmount" inputmode="decimal" autocomplete="off" aria-label="结算金额">
+                    <span class="unit">元</span>
+                </div>
+                <div class="wr-amt-sub"><span>退回金额 <b id="wsBack">—</b></span><span>打款时退回可用余额</span></div>
+            </div>
+            <div class="frow"><label>结算说明<span class="cnt" id="wsNoteCnt">0/100</span></label><textarea class="fta" id="wsNote" maxlength="100" placeholder="选填，如按实做工时核减、补贴等"></textarea></div>
+            <div class="hint">通过后进入「待结算打款」，打款完成后才结算完成；未勾选日期仍留在做工中。</div>
+        </div>
+        <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary" id="wsOk">确认结算</span></div>`;
+    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+    const amtEl = el.querySelector('#wsAmount');
+    const refresh = () => {
+        const c = calc();
+        el.querySelector('#wsCap').textContent = fjMoney(c.cap);
+        el.querySelector('#wsBack').textContent = fjMoney(c.back);
+        if (document.activeElement !== amtEl) amtEl.value = amount;
+    };
+    const rebind = () => {
+        el.querySelector('#wsDates').innerHTML = chips();
+        el.querySelectorAll('[data-d]').forEach(c => c.onclick = () => {
+            const d = c.dataset.d;
+            const i = dates.indexOf(d);
+            i > -1 ? dates.splice(i, 1) : dates.push(d);
+            dates.sort();
+            amount = wrStDateAmount(r, dates);
+            refresh(); rebind();
+        });
+    };
+    rebind();
+    refresh();
+    amtEl.oninput = () => { const v = Number(amtEl.value); amount = isFinite(v) ? v : 0; refresh(); };
+    const noteEl = el.querySelector('#wsNote');
+    noteEl.oninput = () => { el.querySelector('#wsNoteCnt').textContent = noteEl.value.length + '/100'; };
+    el.querySelector('#wsOk').onclick = () => {
+        if (!dates.length) { toast('请选择要结算的日期'); return; }
+        const availNow = wrSettleAvailDates(r);
+        if (dates.some(d => availNow.indexOf(d) < 0)) { toast('所选日期中包含不可结算的日期'); return; }
+        const cap = wrStDateAmount(r, dates);
+        amount = Number(amtEl.value);
+        if (!(amount > 0)) { toast('请输入正确的结算金额'); return; }
+        if (amount > cap) { toast('结算金额不能超过所选日期的冻结金额 ' + fjMoney(cap)); return; }
+        hideSheet();
+        wrSubmitSettle(r, dates, amount, noteEl.value.trim(), cap);
+    };
+    showSheet(el);
+}
+function wrSubmitSettle(r, dates, amount, note, cap) {
+    const now = wrNow(), qty = wrStDateQty(r, dates), refund = fundRound(cap - amount);
+    const round = { result: 'pass', auditor: ME, time: now, refund: refund };
+    const st = rowStOf(r);
+    if (st && st.status === '待审核') {
+        st.dates = dates.slice();
+        st.start = dates[0];
+        st.days = dates.length;
+        st.planQty = qty;
+        st.actualQty = qty;
+        st.amount = fundRound(amount);
+        st.frozenAmt = cap;
+        st.releasedAmt = 0;
+        st.status = '待打款';
+        st.auditedAt = now;
+        st.auditedBy = ME;
+        st.settleNote = note;
+        st.auditRounds.push(round);
+    } else {
+        ST_ALL.push({
+            id: 'ST' + (20261117001 + ST_ALL.length),
+            wrId: r.id, name: r.name, gender: r.gender, phone: r.phone,
+            client: r.client, job: r.job, dates: dates.slice(), start: dates[0], days: dates.length,
+            hours: r.hours, shift: r.shift, price: r.price, priceType: r.priceType, ins: r.ins,
+            payNote: r.payNote, planQty: qty, actualQty: qty, skipDay: 0, skipNote: '', gapped: false,
+            amount: fundRound(amount), frozenAmt: cap, releasedAmt: 0,
+            submitAt: now, status: '待打款', auditedAt: now, auditedBy: ME,
+            paidAt: '', paidBy: '', payNote: '', settleNote: note,
+            auditRounds: [round], photoDays: 0, early: true, endedByMerchant: !!r.endedByMerchant,
+        });
+    }
+    toast('已结算 ' + dates.length + ' 天（' + fjMoney(amount) + '），进入待结算打款');
     renderWrList();
     if (curView === 'view-wr-detail') renderWrDetail();
 }
 
-/* ---------- 结算审核（通过即完成） ---------- */
-function stAuditSheet(rows, initMode) {
-    const list = rows.map(r => stByWr(r.id)).filter(Boolean);
-    if (!list.length) { toast('未找到对应的结算单'); return; }
-    wrAuditRows = rows;             // 存行，便于回写
-    stAuditRows = list;
-    stAuditMode = initMode === 'reject' ? 'reject' : 'pass';
-    const s0 = list[0];
-    const total = list.reduce((a, b) => a + b.amount, 0);
-    const el = document.getElementById('stAudit');
-    el.innerHTML = `<div class="sb-hd"><b>审核结算</b><span class="x" data-close>✕</span></div>
-        <div class="sb-bd">
-            <div class="sum-card">员工：<b>${esc(s0.name)}</b> · ${esc(s0.job)}<br>
-                共 ${list.length} 笔 · 应发合计 <b style="color:var(--red)" id="stAuditSum">${fjMoney(total)}</b></div>
-            <div class="audit2">
-                <div class="au on pass" data-m="pass"><b>审核通过</b></div>
-                <div class="au" data-m="reject"><b>审核驳回</b></div>
-            </div>
-            <div id="stPassWrap">
-                ${list.map(s => `<div class="frow"><label>${list.length > 1 ? esc(s.name) + ' · ' : ''}结算金额（元）</label>
-                    <input type="number" class="fin" data-amt="${s.id}" value="${s.amount}" step="0.01" min="0" inputmode="decimal"></div>`).join('')}
-                <div class="frow"><label>结算说明<span class="cnt" id="stNoteCnt">0/100</span></label>
-                    <textarea class="fta" id="stSettleNote" maxlength="100" placeholder="选填，如按实做工时核减、补贴等"></textarea></div>
-                <div class="hint">通过后该笔即为「结算完成」，不再有发薪环节。</div>
-            </div>
-            <div id="stRejectWrap" style="display:none">
-                <div class="frow"><label><span class="req">*</span>驳回理由<span class="cnt" id="stRgCnt">0/100</span></label>
-                    <textarea class="fta" id="stRejectReason" maxlength="100" placeholder="请填写驳回理由，会显示在员工端结算记录中"></textarea></div>
-            </div>
-        </div>
-        <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary" id="stAuditOk">确认通过</span></div>`;
-    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
-    const wrap = el.querySelector('#stRejectWrap');
-    const passWrap = el.querySelector('#stPassWrap');
-    const okBtn = el.querySelector('#stAuditOk');
-    const applyMode = () => {
-        const rej = stAuditMode === 'reject';
-        el.querySelectorAll('.au').forEach(x => x.classList.toggle('on', x.dataset.m === stAuditMode));
-        wrap.style.display = rej ? '' : 'none';
-        passWrap.style.display = rej ? 'none' : '';
-        okBtn.textContent = rej ? '确认驳回' : '确认通过';
-    };
-    el.querySelectorAll('.au').forEach(card => card.onclick = () => { stAuditMode = card.dataset.m; applyMode(); });
-    applyMode();
-    const ta = el.querySelector('#stRejectReason');
-    ta.oninput = () => { el.querySelector('#stRgCnt').textContent = ta.value.length + '/100'; };
-    const noteTa = el.querySelector('#stSettleNote');
-    noteTa.oninput = () => { el.querySelector('#stNoteCnt').textContent = noteTa.value.length + '/100'; };
-    const amtInputs = Array.from(el.querySelectorAll('[data-amt]'));
-    const sumEl = el.querySelector('#stAuditSum');
-    const refreshSum = () => {
-        const sum = amtInputs.reduce((a, inp) => { const v = Number(inp.value); return a + (isFinite(v) ? v : 0); }, 0);
-        sumEl.textContent = fjMoney(Math.round(sum * 100) / 100);
-    };
-    amtInputs.forEach(inp => inp.oninput = refreshSum);
-    okBtn.onclick = () => {
-        const reason = ta.value.trim();
-        if (stAuditMode === 'reject' && !reason) { toast('请填写驳回理由'); return; }
-        let amounts = null;
-        if (stAuditMode === 'pass') {
-            amounts = {};
-            let bad = false;
-            amtInputs.forEach(inp => {
-                const v = Number(inp.value);
-                if (!isFinite(v) || v < 0) { bad = true; return; }
-                amounts[inp.dataset.amt] = Math.round(v * 100) / 100;
-            });
-            if (bad) { toast('请输入正确的结算金额'); return; }
+/* ---------- 延长工期弹层 ---------- */
+function wrOpenExtend(r) {
+    if (!wrCanExtend(r)) { toast('该记录当前不可延长做工'); return; }
+    let picked = [];
+    let showCal = false;
+    const el = document.getElementById('wrSheet');
+    const base = r.frozenAmt != null ? Number(r.frozenAmt) : wrFreezeAmount(r);
+    const busy = (r.dates || []).slice();
+    const today = wrAddDays(wrNow().slice(0, 10), 0);
+    const d0 = new Date(today + 'T00:00:00');
+    let calY = d0.getFullYear(), calM = d0.getMonth();
+
+    const calHtml = () => {
+        const first = new Date(calY, calM, 1).getDay();
+        const total = new Date(calY, calM + 1, 0).getDate();
+        const cells = [];
+        for (let i = 0; i < first; i++) cells.push('<span class="cal-day blank"></span>');
+        for (let d = 1; d <= total; d++) {
+            const ds = calY + '-' + wrP2(calM + 1) + '-' + wrP2(d);
+            const dis = ds < today || busy.indexOf(ds) > -1;
+            const on = picked.indexOf(ds) > -1;
+            cells.push(`<span class="cal-day${dis ? ' dis' : ''}${on ? ' on' : ''}" data-d="${ds}">${d}</span>`);
         }
-        hideSheet();
-        stApplyAudit(stAuditRows, stAuditMode, reason, amounts, noteTa.value.trim());
+        return `<div class="sb-hd"><b>选择延长日期</b><span class="x" data-close>✕</span></div>
+            <div class="sb-bd">
+                <div class="cal-head"><span class="cal-nav" data-cal="-1">‹</span><b>${calY} 年 ${calM + 1} 月</b><span class="cal-nav" data-cal="1">›</span></div>
+                <div class="cal-week">${['日', '一', '二', '三', '四', '五', '六'].map(x => `<span>${x}</span>`).join('')}</div>
+                <div class="cal-grid">${cells.join('')}</div>
+                <div class="hint">灰显为今天之前或已接单日期；点选日期可多选，再次点击取消。</div>
+            </div>
+            <div class="sb-ft"><span class="btn primary" id="calBack">完成（${picked.length}）</span></div>`;
     };
+
+    const formHtml = () => {
+        const add = wrStDateAmount(r, picked);
+        const total = fundRound(base + add);
+        const short = Math.max(0, fundRound(add - fjBal));
+        return `<div class="sb-hd"><b>延长做工</b><span class="x" data-close>✕</span></div>
+            <div class="sb-bd">
+                <div class="sum-card">员工：<b>${wrTxt(r.name)}</b> · ${wrTxt(r.job)}<br>当前工期 ${r.days} 天 · 每天 ${r.hours} 小时<br>当前冻结 ${fjMoney(base)}</div>
+                <div class="frow"><label>选择延长日期<span class="cnt">已接单日期不可选</span></label>
+                    <span class="fin datefield ${picked.length ? '' : 'ph'}" id="wePick">${picked.length ? '已选 ' + picked.length + ' 天，点击继续选择' : '选择日期'}</span>
+                    <div class="hint">已接单日期：${busy.join('、')}</div>
+                </div>
+                <div class="wr-date-chips" id="weChips" style="margin-bottom:10px">${picked.length
+                    ? picked.map(d => `<span class="wr-date-chip on" data-del="${d}">${d.slice(5)} ✕</span>`).join('')
+                    : '<span class="mut">尚未选择日期</span>'}</div>
+                <div class="money-box">
+                    <div class="mb-row"><span>追加冻结</span><b id="weAddAmt">${fjMoney(add)}</b></div>
+                    <div class="mb-row"><span>延长后冻结总额</span><b id="weTotal">${fjMoney(total)}</b></div>
+                    <div class="mb-row"><span>当前可用余额</span><b id="weBal">${fjMoney(fjBal)}</b></div>
+                    <div class="mb-tip" id="weTip">${short > 0
+                        ? '余额不足，还差 ' + fjMoney(short) + '，请先演示充值后再延长。'
+                        : '追加冻结 = 所选日期 × 单价口径，通过后从可用余额转入冻结。'}</div>
+                </div>
+            </div>
+            <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary ${short > 0 || !picked.length ? 'dis' : ''}" id="weOk">确认延长</span></div>`;
+    };
+
+    const render = () => {
+        el.innerHTML = showCal ? calHtml() : formHtml();
+        el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+        if (showCal) {
+            el.querySelectorAll('[data-cal]').forEach(n => n.onclick = () => {
+                const dir = +n.dataset.cal;
+                if (dir < 0 && calY === d0.getFullYear() && calM === d0.getMonth()) return;
+                const m = calM + dir;
+                if (m < 0) { calY--; calM = 11; }
+                else if (m > 11) { calY++; calM = 0; }
+                else calM = m;
+                render();
+            });
+            el.querySelectorAll('.cal-day[data-d]').forEach(c => c.onclick = () => {
+                const ds = c.dataset.d;
+                if (c.classList.contains('dis')) return;
+                const i = picked.indexOf(ds);
+                if (i > -1) picked.splice(i, 1); else picked.push(ds);
+                picked.sort();
+                render();
+            });
+            el.querySelector('#calBack').onclick = () => { showCal = false; render(); };
+            return;
+        }
+        el.querySelector('#wePick').onclick = () => { showCal = true; render(); };
+        el.querySelectorAll('[data-del]').forEach(c => c.onclick = () => {
+            picked = picked.filter(x => x !== c.dataset.del);
+            render();
+        });
+        el.querySelector('#weOk').onclick = () => {
+            if (!picked.length) { toast('请选择要延长的日期'); return; }
+            const add = wrStDateAmount(r, picked);
+            if (add > fjBal) { toast('可用余额不足：需追加冻结 ' + fjMoney(add) + '，当前可用 ' + fjMoney(fjBal)); return; }
+            hideSheet();
+            wrSubmitExtend(r, picked, add, base);
+        };
+    };
+    render();
     showSheet(el);
 }
-function stApplyAudit(list, mode, reason, amounts, note) {
-    const t = nowStamp() + ':00';
-    const amts = amounts || {};
-    list.forEach(s => {
-        s.status = mode === 'pass' ? '已结算' : '已驳回';
-        s.settler = ME; s.settleAt = t;
-        s.rejectReason = mode === 'reject' ? (reason || '') : '';
-        s.settleNote = mode === 'pass' ? (note || '') : '';
-        if (mode === 'pass' && amts[s.id] != null) s.amount = amts[s.id];
-        s.auditRounds.push(mode === 'pass'
-            ? { result: 'pass', auditor: ME, settler: ME, time: t, amount: s.amount, note: note || '' }
-            : { result: 'reject', auditor: ME, settler: ME, time: t, reason: reason || '' });
+function wrSubmitExtend(r, picked, add, base) {
+    const now = wrNow();
+    r.dates = busyConcat(r.dates, picked).sort();
+    r.days = r.dates.length;
+    r.end = r.dates[r.dates.length - 1];
+    r.frozenAmt = fundRound(base + add);
+    fjBal = fundRound(fjBal - add);
+    fjFrozen = fundRound(fjFrozen + add);
+    fundPush({ type: 'freeze', wrId: r.id, name: r.name, job: r.job, amount: add, at: now, note: '延长做工追加冻结' });
+    r.actualQty = null;
+    r.actualQty = wrActualQty(r);
+    r.actualAmount = Math.round(Number(r.price) * r.actualQty * 100) / 100;
+    r.extendLogs.push({ time: now, days: picked.length, amount: add, dates: picked.slice(), by: ME });
+    toast('已延长 ' + picked.length + ' 天工期，追加冻结 ' + fjMoney(add));
+    renderWrList();
+    if (curView === 'view-wr-detail') renderWrDetail();
+}
+function busyConcat(a, b) {
+    const out = (a || []).slice();
+    (b || []).forEach(d => { if (out.indexOf(d) < 0) out.push(d); });
+    return out;
+}
+
+/* ---------- 结算打款 ---------- */
+let wrPayTimer = null;
+function wrStopPayTimer() {
+    if (wrPayTimer) { clearInterval(wrPayTimer); wrPayTimer = null; }
+}
+function wrOpenPay(rows) {
+    wrStopPayTimer();
+    rows = (rows || []).filter(Boolean);
+    const list = rows.map(r => ({ r, st: rowStOf(r) })).filter(x => x.st && x.st.status === '待打款');
+    if (!list.length) { toast('请选择「待打款」的结算单'); return; }
+    const total = fundRound(list.reduce((s, x) => s + fundRound(x.st.amount), 0));
+    const single = list.length === 1;
+    let mode = 'pass', account = '', code = '', note = '', reason = '', left = 0;
+    const el = document.getElementById('wrSheet');
+    const render = () => {
+        el.innerHTML = `<div class="sb-hd"><b>${single ? '结算打款' : '批量打款'}</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">
+            <div class="sum-card">${single
+                ? `员工：<b>${wrTxt(list[0].r.name)}</b> · ${wrTxt(list[0].r.job)}`
+                : `共 <b>${list.length}</b> 笔 · 合计 <b style="color:var(--red)">${fjMoney(total)}</b>`}</div>
+            <div class="audit2"><div class="au on pass" data-m="pass"><b>通过</b></div><div class="au" data-m="reject"><b>驳回</b></div></div>
+            <div id="wpPass">
+                <div class="jc-pay" style="margin-bottom:12px">${fjMoney(single ? list[0].st.amount : total)} <small>打款金额</small></div>
+                <div class="frow"><label>打款账户</label><select class="fsel" id="wpAccount"><option value="">请选择打款账户</option>${
+                    WR_PAY_ACCOUNTS.map(a => `<option ${account === a ? 'selected' : ''}>${wrTxt(a)}</option>`).join('')}</select></div>
+                <div class="frow"><label>短信验证码</label><div class="wr-sms">
+                    <input class="fin" id="wpCode" maxlength="6" inputmode="numeric" placeholder="请输入 6 位验证码" value="${wrTxt(code)}">
+                    <span class="mini-btn" id="wpSend">${left > 0 ? left + 's 后重发' : '获取验证码'}</span></div>
+                    <div class="hint">验证码发送至绑定手机 138****8000（演示固定验证码 123456）</div></div>
+                <div class="frow"><label>打款说明<span class="cnt">选填</span></label><textarea class="fta" id="wpNote" maxlength="100" placeholder="选填，打款备注">${wrTxt(note)}</textarea></div>
+            </div>
+            <div id="wpReject" style="display:none"><div class="frow"><label><span class="req">*</span>驳回理由</label>
+                <textarea class="fta" id="wpReason" maxlength="100" placeholder="请填写驳回理由，结算单将回到待审核">${wrTxt(reason)}</textarea></div>
+                <div class="hint">驳回后${single ? '该结算单' : '本批 ' + list.length + ' 条结算单'}回到「待审核」，可重新结算。</div></div>
+        </div>
+        <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary" id="wpOk">${mode === 'pass' ? '确认打款' : '确认驳回'}</span></div>`;
+        el.querySelectorAll('[data-close]').forEach(b => b.onclick = () => { wrStopPayTimer(); hideSheet(); });
+        el.querySelectorAll('.au').forEach(c => c.onclick = () => {
+            mode = c.dataset.m;
+            el.querySelector('#wpPass').style.display = mode === 'pass' ? '' : 'none';
+            el.querySelector('#wpReject').style.display = mode === 'reject' ? '' : 'none';
+            el.querySelector('#wpOk').textContent = mode === 'pass' ? '确认打款' : '确认驳回';
+            el.querySelectorAll('.au').forEach(x => x.classList.toggle('on', x.dataset.m === mode));
+        });
+        const acc = el.querySelector('#wpAccount');
+        if (acc) acc.onchange = () => { account = acc.value; };
+        const codeEl = el.querySelector('#wpCode');
+        if (codeEl) codeEl.oninput = () => { code = codeEl.value.trim(); };
+        const noteEl = el.querySelector('#wpNote');
+        if (noteEl) noteEl.oninput = () => { note = noteEl.value; };
+        const send = el.querySelector('#wpSend');
+        if (send) send.onclick = () => {
+            if (!account) { toast('请先选择打款账户'); return; }
+            wrStopPayTimer();
+            left = 60;
+            send.textContent = left + 's 后重发';
+            send.classList.add('dis');
+            toast('验证码已发送至绑定手机 138****8000（演示验证码 123456）');
+            wrPayTimer = setInterval(() => {
+                left--;
+                if (!document.getElementById('wrSheet').classList.contains('show')) { wrStopPayTimer(); return; }
+                if (left <= 0) { wrStopPayTimer(); send.textContent = '获取验证码'; send.classList.remove('dis'); return; }
+                send.textContent = left + 's 后重发';
+            }, 1000);
+        };
+        const reasonEl = el.querySelector('#wpReason');
+        if (reasonEl) reasonEl.oninput = () => { reason = reasonEl.value; };
+        el.querySelector('#wpOk').onclick = () => {
+            if (mode === 'reject') {
+                if (!reason.trim()) { toast('请填写驳回理由'); return; }
+                hideSheet(); wrStopPayTimer();
+                wrRejectPay(list, reason.trim());
+                return;
+            }
+            if (!account) { toast('请选择打款账户'); return; }
+            if (code !== WR_PAY_DEMO_CODE) { toast('短信验证码不正确（演示验证码 123456）'); return; }
+            hideSheet(); wrStopPayTimer();
+            wrSubmitPay(list, account, note.trim());
+        };
+    };
+    render();
+    showSheet(el);
+}
+function wrSubmitPay(list, account, note) {
+    const now = wrNow();
+    let paid = 0, backSum = 0, cnt = 0;
+    list.forEach(x => {
+        const st = x.st, r = x.r;
+        if (!st || st.status !== '待打款') return;
+        const frozen = stFrozenOf(st), released = stReleasedOf(st), amount = fundRound(st.amount);
+        const back = Math.max(0, fundRound(frozen - released - amount));
+        st.status = '已结算';
+        st.paidAt = now;
+        st.paidBy = ME;
+        st.payNote = note || (list.length > 1 ? '批量打款' : '');
+        st.releasedAmt = fundRound(released + back);
+        fjFrozen = Math.max(0, fundRound(fjFrozen - amount - back));
+        fjBal = fundRound(fjBal + back);
+        r.frozenAmt = Math.max(0, fundRound((r.frozenAmt != null ? Number(r.frozenAmt) : wrFreezeAmount(r)) - frozen));
+        st.auditRounds.push({ result: 'pay', auditor: ME, time: now });
+        fundPush({ type: 'release', dir: 'settle', wrId: r.id, name: r.name, job: r.job, amount: amount, at: now, note: '结算打款（' + account + '）' });
+        if (back > 0) fundPush({ type: 'release', dir: 'back', wrId: r.id, name: r.name, job: r.job, amount: back, at: now, note: '结算金额低于冻结额，差额解冻' });
+        paid = fundRound(paid + amount);
+        backSum = fundRound(backSum + back);
+        cnt++;
     });
-    toast(mode === 'pass'
-        ? ('已结算 ' + list.length + ' 笔，结算完成')
-        : ('已驳回 ' + list.length + ' 笔结算单，理由已同步员工端'));
-    if (wrBatch) wrSetBatch(false);
+    wrSel.clear(); wrBatch = false;
+    toast('已打款 ' + cnt + ' 条，打款金额 ' + fjMoney(paid) + (backSum > 0 ? '，退回 ' + fjMoney(backSum) : ''));
+    renderWrList();
+    if (curView === 'view-wr-detail') renderWrDetail();
+}
+function wrRejectPay(list, reason) {
+    const now = wrNow();
+    let cnt = 0;
+    list.forEach(x => {
+        const st = x.st;
+        if (!st || st.status !== '待打款') return;
+        st.status = '待审核';
+        st.payRejectReason = reason;
+        st.auditRounds.push({ result: 'pay_reject', auditor: ME, time: now, reason: reason });
+        cnt++;
+    });
+    wrSel.clear(); wrBatch = false;
+    toast('已驳回 ' + cnt + ' 条结算单，回到待审核，可重新结算');
     renderWrList();
     if (curView === 'view-wr-detail') renderWrDetail();
 }
 
 /* ---------- 结束用工 ---------- */
-function wrEndSheet(r) {
-    const frozen = wrFrozenOf(r);
-    const plan = wrQty(r);
-    const unit = wrUnit(r.priceType);
-    const el = document.getElementById('wrEnd');
+function wrOpenEnd(r) {
+    if (!wrCanEnd(r)) { toast('该记录当前不可结束用工'); return; }
+    const frozen = wrFreezeAmount(r);
+    const el = document.getElementById('wrSheet');
     el.innerHTML = `<div class="sb-hd"><b>结束用工并结算</b><span class="x" data-close>✕</span></div>
         <div class="sb-bd">
-            <div class="sum-card">员工：<b>${esc(r.name)}</b> · ${esc(r.job)}<br>
-                用工日期：${esc(wrDateText(r))} · 共 ${r.days} 天<br>
-                应做工时：<b>${plan} ${unit}</b> · 员工单价：${r.price} 元/${unit}</div>
-            <div class="frow"><label>当前冻结金额</label>
-                <div class="f2"><input class="fin" value="${frozen}" disabled><span class="u">元</span></div></div>
-            <div class="frow" data-req="endAmt"><label><span class="req">*</span>结算金额</label>
-                <div class="end-amt"><input class="fin" id="wrEndAmt" inputmode="decimal" value="${frozen}"><span class="u">元</span></div>
-                <div class="hint" id="wrEndHint">≈ 实做 ${plan} ${unit}</div></div>
-            <div class="frow"><label>结束原因<span class="cnt">选填</span></label>
-                <textarea class="fta" id="wrEndNote" maxlength="100" placeholder="如提前完工、岗位调整、员工离岗"></textarea></div>
-            <div class="hint">结束后不可恢复；结算金额不超过冻结金额，确认后生成结算单并进入「结算待审」。</div>
+            <div class="sum-card">员工：<b>${wrTxt(r.name)}</b> · ${wrTxt(r.job)}<br>用工日期：${wrTxt(wrDateText(r))} · 共 ${r.days} 天<br>应做工时：<b>${wrQtyText(r)}</b> · 单价 ${r.price} 元/${wrQtyUnit(r)}</div>
+            <div class="frow"><label>当前冻结金额</label><input class="fin" value="${frozen}" disabled></div>
+            <div class="frow"><label><span class="req">*</span>结算金额</label><input class="fin" id="wendAmt" inputmode="decimal" value="${frozen}">
+                <div class="hint" id="wendHint">≈ 实做 ${wrQtyText(r)}</div></div>
+            <div class="frow"><label>结束原因<span class="cnt">选填</span></label><textarea class="fta" id="wendNote" maxlength="100" placeholder="如提前完工、岗位调整、员工离岗"></textarea></div>
+            <div class="hint">结束后不可恢复；结算金额不超过冻结金额，确认后生成结算单进入结算。</div>
         </div>
-        <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary" id="wrEndOk">确认结束</span></div>`;
+        <div class="sb-ft"><span class="btn ghost" data-close>取消</span><span class="btn primary" id="wendOk">确认结束并结算</span></div>`;
     el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
-    const amtEl = el.querySelector('#wrEndAmt');
-    const hint = el.querySelector('#wrEndHint');
+    const amt = el.querySelector('#wendAmt'), hint = el.querySelector('#wendHint');
     const refresh = () => {
-        const v = Number(amtEl.value);
-        const q = isFinite(v) && r.price > 0 ? Math.round(v / r.price * 10) / 10 : 0;
-        hint.innerHTML = `≈ 实做 ${q} ${unit}` + (isFinite(v) && v > frozen ? ' · <span style="color:var(--red)">不能超过冻结金额</span>' : '');
+        const v = Number(amt.value), q = isFinite(v) && r.price > 0 ? Math.round(v / r.price * 100) / 100 : 0;
+        hint.innerHTML = '≈ 实做 ' + q + ' ' + wrQtyUnit(r) + (isFinite(v) && v > frozen ? ' · <span style="color:var(--red)">不能超过冻结金额</span>' : '');
     };
-    amtEl.oninput = refresh;
-    el.querySelector('#wrEndOk').onclick = () => {
-        const amt = Math.round(Number(amtEl.value) * 100) / 100;
-        if (!(amt > 0)) { toast('请输入大于 0 的结算金额'); return; }
-        if (amt > frozen) { toast('结算金额不能超过冻结金额 ' + fjMoney(frozen)); return; }
-        const note = el.querySelector('#wrEndNote').value.trim();
+    amt.oninput = refresh;
+    el.querySelector('#wendOk').onclick = () => {
+        const v = fundRound(Number(amt.value));
+        if (!(v > 0)) { toast('请输入大于 0 的结算金额'); return; }
+        if (v > frozen) { toast('结算金额不能超过冻结金额 ' + fjMoney(frozen)); return; }
         hideSheet();
-        const t = nowStamp() + ':00';
-        r.endedByMerchant = true;
-        r.endedAt = t;
-        r.endNote = note;
-        r.submittedAt = t;
-        r.actualAmount = amt;
-        r.actualQty = Math.round((amt / r.price) * 100) / 100;
-        const st = stSyncFromWr(r);
-        if (st) { st.amount = amt; st.endedByMerchant = true; st.submitAt = t; }
-        toast('已结束用工并生成结算单 ' + fjMoney(amt) + '，可在「结算待审」中审核');
-        renderWrList();
-        if (curView === 'view-wr-detail') renderWrDetail();
+        wrConfirmEnd(r, v, el.querySelector('#wendNote').value.trim());
     };
     showSheet(el);
 }
-
-/* ---------- 入口与事件 ---------- */
-function openWr(tab) {
-    wrTab = WR_PAGES[tab] ? tab : 'all';
-    Object.keys(wrFilter).forEach(k => { wrFilter[k] = ''; });
-    wrBatch = false; wrSel.clear();
-    const bar = document.getElementById('bar-wr-batch');
-    bar.dataset.view = '__off'; bar.classList.remove('show');
-    const cfg = WR_PAGES[wrTab];
-    const kw = document.getElementById(cfg.kw); if (kw) kw.value = '';
+function wrConfirmEnd(r, amount, note) {
+    const now = wrNow();
+    r.endedByMerchant = true;
+    r.endedAt = now;
+    r.endedBy = ME;
+    r.endNote = note;
+    r.submittedAt = now;
+    r.actualAmount = fundRound(amount);
+    r.actualQty = Number(r.price) > 0 ? Math.round(amount / r.price * 100) / 100 : wrQty(r);
+    const added = stSyncFromWr();
+    toast('已结束用工，生成结算单 ' + fjMoney(r.actualAmount) + (added ? '' : '，可在列表中结算'));
     renderWrList();
-    pushView(cfg.view);
+    if (curView === 'view-wr-detail') renderWrDetail();
 }
 
-Object.keys(WR_PAGES).forEach(tab => {
-    const cfg = WR_PAGES[tab];
-    const kw = document.getElementById(cfg.kw);
-    if (kw) kw.oninput = e => { if (wrTab !== tab) return; wrFilter.kw = e.target.value.trim(); renderWrList(); };
-    const fb = cfg.fltBtn ? document.getElementById(cfg.fltBtn) : null;
-    if (fb) fb.onclick = () => renderWrFilter();
-    if (cfg.batchBtn) {
-        const bb = document.getElementById(cfg.batchBtn);
-        if (bb) bb.onclick = () => wrSetBatch(!wrBatch);
-    }
-});
-/* 用工记录 / 接单待审：用工单位与状态下拉 */
-function initWrSelects() {
-    const opt = (v, t) => `<option value="${esc(v)}">${esc(t)}</option>`;
-    const fill = (el, list) => { if (el) el.innerHTML = list.map(x => opt(x[0], x[1])).join(''); };
-    const clients = [['', '全部用工单位']].concat(WR_CLIENTS.map(c => [c, c]));
-    fill(document.getElementById('wrClientAll'), clients);
-    fill(document.getElementById('wrClientApply'), clients);
-    fill(document.getElementById('wrStatusAll'), [['', '全部状态']].concat(LF_STATUSES.map(s => [s, s])));
-    [['wrClientAll', 'all'], ['wrClientApply', 'apply']].forEach(([id]) => {
-        const el = document.getElementById(id);
-        if (el) el.onchange = () => { wrFilter.client = el.value; renderWrList(); };
-    });
-    const st = document.getElementById('wrStatusAll');
-    if (st) st.onchange = () => { wrFilter.status = st.value; renderWrList(); };
+/* ---------- 详情 / 记录 ---------- */
+function openWrDetail(id) {
+    wrDetailId = id;
+    wrDetailTab = 'photos';
+    renderWrDetail();
+    pushView('view-wr-detail');
 }
-initWrSelects();
-document.getElementById('wrBatchExit').onclick = () => wrSetBatch(false);
-document.getElementById('wrBatchRej').onclick = () => {
-    const rows = wrSelOk();
-    if (!rows.length) { toast(wrTab === 'settle' ? '请选择待审核的结算单' : '请选择待审核的接单'); return; }
-    if (wrTab === 'settle') stAuditSheet(rows, 'reject');
-    else wrAuditSheet(rows, 'reject');
-};
-document.getElementById('wrBatchRun').onclick = () => {
-    const rows = wrSelOk();
-    if (!rows.length) { toast(wrTab === 'settle' ? '请选择待审核的结算单' : '请选择待审核的接单'); return; }
-    if (wrTab === 'settle') { stAuditSheet(rows); return; }
-    const need = wrNeedFreeze(rows);
-    if (Math.round((need - fjBal) * 100) / 100 > 0) {
-        toast('可用余额不足：需冻结 ' + fjMoney(need) + '，当前可用 ' + fjMoney(fjBal));
-        wrAuditSheet(rows);
-        return;
+function wrFlowHtml(r) {
+    const nodes = wrDetailFlow(r);
+    return `<div class="flow6">${nodes.map((n, i) => `<div class="fs ${n.state === 'done' ? 'done' : ''}">
+        <div class="dot">${n.state === 'done' ? '✓' : (i + 1)}</div>
+        <div class="lb">${wrTxt(n.title)}</div>
+    </div>`).join('')}</div>`;
+}
+function wrStListHtml(r) {
+    const list = wrStSettlementsOf(r);
+    if (!list.length) return '<div class="mut">暂无结算记录</div>';
+    const total = fundRound(list.filter(s => s.status === '已结算').reduce((s, x) => s + Number(x.amount || 0), 0));
+    return `<div class="wr-st-head">共 ${list.length} 笔${total > 0 ? ' · 累计已打款 ' + fjMoney(total) : ''}</div>
+        ${list.map(s => {
+            const ds = stDisplayStatus(s);
+            return `<div class="wr-st-card">
+                <div class="h"><b>${fjMoney(s.amount)}</b><span class="atag ${ds.cls}">${ds.label}</span></div>
+                <div class="ln"><span>结算人：${wrTxt(s.auditedBy || '—')}</span><span>结算时间：${wrFullTime(s.auditedAt)}</span></div>
+                <div class="ln"><span>打款人：${wrTxt(s.paidBy || '—')}</span><span>打款时间：${wrFullTime(s.paidAt)}</span></div>
+                ${s.settleNote ? `<div class="ln"><span>结算说明：${wrTxt(s.settleNote)}</span></div>` : ''}
+                ${stRejectReason(s) ? `<div class="ln"><span style="color:var(--red)">驳回理由：${wrTxt(stRejectReason(s))}</span></div>` : ''}
+            </div>`;
+        }).join('')}`;
+}
+function stPhotoSvg(d, k) {
+    const day = String(d || '').slice(5);
+    return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <rect width="120" height="120" fill="#E8EFF9"/>
+        <circle cx="96" cy="20" r="8" fill="#FFD666"/>
+        <path d="M0 86 26 62l18 14 24-26 30 30 22-16v56H0z" fill="#B7CBE9"/>
+        <path d="M0 100 30 82l22 10 26-16 42 20v24H0z" fill="#7B9DD3"/>
+        <text x="60" y="112" font-size="10" fill="#fff" text-anchor="middle" font-family="Arial">${esc(day)} · 图${k}</text>
+    </svg>`;
+}
+function stPhotoBlock(s) {
+    if (!s || !s.photoDays) return '<div class="mut">员工暂未上传工作图片</div>';
+    let html = '';
+    const n = Math.max(0, Number(s.photoDays || 0));
+    const base = String(s.submitAt || '').slice(0, 10);
+    for (let i = 0; i < n; i++) {
+        const d = (s.dates && s.dates[i]) || (base ? wrAddDays(base, i) : '');
+        const imgs = 2 + (i % 2);
+        html += `<div class="ph-day">${esc(String(d || '').slice(5))} · 第 ${i + 1} 天 · 已上传 ${imgs} 张</div>
+            <div class="ph-grid">${Array.from({ length: imgs }, (_, k) => `<div class="ph-item">${stPhotoSvg(d, k + 1)}</div>`).join('')}</div>`;
     }
-    confirmBox('批量通过', `确认通过选中的 ${rows.length} 条接单吗？将冻结 ${fjMoney(need)}。`, '通过', () => {
-        wrApplyAudit(rows, 'pass', '');
-    });
-};
-document.getElementById('wrdLog').onclick = () => wrLogSheet(findWr(wrDetailId));
-document.getElementById('wrdEnd').onclick = () => {
+    return html;
+}
+function wrExtendHtml(r) {
+    const logs = (r && r.extendLogs) || [];
+    if (!logs.length) return '<div class="mut">暂无延期记录</div>';
+    return logs.slice().reverse().map(e => `<div class="wr-st-card">
+        <div class="h"><b>+${Number(e.days) || 0} 天</b><span class="atag a-normal">已延长</span></div>
+        <div class="ln"><span>操作人：${wrTxt(e.by || '—')}</span></div>
+        <div class="ln"><span>操作时间：${wrFullTime(e.time)}</span></div>
+        <div class="ln"><span>追加冻结：${fjMoney(e.amount)}</span></div>
+        <div class="ln"><span>延期日期：${wrTxt((e.dates || []).join('、'))}</span></div>
+    </div>`).join('');
+}
+function renderWrDetail() {
     const r = findWr(wrDetailId);
-    if (r && wrStatus(r) === '做工中') wrEndSheet(r);
-};
+    if (!r) return;
+    const st = rowStOf(r);
+    const shiftTags = String(r.shift || '').split(',').map(s => s.trim()).filter(Boolean);
+    const tabs = [
+        { k: 'photos', t: '完工图片' },
+        { k: 'stlog', t: '结算记录' },
+        { k: 'extend', t: '延期记录' },
+    ];
+    const curTab = tabs.some(t => t.k === wrDetailTab) ? wrDetailTab : 'photos';
+    let tabBody = '';
+    if (curTab === 'photos') tabBody = st ? stPhotoBlock(st) : '<div class="mut">暂无完工图片</div>';
+    if (curTab === 'stlog') tabBody = wrStListHtml(r);
+    if (curTab === 'extend') tabBody = wrExtendHtml(r);
+    document.getElementById('wrdBody').innerHTML = `
+        <div class="dsec">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span style="font-size:19px;font-weight:800">${wrTxt(r.name)}</span>${wrTagsHtml(r)}
+            </div>
+            <div class="mut" style="margin-top:4px">${wrTxt(r.gender)} · ${wrTxt(r.phone)}</div>
+        </div>
+        <div class="dsec"><h4>用工流程</h4>${wrFlowHtml(r)}</div>
+        <div class="dsec"><h4>接单信息</h4>
+            ${kv('接单时间', wrFullTime(r.applyAt))}
+            ${kv('接单审核', wrTxt(r.status))}
+            ${r.endedByMerchant ? kv('结束方式', '商户主动结束用工（' + wrFullTime(r.endedAt) + '）') : ''}
+            ${r.endNote ? kv('结束原因', wrTxt(r.endNote)) : ''}
+            ${r.auditor ? kv('审核人', wrTxt(r.auditor)) : ''}
+            ${r.auditAt ? kv('审核时间', wrFullTime(r.auditAt)) : ''}
+            ${r.rejectReason ? kv('驳回理由', `<span style="color:var(--red)">${wrTxt(r.rejectReason)}</span>`) : ''}
+            ${r.cancelAt ? kv('取消时间', wrFullTime(r.cancelAt)) : ''}
+        </div>
+        <div class="dsec"><h4>用工信息</h4>
+            ${kv('用工单位', wrTxt(r.client))}
+            ${kv('岗位名称', wrTxt(r.job))}
+            ${kv('用工日期', (r.dates || []).map(d => `<span class="chip">${wrTxt(d)}</span>`).join(' ') + `（${r.days} 天${r.gapped ? '，其中含间隔' : ''}）`)}
+            ${kv('工作时间', shiftTags.map(s => `<span class="chip">${wrTxt(s)}</span>`).join(' ') || '—')}
+            ${kv('每天工时', r.hours + ' 小时')}
+            ${kv('用工单价', `<b style="color:var(--red)">${r.price} 元/${wrQtyUnit(r)}</b>`)}
+            ${kv('商业险', `${r.ins} 元/天 × ${r.days} 天 = ${fjMoney(r.ins * r.days)}`)}
+        </div>
+        <div class="dsec">
+            <div class="dtab">${tabs.map(t => `<div class="t ${t.k === curTab ? 'on' : ''}" data-wdt="${t.k}">${t.t}</div>`).join('')}</div>
+            <div class="dtab-body">${tabBody}</div>
+        </div>`;
+    document.querySelectorAll('#wrdBody [data-wdt]').forEach(t => t.onclick = () => {
+        wrDetailTab = t.dataset.wdt;
+        renderWrDetail();
+    });
+}
+function findWr(id) { return WR_ALL.find(r => r.id === id); }
 
-/* ---------- 三个新模块：入口、绑定与初始化 ---------- */
-function openClients() { renderClients(); pushView('view-customers'); }
-function openPay() { renderPay(); pushView('view-pay'); }
-function openTags() { renderTags(); pushView('view-tags'); }
+function wrOpenLog(r) {
+    if (!r) return;
+    const el = document.getElementById('wrSheet');
+    const steps = wrApplySteps(r);
+    el.innerHTML = `<div class="sb-hd"><b>审核记录 · ${wrTxt(r.name)}</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">
+            <div class="sum-card">${wrTxt(r.job)} · ${wrTxt(wrDateText(r))}<br>接单时间 ${wrFullTime(r.applyAt)}</div>
+            <div class="tl">${steps.map(n => `<div class="tl-i ${n.cls === 'fail' ? 'warn' : n.cls === 'ok' ? 'ok' : ''}">
+                <div class="tt">${wrTxt(n.title)}</div>
+                ${n.time ? `<div class="tm">${wrFullTime(n.time)}</div>` : ''}
+                <div class="td">${wrTxt(n.who || '')}${n.note ? ' · ' + wrTxt(n.note) : ''}</div>
+            </div>`).join('')}</div>
+        </div>
+        <div class="sb-ft"><span class="btn primary" data-close>关闭</span></div>`;
+    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+    showSheet(el);
+}
+function wrOpenStLog(r) {
+    if (!r) return;
+    const el = document.getElementById('wrSheet');
+    el.innerHTML = `<div class="sb-hd"><b>结算记录 · ${wrTxt(r.name)}</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd">${wrStListHtml(r)}</div>
+        <div class="sb-ft"><span class="btn primary" data-close>关闭</span></div>`;
+    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+    showSheet(el);
+}
+function wrOpenMore(r) {
+    if (!r) return;
+    const el = document.getElementById('wrSheet');
+    const opts = [];
+    if (wrCanExtend(r)) opts.push(['extend', '延长工期']);
+    if (wrCanEnd(r)) opts.push(['end', '结束用工']);
+    opts.push(['log', '审核记录']);
+    if (wrStSettlementsOf(r).length) opts.push(['stlog', '结算记录']);
+    el.innerHTML = `<div class="sb-hd"><b>更多操作 · ${wrTxt(r.name)}</b><span class="x" data-close>✕</span></div>
+        <div class="sb-bd"><div class="wr-oplist">${opts.map(o => `<div class="wr-op" data-op="${o[0]}">${o[1]}<span>›</span></div>`).join('')}</div></div>
+        <div class="sb-ft"><span class="btn ghost" data-close>取消</span></div>`;
+    el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
+    el.querySelectorAll('[data-op]').forEach(x => x.onclick = () => {
+        const op = x.dataset.op;
+        hideSheet();
+        if (op === 'extend') wrOpenExtend(r);
+        if (op === 'end') wrOpenEnd(r);
+        if (op === 'log') wrOpenLog(r);
+        if (op === 'stlog') wrOpenStLog(r);
+    });
+    showSheet(el);
+}
+
+/* ---------- 入口 / 路由 / 初始化 ---------- */
+function openWr(tab) {
+    wrTab = WR_TABS[tab] ? tab : 'all';
+    wrPage = 1;
+    wrBatch = false;
+    wrSel.clear();
+    renderWrList();
+    pushView(WR_TABS[wrTab].view);
+}
+function wrBindPage(id, tab) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.oninput = e => { wrQuery.name = e.target.value.trim(); wrPage = 1; renderWrList(); };
+    const flt = document.getElementById(WR_TABS[tab].flt);
+    if (flt) flt.onclick = wrOpenFilter;
+    const exp = document.getElementById(WR_TABS[tab].exp);
+    if (exp) exp.onclick = () => toast('已导出 ' + wrListRows(tab).length + ' 条用工记录');
+    const bb = document.getElementById('wrBatchBtn' + (tab === 'apply' ? 'Apply' : tab === 'pay' ? 'Pay' : ''));
+    if (bb) bb.onclick = () => wrSetBatch(!wrBatch);
+}
+wrBindPage('wrKwAll', 'all');
+wrBindPage('wrKwApply', 'apply');
+wrBindPage('wrKwWorking', 'working');
+wrBindPage('wrKwPay', 'pay');
+document.getElementById('wrBatchExit').onclick = () => wrSetBatch(false);
+document.getElementById('wrBatchRun').onclick = () => {
+    const rows = wrSelectedRows();
+    if (!rows.length) { toast(wrTab === 'pay' ? '请选择待打款结算单' : '请选择待审核的接单'); return; }
+    if (wrTab === 'pay') {
+        const ok = rows.filter(r => rowStStatus(r) === '待打款');
+        if (!ok.length) { toast('请选择「待打款」的结算单'); return; }
+        wrOpenPay(ok);
+    } else {
+        const ok = rows.filter(r => r.status === '待审核');
+        if (!ok.length) { toast('请选择待审核的接单'); return; }
+        wrOpenAudit(ok);
+    }
+};
 const VIEW_OPEN = {
     'view-jobs': () => openJobs(),
     'view-audit': () => openAudit(),
@@ -5406,8 +6225,28 @@ const VIEW_OPEN = {
     'view-customers': openClients, 'view-pay': openPay, 'view-tags': openTags,
     'view-wr': () => openWr('all'),
     'view-wr-apply': () => openWr('apply'),
-    'view-wr-settle': () => openWr('settle'),
+    'view-wr-working': () => openWr('working'),
+    'view-wr-pay': () => openWr('pay'),
+    'view-wr-settle': () => openWr('working'),
 };
+
+// 调试接口：验收脚本读取状态与资金
+window.__wr = {
+    get rows() { return WR_ALL; },
+    get sts() { return ST_ALL; },
+    get bal() { return fjBal; },
+    get frozen() { return fjFrozen; },
+    get flows() { return FUND_FLOWS; },
+    counts: wrCounts,
+    workCode: wrWorkCode,
+    stByWr: stByWrMap,
+    open: openWr,
+};
+
+/* ---------- 其他模块入口（原有逻辑保持不变） ---------- */
+function openClients() { renderClients(); pushView('view-customers'); }
+function openPay() { renderPay(); pushView('view-pay'); }
+function openTags() { renderTags(); pushView('view-tags'); }
 
 document.getElementById('clNew').onclick = () => openClientForm(null);
 document.getElementById('clfSave').onclick = saveClient;
