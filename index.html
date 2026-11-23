@@ -643,6 +643,7 @@
     .fj-pay-alipay { flex-direction: column; align-items: center; text-align: center; background: #f7f9fc; }
     .fj-qr { width: 168px; height: 168px; padding: 8px; background: #fff; border: 1px solid var(--ad-border); border-radius: 8px; box-sizing: border-box; }
     .fj-qr svg { display: block; width: 100%; height: 100%; }
+    .fj-qr img { display: block; width: 100%; height: 100%; }
     .fj-qr-tip { margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
     .fj-qr-sub { margin-top: 4px; font-size: 12px; color: var(--ad-text-3); }
     .fj-qr-amount { margin-top: 8px; font-size: 15px; font-weight: 700; color: var(--ad-error); font-variant-numeric: tabular-nums; }
@@ -1595,11 +1596,9 @@
     .fs-time { margin-top: 1px; font-size: 11px; color: var(--ad-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .fs-step.done .fs-dot { background: #17a34a; color: #fff; }
     .fs-step.done .fs-t { color: var(--ad-text-2); }
-    .fs-step.doing .fs-dot { background: var(--ad-primary); color: #fff; box-shadow: 0 0 0 3px var(--ad-primary-bg); }
-    .fs-step.doing .fs-t { color: var(--ad-text-1); font-weight: 600; }
-    .fs-step.fail .fs-dot { background: var(--ad-error); color: #fff; }
-    .fs-step.fail .fs-t { color: var(--ad-error-text); font-weight: 600; }
-    .fs-step.stop .fs-dot { border: 1px dashed var(--ad-border); }
+    /* 进度演示只保留绿色（已完成）与灰色（未完成） */
+    .fs-step.doing .fs-dot, .fs-step.fail .fs-dot, .fs-step.stop .fs-dot { background: var(--ad-fill); color: var(--ad-text-3); box-shadow: none; border: 1px solid var(--ad-border-secondary); }
+    .fs-step.doing .fs-t, .fs-step.fail .fs-t, .fs-step.stop .fs-t { color: var(--ad-text-3); font-weight: 400; }
     .fs-now { margin-top: 12px; padding: 9px 12px; border-radius: 8px; background: var(--ad-fill); font-size: 12px; line-height: 1.7; color: var(--ad-text-2); }
     .fs-now b { margin-right: 8px; color: var(--ad-text-1); }
     .fs-now .t { margin-left: 8px; color: var(--ad-text-3); font-variant-numeric: tabular-nums; }
@@ -3079,25 +3078,10 @@
     </span>
   </el-dialog>
 
-  <!-- 账户充值 -->
-  <el-dialog title="账户充值" :visible.sync="fjRechargeDlg.visible" width="560px" :close-on-click-modal="false" append-to-body>
+  <!-- 账户充值（仅对公转账，无需输入金额） -->
+  <el-dialog title="账户充值" :visible.sync="fjRechargeDlg.visible" width="520px" :close-on-click-modal="false" append-to-body>
     <div class="fj-bal-row"><span>当前可用余额</span><b>{{ fjMoney(fjBalance) }}</b></div>
-    <div class="fj-pay-label">充值金额</div>
-    <div class="fj-recharge-bar">
-      <el-input v-model="fjRechargeDlg.amount" style="width:170px"><span slot="append">元</span></el-input>
-      <button type="button" class="fj-quick" v-for="q in fjRechargeQuick" :key="q" @click="fjRechargeDlg.amount = String(q)">{{ q }}</button>
-    </div>
-    <div class="fj-pay-label" style="margin-top:16px">支付方式</div>
-    <el-radio-group v-model="fjRechargeDlg.payType" size="small">
-      <el-radio-button label="支付宝">支付宝</el-radio-button>
-      <el-radio-button label="对公转账">对公转账</el-radio-button>
-    </el-radio-group>
-    <div class="fj-pay-panel fj-pay-alipay" v-if="fjRechargeDlg.payType === '支付宝'">
-      
-      <div class="fj-qr"><svg viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#1f2329"><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="12" y="2" width="1" height="1"/><rect x="13" y="2" width="1" height="1"/><rect x="18" y="2" width="1" height="1"/><rect x="20" y="2" width="1" height="1"/><rect x="21" y="2" width="1" height="1"/><rect x="22" y="2" width="1" height="1"/><rect x="23" y="2" width="1" height="1"/><rect x="24" y="2" width="1" height="1"/><rect x="25" y="2" width="1" height="1"/><rect x="26" y="2" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="13" y="3" width="1" height="1"/><rect x="20" y="3" width="1" height="1"/><rect x="26" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="14" y="4" width="1" height="1"/><rect x="15" y="4" width="1" height="1"/><rect x="20" y="4" width="1" height="1"/><rect x="22" y="4" width="1" height="1"/><rect x="23" y="4" width="1" height="1"/><rect x="24" y="4" width="1" height="1"/><rect x="26" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="14" y="5" width="1" height="1"/><rect x="18" y="5" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/><rect x="22" y="5" width="1" height="1"/><rect x="23" y="5" width="1" height="1"/><rect x="24" y="5" width="1" height="1"/><rect x="26" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="18" y="6" width="1" height="1"/><rect x="20" y="6" width="1" height="1"/><rect x="22" y="6" width="1" height="1"/><rect x="23" y="6" width="1" height="1"/><rect x="24" y="6" width="1" height="1"/><rect x="26" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="15" y="7" width="1" height="1"/><rect x="16" y="7" width="1" height="1"/><rect x="20" y="7" width="1" height="1"/><rect x="26" y="7" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/><rect x="20" y="8" width="1" height="1"/><rect x="21" y="8" width="1" height="1"/><rect x="22" y="8" width="1" height="1"/><rect x="23" y="8" width="1" height="1"/><rect x="24" y="8" width="1" height="1"/><rect x="25" y="8" width="1" height="1"/><rect x="26" y="8" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="15" y="10" width="1" height="1"/><rect x="17" y="10" width="1" height="1"/><rect x="18" y="10" width="1" height="1"/><rect x="19" y="10" width="1" height="1"/><rect x="20" y="10" width="1" height="1"/><rect x="24" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="18" y="11" width="1" height="1"/><rect x="23" y="11" width="1" height="1"/><rect x="26" y="11" width="1" height="1"/><rect x="2" y="12" width="1" height="1"/><rect x="5" y="12" width="1" height="1"/><rect x="10" y="12" width="1" height="1"/><rect x="18" y="12" width="1" height="1"/><rect x="19" y="12" width="1" height="1"/><rect x="20" y="12" width="1" height="1"/><rect x="21" y="12" width="1" height="1"/><rect x="22" y="12" width="1" height="1"/><rect x="23" y="12" width="1" height="1"/><rect x="24" y="12" width="1" height="1"/><rect x="2" y="13" width="1" height="1"/><rect x="4" y="13" width="1" height="1"/><rect x="5" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="10" y="13" width="1" height="1"/><rect x="24" y="13" width="1" height="1"/><rect x="25" y="13" width="1" height="1"/><rect x="2" y="14" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/><rect x="9" y="14" width="1" height="1"/><rect x="18" y="14" width="1" height="1"/><rect x="22" y="14" width="1" height="1"/><rect x="24" y="14" width="1" height="1"/><rect x="25" y="14" width="1" height="1"/><rect x="2" y="15" width="1" height="1"/><rect x="5" y="15" width="1" height="1"/><rect x="9" y="15" width="1" height="1"/><rect x="22" y="15" width="1" height="1"/><rect x="23" y="15" width="1" height="1"/><rect x="24" y="15" width="1" height="1"/><rect x="25" y="15" width="1" height="1"/><rect x="3" y="16" width="1" height="1"/><rect x="6" y="16" width="1" height="1"/><rect x="7" y="16" width="1" height="1"/><rect x="8" y="16" width="1" height="1"/><rect x="10" y="16" width="1" height="1"/><rect x="22" y="16" width="1" height="1"/><rect x="23" y="16" width="1" height="1"/><rect x="24" y="16" width="1" height="1"/><rect x="26" y="16" width="1" height="1"/><rect x="3" y="17" width="1" height="1"/><rect x="4" y="17" width="1" height="1"/><rect x="5" y="17" width="1" height="1"/><rect x="8" y="17" width="1" height="1"/><rect x="9" y="17" width="1" height="1"/><rect x="19" y="17" width="1" height="1"/><rect x="22" y="17" width="1" height="1"/><rect x="23" y="17" width="1" height="1"/><rect x="26" y="17" width="1" height="1"/><rect x="3" y="18" width="1" height="1"/><rect x="6" y="18" width="1" height="1"/><rect x="9" y="18" width="1" height="1"/><rect x="10" y="18" width="1" height="1"/><rect x="11" y="18" width="1" height="1"/><rect x="12" y="18" width="1" height="1"/><rect x="14" y="18" width="1" height="1"/><rect x="20" y="18" width="1" height="1"/><rect x="26" y="18" width="1" height="1"/><rect x="10" y="19" width="1" height="1"/><rect x="11" y="19" width="1" height="1"/><rect x="13" y="19" width="1" height="1"/><rect x="15" y="19" width="1" height="1"/><rect x="19" y="19" width="1" height="1"/><rect x="21" y="19" width="1" height="1"/><rect x="22" y="19" width="1" height="1"/><rect x="2" y="20" width="1" height="1"/><rect x="3" y="20" width="1" height="1"/><rect x="4" y="20" width="1" height="1"/><rect x="5" y="20" width="1" height="1"/><rect x="6" y="20" width="1" height="1"/><rect x="7" y="20" width="1" height="1"/><rect x="8" y="20" width="1" height="1"/><rect x="12" y="20" width="1" height="1"/><rect x="17" y="20" width="1" height="1"/><rect x="18" y="20" width="1" height="1"/><rect x="20" y="20" width="1" height="1"/><rect x="21" y="20" width="1" height="1"/><rect x="22" y="20" width="1" height="1"/><rect x="25" y="20" width="1" height="1"/><rect x="2" y="21" width="1" height="1"/><rect x="8" y="21" width="1" height="1"/><rect x="11" y="21" width="1" height="1"/><rect x="13" y="21" width="1" height="1"/><rect x="16" y="21" width="1" height="1"/><rect x="17" y="21" width="1" height="1"/><rect x="18" y="21" width="1" height="1"/><rect x="19" y="21" width="1" height="1"/><rect x="20" y="21" width="1" height="1"/><rect x="21" y="21" width="1" height="1"/><rect x="23" y="21" width="1" height="1"/><rect x="26" y="21" width="1" height="1"/><rect x="2" y="22" width="1" height="1"/><rect x="4" y="22" width="1" height="1"/><rect x="5" y="22" width="1" height="1"/><rect x="6" y="22" width="1" height="1"/><rect x="8" y="22" width="1" height="1"/><rect x="11" y="22" width="1" height="1"/><rect x="13" y="22" width="1" height="1"/><rect x="15" y="22" width="1" height="1"/><rect x="17" y="22" width="1" height="1"/><rect x="19" y="22" width="1" height="1"/><rect x="20" y="22" width="1" height="1"/><rect x="22" y="22" width="1" height="1"/><rect x="25" y="22" width="1" height="1"/><rect x="2" y="23" width="1" height="1"/><rect x="4" y="23" width="1" height="1"/><rect x="5" y="23" width="1" height="1"/><rect x="6" y="23" width="1" height="1"/><rect x="8" y="23" width="1" height="1"/><rect x="13" y="23" width="1" height="1"/><rect x="15" y="23" width="1" height="1"/><rect x="16" y="23" width="1" height="1"/><rect x="17" y="23" width="1" height="1"/><rect x="18" y="23" width="1" height="1"/><rect x="19" y="23" width="1" height="1"/><rect x="21" y="23" width="1" height="1"/><rect x="24" y="23" width="1" height="1"/><rect x="25" y="23" width="1" height="1"/><rect x="2" y="24" width="1" height="1"/><rect x="4" y="24" width="1" height="1"/><rect x="5" y="24" width="1" height="1"/><rect x="6" y="24" width="1" height="1"/><rect x="8" y="24" width="1" height="1"/><rect x="12" y="24" width="1" height="1"/><rect x="13" y="24" width="1" height="1"/><rect x="14" y="24" width="1" height="1"/><rect x="16" y="24" width="1" height="1"/><rect x="18" y="24" width="1" height="1"/><rect x="21" y="24" width="1" height="1"/><rect x="26" y="24" width="1" height="1"/><rect x="2" y="25" width="1" height="1"/><rect x="8" y="25" width="1" height="1"/><rect x="10" y="25" width="1" height="1"/><rect x="11" y="25" width="1" height="1"/><rect x="15" y="25" width="1" height="1"/><rect x="18" y="25" width="1" height="1"/><rect x="19" y="25" width="1" height="1"/><rect x="21" y="25" width="1" height="1"/><rect x="2" y="26" width="1" height="1"/><rect x="3" y="26" width="1" height="1"/><rect x="4" y="26" width="1" height="1"/><rect x="5" y="26" width="1" height="1"/><rect x="6" y="26" width="1" height="1"/><rect x="7" y="26" width="1" height="1"/><rect x="8" y="26" width="1" height="1"/><rect x="10" y="26" width="1" height="1"/><rect x="12" y="26" width="1" height="1"/><rect x="13" y="26" width="1" height="1"/><rect x="14" y="26" width="1" height="1"/><rect x="17" y="26" width="1" height="1"/><rect x="18" y="26" width="1" height="1"/><rect x="19" y="26" width="1" height="1"/><rect x="23" y="26" width="1" height="1"/><rect x="24" y="26" width="1" height="1"/><rect x="25" y="26" width="1" height="1"/><rect x="26" y="26" width="1" height="1"/></g><rect x="11" y="11" width="7" height="7" rx="1" fill="#fff"/><text x="14.5" y="15.6" font-size="5" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-weight="700" fill="#1677ff" text-anchor="middle">支</text></svg></div>      <div class="fj-qr-tip">请使用支付宝扫码支付</div>      <div class="fj-qr-sub">支付完成后额度实时到账，可继续发布岗位</div>      <div class="fj-qr-amount">{{ fjMoney(fjRechargeDlg.amount) }}</div>
-    
-    </div>
-    <div class="fj-pay-panel fj-pay-bank" v-else>
+    <div class="fj-pay-panel fj-pay-bank">
       <div class="fj-acct">
         <div class="fj-acct-head">
           <span class="fj-acct-title">对公收款账户</span>
@@ -3107,18 +3091,18 @@
         <div class="fj-acct-row"><span class="k">开户行</span><span class="v">招商银行深圳科技园支行</span></div>
         <div class="fj-acct-row"><span class="k">账号</span><span class="v">7559 1802 3010 588</span></div>
       </div>
-      <div class="fj-kf-block">
-        <div class="fj-qr fj-qr-sm"><svg viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#1f2329"><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="15" y="2" width="1" height="1"/><rect x="18" y="2" width="1" height="1"/><rect x="20" y="2" width="1" height="1"/><rect x="21" y="2" width="1" height="1"/><rect x="22" y="2" width="1" height="1"/><rect x="23" y="2" width="1" height="1"/><rect x="24" y="2" width="1" height="1"/><rect x="25" y="2" width="1" height="1"/><rect x="26" y="2" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="13" y="3" width="1" height="1"/><rect x="17" y="3" width="1" height="1"/><rect x="20" y="3" width="1" height="1"/><rect x="26" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="16" y="4" width="1" height="1"/><rect x="20" y="4" width="1" height="1"/><rect x="22" y="4" width="1" height="1"/><rect x="23" y="4" width="1" height="1"/><rect x="24" y="4" width="1" height="1"/><rect x="26" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="16" y="5" width="1" height="1"/><rect x="18" y="5" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/><rect x="22" y="5" width="1" height="1"/><rect x="23" y="5" width="1" height="1"/><rect x="24" y="5" width="1" height="1"/><rect x="26" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="14" y="6" width="1" height="1"/><rect x="20" y="6" width="1" height="1"/><rect x="22" y="6" width="1" height="1"/><rect x="23" y="6" width="1" height="1"/><rect x="24" y="6" width="1" height="1"/><rect x="26" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="15" y="7" width="1" height="1"/><rect x="16" y="7" width="1" height="1"/><rect x="18" y="7" width="1" height="1"/><rect x="20" y="7" width="1" height="1"/><rect x="26" y="7" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="14" y="8" width="1" height="1"/><rect x="20" y="8" width="1" height="1"/><rect x="21" y="8" width="1" height="1"/><rect x="22" y="8" width="1" height="1"/><rect x="23" y="8" width="1" height="1"/><rect x="24" y="8" width="1" height="1"/><rect x="25" y="8" width="1" height="1"/><rect x="26" y="8" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="15" y="9" width="1" height="1"/><rect x="16" y="9" width="1" height="1"/><rect x="17" y="9" width="1" height="1"/><rect x="2" y="10" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="15" y="10" width="1" height="1"/><rect x="16" y="10" width="1" height="1"/><rect x="17" y="10" width="1" height="1"/><rect x="21" y="10" width="1" height="1"/><rect x="24" y="10" width="1" height="1"/><rect x="25" y="10" width="1" height="1"/><rect x="26" y="10" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="20" y="11" width="1" height="1"/><rect x="22" y="11" width="1" height="1"/><rect x="2" y="12" width="1" height="1"/><rect x="3" y="12" width="1" height="1"/><rect x="5" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="20" y="12" width="1" height="1"/><rect x="21" y="12" width="1" height="1"/><rect x="24" y="12" width="1" height="1"/><rect x="25" y="12" width="1" height="1"/><rect x="26" y="12" width="1" height="1"/><rect x="2" y="13" width="1" height="1"/><rect x="3" y="13" width="1" height="1"/><rect x="5" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="18" y="13" width="1" height="1"/><rect x="19" y="13" width="1" height="1"/><rect x="21" y="13" width="1" height="1"/><rect x="22" y="13" width="1" height="1"/><rect x="23" y="13" width="1" height="1"/><rect x="25" y="13" width="1" height="1"/><rect x="26" y="13" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="9" y="14" width="1" height="1"/><rect x="21" y="14" width="1" height="1"/><rect x="22" y="14" width="1" height="1"/><rect x="23" y="14" width="1" height="1"/><rect x="24" y="14" width="1" height="1"/><rect x="25" y="14" width="1" height="1"/><rect x="7" y="15" width="1" height="1"/><rect x="20" y="15" width="1" height="1"/><rect x="24" y="15" width="1" height="1"/><rect x="5" y="16" width="1" height="1"/><rect x="9" y="16" width="1" height="1"/><rect x="20" y="16" width="1" height="1"/><rect x="22" y="16" width="1" height="1"/><rect x="24" y="16" width="1" height="1"/><rect x="3" y="17" width="1" height="1"/><rect x="5" y="17" width="1" height="1"/><rect x="8" y="17" width="1" height="1"/><rect x="20" y="17" width="1" height="1"/><rect x="21" y="17" width="1" height="1"/><rect x="22" y="17" width="1" height="1"/><rect x="23" y="17" width="1" height="1"/><rect x="24" y="17" width="1" height="1"/><rect x="25" y="17" width="1" height="1"/><rect x="26" y="17" width="1" height="1"/><rect x="4" y="18" width="1" height="1"/><rect x="6" y="18" width="1" height="1"/><rect x="10" y="18" width="1" height="1"/><rect x="11" y="18" width="1" height="1"/><rect x="12" y="18" width="1" height="1"/><rect x="13" y="18" width="1" height="1"/><rect x="14" y="18" width="1" height="1"/><rect x="15" y="18" width="1" height="1"/><rect x="16" y="18" width="1" height="1"/><rect x="17" y="18" width="1" height="1"/><rect x="18" y="18" width="1" height="1"/><rect x="22" y="18" width="1" height="1"/><rect x="23" y="18" width="1" height="1"/><rect x="24" y="18" width="1" height="1"/><rect x="25" y="18" width="1" height="1"/><rect x="15" y="19" width="1" height="1"/><rect x="16" y="19" width="1" height="1"/><rect x="17" y="19" width="1" height="1"/><rect x="18" y="19" width="1" height="1"/><rect x="19" y="19" width="1" height="1"/><rect x="20" y="19" width="1" height="1"/><rect x="21" y="19" width="1" height="1"/><rect x="24" y="19" width="1" height="1"/><rect x="25" y="19" width="1" height="1"/><rect x="2" y="20" width="1" height="1"/><rect x="3" y="20" width="1" height="1"/><rect x="4" y="20" width="1" height="1"/><rect x="5" y="20" width="1" height="1"/><rect x="6" y="20" width="1" height="1"/><rect x="7" y="20" width="1" height="1"/><rect x="8" y="20" width="1" height="1"/><rect x="11" y="20" width="1" height="1"/><rect x="12" y="20" width="1" height="1"/><rect x="15" y="20" width="1" height="1"/><rect x="16" y="20" width="1" height="1"/><rect x="20" y="20" width="1" height="1"/><rect x="21" y="20" width="1" height="1"/><rect x="25" y="20" width="1" height="1"/><rect x="26" y="20" width="1" height="1"/><rect x="2" y="21" width="1" height="1"/><rect x="8" y="21" width="1" height="1"/><rect x="15" y="21" width="1" height="1"/><rect x="16" y="21" width="1" height="1"/><rect x="23" y="21" width="1" height="1"/><rect x="26" y="21" width="1" height="1"/><rect x="2" y="22" width="1" height="1"/><rect x="4" y="22" width="1" height="1"/><rect x="5" y="22" width="1" height="1"/><rect x="6" y="22" width="1" height="1"/><rect x="8" y="22" width="1" height="1"/><rect x="12" y="22" width="1" height="1"/><rect x="13" y="22" width="1" height="1"/><rect x="15" y="22" width="1" height="1"/><rect x="16" y="22" width="1" height="1"/><rect x="18" y="22" width="1" height="1"/><rect x="21" y="22" width="1" height="1"/><rect x="23" y="22" width="1" height="1"/><rect x="24" y="22" width="1" height="1"/><rect x="25" y="22" width="1" height="1"/><rect x="26" y="22" width="1" height="1"/><rect x="2" y="23" width="1" height="1"/><rect x="4" y="23" width="1" height="1"/><rect x="5" y="23" width="1" height="1"/><rect x="6" y="23" width="1" height="1"/><rect x="8" y="23" width="1" height="1"/><rect x="10" y="23" width="1" height="1"/><rect x="11" y="23" width="1" height="1"/><rect x="12" y="23" width="1" height="1"/><rect x="13" y="23" width="1" height="1"/><rect x="15" y="23" width="1" height="1"/><rect x="16" y="23" width="1" height="1"/><rect x="17" y="23" width="1" height="1"/><rect x="18" y="23" width="1" height="1"/><rect x="21" y="23" width="1" height="1"/><rect x="23" y="23" width="1" height="1"/><rect x="26" y="23" width="1" height="1"/><rect x="2" y="24" width="1" height="1"/><rect x="4" y="24" width="1" height="1"/><rect x="5" y="24" width="1" height="1"/><rect x="6" y="24" width="1" height="1"/><rect x="8" y="24" width="1" height="1"/><rect x="10" y="24" width="1" height="1"/><rect x="11" y="24" width="1" height="1"/><rect x="12" y="24" width="1" height="1"/><rect x="13" y="24" width="1" height="1"/><rect x="15" y="24" width="1" height="1"/><rect x="16" y="24" width="1" height="1"/><rect x="17" y="24" width="1" height="1"/><rect x="21" y="24" width="1" height="1"/><rect x="22" y="24" width="1" height="1"/><rect x="24" y="24" width="1" height="1"/><rect x="26" y="24" width="1" height="1"/><rect x="2" y="25" width="1" height="1"/><rect x="8" y="25" width="1" height="1"/><rect x="10" y="25" width="1" height="1"/><rect x="12" y="25" width="1" height="1"/><rect x="14" y="25" width="1" height="1"/><rect x="15" y="25" width="1" height="1"/><rect x="16" y="25" width="1" height="1"/><rect x="17" y="25" width="1" height="1"/><rect x="18" y="25" width="1" height="1"/><rect x="20" y="25" width="1" height="1"/><rect x="24" y="25" width="1" height="1"/><rect x="26" y="25" width="1" height="1"/><rect x="2" y="26" width="1" height="1"/><rect x="3" y="26" width="1" height="1"/><rect x="4" y="26" width="1" height="1"/><rect x="5" y="26" width="1" height="1"/><rect x="6" y="26" width="1" height="1"/><rect x="7" y="26" width="1" height="1"/><rect x="8" y="26" width="1" height="1"/><rect x="10" y="26" width="1" height="1"/><rect x="15" y="26" width="1" height="1"/><rect x="16" y="26" width="1" height="1"/><rect x="17" y="26" width="1" height="1"/><rect x="18" y="26" width="1" height="1"/><rect x="23" y="26" width="1" height="1"/></g><rect x="11" y="11" width="7" height="7" rx="1" fill="#fff"/><text x="14.5" y="15.6" font-size="4.6" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-weight="700" fill="#07c160" text-anchor="middle">客</text></svg></div>
-        <div class="fj-kf-text">
-          <div class="fj-kf-title">转账后请联系专属客服确认</div>
-          <div class="fj-qr-sub">客服核对到账后 1 个工作日内为您入账</div>
-          <div class="fj-qr-sub">客服电话 400-800-1234（工作日 9:00-18:00）</div>
-        </div>
+    </div>
+    <div class="fj-kf-block">
+      <div class="fj-qr fj-qr-sm"><img :src="kfQrSrc" alt="客服二维码"></div>
+      <div class="fj-kf-text">
+        <div class="fj-kf-title">转账后请联系专属客服确认</div>
+        <div class="fj-qr-sub">扫码添加专属客服，核对到账后 1 个工作日内为您入账</div>
+        <div class="fj-qr-sub">客服电话 400-800-1234（工作日 9:00-18:00）</div>
       </div>
     </div>
+    <div class="pc-tip" style="margin-top:12px">请按上方对公账户完成转账；转账后联系客服核对到账，客服确认后 1 个工作日内为您入账。</div>
     <span slot="footer">
-      <el-button :type="fjRechargeDlg.payType === '支付宝' ? '' : 'primary'" @click="fjRechargeDlg.visible = false">{{ fjRechargeDlg.payType === '支付宝' ? '取消' : '确定' }}</el-button>
-      <el-button v-if="fjRechargeDlg.payType === '支付宝'" type="primary" @click="fjConfirmRecharge">我已完成支付</el-button>
+      <el-button type="primary" @click="fjConfirmRecharge">确认</el-button>
     </span>
   </el-dialog>
 </div>
@@ -3341,21 +3325,15 @@
       </div>
 
       <div class="wr-sec">
-        <div class="wr-sec-t">用工流程<span class="ex">共 6 个环节，蓝色为当前所在环节</span></div>
+        <div class="wr-sec-t">用工流程<span class="ex">共 6 个环节</span></div>
         <div class="fs-bar">
           <div v-for="(n, i) in wrDetailFlow(wrCur)" :key="i" class="fs-step" :class="n.state" :title="fsNodeTitle(n)">
             <div class="fs-dot">
               <i v-if="n.state === 'done'" class="el-icon-check"></i>
-              <span v-else-if="n.state === 'fail'">!</span>
               <span v-else>{{ i + 1 }}</span>
             </div>
             <div class="fs-t">{{ n.title }}</div>
-            <div class="fs-time">{{ n.time ? fsShortTime(n.time) : '' }}</div>
           </div>
-        </div>
-        <div class="fs-now" v-if="wrFlowNow(wrCur)">
-          <b>{{ wrFlowNow(wrCur).title }}</b>{{ wrFlowNow(wrCur).text }}
-          <span class="t" v-if="wrFlowNow(wrCur).time">{{ wrFullTime(wrFlowNow(wrCur).time) }}</span>
         </div>
       </div>
 
@@ -3450,16 +3428,8 @@
 
   <!-- 审核弹窗 -->
   <el-dialog title="审核用工记录" :visible.sync="wrAudit.visible" width="560px" append-to-body :close-on-click-modal="false">
-    <div v-if="wrAudit.rows.length" class="wr-audit-sum">
-      <template v-if="wrAudit.batch">
-        <div>共 <b>{{ wrAudit.rows.length }}</b> 条用工记录待审核</div>
-      </template>
-      <template v-else>
-        <div>
-          员工 <b>{{ wrAudit.rows[0].name }}</b>　{{ wrAudit.rows[0].gender }}　{{ wrAudit.rows[0].phone }}　岗位 <b>{{ wrAudit.rows[0].job }}</b>
-        </div>
-        <div>用工日期 {{ wrDateText(wrAudit.rows[0]) }}　每天 {{ wrAudit.rows[0].hours }} 小时　共 {{ wrAudit.rows[0].days }} 天</div>
-      </template>
+    <div v-if="wrAudit.batch && wrAudit.rows.length" class="wr-audit-sum">
+      <div>共 <b>{{ wrAudit.rows.length }}</b> 条用工记录待审核</div>
     </div>
     <div class="wr-audit-types">
       <div class="wr-audit-type pass" :class="{ on: wrAudit.mode === 'pass' }" @click="wrAudit.mode = 'pass'">
@@ -8214,7 +8184,7 @@ function signFjAgreement() {
   }, 900);
 }
 function openFjRechargeDlg() {
-  VM.fjRechargeDlg = { visible: true, payType: '支付宝', amount: '1000' };
+  VM.fjRechargeDlg = { visible: true };
 }
 // 一次复制全部对公收款信息（账号不带空格，便于粘贴到网银）
 const FJ_BANK_ACCT = { name: '深圳市智灵工科技有限公司', bank: '招商银行深圳科技园支行', account: '75591802301588' };
@@ -8244,28 +8214,10 @@ function fjCopyText(text, label) {
     legacy();
   }
 }
+// 账户充值（对公转账）：不输入金额，转账后由客服核对入账
 function fjConfirmRecharge() {
-  const dlg = VM.fjRechargeDlg;
-  const amt = Number(dlg.amount);
-  if (!(amt > 0)) { VM.$message.warning('请输入正确的充值金额'); return; }
-  const now = wrNow();
-  VM.fjBalance = Math.round((VM.fjBalance + amt) * 100) / 100;
-  // 充值成功后同步写一条充值记录，财务页与账户余额保持一致
-  if (VM.fundRecharge) {
-    VM.fundRecharge.unshift({
-      id: fundRechargeNoAt(now),
-      method: dlg.payType,
-      account: FUND_ACCOUNTS[0],
-      amount: fundRound(amt),
-      arrived: fundRound(amt),
-      status: '已支付',
-      voucher: fundVoucherSvg(VM.fundRecharge.length + 1, dlg.payType),
-      at: now,
-      note: '线上充值',
-    });
-  }
-  dlg.visible = false;
-  showToast((dlg.payType === '支付宝' ? '支付宝充值成功 ' : '对公转账已登记入账 ') + fjMoney(amt) + '，当前余额 ' + fjMoney(VM.fjBalance));
+  VM.fjRechargeDlg.visible = false;
+  showToast('请先完成对公转账，转账后联系客服核对到账，客服确认后 1 个工作日内为您入账');
 }
 function saveFjJob() {
   const err = fjValidate();
@@ -8816,7 +8768,7 @@ function fsShortTime(t) {
 }
 function fsNodeTitle(n) {
   if (!n) return '';
-  return n.title + (n.who ? '（' + n.who + '）' : '') + '：' + n.text + (n.time ? '　' + wrFullTime(n.time) : '');
+  return n.title + (n.who ? '（' + n.who + '）' : '') + '：' + n.text;
 }
 function wrNow() {
   const d = new Date(), p = n => String(n).padStart(2, '0');
