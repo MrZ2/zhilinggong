@@ -1599,6 +1599,14 @@
     /* 进度演示只保留绿色（已完成）与灰色（未完成） */
     .fs-step.doing .fs-dot, .fs-step.fail .fs-dot, .fs-step.stop .fs-dot { background: var(--ad-fill); color: var(--ad-text-3); box-shadow: none; border: 1px solid var(--ad-border-secondary); }
     .fs-step.doing .fs-t, .fs-step.fail .fs-t, .fs-step.stop .fs-t { color: var(--ad-text-3); font-weight: 400; }
+    /* 终止点（驳回 / 取消统一用深灰 ×）与「不会发生」环节（虚线 —） */
+    .fs-dot { box-sizing: border-box; }
+    .fs-step.term .fs-dot { background: #8c8c8c; border: 1px solid #8c8c8c; color: #fff; }
+    .fs-step.term .fs-t { color: var(--ad-text-2); font-weight: 600; }
+    .fs-step.void .fs-dot { background: #fff; border: 1px dashed var(--ad-border); color: rgba(0,0,0,.25); }
+    .fs-step.void .fs-t { color: rgba(0,0,0,.3); }
+    .fs-step.void::before { background: none; border-top: 1px dashed #e8e8e8; height: 0; }
+    .fs-glyph { font-style: normal; font-size: 13px; line-height: 1; font-weight: 600; }
     .fs-now { margin-top: 12px; padding: 9px 12px; border-radius: 8px; background: var(--ad-fill); font-size: 12px; line-height: 1.7; color: var(--ad-text-2); }
     .fs-now b { margin-right: 8px; color: var(--ad-text-1); }
     .fs-now .t { margin-left: 8px; color: var(--ad-text-3); font-variant-numeric: tabular-nums; }
@@ -3330,6 +3338,7 @@
           <div v-for="(n, i) in wrDetailFlow(wrCur)" :key="i" class="fs-step" :class="n.state" :title="fsNodeTitle(n)">
             <div class="fs-dot">
               <i v-if="n.state === 'done'" class="el-icon-check"></i>
+              <i v-else-if="fsStateIcon(n.state)" class="fs-glyph">{{ fsStateIcon(n.state) }}</i>
               <span v-else>{{ i + 1 }}</span>
             </div>
             <div class="fs-t">{{ n.title }}</div>
@@ -8692,7 +8701,7 @@ function rowStCls(row) { const s = rowStOf(row); return s ? stStatusCls(s) : 'ca
 // 详情用：四段流程（提交接单 → 接单审核 → 做工中 → 结算完成）
 // 口径：做工中 = 接单审核通过后上岗（含完工提交/商户结束用工，完成即本段完成）
 //      结算完成 = 结算审核 + 打款 + 完成，合并为一段
-// state: done 已完成 / doing 当前 / todo 待进行 / fail 异常 / stop 已终止
+// state: done 已完成 / doing 当前 / todo 待进行 / fail 异常 / term 终止 / void 不会发生
 function wrDetailFlow(row) {
   const r = row || {}, st = rowStOf(r);
   const rejected = r.status === '审核驳回', cancelled = r.status === '已取消';
@@ -8706,13 +8715,13 @@ function wrDetailFlow(row) {
   // 2 接单审核
   if (rejected) {
     out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '',
-      text: '审核驳回：' + (r.rejectReason || '未填写理由'), state: 'fail' });
+      text: '审核驳回：' + (r.rejectReason || '未填写理由'), state: 'term' });
   } else if (cancelled) {
     if (r.auditAt) {
       out.push({ title: '接单审核', time: r.auditAt, who: r.auditor || '',
         text: '审核通过（' + (r.auditor || '商户') + '）后员工取消接单，流程终止', state: 'done' });
     } else {
-      out.push({ title: '接单审核', time: '', who: '', text: '员工在审核前取消了接单，流程终止', state: 'stop' });
+      out.push({ title: '接单审核', time: '', who: '', text: '员工在审核前取消了接单，流程终止', state: 'term' });
     }
   } else if (passed) {
     out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '',
@@ -8722,7 +8731,9 @@ function wrDetailFlow(row) {
   }
   // 3 做工中（含完工：员工提交完工、全部日期已结算或商户结束用工即本段完成）
   const workDone = passed && (r.submittedAt || settled || wrAllDatesSettled(r));
-  if (dead) out.push({ title: '做工中', time: '', who: '', text: '流程已终止', state: 'stop' });
+  // 审核前驳回/取消：未进入用工阶段 → 本段「不会发生」；审核通过后取消：本段为终止点
+  const workReached = passed || (cancelled && !!r.auditAt);
+  if (dead) out.push({ title: '做工中', time: '', who: '', text: workReached ? '员工取消接单，做工终止' : '流程已终止，未进入用工', state: workReached ? 'term' : 'void' });
   else if (!passed) out.push({ title: '做工中', time: '', who: '', text: '接单审核通过后开始做工', state: 'todo' });
   else if (workDone) out.push({ title: '做工中', time: r.submittedAt || '', who: r.endedByMerchant ? '商户' : (r.name || ''),
     text: r.endedByMerchant ? '商户主动结束用工，做工结束' : '员工完成 ' + (r.days || 0) + ' 天用工', state: 'done' });
@@ -8734,7 +8745,7 @@ function wrDetailFlow(row) {
       text: '累计已打款 ' + fjMoney(wrPaidStAmountOf(r)) + '，全部结算完成'
         + (back > 0 ? '，差额 ' + fjMoney(back) + ' 已退回可用余额' : ''), state: 'done' });
   } else if (dead) {
-    out.push({ title: '结算完成', time: '', who: '', text: '流程已终止', state: 'stop' });
+    out.push({ title: '结算完成', time: '', who: '', text: '流程已终止，不产生结算', state: 'void' });
   } else if (st && st.status === '待打款') {
     out.push({ title: '结算完成', time: '', who: '', text: '结算审核已通过，等待商户打款（' + fjMoney(st.amount) + '），打款完成后结算完成', state: 'doing' });
   } else if (st && st.status === '待审核') {
@@ -8750,11 +8761,18 @@ function wrDetailFlow(row) {
   }
   return out;
 }
-// 当前所处环节：优先「进行中」，其次「异常」，再次「已终止」，最后取最后一个已完成
+// 当前所处环节：优先「进行中」，其次「异常」，再次「终止 / 不会发生」，最后取最后一个已完成
 function wrFlowNow(row) {
   const list = wrDetailFlow(row);
   return list.find(n => n.state === 'doing') || list.find(n => n.state === 'fail')
-    || list.find(n => n.state === 'stop') || list[list.length - 1] || null;
+    || list.find(n => n.state === 'term') || list.find(n => n.state === 'void')
+    || list[list.length - 1] || null;
+}
+// 流程条图标：终止点（驳回 / 取消）统一「×」，终止之后的环节统一「—」
+function fsStateIcon(state) {
+  if (state === 'term') return '×';
+  if (state === 'void') return '—';
+  return '';
 }
 function fsShortTime(t) {
   const s = wrPadTime(t);
@@ -15011,7 +15029,7 @@ const FN_BRIDGE = {
   wrOpenStLog, wrStLogOpText, wrSettlePickAll, wrSettlePickNone, wrEstimatedTotal, wrPaidStAmountOf, wrPendingSettleAmount,
   fundTabChange, fundSearch, fundReset, fundExport, openFundRechargeDlg, fundFlowKindLabel, fundFlowKindCls, fundFlowStateLabel, fundFlowStateCls, fundFlowRoute, openFundFlowDetail, fundFlowChainTitle,
   fundFlowParty,
-  rowStOf, rowStStatus, rowStLabel, rowStCls, wrDetailFlow,
+  rowStOf, rowStStatus, rowStLabel, rowStCls, wrDetailFlow, fsStateIcon,
   wrRefundAmt, wrFreezeAmount, wrExtendCalc,
   wrApplySteps, wrStatusCode, wrStatusLabel, wrStatusCls, wrStatusReason, wrWorkLabel, wrWorkCls, wrAuditLabel, wrAuditCls, wrDoneTime, wrFlowNow, fsShortTime, fsNodeTitle,
   wrQtyUnit, wrQtyText, wrCanEnd, wrOpenEnd, wrConfirmEnd, wrCanExtend, wrCanExtendInSettle, wrOpenExtend, wrSubmitExtend,

@@ -571,6 +571,12 @@
         #view-rdetail .flow-i.stop i { background: #C8CDD5; color: #fff; }
         #view-rdetail .flow-i.fail span { color: var(--red); font-weight: 700; }
         #view-rdetail .flow-i.stop span { color: #9AA0AA; }
+        /* 终止点（驳回 / 取消统一深灰 ×）与不会发生（虚线 —） */
+        #view-rdetail .flow-i.term i { background: #7A828E; color: #fff; }
+        #view-rdetail .flow-i.term span { color: #3C4149; font-weight: 700; }
+        #view-rdetail .flow-i.void i { background: #fff; border: 1px dashed #D8DCE2; color: #C5CAD2; }
+        #view-rdetail .flow-i.void span { color: #C5CAD2; }
+        #view-rdetail .flow-i.void::before { background: none; border-top: 2px dashed #EBEDF1; height: 0; }
         #view-rdetail .flow-i .flow-time { display: block; font-style: normal; font-size: 8.5px; color: #A6ABB5; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         #view-rdetail .rd-up { border: 1.5px dashed #C9D5F5; border-radius: 12px; background: #F8FAFF; padding: 17px 10px; text-align: center; cursor: pointer; }
         #view-rdetail .rd-up .cam { font-size: 26px; line-height: 1; }
@@ -3058,7 +3064,8 @@ function recActiveSt(r) {
     return cur;
 }
 /* 与后台 wrDetailFlow 一致的 4 段进度（提交接单 → 接单审核 → 做工中 → 结算完成）
-   做工中 = 接单审核通过后上岗，完工提交即本段完成；结算审核 + 打款 + 完成合并为「结算完成」 */
+   做工中 = 接单审核通过后上岗，完工提交即本段完成；结算审核 + 打款 + 完成合并为「结算完成」
+   state: done 已完成 / on 进行中 / todo 未开始 / fail 异常 / term 终止（驳回、取消统一 ×）/ void 不会发生（—） */
 function recDetailFlow(r) {
     const key = recStatusKey(r);
     const st = recActiveSt(r);
@@ -3066,19 +3073,20 @@ function recDetailFlow(r) {
     const dead = key === 'apply_rejected' || key === 'cancelled';
     const passed = key !== 'apply_review' && !dead;
     const paidAll = key === 'paid';
+    const workReached = key === 'cancelled' && !!r.auditAt;
     const out = [];
     out.push({ title: '提交接单', state: 'done', time: r.applyAt || '' });
     if (key === 'apply_rejected') {
-        out.push({ title: '接单审核', state: 'fail', time: r.auditAt || '' });
+        out.push({ title: '接单审核', state: 'term', time: r.auditAt || '' });
     } else if (key === 'cancelled' && !r.auditAt) {
-        out.push({ title: '接单审核', state: 'stop', time: '' });
+        out.push({ title: '接单审核', state: 'term', time: '' });
     } else if (key === 'apply_review') {
         out.push({ title: '接单审核', state: 'on', time: '' });
     } else {
         out.push({ title: '接单审核', state: 'done', time: r.auditAt || '' });
     }
     if (dead) {
-        out.push({ title: '做工中', state: 'stop', time: '' });
+        out.push({ title: '做工中', state: workReached ? 'term' : 'void', time: '' });
     } else if (!passed) {
         out.push({ title: '做工中', state: 'todo', time: '' });
     } else if (r.submittedAt || paidAll || stAllSettled(r)) {
@@ -3091,7 +3099,7 @@ function recDetailFlow(r) {
     } else if (settleFail) {
         out.push({ title: '结算完成', state: 'fail', time: (st && st.auditedAt) || r.settleAt || '' });
     } else if (dead) {
-        out.push({ title: '结算完成', state: 'stop', time: '' });
+        out.push({ title: '结算完成', state: 'void', time: '' });
     } else if (st && st.status === '待打款') {
         out.push({ title: '结算完成', state: 'on', time: '' });
     } else if (st && st.status === '待审核') {
@@ -3110,8 +3118,10 @@ function recFlowStep(nodes) {
 }
 function flowHtml(nodes) {
     return '<div class="rd-flow top">' + nodes.map(function (n, i) {
-        const cls = n.state === 'done' ? 'done' : n.state === 'on' ? 'on' : n.state === 'fail' ? 'fail' : n.state === 'stop' ? 'stop' : '';
-        const ico = n.state === 'done' ? '✓' : n.state === 'fail' ? '!' : n.state === 'stop' ? '×' : (i + 1);
+        const cls = n.state === 'done' ? 'done' : n.state === 'on' ? 'on' : n.state === 'fail' ? 'fail'
+            : n.state === 'term' ? 'term' : n.state === 'void' ? 'void' : n.state === 'stop' ? 'stop' : '';
+        const ico = n.state === 'done' ? '✓' : n.state === 'fail' ? '!'
+            : (n.state === 'term' || n.state === 'stop') ? '×' : n.state === 'void' ? '—' : (i + 1);
         return '<div class="flow-i ' + cls + '"><i>' + ico + '</i><span>' + n.title + '</span></div>';
     }).join('') + '</div>';
 }

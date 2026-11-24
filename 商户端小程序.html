@@ -622,11 +622,16 @@
         .fs::before { content: ''; position: absolute; top: 9px; left: -50%; width: 100%; height: 2px; background: #E4E7EC; }
         .fs:first-child::before { display: none; }
         .fs.done::before, .fs.cur::before { background: #B7D2FF; }
-        .fs .dot { width: 20px; height: 20px; margin: 0 auto; border-radius: 50%; background: #EEF0F3; color: #A6ABB5; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+        .fs .dot { width: 20px; height: 20px; margin: 0 auto; border-radius: 50%; background: #EEF0F3; color: #A6ABB5; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; box-sizing: border-box; }
         .fs.done .dot { background: var(--green); color: #fff; }
         .fs.cur .dot { background: var(--blue); color: #fff; box-shadow: 0 0 0 3px rgba(46,107,255,.16); }
         .fs.err .dot { background: var(--red); color: #fff; }
-        .fs.term .dot { background: #fff; border: 1px dashed #C9CDD4; color: #B7BCC5; }
+        /* 终止点（驳回 / 取消统一深灰 ×）与不会发生（虚线 —） */
+        .fs.term .dot { background: #7A828E; color: #fff; }
+        .fs.term .lb { color: #3C4149; font-weight: 800; }
+        .fs.void .dot { background: #fff; border: 1px dashed #D8DCE2; color: #C5CAD2; }
+        .fs.void .lb { color: #C5CAD2; }
+        .fs.void::before { background: none; border-top: 2px dashed #E4E7EC; height: 0; }
         .fs .lb { margin-top: 6px; font-size: 10.5px; color: #A6ABB5; line-height: 1.25; }
         .fs.cur .lb { color: var(--blue); font-weight: 800; }
         .fs.done .lb { color: #3C4149; }
@@ -5153,7 +5158,8 @@ function wrCanEnd(r) { return !!r && r.status === '审核通过' && !r.submitted
 
 /* ---------- 详情流程 / 审核步骤 ---------- */
 /* 详情四段流程（提交接单 → 接单审核 → 做工中 → 结算完成），与后台口径一致
-   做工中包含完工提交/商户结束用工；结算审核 + 打款 + 完成合并为「结算完成」 */
+   做工中包含完工提交/商户结束用工；结算审核 + 打款 + 完成合并为「结算完成」
+   state: done 已完成 / doing 进行中 / todo 未开始 / fail 异常 / term 终止（驳回、取消统一 ×）/ void 不会发生（—） */
 function wrDetailFlow(row) {
     const r = row || {}, st = rowStOf(r);
     const rejected = r.status === '审核驳回', cancelled = r.status === '已取消';
@@ -5163,12 +5169,12 @@ function wrDetailFlow(row) {
     const out = [];
     out.push({ title: '提交接单', time: r.applyAt || '', who: r.name || '', text: '员工接单 ' + (r.days || 0) + ' 天，每天 ' + (r.hours || 0) + ' 小时', state: 'done' });
     if (rejected) {
-        out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '', text: '审核驳回：' + (r.rejectReason || '未填写理由'), state: 'fail' });
+        out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '', text: '审核驳回：' + (r.rejectReason || '未填写理由'), state: 'term' });
     } else if (cancelled) {
         if (r.auditAt) {
             out.push({ title: '接单审核', time: r.auditAt, who: r.auditor || '', text: '审核通过（' + (r.auditor || '商户') + '）后员工取消接单，流程终止', state: 'done' });
         } else {
-            out.push({ title: '接单审核', time: '', who: '', text: '员工在审核前取消了接单，流程终止', state: 'stop' });
+            out.push({ title: '接单审核', time: '', who: '', text: '员工在审核前取消了接单，流程终止', state: 'term' });
         }
     } else if (passed) {
         out.push({ title: '接单审核', time: r.auditAt || '', who: r.auditor || '', text: '审核通过（' + (r.auditor || '商户') + '），员工上岗做工', state: 'done' });
@@ -5176,14 +5182,15 @@ function wrDetailFlow(row) {
         out.push({ title: '接单审核', time: '', who: '', text: '等待商户审核接单申请', state: 'doing' });
     }
     const workDone = passed && (r.submittedAt || settled || wrAllDatesSettled(r));
-    if (dead) out.push({ title: '做工中', time: '', who: '', text: '流程已终止', state: 'stop' });
+    const workReached = passed || (cancelled && !!r.auditAt);
+    if (dead) out.push({ title: '做工中', time: '', who: '', text: workReached ? '员工取消接单，做工终止' : '流程已终止，未进入用工', state: workReached ? 'term' : 'void' });
     else if (!passed) out.push({ title: '做工中', time: '', who: '', text: '接单审核通过后开始做工', state: 'todo' });
     else if (workDone) out.push({ title: '做工中', time: r.submittedAt || '', who: r.endedByMerchant ? '商户' : (r.name || ''), text: r.endedByMerchant ? '商户主动结束用工，做工结束' : '员工完成 ' + (r.days || 0) + ' 天用工', state: 'done' });
     else out.push({ title: '做工中', time: '', who: '', text: '员工正在用工中，可等待完工或由商户结束用工', state: 'doing' });
     if (settled) {
         out.push({ title: '结算完成', time: (st && st.paidAt) || '', who: (st && st.paidBy) || '', text: '累计已打款 ' + fjMoney(wrPaidStAmountOf(r)) + '，全部结算完成', state: 'done' });
     } else if (dead) {
-        out.push({ title: '结算完成', time: '', who: '', text: '流程已终止', state: 'stop' });
+        out.push({ title: '结算完成', time: '', who: '', text: '流程已终止，不产生结算', state: 'void' });
     } else if (st && st.status === '待打款') {
         out.push({ title: '结算完成', time: '', who: '', text: '结算审核已通过，等待商户打款（' + fjMoney(st.amount) + '），打款完成后结算完成', state: 'doing' });
     } else if (st && st.status === '待审核') {
@@ -6015,8 +6022,10 @@ function openWrDetail(id) {
 }
 function wrFlowHtml(r) {
     const nodes = wrDetailFlow(r);
-    return `<div class="flow6">${nodes.map((n, i) => `<div class="fs ${n.state === 'done' ? 'done' : ''}">
-        <div class="dot">${n.state === 'done' ? '✓' : (i + 1)}</div>
+    const cls = n => n.state === 'done' ? 'done' : n.state === 'term' ? 'term' : n.state === 'void' ? 'void' : '';
+    const ico = n => n.state === 'done' ? '✓' : n.state === 'term' ? '×' : n.state === 'void' ? '—' : '';
+    return `<div class="flow6">${nodes.map((n, i) => `<div class="fs ${cls(n)}">
+        <div class="dot">${ico(n) || (i + 1)}</div>
         <div class="lb">${wrTxt(n.title)}</div>
     </div>`).join('')}</div>`;
 }
