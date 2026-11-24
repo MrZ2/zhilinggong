@@ -388,9 +388,12 @@
         #view-history .h-nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.96); backdrop-filter: blur(8px); display: flex; align-items: center; gap: 10px; padding: calc(10px + env(safe-area-inset-top)) 14px 10px; border-bottom: 1px solid var(--line); }
         #view-history .h-back { width: 32px; height: 32px; border-radius: 50%; background: #F2F3F5; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; cursor: pointer; }
         #view-history .h-title { font-size: 16px; font-weight: 700; }
-        #view-history .h-filter { display: flex; align-items: center; gap: 10px; padding: 12px 12px 2px; }
-        #view-history .h-selwrap { position: relative; flex: none; }
+        #view-history .h-filter { display: flex; align-items: center; gap: 8px; padding: 12px 12px 2px; }
+        #view-history .h-selwrap { position: relative; flex: none; min-width: 0; }
         #view-history .h-sel { -webkit-appearance: none; appearance: none; border: none; outline: none; background: #fff; border-radius: 999px; padding: 9px 34px 9px 14px; font-size: 12.5px; font-weight: 700; color: var(--text); box-shadow: 0 2px 8px rgba(31,35,41,.06); cursor: pointer; font-family: inherit; }
+        #view-history .h-sel.company { width: 178px; max-width: 178px; text-overflow: ellipsis; }
+        #view-history .h-reset { flex: none; margin-left: auto; height: 36px; padding: 0 14px; border: none; border-radius: 999px; background: #fff; color: var(--blue); font-size: 12.5px; font-weight: 700; font-family: inherit; box-shadow: 0 2px 8px rgba(31,35,41,.06); cursor: pointer; }
+        #view-history .h-reset:active { background: #EAF0FF; }
         #view-history .h-selwrap::after { content: ''; position: absolute; right: 14px; top: 50%; width: 6px; height: 6px; border-right: 1.6px solid #8A8F99; border-bottom: 1.6px solid #8A8F99; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
         #view-history .h-count { margin-left: auto; font-size: 11.5px; color: var(--sub); }
         #view-history .h-list { padding: 12px 12px 20px; }
@@ -1110,14 +1113,17 @@
             <div class="h-filter">
                 <div class="h-selwrap">
                     <select class="h-sel" id="his-status" onchange="setHisTab(this.value)">
-                        <option value="all">全部状态 (10)</option>
-                        <option value="paid">已结算 (6)</option>
-                        <option value="settle_rejected">结算未通过 (2)</option>
-                        <option value="cancelled">已取消 (1)</option>
-                        <option value="apply_rejected">接单未通过 (1)</option>
+                        <option value="all">全部状态</option>
+                        <option value="settled">已结算</option>
+                        <option value="cancelled">已取消</option>
                     </select>
                 </div>
-                <div class="h-count" id="his-count">共 10 条</div>
+                <div class="h-selwrap">
+                    <select class="h-sel company" id="his-company" onchange="setHisCompany(this.value)">
+                        <option value="all">全部单位</option>
+                    </select>
+                </div>
+                <button type="button" class="h-reset" onclick="resetHisFilter()">重置</button>
             </div>
 
             <div class="h-list" id="his-list">
@@ -1130,7 +1136,6 @@
                     <div class="rec-date"><b>11-15</b><span class="rec-days">共1日</span></div>
                         <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1142,7 +1147,6 @@
                     <div class="rec-date"><b>11-12 ~ 11-14</b><span class="rec-days">共3天</span></div>
                         <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1154,7 +1158,6 @@
                     <div class="rec-date"><b>11-08 ~ 11-11</b><span class="rec-days">共4天</span></div>
                         <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1166,7 +1169,6 @@
                     <div class="rec-date"><b>11-05 ~ 11-06</b><span class="rec-days">共2天</span></div>
                         <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1178,7 +1180,6 @@
                     <div class="rec-date"><b>11-01 ~ 11-03</b><span class="rec-days">共3天</span></div>
                         <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1191,7 +1192,6 @@
                     <div class="rec-date"><b>11-01 ~ 11-04</b><span class="rec-days">共4天</span></div>
                         <div class="rec-foot">
                         <span class="st st-pass">已发薪</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1205,7 +1205,6 @@
                         <div class="rec-note">结算未通过原因：打卡工时与排班不符（实到 6.5 小时），请联系驻场补录后重新提交。</div>
                     <div class="rec-foot">
                         <span class="st st-fail">结算未通过</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -1218,7 +1217,6 @@
                         <div class="rec-note">结算未通过原因：缺少离场打卡记录，驻场确认工时后可重新提交。</div>
                     <div class="rec-foot">
                         <span class="st st-fail">结算未通过</span>
-                        <span class="rec-link">明细 ›</span>
                     </div>
                 </div>
 
@@ -2191,19 +2189,39 @@ function backHistory() {
     if (history.length > 1) history.back();
     else location.hash = '#work';
 }
+let hisStatus = 'all', hisCompany = 'all';
 function setHisTab(key) {
+    hisStatus = key;
     const sel = document.getElementById('his-status');
     if (sel && sel.value !== key) sel.value = key;
+    applyHisFilter();
+}
+function setHisCompany(v) {
+    hisCompany = v;
+    const sel = document.getElementById('his-company');
+    if (sel && sel.value !== v) sel.value = v;
+    applyHisFilter();
+}
+function resetHisFilter() {
+    hisStatus = 'all';
+    hisCompany = 'all';
+    const st = document.getElementById('his-status');
+    const co = document.getElementById('his-company');
+    if (st) st.value = 'all';
+    if (co) co.value = 'all';
+    applyHisFilter();
+    toast('筛选条件已重置');
+}
+function applyHisFilter() {
     let shown = 0;
     document.querySelectorAll('#his-list .rec').forEach(function (el) {
-        const hit = key === 'all' || el.dataset.st === key;
+        const hit = (hisStatus === 'all' || el.dataset.st === hisStatus) &&
+            (hisCompany === 'all' || el.dataset.company === hisCompany);
         el.hidden = !hit;
         if (hit) shown++;
     });
     const em = document.getElementById('his-empty');
     if (em) em.hidden = shown > 0;
-    const c = document.getElementById('his-count');
-    if (c) c.textContent = (key === 'all' ? '共 ' : '筛选 ') + shown + ' 条';
 }
 
 /* ============================================================
@@ -3430,7 +3448,7 @@ function recUnitPrice(r) {
     return (r && r.rate) ? r.rate : (jobRate(r) + '元/小时');
 }
 function recCardHtml(r, mode) {
-    const key = recStatusKey(r);
+    const key = recWorkStatusKey(r);
     const isHistory = mode === 'history';
     const employer = (siteOf(r) && siteOf(r).company) || '—';
     let acts = '';
@@ -3440,10 +3458,8 @@ function recCardHtml(r, mode) {
     let foot = '';
     if (acts) {
         foot = '<div class="rec-foot"><div class="rec-acts">' + acts + '</div></div>';
-    } else if (isHistory) {
-        foot = '<div class="rec-foot"><span class="rec-link" onclick="event.stopPropagation();openRecDetail(\'' + r.id + '\')">明细 ›</span></div>';
     }
-    return '<div class="rec" data-rec-id="' + r.id + '" data-st="' + key + '" onclick="openRecDetail(\'' + r.id + '\')">' +
+    return '<div class="rec" data-rec-id="' + r.id + '" data-st="' + key + '" data-company="' + employer + '" onclick="openRecDetail(\'' + r.id + '\')">' +
         '<div class="rec-head"><span class="rec-title">' + jobNameOf(r) + '</span>' +
         '<span class="st ' + recWorkStatusCls(r) + '">' + recWorkStatusLabel(r) + '</span></div>' +
         '<div class="rec-info">' +
@@ -3454,7 +3470,7 @@ function recCardHtml(r, mode) {
 }
 function renderRecCards() {
     const activeIds = ['r6', 'r7', 'r11', 'r1', 'r2', 'r3', 'r4', 'r10', 'r5'];
-    const historyIds = ['h1', 'h2', 'h3', 'h4', 'h5', 'h9', 'h6', 'h7', 'r9', 'h8'];
+    const historyIds = ['h1', 'h2', 'h3', 'h4', 'h5', 'h9', 'h8'];
     const wb = document.querySelector('.wb-daily-list');
     if (wb) {
         wb.innerHTML = activeIds.map(function (id) { return RECORD_MAP[id]; }).filter(Boolean)
@@ -3544,10 +3560,11 @@ function reorderJob() {
     toast('去岗位列表重新接单');
     location.hash = '#daily';
 }
-/* 统一把记录写进历史列表（已结束 / 结算未通过 / 已取消） */
+/* 统一把记录写进历史列表：历史只保留「已结算 / 已取消」 */
 function addHisCard(r) {
     const his = document.getElementById('his-list');
     if (!his) return;
+    if (recWorkStatusKey(r) !== 'settled' && recWorkStatusKey(r) !== 'cancelled') return;
     const old = his.querySelector('.rec[data-rec-id="' + r.id + '"]');
     if (old) old.remove();
     const box = document.createElement('div');
@@ -3713,21 +3730,28 @@ function addActiveCard(r) {
 }
 function updateHisChips() {
     const his = document.getElementById('his-list');
-    const cnt = function (st) { return his.querySelectorAll('.rec[data-st="' + st + '"]').length; };
-    const paidN = cnt('paid'), rejectN = cnt('settle_rejected'), cancelN = cnt('cancelled'), applyRejN = cnt('apply_rejected');
-    const sel = document.getElementById('his-status');
-    if (sel) {
-        const setTxt = function (v, t) {
-            const o = sel.querySelector('option[value="' + v + '"]');
-            if (o) o.textContent = t;
-        };
-        setTxt('all', '全部状态 (' + (paidN + rejectN + cancelN + applyRejN) + ')');
-        setTxt('paid', '已结算 (' + paidN + ')');
-        setTxt('settle_rejected', '结算未通过 (' + rejectN + ')');
-        setTxt('cancelled', '已取消 (' + cancelN + ')');
-        setTxt('apply_rejected', '接单未通过 (' + applyRejN + ')');
+    if (!his) return;
+    const statusSel = document.getElementById('his-status');
+    if (statusSel) {
+        statusSel.innerHTML = '<option value="all">全部状态</option>' +
+            '<option value="settled">已结算</option>' +
+            '<option value="cancelled">已取消</option>';
+        if (hisStatus !== 'all' && hisStatus !== 'settled' && hisStatus !== 'cancelled') hisStatus = 'all';
+        statusSel.value = hisStatus;
     }
-    setHisTab(sel ? sel.value : 'all');
+    const companySel = document.getElementById('his-company');
+    if (companySel) {
+        const companies = [];
+        his.querySelectorAll('.rec').forEach(function (el) {
+            const c = el.dataset.company;
+            if (c && companies.indexOf(c) < 0) companies.push(c);
+        });
+        companySel.innerHTML = '<option value="all">全部单位</option>' +
+            companies.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
+        if (hisCompany !== 'all' && companies.indexOf(hisCompany) < 0) hisCompany = 'all';
+        companySel.value = hisCompany;
+    }
+    applyHisFilter();
 }
 function approveApply(id) {
     const r = RECORD_MAP[id];
