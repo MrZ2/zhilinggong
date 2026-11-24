@@ -1633,6 +1633,7 @@
     .wr-pay-amount { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; padding: 12px 14px; border-radius: 8px; background: var(--ad-fill); }
     .wr-pay-amount .k { font-size: 12px; color: var(--ad-text-3); }
     .wr-pay-amount b { font-size: 22px; font-weight: 700; color: var(--ad-error); font-variant-numeric: tabular-nums; }
+    .wr-pay-amount b.back { color: var(--ad-success-text); }
     .wr-info-card { padding: 14px 16px; border-radius: 10px; background: linear-gradient(135deg, #eef4ff 0%, #f7f9fc 100%); border: 1px solid var(--ad-border-secondary); }
     .wr-info-card .ic-main { display: flex; align-items: center; gap: 10px; }
     .wr-info-card .ic-name { font-size: 16px; font-weight: 700; color: var(--ad-text-1); }
@@ -3649,6 +3650,7 @@
       </div>
       <div class="wr-pay-amount">
         <span class="k">打款金额</span><b>{{ fjMoney(wrPay.row.amount) }}</b>
+        <span class="k" style="margin-left:auto">退回金额</span><b class="back">{{ fjMoney(stPayBack) }}</b>
       </div>
       <template v-if="wrPay.mode === 'pass'">
         <el-form label-width="96px" size="small" class="st-audit-form" @submit.native.prevent>
@@ -3668,11 +3670,9 @@
             <el-input v-model="wrPay.note" type="textarea" :rows="2" maxlength="100" show-word-limit placeholder="选填，打款备注"></el-input>
           </el-form-item>
         </el-form>
-        <div class="pc-tip">通过后按所选账户打款给员工。</div>
       </template>
       <template v-else>
-        <el-input v-model="wrPay.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由，结算单将回到待审核"></el-input>
-        <div class="pc-tip">驳回后该结算单回到「待审核」，可重新结算。</div>
+        <el-input v-model="wrPay.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由"></el-input>
       </template>
     </template>
     <span slot="footer">
@@ -3692,6 +3692,7 @@
       </div>
       <div class="wr-pay-amount">
         <span class="k">打款金额</span><b>{{ fjMoney(wrBatchPayAmount) }}</b>
+        <span class="k" style="margin-left:auto">总退回金额</span><b class="back">{{ fjMoney(wrBatchPayBack) }}</b>
       </div>
       <template v-if="wrBatchPay.mode === 'pass'">
         <el-form label-width="96px" size="small" class="st-audit-form" @submit.native.prevent>
@@ -3708,11 +3709,9 @@
             <div class="wr-sub" style="margin-top:6px">验证码将发送至绑定手机 138****8000（演示环境：固定验证码 123456）</div>
           </el-form-item>
         </el-form>
-        <div class="pc-tip">确认后按所选账户一次性打款给员工。</div>
       </template>
       <template v-else>
-        <el-input v-model="wrBatchPay.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由，本批结算单将全部回到待审核"></el-input>
-        <div class="pc-tip">驳回后本批 {{ wrBatchPay.rows.length }} 条结算单回到「待审核」。</div>
+        <el-input v-model="wrBatchPay.reason" type="textarea" :rows="3" maxlength="100" show-word-limit placeholder="请填写驳回理由"></el-input>
       </template>
     </template>
     <span slot="footer">
