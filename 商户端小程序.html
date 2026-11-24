@@ -217,6 +217,7 @@
         .tagadd-btn { flex: none; display: flex; align-items: center; padding: 0 16px; border-radius: 10px; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
         .jflt { flex: none; display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #4A4F58; padding: 8px 12px; background: var(--fill); border-radius: 18px; cursor: pointer; position: relative; }
         .jflt .bd { position: absolute; top: 2px; right: 4px; min-width: 15px; height: 15px; padding: 0 3px; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; border-radius: 8px; line-height: 15px; text-align: center; }
+        .jflt.rst { color: #6B7280; }
         .jtop { position: sticky; top: calc(env(safe-area-inset-top)); z-index: 30; background: #fff; border-bottom: 1px solid var(--line); }
         .jtop .jbar { position: static; border-bottom: none; padding-bottom: 8px; }
         .jsub { display: flex; gap: 8px; padding: 0 12px 10px; }
@@ -596,6 +597,25 @@
         .st-am { font-size: 16px; font-weight: 800; color: var(--red); }
         .sum-card { background: var(--fill); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #4A4F58; line-height: 1.75; margin-bottom: 12px; }
         .sum-card b { color: var(--text); }
+        /* 审核记录：单级记录卡片（状态 / 审核人 / 审核时间 / 驳回理由） */
+        .log-list { display: flex; flex-direction: column; gap: 10px; }
+        .log-item { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: #fff; }
+        .log-item.ok { border-color: #D7F0E2; background: #F8FDFA; }
+        .log-item.rej { border-color: #FFDCD8; background: #FFFBFB; }
+        .log-item.wait { border-color: #FFE7C9; background: #FFFDF8; }
+        .log-item.cancel { border-color: #E4E7EC; background: #FAFBFC; }
+        .log-st { margin-bottom: 6px; }
+        .log-state { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 6px; line-height: 1.5; }
+        .log-state.ok { background: #E8F8EE; color: #17945A; }
+        .log-state.rej { background: #FFECEB; color: #DE4437; }
+        .log-state.wait { background: #FFF4E6; color: #C07A18; }
+        .log-state.cancel { background: #EFF1F4; color: #6B7280; }
+        .log-row { display: flex; align-items: baseline; font-size: 13px; line-height: 1.95; }
+        .log-row > span { flex: none; width: 70px; color: var(--sub); }
+        .log-row > b { font-weight: 600; color: var(--text); }
+        .log-reason { margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: #FFF2F0; font-size: 12.5px; color: #B33A31; line-height: 1.65; }
+        .log-reason > span { display: block; color: #C4665E; font-size: 11.5px; margin-bottom: 2px; }
+        .log-tip { font-size: 12.5px; color: #96631B; line-height: 1.65; }
         .audit2 { display: flex; gap: 10px; margin-bottom: 12px; }
         .audit2 .au { flex: 1; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px; cursor: pointer; background: #fff; }
         .audit2 .au b { display: block; font-size: 14px; }
@@ -1050,8 +1070,9 @@
         <div class="jbar">
             <div class="jsearch">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
-                <input id="wrKwAll" placeholder="搜索姓名/手机号">
+                <input id="wrKwAll" placeholder="请输入员工姓名">
             </div>
+            <div class="jflt rst" id="wrRstAll">重置</div>
             <div class="jflt" id="wrFltAll">筛选<span class="bd" id="wrFltNAll" style="display:none">0</span></div>
         </div>
     </div>
@@ -1071,8 +1092,9 @@
         <div class="jbar">
             <div class="jsearch">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
-                <input id="wrKwApply" placeholder="搜索姓名/手机号">
+                <input id="wrKwApply" placeholder="请输入员工姓名">
             </div>
+            <div class="jflt rst" id="wrRstApply">重置</div>
             <div class="jflt" id="wrFltApply">筛选<span class="bd" id="wrFltNApply" style="display:none">0</span></div>
         </div>
     </div>
@@ -1092,8 +1114,9 @@
         <div class="jbar">
             <div class="jsearch">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
-                <input id="wrKwWorking" placeholder="搜索姓名/手机号">
+                <input id="wrKwWorking" placeholder="请输入员工姓名">
             </div>
+            <div class="jflt rst" id="wrRstWorking">重置</div>
             <div class="jflt" id="wrFltWorking">筛选<span class="bd" id="wrFltNWorking" style="display:none">0</span></div>
         </div>
     </div>
@@ -1113,8 +1136,9 @@
         <div class="jbar">
             <div class="jsearch">
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.6 16.6 21 21"/></svg>
-                <input id="wrKwPay" placeholder="搜索姓名/手机号">
+                <input id="wrKwPay" placeholder="请输入员工姓名">
             </div>
+            <div class="jflt rst" id="wrRstPay">重置</div>
             <div class="jflt" id="wrFltPay">筛选<span class="bd" id="wrFltNPay" style="display:none">0</span></div>
         </div>
     </div>
@@ -4617,7 +4641,7 @@ const WR_SEED = [
     ['范晓丽', '女', '13577889900', '深圳市天马人力资源服务有限公司', '深圳市云智工网络科技有限公司', '贴片作业员', '2026-11-12', 4, '08:00-17:00', 9, '时薪', 19, 23, 'T+1 发放', '小时结算：1元/小时', '刘经理', '审核通过', '', '2026-11-10 11:33:26', '2026-11-10 12:20:09', '刘经理', '2026-11-15 17:50', 4, 0, ''],
     ['彭磊', '男', '13799887766', '深圳市佳润洗涤服务有限公司', '深圳市智灵工科技有限公司', '焊工', '2026-11-15', 5, '08:00-20:00', 12, '时薪', 38, 45, '次月10号发薪', '单次结算：500元', '冯国鲜', '审核通过', '', '2026-11-13 13:45:02', '2026-11-13 15:12:40', '冯国鲜', '', 0, 0, ''],
     ['苏敏', '女', '13644556677', '武汉华星光电技术有限公司', '深圳市智灵工科技有限公司', '食堂帮厨', '2026-11-11', 2, '06:00-14:00', 8, '时薪', 17, 20, '每周五结算', '小时结算：1元/小时', '测试2号', '审核通过', '', '2026-11-09 06:58:14', '2026-11-09 08:10:22', '测试2号', '2026-11-12 14:30', 2, 0, ''],
-    ['于海龙', '男', '13900112233', '深圳市大地半导体科技有限公司', '深圳市天地劳务派遣有限公司', 'CNC操作工', '2026-10-30', 3, '08:00-20:00', 12, '时薪', 32, 38, '次月10号发薪', '单次结算：500元', '王秋玲', '审核驳回', '接单手机号与实名信息不一致', '2026-10-28 11:05:38', '2026-10-28 14:22:17', '王秋玲', '', 0, 0, ''],
+    ['于海龙', '男', '13900112233', '深圳市大地半导体科技有限公司', '深圳市天地劳务派遣有限公司', 'CNC操作工', '2026-11-20', 3, '08:00-20:00', 12, '时薪', 32, 38, '次月10号发薪', '单次结算：500元', '王秋玲', '审核驳回', '接单手机号与实名信息不一致', '2026-11-16 20:55:38', '2026-11-16 21:40:17', '王秋玲', '', 0, 0, ''],
     ['崔倩', '女', '13522446688', '深圳市云智工网络科技有限公司', '深圳市云智工网络科技有限公司', '装配普工', '2026-11-17', 1, '08:00-18:00', 10, '时薪', 25, 30, 'T+1 发放', '单次结算：500元', '朱轩均', '待审核', '', '2026-11-16 19:22:05', '', '', '', 0, 0, ''],
     ['唐国强', '男', '13866778899', '武汉联想产业基地', '深圳市天地劳务派遣有限公司', '搬运工', '2026-11-07', 4, '08:00-18:00', 10, '日薪', 230, 260, '每周五结算', '小时结算：1元/小时', '刘经理', '审核通过', '', '2026-11-05 17:05:44', '2026-11-05 17:48:12', '刘经理', '2026-11-11 18:30', 4, 0, ''],
     ['段小燕', '女', '13588990011', '深圳市华工新能源服务有限公司', '深圳市云智工网络科技有限公司', '夜班巡检', '2026-11-04', 5, '20:00-08:00', 12, '时薪', 30, 36, '次月10号发薪', '单次结算：500元', '冯国鲜', '审核通过', '', '2026-11-02 18:40:26', '2026-11-02 19:15:33', '冯国鲜', '2026-11-09 08:10', 5, 0, ''],
@@ -5223,10 +5247,10 @@ function wrApplySteps(row) {
 
 /* ---------- 页面状态 ---------- */
 const WR_TABS = {
-    all: { view: 'view-wr', title: '用工记录', list: 'wrListAll', kw: 'wrKwAll', flt: 'wrFltAll', fltN: 'wrFltNAll', more: 'wrMoreAll', empty: '没有符合条件的用工记录', batch: false },
-    apply: { view: 'view-wr-apply', title: '接单待审', list: 'wrListApply', kw: 'wrKwApply', flt: 'wrFltApply', fltN: 'wrFltNApply', more: 'wrMoreApply', empty: '没有待审核的接单', batch: true },
-    working: { view: 'view-wr-working', title: '做工中', list: 'wrListWorking', kw: 'wrKwWorking', flt: 'wrFltWorking', fltN: 'wrFltNWorking', more: 'wrMoreWorking', empty: '没有做工中的用工记录', batch: false },
-    pay: { view: 'view-wr-pay', title: '结算打款', list: 'wrListPay', kw: 'wrKwPay', flt: 'wrFltPay', fltN: 'wrFltNPay', more: 'wrMorePay', empty: '没有待打款的结算单', batch: true },
+    all: { view: 'view-wr', title: '用工记录', list: 'wrListAll', kw: 'wrKwAll', flt: 'wrFltAll', fltN: 'wrFltNAll', rst: 'wrRstAll', more: 'wrMoreAll', empty: '没有符合条件的用工记录', batch: false },
+    apply: { view: 'view-wr-apply', title: '接单待审', list: 'wrListApply', kw: 'wrKwApply', flt: 'wrFltApply', fltN: 'wrFltNApply', rst: 'wrRstApply', more: 'wrMoreApply', empty: '没有待审核的接单', batch: true },
+    working: { view: 'view-wr-working', title: '做工中', list: 'wrListWorking', kw: 'wrKwWorking', flt: 'wrFltWorking', fltN: 'wrFltNWorking', rst: 'wrRstWorking', more: 'wrMoreWorking', empty: '没有做工中的用工记录', batch: false },
+    pay: { view: 'view-wr-pay', title: '结算打款', list: 'wrListPay', kw: 'wrKwPay', flt: 'wrFltPay', fltN: 'wrFltNPay', rst: 'wrRstPay', more: 'wrMorePay', empty: '没有待打款的结算单', batch: true },
 };
 const WR_TAB_KEYS = ['all', 'apply', 'working', 'pay'];
 let wrTab = 'all', wrPage = 1, wrDetailId = null;
@@ -5235,12 +5259,23 @@ const wrSel = new Set();
 let wrQuery = wrBlankFilter();
 
 function wrBlankFilter() {
-    return { name: '', phone: '', client: '', job: '', workStatus: '', auditStatus: '', applyRange: [], submitRange: [] };
+    // 与后台「用工记录」筛选条件保持一致
+    return {
+        name: '', phone: '', client: '', job: '', workStatus: '', auditStatus: '',
+        applyRange: [], auditRange: [], cancelRange: [], doneRange: [], settleAuditRange: [],
+    };
 }
 function wrClone(o) { return JSON.parse(JSON.stringify(o)); }
+const WR_DATE_RANGES = ['applyRange', 'auditRange', 'cancelRange', 'doneRange', 'settleAuditRange'];
+function wrInRange(v, rg) {
+    if (!rg || !rg[0] || !rg[1]) return true;
+    const d = String(v || '').slice(0, 10);
+    return !!d && d >= rg[0] && d <= rg[1];
+}
 function wrFilterCount(q) {
-    return ['name', 'phone', 'client', 'job', 'workStatus', 'auditStatus'].filter(k => q[k]).length
-        + ((q.applyRange && q.applyRange[0]) ? 1 : 0) + ((q.submitRange && q.submitRange[0]) ? 1 : 0);
+    // 姓名由列表上方搜索框负责，不计入「筛选」角标
+    return ['phone', 'client', 'job', 'workStatus', 'auditStatus'].filter(k => q[k]).length
+        + WR_DATE_RANGES.filter(k => q[k] && q[k][0]).length;
 }
 function wrCounts() {
     const c = { all: WR_ALL.length, apply: 0, working: 0, pay: 0 };
@@ -5267,15 +5302,11 @@ function wrListRows(tab) {
         if (q.phone && String(r.phone).indexOf(q.phone) < 0) return false;
         if (q.client && r.client !== q.client) return false;
         if (q.job && r.job !== q.job) return false;
-        if (q.applyRange && q.applyRange[0] && q.applyRange[1]) {
-            const d = wrDateNum(r.applyAt);
-            if (d < q.applyRange[0] || d > q.applyRange[1]) return false;
-        }
-        if (q.submitRange && q.submitRange[0] && q.submitRange[1]) {
-            if (!st || !st.submitAt) return false;
-            const d = wrDateNum(st.submitAt);
-            if (d < q.submitRange[0] || d > q.submitRange[1]) return false;
-        }
+        if (!wrInRange(r.applyAt, q.applyRange)) return false;
+        if (!wrInRange(r.auditAt, q.auditRange)) return false;
+        if (!wrInRange(r.cancelAt, q.cancelRange)) return false;
+        if (!wrInRange(wrDoneTime(r), q.doneRange)) return false;
+        if (!wrInRange(st && st.auditedAt, q.settleAuditRange)) return false;
         return true;
     });
     return arr.sort((a, b) => {
@@ -5295,7 +5326,9 @@ function wrListRows(tab) {
 
 /* ---------- 卡片 ---------- */
 function wrTagsHtml(r) {
-    return `<span class="atag ${wrWorkCls(r)}">${wrTxt(wrWorkLabel(r))}</span><span class="atag ${wrAuditCls(r)}">${wrTxt(wrAuditLabel(r))}</span>`;
+    // 用工状态为「—」（如接单驳回尚未进入用工阶段）时不再显示占位标签，只留审核状态
+    const w = wrWorkLabel(r), wl = w && w !== '—' ? `<span class="atag ${wrWorkCls(r)}">${wrTxt(w)}</span>` : '';
+    return wl + `<span class="atag ${wrAuditCls(r)}">${wrTxt(wrAuditLabel(r))}</span>`;
 }
 function wrCard(r) {
     const tab = wrTab, st = rowStOf(r), sel = wrSel.has(r.id);
@@ -5337,9 +5370,6 @@ function wrCard(r) {
         acts.push('<span class="jbtn pri" data-pay>打款</span>');
     }
 
-    const rej = (tab === 'all' && r.status === '审核驳回' && r.rejectReason)
-        ? `<div class="jc-log">驳回理由：<b style="color:var(--red)">${wrTxt(r.rejectReason)}</b></div>` : '';
-
     return `<div class="jc ${sel ? 'sel' : ''}" data-id="${r.id}">
         <div class="jc-top">
             ${batchable ? `<span class="ck ${sel ? 'on' : ''}" data-ck></span>` : ''}
@@ -5348,7 +5378,6 @@ function wrCard(r) {
         </div>
         <div class="jc-meta">${lines.map(([k, v]) => `<div class="mi"><span>${k}</span><b>${v}</b></div>`).join('')}</div>
         ${extra}
-        ${rej}
         <div class="jc-foot"><span class="jbtns${tab === 'working' ? ' wrap' : ''}">${acts.join('')}</span></div>
     </div>`;
 }
@@ -5439,33 +5468,35 @@ function wrSelectedRows() {
 const WR_CLIENT_OPTIONS = Array.from(new Set(WR_SEED.map(s => s[3])));
 const WR_JOB_OPTIONS = Array.from(new Set(WR_SEED.map(s => s[5])));
 function wrOpenFilter() {
-    let d = wrClone(wrQuery);
+    const d = wrClone(wrQuery), tab = wrTab;
     const el = document.getElementById('wrSheet');
+    const isAll = tab === 'all';
+    // 与后台一致：接单时间所有页签都有；用工状态/审核状态/审核时间/取消时间/完成时间仅在「用工记录」；
+    // 结算打款页签额外有结算审核时间
+    const rangeRow = (key, label) => `<div class="frow"><label>${label}</label><div class="f2">
+                <input type="date" class="fin" id="wf_${key}_from" value="${d[key][0] || ''}">
+                <span class="u">至</span><input type="date" class="fin" id="wf_${key}_to" value="${d[key][1] || ''}"></div></div>`;
     const render = () => {
         el.innerHTML = `<div class="sb-hd"><b>筛选用工记录</b><span class="x" data-close>✕</span></div>
         <div class="sb-bd">
-            <div class="frow"><label>姓名</label><input class="fin" id="wfName" maxlength="20" placeholder="请输入员工姓名" value="${wrTxt(d.name)}"></div>
             <div class="frow"><label>手机号</label><input class="fin" id="wfPhone" maxlength="11" inputmode="numeric" placeholder="请输入手机号" value="${wrTxt(d.phone)}"></div>
-            <div class="frow"><label>用工单位</label><select class="fsel" id="wfClient"><option value="">全部用工单位</option>${
+            <div class="frow"><label>用工单位</label><select class="fsel" id="wfClient"><option value="">请选择用工单位</option>${
                 WR_CLIENT_OPTIONS.map(c => `<option ${d.client === c ? 'selected' : ''}>${wrTxt(c)}</option>`).join('')}</select></div>
-            <div class="frow"><label>岗位名称</label><select class="fsel" id="wfJob"><option value="">全部岗位</option>${
+            <div class="frow"><label>岗位名称</label><select class="fsel" id="wfJob"><option value="">请选择岗位名称</option>${
                 WR_JOB_OPTIONS.map(j => `<option ${d.job === j ? 'selected' : ''}>${wrTxt(j)}</option>`).join('')}</select></div>
-            <div class="fg"><label>用工状态</label><div class="fcs">${
+            ${isAll ? `<div class="fg"><label>用工状态</label><div class="fcs">${
                 [{ v: '', t: '不限' }].concat(WR_WORK_STATUS_OPTIONS.map(o => ({ v: o.value, t: o.label })))
                     .map(o => `<span class="fc ${(o.v ? d.workStatus === o.v : !d.workStatus) ? 'on' : ''}" data-ws="${o.v}">${o.t}</span>`).join('')}</div></div>
             <div class="fg"><label>审核状态</label><div class="fcs">${
                 [{ v: '', t: '不限' }].concat(WR_AUDIT_STATUS_OPTIONS.map(o => ({ v: o.value, t: o.label })))
-                    .map(o => `<span class="fc ${(o.v ? d.auditStatus === o.v : !d.auditStatus) ? 'on' : ''}" data-as="${o.v}">${o.t}</span>`).join('')}</div></div>
-            <div class="frow"><label>接单时间</label><div class="f2">
-                <input type="date" class="fin" id="wfApplyFrom" value="${d.applyRange[0] || ''}">
-                <span class="u">至</span><input type="date" class="fin" id="wfApplyTo" value="${d.applyRange[1] || ''}"></div></div>
-            <div class="frow"><label>提交时间</label><div class="f2">
-                <input type="date" class="fin" id="wfSubmitFrom" value="${d.submitRange[0] || ''}">
-                <span class="u">至</span><input type="date" class="fin" id="wfSubmitTo" value="${d.submitRange[1] || ''}"></div></div>
+                    .map(o => `<span class="fc ${(o.v ? d.auditStatus === o.v : !d.auditStatus) ? 'on' : ''}" data-as="${o.v}">${o.t}</span>`).join('')}</div></div>` : ''}
+            ${rangeRow('applyRange', '接单时间')}
+            ${isAll ? rangeRow('auditRange', '审核时间') + rangeRow('cancelRange', '取消时间') + rangeRow('doneRange', '完成时间') : ''}
+            ${tab === 'pay' ? rangeRow('settleAuditRange', '结算审核时间') : ''}
         </div>
         <div class="sb-ft"><span class="btn ghost" data-reset>重置</span><span class="btn primary" data-ok>查询</span></div>`;
         el.querySelectorAll('[data-close]').forEach(b => b.onclick = hideSheet);
-        el.querySelector('#wfName').oninput = e => { d.name = e.target.value.trim(); };
+        el.querySelector('#wfPhone').oninput = e => { d.phone = e.target.value.trim(); };
         el.querySelector('#wfPhone').oninput = e => { d.phone = e.target.value.trim(); };
         el.querySelector('#wfClient').onchange = e => { d.client = e.target.value; };
         el.querySelector('#wfJob').onchange = e => { d.job = e.target.value; };
@@ -5478,20 +5509,14 @@ function wrOpenFilter() {
             el.querySelectorAll('[data-as]').forEach(x => x.classList.toggle('on', x === c));
         });
         const rd = () => {
-            const a1 = el.querySelector('#wfApplyFrom').value, a2 = el.querySelector('#wfApplyTo').value;
-            const s1 = el.querySelector('#wfSubmitFrom').value, s2 = el.querySelector('#wfSubmitTo').value;
-            d.applyRange = (a1 || a2) ? [a1, a2] : [];
-            d.submitRange = (s1 || s2) ? [s1, s2] : [];
+            WR_DATE_RANGES.forEach(k => {
+                const a = el.querySelector('#wf_' + k + '_from'), b = el.querySelector('#wf_' + k + '_to');
+                if (!a || !b) { d[k] = []; return; }
+                d[k] = (a.value || b.value) ? [a.value, b.value] : [];
+            });
         };
         el.querySelector('[data-ok]').onclick = () => { rd(); wrQuery = d; wrPage = 1; wrSel.clear(); hideSheet(); renderWrList(); };
-        el.querySelector('[data-reset]').onclick = () => {
-            wrQuery = wrBlankFilter();
-            wrPage = 1;
-            wrSel.clear();
-            const kw = document.getElementById(WR_TABS[wrTab].kw); if (kw) kw.value = '';
-            hideSheet();
-            renderWrList();
-        };
+        el.querySelector('[data-reset]').onclick = () => { hideSheet(); wrResetQuery(); };
         showSheet(el);
     };
     render();
@@ -6106,17 +6131,54 @@ function renderWrDetail() {
 }
 function findWr(id) { return WR_ALL.find(r => r.id === id); }
 
+/* 审核记录：一个弹框只显示当前的一个审核类型（通过 / 待审核 / 驳回 / 取消），固定展示审核状态 / 审核人 / 审核时间 */
+function wrAuditLogs(r) {
+    const row = r || {}, rounds = row.auditRounds || [];
+    const lastOf = kind => {
+        const arr = rounds.filter(a => a.result === kind);
+        return arr[arr.length - 1] || null;
+    };
+    if (row.status === '审核驳回') {
+        const a = lastOf('reject') || {};
+        return [{
+            state: 'rej', label: '审核驳回',
+            who: a.auditor || row.auditor || '—',
+            time: a.time || row.auditAt || '',
+            reason: a.reason || row.rejectReason || '未填写理由',
+            tip: '',
+        }];
+    }
+    if (row.status === '审核通过') {
+        const a = lastOf('pass') || {};
+        return [{
+            state: 'ok', label: '审核通过',
+            who: a.auditor || row.auditor || '—',
+            time: a.time || row.auditAt || '',
+            reason: '', tip: '',
+        }];
+    }
+    if (row.status === '已取消') {
+        const audited = !!(row.auditAt || lastOf('pass'));
+        return [{
+            state: 'cancel', label: '已取消', showRows: false,
+            who: '', time: '', reason: '',
+            tip: audited ? '审核通过后员工取消接单' : '员工在审核前取消接单',
+        }];
+    }
+    return [{ state: 'wait', label: '待审核', showRows: false, who: '', time: '', reason: '', tip: '员工已提交接单，等待商户审核' }];
+}
 function wrOpenLog(r) {
     if (!r) return;
     const el = document.getElementById('wrSheet');
-    const steps = wrApplySteps(r);
-    el.innerHTML = `<div class="sb-hd"><b>审核记录 · ${wrTxt(r.name)}</b><span class="x" data-close>✕</span></div>
+    const logs = wrAuditLogs(r);
+    el.innerHTML = `<div class="sb-hd"><b>审核记录</b><span class="x" data-close>✕</span></div>
         <div class="sb-bd">
-            <div class="sum-card">${wrTxt(r.job)} · ${wrTxt(wrDateText(r))}<br>接单时间 ${wrFullTime(r.applyAt)}</div>
-            <div class="tl">${steps.map(n => `<div class="tl-i ${n.cls === 'fail' ? 'warn' : n.cls === 'ok' ? 'ok' : ''}">
-                <div class="tt">${wrTxt(n.title)}</div>
-                ${n.time ? `<div class="tm">${wrFullTime(n.time)}</div>` : ''}
-                <div class="td">${wrTxt(n.who || '')}${n.note ? ' · ' + wrTxt(n.note) : ''}</div>
+            <div class="log-list">${logs.map(n => `<div class="log-item ${n.state}">
+                <div class="log-st"><span class="log-state ${n.state}">${wrTxt(n.label)}</span></div>
+                ${n.showRows === false ? '' : `<div class="log-row"><span>审核人</span><b>${wrTxt(n.who)}</b></div>
+                <div class="log-row"><span>审核时间</span><b>${n.time ? wrFullTime(n.time) : '—'}</b></div>`}
+                ${n.reason ? `<div class="log-reason"><span>驳回理由</span>${wrTxt(n.reason)}</div>` : ''}
+                ${n.tip ? `<div class="log-tip">${wrTxt(n.tip)}</div>` : ''}
             </div>`).join('')}</div>
         </div>
         <div class="sb-ft"><span class="btn primary" data-close>关闭</span></div>`;
@@ -6163,12 +6225,23 @@ function openWr(tab) {
     renderWrList();
     pushView(WR_TABS[wrTab].view);
 }
+function wrResetQuery() {
+    wrQuery = wrBlankFilter();
+    wrPage = 1;
+    wrSel.clear();
+    const cfg = WR_TABS[wrTab];
+    const kw = cfg && document.getElementById(cfg.kw);
+    if (kw) kw.value = '';
+    renderWrList();
+}
 function wrBindPage(id, tab) {
     const el = document.getElementById(id);
     if (!el) return;
     el.oninput = e => { wrQuery.name = e.target.value.trim(); wrPage = 1; renderWrList(); };
     const flt = document.getElementById(WR_TABS[tab].flt);
     if (flt) flt.onclick = wrOpenFilter;
+    const rst = document.getElementById(WR_TABS[tab].rst);
+    if (rst) rst.onclick = () => { wrTab = tab; wrResetQuery(); };
 }
 wrBindPage('wrKwAll', 'all');
 wrBindPage('wrKwApply', 'apply');
