@@ -229,6 +229,11 @@
         .jc { margin: 10px 12px; padding: 13px 14px 0; background: #fff; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 3px 12px rgba(31,35,41,.05); overflow: hidden; }
         .jc-top { display: flex; align-items: flex-start; gap: 8px; }
         .jc-name { font-size: 16px; font-weight: 800; flex: 1; min-width: 0; line-height: 1.35; }
+        .jc-person { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
+        .jc-contact { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 500; color: var(--sub); white-space: nowrap; }
+        .jc-gender { display: inline-flex; align-items: center; color: var(--blue); }
+        .jc-gender.female { color: #E56B87; }
+        .jc-gender svg { width: 14px; height: 14px; display: block; }
         .jc-pay { font-size: 17px; font-weight: 800; color: var(--red); margin-top: 4px; }
         .jc-pay small { font-size: 11.5px; font-weight: 600; }
         .jc-meta { margin-top: 7px; }
@@ -649,13 +654,8 @@
         .menu-badge { position: absolute; top: -5px; right: -6px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; line-height: 16px; text-align: center; }
         .a-review { background: #F3EEFF; color: #6A5D9B; }
         .mv-act { margin-left: 8px; font-size: 12px; color: var(--blue); font-weight: 700; cursor: pointer; }
-        .wr-tags { flex: none; display: flex; align-items: center; gap: 4px; }
-        .wr-range { white-space: nowrap; }
+        .wr-tags { flex: none; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; max-width: 46%; }
         .wr-tags .atag { white-space: nowrap; }
-        .wr-times { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; margin-top: 8px; font-size: 11.5px; color: var(--sub); }
-        .wr-times.single { grid-template-columns: 1fr; }
-        .wr-times > div { display: flex; gap: 6px; min-width: 0; }
-        .wr-times b { color: #3C4149; font-weight: 600; white-space: nowrap; }
         .wr-amounts { margin-top: 8px; padding: 7px 10px; background: #F7F9FD; border-radius: 9px; font-size: 12px; line-height: 1.85; color: #4A4F58; }
         .wr-amounts .row { display: flex; align-items: baseline; }
         .wr-amounts .row b { margin-left: auto; color: var(--text); font-weight: 700; }
@@ -1045,8 +1045,6 @@
     <div class="mnav">
         <span class="mv-back" data-back>‹</span>
         <span class="mv-title">用工记录</span>
-        <span class="mv-count" id="wrCountAll"></span>
-        <span class="mv-act" id="wrExportAll">导出</span>
     </div>
     <div class="jtop">
         <div class="jbar">
@@ -1068,8 +1066,6 @@
     <div class="mnav">
         <span class="mv-back" data-back>‹</span>
         <span class="mv-title">接单待审</span>
-        <span class="mv-count" id="wrCountApply"></span>
-        <span class="mv-act" id="wrExportApply">导出</span>
     </div>
     <div class="jtop">
         <div class="jbar">
@@ -1078,7 +1074,6 @@
                 <input id="wrKwApply" placeholder="搜索姓名/手机号">
             </div>
             <div class="jflt" id="wrFltApply">筛选<span class="bd" id="wrFltNApply" style="display:none">0</span></div>
-            <div class="jflt" id="wrBatchBtnApply">批量</div>
         </div>
     </div>
     <div id="wrListApply"></div>
@@ -1092,8 +1087,6 @@
     <div class="mnav">
         <span class="mv-back" data-back>‹</span>
         <span class="mv-title">做工中</span>
-        <span class="mv-count" id="wrCountWorking"></span>
-        <span class="mv-act" id="wrExportWorking">导出</span>
     </div>
     <div class="jtop">
         <div class="jbar">
@@ -1115,8 +1108,6 @@
     <div class="mnav">
         <span class="mv-back" data-back>‹</span>
         <span class="mv-title">结算打款</span>
-        <span class="mv-count" id="wrCountPay"></span>
-        <span class="mv-act" id="wrExportPay">导出</span>
     </div>
     <div class="jtop">
         <div class="jbar">
@@ -1125,7 +1116,6 @@
                 <input id="wrKwPay" placeholder="搜索姓名/手机号">
             </div>
             <div class="jflt" id="wrFltPay">筛选<span class="bd" id="wrFltNPay" style="display:none">0</span></div>
-            <div class="jflt" id="wrBatchBtnPay">批量</div>
         </div>
     </div>
     <div id="wrListPay"></div>
@@ -1222,7 +1212,6 @@
     <div class="ab blue" id="fjdEdit">编辑</div>
 </div>
 <div class="actbar" id="bar-wr-batch" data-view="__off">
-    <div class="ab ghost" id="wrBatchExit">取消</div>
     <div class="ab blue" id="wrBatchRun">批量审核（0）</div>
 </div>
 
@@ -4671,6 +4660,12 @@ const WR_SHIFTS = {
 const fundRound = n => Math.round((Number(n) || 0) * 100) / 100;
 const wrP2 = n => String(n).padStart(2, '0');
 const wrTxt = s => esc(s == null ? '' : s);
+function wrGenderIcon(gender) {
+    const female = gender === '女';
+    return `<span class="jc-gender${female ? ' female' : ''}" role="img" aria-label="${female ? '女' : '男'}"><svg viewBox="0 0 24 24" aria-hidden="true">${female
+        ? '<circle cx="12" cy="8" r="6"/><path d="M12 14v8m-4-4h8"/>'
+        : '<circle cx="9" cy="15" r="6"/><path d="m13 11 7-7m-6 0h6v6"/>'}</svg></span>`;
+}
 function wrNow() {
     const d = new Date();
     return d.getFullYear() + '-' + wrP2(d.getMonth() + 1) + '-' + wrP2(d.getDate()) + ' ' + wrP2(d.getHours()) + ':' + wrP2(d.getMinutes()) + ':' + wrP2(d.getSeconds());
@@ -4685,7 +4680,6 @@ function wrPadTime(t) {
 const wrFullTime = t => wrPadTime(t) || '—';
 const wrDatePart = t => { const s = wrPadTime(t); return s ? s.slice(0, 10) : '—'; };
 const wrTimePart = t => { const s = wrPadTime(t); return s ? s.slice(11, 19) : ''; };
-const wrMiniTime = t => { const s = wrPadTime(t); return s ? s.slice(5, 16) : '—'; };
 const wrDateNum = t => String(t || '').slice(0, 10);
 
 function wrDateRuns(r) {
@@ -4702,11 +4696,6 @@ function wrDateText(r) {
     const runs = wrDateRuns(r);
     if (!runs.length) return '—';
     return runs.map(x => x[0].slice(5) === x[1].slice(5) ? x[0].slice(5) : x[0].slice(5) + '~' + x[1].slice(5)).join('、');
-}
-function wrDateRunsHtml(r) {
-    const runs = wrDateRuns(r);
-    if (!runs.length) return '—';
-    return runs.map(x => `<span class="wr-range">${x[0].slice(5) === x[1].slice(5) ? x[0].slice(5) : x[0].slice(5) + '~' + x[1].slice(5)}</span>`).join('、');
 }
 function wrDateFull(r) {
     const runs = wrDateRuns(r);
@@ -5234,13 +5223,13 @@ function wrApplySteps(row) {
 
 /* ---------- 页面状态 ---------- */
 const WR_TABS = {
-    all: { view: 'view-wr', title: '用工记录', list: 'wrListAll', count: 'wrCountAll', kw: 'wrKwAll', flt: 'wrFltAll', fltN: 'wrFltNAll', more: 'wrMoreAll', exp: 'wrExportAll', empty: '没有符合条件的用工记录', batch: false },
-    apply: { view: 'view-wr-apply', title: '接单待审', list: 'wrListApply', count: 'wrCountApply', kw: 'wrKwApply', flt: 'wrFltApply', fltN: 'wrFltNApply', more: 'wrMoreApply', exp: 'wrExportApply', empty: '没有待审核的接单', batch: true },
-    working: { view: 'view-wr-working', title: '做工中', list: 'wrListWorking', count: 'wrCountWorking', kw: 'wrKwWorking', flt: 'wrFltWorking', fltN: 'wrFltNWorking', more: 'wrMoreWorking', exp: 'wrExportWorking', empty: '没有做工中的用工记录', batch: false },
-    pay: { view: 'view-wr-pay', title: '结算打款', list: 'wrListPay', count: 'wrCountPay', kw: 'wrKwPay', flt: 'wrFltPay', fltN: 'wrFltNPay', more: 'wrMorePay', exp: 'wrExportPay', empty: '没有待打款的结算单', batch: true },
+    all: { view: 'view-wr', title: '用工记录', list: 'wrListAll', kw: 'wrKwAll', flt: 'wrFltAll', fltN: 'wrFltNAll', more: 'wrMoreAll', empty: '没有符合条件的用工记录', batch: false },
+    apply: { view: 'view-wr-apply', title: '接单待审', list: 'wrListApply', kw: 'wrKwApply', flt: 'wrFltApply', fltN: 'wrFltNApply', more: 'wrMoreApply', empty: '没有待审核的接单', batch: true },
+    working: { view: 'view-wr-working', title: '做工中', list: 'wrListWorking', kw: 'wrKwWorking', flt: 'wrFltWorking', fltN: 'wrFltNWorking', more: 'wrMoreWorking', empty: '没有做工中的用工记录', batch: false },
+    pay: { view: 'view-wr-pay', title: '结算打款', list: 'wrListPay', kw: 'wrKwPay', flt: 'wrFltPay', fltN: 'wrFltNPay', more: 'wrMorePay', empty: '没有待打款的结算单', batch: true },
 };
 const WR_TAB_KEYS = ['all', 'apply', 'working', 'pay'];
-let wrTab = 'all', wrPage = 1, wrBatch = false, wrDetailId = null;
+let wrTab = 'all', wrPage = 1, wrDetailId = null;
 let wrDetailTab = 'photos';
 const wrSel = new Set();
 let wrQuery = wrBlankFilter();
@@ -5308,16 +5297,14 @@ function wrListRows(tab) {
 function wrTagsHtml(r) {
     return `<span class="atag ${wrWorkCls(r)}">${wrTxt(wrWorkLabel(r))}</span><span class="atag ${wrAuditCls(r)}">${wrTxt(wrAuditLabel(r))}</span>`;
 }
-function wrTimeGrid(rows, single) {
-    return `<div class="wr-times${single ? ' single' : ''}">${rows.map(x => `<div><span>${x[0]}</span><b>${wrMiniTime(x[1])}</b></div>`).join('')}</div>`;
-}
 function wrCard(r) {
     const tab = wrTab, st = rowStOf(r), sel = wrSel.has(r.id);
-    const batchable = (tab === 'apply' || tab === 'pay') && wrBatch;
+    const batchable = tab === 'apply' || tab === 'pay';
     const lines = [];
-    lines.push(['性别 / 手机', wrTxt(r.gender) + ' · ' + wrTxt(r.phone)]);
     lines.push(['用工单位', wrTxt(r.client)]);
-    lines.push(['岗位 / 工期', wrTxt(r.job) + ' · ' + r.days + ' 天（' + wrDateRunsHtml(r) + (r.gapped ? '，含间隔' : '') + '）']);
+    lines.push(['岗位名称', wrTxt(r.job)]);
+    lines.push(['工期', r.days + ' 天']);
+    lines.push(['接单时间', wrFullTime(r.applyAt)]);
     if (tab === 'apply') {
         const tags = wrShiftTags(r).map(s => `<span class="chip">${wrTxt(s)}</span>`).join('');
         lines.push(['工作时间', tags + (wrShiftMore(r) ? ` <span class="chip gray">+${wrShiftMore(r)}</span>` : '') + ` <span class="mut">每天 ${r.hours} 小时</span>`]);
@@ -5335,13 +5322,6 @@ function wrCard(r) {
     if (tab === 'pay' && st) {
         extra = `<div class="jc-pay">${fjMoney(st.amount)} <small>结算金额</small></div>`;
     }
-    if (tab === 'all') {
-        extra = wrTimeGrid([['接单时间', r.applyAt]], true);
-    }
-    if (tab === 'apply') {
-        extra = wrTimeGrid([['接单时间', r.applyAt]], true);
-    }
-
     const acts = [];
     if (tab !== 'working') acts.push('<span class="jbtn" data-detail>详情</span>');
     if (tab === 'all') acts.push('<span class="jbtn" data-log>审核记录</span>');
@@ -5363,7 +5343,7 @@ function wrCard(r) {
     return `<div class="jc ${sel ? 'sel' : ''}" data-id="${r.id}">
         <div class="jc-top">
             ${batchable ? `<span class="ck ${sel ? 'on' : ''}" data-ck></span>` : ''}
-            <div class="jc-name">${wrTxt(r.name)}</div>
+            <div class="jc-name"><div class="jc-person">${wrTxt(r.name)}<span class="jc-contact">${wrTxt(r.phone)}${wrGenderIcon(r.gender)}</span></div></div>
             <div class="wr-tags">${wrTagsHtml(r)}</div>
         </div>
         <div class="jc-meta">${lines.map(([k, v]) => `<div class="mi"><span>${k}</span><b>${v}</b></div>`).join('')}</div>
@@ -5393,7 +5373,7 @@ function wrUpdateBatchBar() {
     const bar = document.getElementById('bar-wr-batch');
     if (!bar) return;
     const cfg = WR_TABS[wrTab];
-    const show = wrBatch && cfg.batch;
+    const show = cfg.batch;
     bar.dataset.view = show ? cfg.view : '__off';
     bar.classList.toggle('show', show && curView === cfg.view);
     const run = document.getElementById('wrBatchRun');
@@ -5407,8 +5387,6 @@ function renderWrList() {
     const maxPage = Math.max(1, Math.ceil(rows.length / WR_PAGE_SIZE));
     if (wrPage > maxPage) wrPage = maxPage;
     const shown = rows.slice(0, wrPage * WR_PAGE_SIZE);
-    const countEl = document.getElementById(cfg.count);
-    if (countEl) countEl.textContent = '共 ' + rows.length + ' 条';
     const listEl = document.getElementById(cfg.list);
     if (!listEl) return;
     listEl.innerHTML = shown.length
@@ -5421,16 +5399,13 @@ function renderWrList() {
     }
     const fN = document.getElementById(cfg.fltN);
     if (fN) { const n = wrFilterCount(wrQuery); fN.style.display = n ? 'block' : 'none'; fN.textContent = n; }
-    const bb = document.getElementById('wrBatchBtn' + (wrTab === 'apply' ? 'Apply' : 'Pay'));
-    if (bb) { bb.classList.toggle('act', wrBatch); bb.textContent = wrBatch ? '取消' : '批量'; }
-
     listEl.querySelectorAll('.jc').forEach(card => {
         const r = WR_ALL.find(x => x.id === +card.dataset.id);
         if (!r) return;
         const stop = e => { e.stopPropagation(); };
         card.onclick = e => {
             if (e.target.closest('.jbtns') || e.target.closest('[data-ck]')) return;
-            if (wrBatch && (wrTab === 'apply' || wrTab === 'pay')) {
+            if (wrTab === 'apply' || wrTab === 'pay') {
                 wrSel.has(r.id) ? wrSel.delete(r.id) : wrSel.add(r.id);
                 renderWrList();
             } else openWrDetail(r.id);
@@ -5455,11 +5430,6 @@ function renderWrList() {
         if (a7) a7.onclick = e => { stop(e); wrOpenPay([r]); };
     });
     wrUpdateBatchBar();
-}
-function wrSetBatch(on) {
-    wrBatch = on;
-    if (!on) wrSel.clear();
-    renderWrList();
 }
 function wrSelectedRows() {
     return Array.from(wrSel).map(id => WR_ALL.find(r => r.id === id)).filter(Boolean);
@@ -5541,7 +5511,7 @@ function wrOpenAudit(rows) {
             <div class="sum-card">${batch
                 ? `共 <b>${rows.length}</b> 条用工记录待审核`
                 : `员工：<b>${wrTxt(rows[0].name)}</b> · ${wrTxt(rows[0].gender)} · ${wrTxt(rows[0].phone)}<br>岗位：${wrTxt(rows[0].job)} · ${wrTxt(rows[0].client)}<br>用工日期：${wrTxt(wrDateText(rows[0]))} · 每天 ${rows[0].hours} 小时 · 共 ${rows[0].days} 天`}</div>
-            <div class="audit2"><div class="au on pass" data-m="pass"><b>审核通过</b></div><div class="au" data-m="reject"><b>审核驳回</b></div></div>
+            <div class="audit2"><div class="au on pass" data-m="pass"><b>审核通过</b></div><div class="au reject" data-m="reject"><b>审核驳回</b></div></div>
             <div id="waPass">
                 <div class="money-box">
                     <div class="mb-row"><span>本次需冻结${batch ? '（' + rows.length + ' 条合计）' : ''}</span><b>${fjMoney(need)}</b></div>
@@ -5603,7 +5573,7 @@ function wrApplyAudit(rows, mode, reason) {
     toast(mode === 'pass'
         ? '已通过 ' + rows.length + ' 条用工记录' + (frozen > 0 ? '，冻结 ' + fjMoney(frozen) : '') + (added ? '，其中 ' + added + ' 条已完工生成结算单' : '')
         : '已驳回 ' + rows.length + ' 条用工记录，理由已同步员工端');
-    wrSetBatch(false);
+    wrSel.clear();
     renderWrList();
     return true;
 }
@@ -5850,6 +5820,7 @@ function wrOpenPay(rows) {
     const list = rows.map(r => ({ r, st: rowStOf(r) })).filter(x => x.st && x.st.status === '待打款');
     if (!list.length) { toast('请选择「待打款」的结算单'); return; }
     const total = fundRound(list.reduce((s, x) => s + fundRound(x.st.amount), 0));
+    const refund = fundRound(list.reduce((s, x) => s + stBackOf(x.st), 0));
     const single = list.length === 1;
     let mode = 'pass', account = '', code = '', note = '', reason = '', left = 0;
     const el = document.getElementById('wrSheet');
@@ -5859,9 +5830,12 @@ function wrOpenPay(rows) {
             <div class="sum-card">${single
                 ? `员工：<b>${wrTxt(list[0].r.name)}</b> · ${wrTxt(list[0].r.job)}`
                 : `共 <b>${list.length}</b> 笔 · 合计 <b style="color:var(--red)">${fjMoney(total)}</b>`}</div>
-            <div class="audit2"><div class="au on pass" data-m="pass"><b>通过</b></div><div class="au" data-m="reject"><b>驳回</b></div></div>
+            <div class="audit2"><div class="au on pass" data-m="pass"><b>通过</b></div><div class="au reject" data-m="reject"><b>驳回</b></div></div>
             <div id="wpPass">
-                <div class="jc-pay" style="margin-bottom:12px">${fjMoney(single ? list[0].st.amount : total)} <small>打款金额</small></div>
+                <div class="money-box">
+                    <div class="mb-row"><span>${single ? '打款金额' : '打款金额合计'}</span><b>${fjMoney(total)}</b></div>
+                    <div class="mb-row"><span>${single ? '退回金额' : '退回金额合计'}</span><b style="color:var(--green)">${fjMoney(refund)}</b></div>
+                </div>
                 <div class="frow"><label>打款账户</label><select class="fsel" id="wpAccount"><option value="">请选择打款账户</option>${
                     WR_PAY_ACCOUNTS.map(a => `<option ${account === a ? 'selected' : ''}>${wrTxt(a)}</option>`).join('')}</select></div>
                 <div class="frow"><label>短信验证码</label><div class="wr-sms">
@@ -5929,7 +5903,7 @@ function wrSubmitPay(list, account, note) {
         const st = x.st, r = x.r;
         if (!st || st.status !== '待打款') return;
         const frozen = stFrozenOf(st), released = stReleasedOf(st), amount = fundRound(st.amount);
-        const back = Math.max(0, fundRound(frozen - released - amount));
+        const back = stBackOf(st);
         st.status = '已结算';
         st.paidAt = now;
         st.paidBy = ME;
@@ -5945,7 +5919,7 @@ function wrSubmitPay(list, account, note) {
         backSum = fundRound(backSum + back);
         cnt++;
     });
-    wrSel.clear(); wrBatch = false;
+    wrSel.clear();
     toast('已打款 ' + cnt + ' 条，打款金额 ' + fjMoney(paid) + (backSum > 0 ? '，退回 ' + fjMoney(backSum) : ''));
     renderWrList();
     if (curView === 'view-wr-detail') renderWrDetail();
@@ -5961,7 +5935,7 @@ function wrRejectPay(list, reason) {
         st.auditRounds.push({ result: 'pay_reject', auditor: ME, time: now, reason: reason });
         cnt++;
     });
-    wrSel.clear(); wrBatch = false;
+    wrSel.clear();
     toast('已驳回 ' + cnt + ' 条结算单，回到待审核，可重新结算');
     renderWrList();
     if (curView === 'view-wr-detail') renderWrDetail();
@@ -6115,11 +6089,11 @@ function renderWrDetail() {
         <div class="dsec"><h4>用工信息</h4>
             ${kv('用工单位', wrTxt(r.client))}
             ${kv('岗位名称', wrTxt(r.job))}
-            ${kv('用工日期', (r.dates || []).map(d => `<span class="chip">${wrTxt(d)}</span>`).join(' ') + `（${r.days} 天${r.gapped ? '，其中含间隔' : ''}）`)}
-            ${kv('工作时间', shiftTags.map(s => `<span class="chip">${wrTxt(s)}</span>`).join(' ') || '—')}
+            ${kv('用工日期', `共 ${r.days} 天${r.gapped ? '，其中含间隔' : ''}<br>${wrTxt(wrDateFullList(r))}`)}
+            ${kv('工作时间', wrTxt(shiftTags.join('、')) || '—')}
             ${kv('每天工时', r.hours + ' 小时')}
             ${kv('用工单价', `<b style="color:var(--red)">${r.price} 元/${wrQtyUnit(r)}</b>`)}
-            ${kv('商业险', `${r.ins} 元/天 × ${r.days} 天 = ${fjMoney(r.ins * r.days)}`)}
+            ${kv('商业险', `${r.ins} 元/天`)}
         </div>
         <div class="dsec">
             <div class="dtab">${tabs.map(t => `<div class="t ${t.k === curTab ? 'on' : ''}" data-wdt="${t.k}">${t.t}</div>`).join('')}</div>
@@ -6185,7 +6159,6 @@ function wrOpenMore(r) {
 function openWr(tab) {
     wrTab = WR_TABS[tab] ? tab : 'all';
     wrPage = 1;
-    wrBatch = false;
     wrSel.clear();
     renderWrList();
     pushView(WR_TABS[wrTab].view);
@@ -6196,16 +6169,11 @@ function wrBindPage(id, tab) {
     el.oninput = e => { wrQuery.name = e.target.value.trim(); wrPage = 1; renderWrList(); };
     const flt = document.getElementById(WR_TABS[tab].flt);
     if (flt) flt.onclick = wrOpenFilter;
-    const exp = document.getElementById(WR_TABS[tab].exp);
-    if (exp) exp.onclick = () => toast('已导出 ' + wrListRows(tab).length + ' 条用工记录');
-    const bb = document.getElementById('wrBatchBtn' + (tab === 'apply' ? 'Apply' : tab === 'pay' ? 'Pay' : ''));
-    if (bb) bb.onclick = () => wrSetBatch(!wrBatch);
 }
 wrBindPage('wrKwAll', 'all');
 wrBindPage('wrKwApply', 'apply');
 wrBindPage('wrKwWorking', 'working');
 wrBindPage('wrKwPay', 'pay');
-document.getElementById('wrBatchExit').onclick = () => wrSetBatch(false);
 document.getElementById('wrBatchRun').onclick = () => {
     const rows = wrSelectedRows();
     if (!rows.length) { toast(wrTab === 'pay' ? '请选择待打款结算单' : '请选择待审核的接单'); return; }
