@@ -1540,6 +1540,25 @@
     .wr-log-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; color: var(--ad-text-1); }
     .wr-log-head b { font-size: 14px; }
     .wr-log-sub { color: var(--ad-text-3); }
+    /* 审核记录：记录卡片（状态 / 审核人 / 审核时间 / 驳回理由），与商户端小程序一致 */
+    .wr-log-list { display: flex; flex-direction: column; gap: 10px; }
+    .wr-log-item { padding: 14px 16px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; background: #fff; }
+    .wr-log-item.ok { border-color: var(--ad-success-border); background: var(--ad-success-bg); }
+    .wr-log-item.rej { border-color: var(--ad-error-border); background: #fffbfb; }
+    .wr-log-item.wait { border-color: var(--ad-warning-border); background: var(--ad-warning-bg); }
+    .wr-log-item.cancel { border-color: var(--ad-border); background: #fafafa; }
+    .wr-log-st { margin-bottom: 8px; }
+    .wr-log-state { display: inline-block; padding: 0 9px; border: 1px solid var(--ad-border); border-radius: 4px; background: #fff; color: var(--ad-text-2); font-size: 12px; font-weight: 600; line-height: 20px; }
+    .wr-log-state.ok { border-color: var(--ad-success-border); color: var(--ad-success-text); }
+    .wr-log-state.rej { border-color: var(--ad-error-border); color: var(--ad-error-text); }
+    .wr-log-state.wait { border-color: var(--ad-warning-border); color: var(--ad-warning-text); }
+    .wr-log-state.cancel { border-color: var(--ad-border); color: var(--ad-text-3); }
+    .wr-log-row { display: flex; align-items: baseline; font-size: 13px; line-height: 1.9; }
+    .wr-log-row > span { flex: none; width: 70px; color: var(--ad-text-3); }
+    .wr-log-row > b { font-weight: 500; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    .wr-log-reason { margin-top: 8px; padding: 8px 10px; border: 1px solid var(--ad-error-border); border-radius: 6px; background: #fff; font-size: 12px; line-height: 1.65; color: var(--ad-error-text); }
+    .wr-log-reason > span { display: block; margin-bottom: 2px; font-size: 11px; color: var(--ad-text-3); }
+    .wr-log-tip { margin-top: 6px; font-size: 12px; line-height: 1.65; color: var(--ad-text-2); }
     .wr-ops { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     .wr-ops .el-button { padding: 0; font-size: 12px; }
     .wr-ops .el-button + .el-button { margin-left: 0; }
@@ -1697,18 +1716,22 @@
     .fund-money { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .fund-money.in { color: var(--ad-success-text); }
     .fund-money.out { color: var(--ad-error); }
+    .fund-money.freeze { color: var(--ad-text-1); }
     .fund-money.muted { color: var(--ad-text-secondary); font-weight: 500; }
     .fund-voucher { width: 38px; height: 38px; border-radius: 4px; border: 1px solid var(--ad-border-secondary); }
     .fund-voucher-none { font-size: 12px; color: var(--ad-text-4); }
-    .fund-tag { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap; }
-    .fund-tag.freeze { color: var(--ad-warning-text); background: var(--ad-warning-bg); border: 1px solid var(--ad-warning-border); }
-    .fund-tag.release { color: var(--ad-success-text); background: var(--ad-success-bg); border: 1px solid var(--ad-success-border); }
-    .fund-tag.wage { color: #722ed1; background: #f9f0ff; border: 1px solid #d3adf7; }
-    .fund-tag.lf { color: var(--ad-primary); background: var(--ad-primary-bg); border: 1px solid var(--ad-primary-border); }
-    .fund-tag.recharge { color: var(--ad-success-text); background: var(--ad-success-bg); border: 1px solid var(--ad-success-border); }
+    .fund-type-text, .fund-state-text { font-size: 12px; font-weight: 500; white-space: nowrap; }
+    .fund-type-text.recharge { color: var(--ad-success-text); }
+    .fund-type-text.wage { color: #722ed1; }
+    .fund-type-text.fee { color: var(--ad-warning-text); }
+    .fund-type-text.lf { color: var(--ad-primary); }
+    .fund-state-text.outflow { color: var(--ad-error); }
+    .fund-state-text.freeze { color: var(--ad-warning-text); }
+    .fund-state-text.unfreeze { color: var(--ad-success-text); }
     .fund-dim { font-size: 12px; color: var(--ad-text-4); }
     .fund-route { font-size: 12px; color: var(--ad-text-2); white-space: nowrap; }
     .fund-party-n { font-size: 12px; color: var(--ad-text-1); }
+    .fund-flow-payee { margin-top: 4px; font-size: 12px; color: var(--ad-text-secondary); }
     .fund-note { font-size: 12px; color: var(--ad-text-2); }
     .fund-recharge-entry { margin-top: 6px; }
     .fund-kf { display: flex; gap: 14px; align-items: center; margin-top: 14px; }
@@ -1716,6 +1739,17 @@
     .fund-kf-title { font-size: 13px; font-weight: 600; color: var(--ad-text-1); }
     .fund-kf-line { margin-top: 4px; font-size: 11px; color: var(--ad-text-3); line-height: 1.6; }
     .fund-rc-tip { margin-top: 12px; padding: 8px 12px; border-radius: 6px; background: var(--ad-fill); font-size: 11px; line-height: 1.7; color: var(--ad-text-3); }
+    .fund-rc-method { margin-bottom: 14px; }
+    .fund-rc-alipay { text-align: center; }
+    .fund-rc-amount { text-align: left; margin-bottom: 12px; }
+    .fund-rc-amount .k { font-size: 12px; color: var(--ad-text-2); margin-bottom: 6px; }
+    .fund-rc-money { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; margin-bottom: 8px; border-radius: 6px; background: var(--ad-fill); font-size: 12px; color: var(--ad-text-2); text-align: left; }
+    .fund-rc-money b { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ad-text-1); }
+    .fund-rc-money.arrived b { color: var(--ad-success-text); }
+    .fund-rc-qr { width: 150px; height: 150px; margin: 0 auto 10px; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; background: repeating-conic-gradient(#eee 0 25%, #fff 0 50%) 0 0 / 16px 16px; color: var(--ad-text-3); font-size: 12px; }
+    .fund-rc-qr i { font-size: 34px; color: var(--ad-primary); }
+    .fund-rc-account { font-size: 13px; color: var(--ad-text-1); }
+    .fund-rc-alipay .fund-rc-tip { text-align: left; }
     /* 审核弹窗 */
     .wr-audit-types { display: flex; gap: 10px; margin-bottom: 14px; }
     .wr-audit-type { flex: 1; min-height: 58px; padding: 10px 12px; border: 1px solid var(--ad-border); border-radius: 8px; cursor: pointer; transition: .15s; }
@@ -3489,39 +3523,18 @@
     </span>
   </el-dialog>
 
-  <!-- 审核记录弹框：仅展示接单审核记录（结算审核与打款记录已合并到「做工中 / 待结算打款」链路中，不在此展示） -->
-  <el-dialog title="审核记录" :visible.sync="wrLog.visible" width="600px" append-to-body custom-class="wr-log-dlg">
+  <!-- 审核记录弹框：内容与商户端小程序「审核记录」保持一致（审核状态 / 审核人 / 审核时间 / 驳回理由 / 状态说明） -->
+  <el-dialog title="审核记录" :visible.sync="wrLog.visible" width="520px" append-to-body custom-class="wr-log-dlg">
     <template v-if="wrLog.row.id">
-      <div class="wr-log-head">
-        <b>{{ wrLog.row.name }}</b>
-        <span class="wr-tag" :class="wrWorkCls(wrLog.row)">{{ wrWorkLabel(wrLog.row) }}</span>
-        <span class="wr-tag" :class="wrAuditCls(wrLog.row)">{{ wrAuditLabel(wrLog.row) }}</span>
-        <span class="wr-log-sub">{{ wrLog.row.job }} · {{ wrDateText(wrLog.row) }}</span>
-      </div>
-
-      <div class="ap-block">
-        <div class="ap-sub">
-          <b>接单审核</b>
-          <span class="ap-sub-id">接单时间 {{ wrFullTime(wrLog.row.applyAt) }}</span>
-        </div>
-        <div class="ap-flow">
-          <div v-for="(n, i) in wrApplySteps(wrLog.row)" :key="'a' + i" class="ap-node" :class="{ done: n.done, reject: n.reject }">
-            <div class="ap-rail">
-              <span class="ap-idx">{{ i + 1 }}</span>
-              <span class="ap-line"></span>
-            </div>
-            <div class="ap-body">
-              <div class="ap-main">
-                <b class="ap-title">{{ n.title }}</b>
-                <div class="ap-who">{{ n.who }}</div>
-                <div v-if="n.note" class="ap-note">{{ n.note }}</div>
-              </div>
-              <div class="ap-side">
-                <div class="ap-time">{{ n.time || '' }}</div>
-                <span class="ap-badge" :class="n.cls">{{ n.state }}</span>
-              </div>
-            </div>
-          </div>
+      <div class="wr-log-list">
+        <div class="wr-log-item" :class="wrLog.card.state">
+          <div class="wr-log-st"><span class="wr-log-state" :class="wrLog.card.state">{{ wrLog.card.label }}</span></div>
+          <template v-if="wrLog.card.showRows">
+            <div class="wr-log-row"><span>审核人</span><b>{{ wrLog.card.who }}</b></div>
+            <div class="wr-log-row"><span>审核时间</span><b>{{ wrFullTime(wrLog.card.time) }}</b></div>
+          </template>
+          <div v-if="wrLog.card.reason" class="wr-log-reason"><span>驳回理由</span>{{ wrLog.card.reason }}</div>
+          <div v-if="wrLog.card.tip" class="wr-log-tip">{{ wrLog.card.tip }}</div>
         </div>
       </div>
     </template>
@@ -5162,7 +5175,7 @@
         <el-col :span="8"><el-form-item label="流水号">
           <el-input v-model="fundFlowFilter.ref" placeholder="请输入流水号" clearable @keyup.enter.native="fundSearch"></el-input>
         </el-form-item></el-col>
-        <el-col :span="8"><el-form-item label="发生时间">
+        <el-col :span="8"><el-form-item label="时间">
           <el-date-picker v-model="fundFlowFilter.range" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" unlink-panels :picker-options="fundFlowPickerOptions"></el-date-picker>
         </el-form-item></el-col>
       </el-row>
@@ -5177,11 +5190,6 @@
     </div>
 
     <el-table v-if="fundTab === 'recharge'" :data="fundRechargeRows" border stripe size="mini" row-key="id" empty-text="没有符合条件的充值记录" style="width:100%">
-      <el-table-column label="充值时间" min-width="150">
-        <template slot-scope="{ row }">
-          <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
-        </template>
-      </el-table-column>
       <el-table-column label="流水号" width="150">
         <template slot-scope="{ row }"><span class="fund-no">{{ row.id }}</span></template>
       </el-table-column>
@@ -5197,6 +5205,12 @@
           <span class="fund-money" :class="{ in: row.arrived != null }">{{ row.arrived != null ? fjMoney(row.arrived) : '—' }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="手续费" width="92" align="right">
+        <template slot-scope="{ row }">
+          <span v-if="row.fee != null" class="fund-money out">-{{ fjMoney(row.fee) }}</span>
+          <span v-else class="fund-voucher-none">—</span>
+        </template>
+      </el-table-column>
       <el-table-column label="支付状态" width="88" align="center">
         <template slot-scope="{ row }"><span class="wr-tag" :class="row.status === '已支付' ? 'pass' : 'wait'">{{ row.status }}</span></template>
       </el-table-column>
@@ -5209,6 +5223,11 @@
       <el-table-column label="备注" min-width="170" show-overflow-tooltip>
         <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
       </el-table-column>
+      <el-table-column label="充值时间" min-width="150">
+        <template slot-scope="{ row }">
+          <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-table v-else :data="fundFlowRows" border stripe size="mini" row-key="id" empty-text="没有符合条件的资金流水" style="width:100%">
@@ -5216,19 +5235,19 @@
         <template slot-scope="{ row }"><span class="fund-no">{{ row.id }}</span></template>
       </el-table-column>
       <el-table-column label="类型" width="84" align="center">
-        <template slot-scope="{ row }"><span class="fund-tag" :class="fundFlowKindCls(row)">{{ fundFlowKindLabel(row) }}</span></template>
+        <template slot-scope="{ row }"><span class="fund-type-text" :class="fundFlowKindCls(row)">{{ fundFlowKindLabel(row) }}</span></template>
       </el-table-column>
       <el-table-column label="资金状态" width="84" align="center">
         <template slot-scope="{ row }">
-          <span v-if="fundFlowStateLabel(row) !== '—'" class="fund-tag" :class="fundFlowStateCls(row)">{{ fundFlowStateLabel(row) }}</span>
+          <span v-if="fundFlowStateLabel(row) !== '—'" class="fund-state-text" :class="fundFlowStateCls(row)">{{ fundFlowStateLabel(row) }}</span>
           <span v-else class="fund-dim">—</span>
         </template>
       </el-table-column>
-      <el-table-column label="关联对象" width="130">
+      <el-table-column label="收款方" width="130">
         <template slot-scope="{ row }"><span class="fund-party-n">{{ fundFlowParty(row) }}</span></template>
       </el-table-column>
-      <el-table-column label="金额" width="110" align="right">
-        <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.amount) }}</span></template>
+      <el-table-column label="金额" width="126" align="right">
+        <template slot-scope="{ row }"><span class="fund-money" :class="fundFlowAmountCls(row)">{{ fundFlowAmountSign(row) }}{{ fjMoney(row.amount) }}</span></template>
       </el-table-column>
       <el-table-column label="资金流向" width="140">
         <template slot-scope="{ row }"><span class="fund-route">{{ fundFlowRoute(row) }}</span></template>
@@ -5242,13 +5261,7 @@
       <el-table-column label="备注" min-width="200" show-overflow-tooltip>
         <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
       </el-table-column>
-      <el-table-column label="操作" width="70" align="center">
-        <template slot-scope="{ row }">
-          <el-button v-if="fundFlowKindLabel(row) === '灵工'" type="text" size="mini" @click.stop="openFundFlowDetail(row)">详情</el-button>
-          <span v-else class="fund-dim">—</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="发生时间" width="150">
+      <el-table-column label="时间" width="150">
         <template slot-scope="{ row }">
           <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
         </template>
@@ -5264,24 +5277,40 @@
   </div>
 </div>
 
-<!-- 财务账户充值（联系客服 / 对公转账） -->
+<!-- 财务账户充值（支付宝 / 对公转账） -->
 <el-dialog title="账户充值" :visible.sync="fundRechargeDlg.visible" width="520px" :close-on-click-modal="false" append-to-body custom-class="fund-rc-dlg">
-  <div class="fund-rc-tip" style="margin-top:0">充值请联系专属客服，客服核对到账后 1 个工作日内为您入账。</div>
-  <div class="fj-acct" style="margin-top:12px">
-    <div class="fj-acct-head">
-      <span class="fj-acct-title">对公收款账户</span>
-      <button type="button" class="fj-copy" @click="fjCopyAcct">复制全部</button>
+  <el-radio-group v-model="fundRechargeDlg.method" class="fund-rc-method">
+    <el-radio label="alipay">支付宝</el-radio>
+    <el-radio label="corporate">对公转账</el-radio>
+  </el-radio-group>
+  <div v-if="fundRechargeDlg.method === 'alipay'" class="fund-rc-alipay">
+    <div class="fund-rc-amount">
+      <div class="k">充值金额</div>
+      <el-input-number v-model="fundRechargeDlg.amount" :min="0" :precision="2" :step="100" controls-position="right" style="width:100%"></el-input-number>
     </div>
-    <div class="fj-acct-row"><span class="k">户名</span><span class="v">{{ fjBankAcct.name }}</span></div>
-    <div class="fj-acct-row"><span class="k">开户行</span><span class="v">{{ fjBankAcct.bank }}</span></div>
-    <div class="fj-acct-row"><span class="k">账号</span><span class="v">{{ fjBankAcct.account }}</span></div>
+    <div class="fund-rc-money"><span>手续费（费率 0.6%）</span><b>{{ fundRechargeDlg.amount > 0 ? fjMoney(fundRcFee) : '—' }}</b></div>
+    <div class="fund-rc-money arrived"><span>实际到账金额</span><b>{{ fundRechargeDlg.amount > 0 ? fjMoney(fundRcArrived) : '—' }}</b></div>
+    <div class="fund-rc-qr"><i class="el-icon-money"></i><span>支付宝收款码（示例）</span></div>
+    <div class="fund-rc-tip">请使用支付宝扫描上方收款码，按填写的充值金额付款；手续费按 0.6% 从充值金额中扣除，充值后预计 2 小时内到账。</div>
+  </div>
+  <div v-else>
+    <div class="fund-rc-tip" style="margin-top:0">充值请联系专属客服，客服核对到账后 1 个工作日内为您入账。</div>
+    <div class="fj-acct" style="margin-top:12px">
+      <div class="fj-acct-head">
+        <span class="fj-acct-title">对公收款账户</span>
+        <button type="button" class="fj-copy" @click="fjCopyAcct">复制全部</button>
+      </div>
+      <div class="fj-acct-row"><span class="k">户名</span><span class="v">{{ fjBankAcct.name }}</span></div>
+      <div class="fj-acct-row"><span class="k">开户行</span><span class="v">{{ fjBankAcct.bank }}</span></div>
+      <div class="fj-acct-row"><span class="k">账号</span><span class="v">{{ fjBankAcct.account }}</span></div>
+    </div>
   </div>
   <div class="fund-kf">
     <img class="fund-kf-qr" :src="kfQrSrc" alt="客服二维码">
     <div class="fund-kf-text">
       <div class="fund-kf-title">扫码添加专属客服</div>
-      <div class="fund-kf-line">转账后请将回单发送给客服核对，确认到账后完成充值。</div>
-      <div class="fund-kf-line">客服电话 400-800-1234（工作日 9:00-18:00）</div>
+      <div class="fund-kf-line" v-if="fundRechargeDlg.method === 'alipay'">支付宝充值若有疑问或超时未到账，请联系客服。</div>
+      <div class="fund-kf-line" v-else>对公转账后请将凭证发送给客服核对，确认到账后完成充值。</div>
     </div>
   </div>
   <span slot="footer">
@@ -5314,7 +5343,8 @@
       <div class="wr-flow">
         <div v-for="(f, i) in fundFlowDetail.chain" :key="i" class="wr-flow-item on">
           <b>{{ fundFlowChainTitle(f) }}</b><span class="t">{{ wrFullTime(f.at) }}</span>
-          <div><span class="fund-money">{{ fjMoney(f.amount) }}</span><span class="fund-dim" style="margin-left:6px">{{ fundFlowRoute(f) }}</span></div>
+          <div><span class="fund-money" :class="fundFlowAmountCls(f)">{{ fundFlowAmountSign(f) }}{{ fjMoney(f.amount) }}</span><span class="fund-dim" style="margin-left:6px">{{ fundFlowRoute(f) }}</span></div>
+          <div v-if="fundFlowPayAccount(f) !== '—'" class="fund-flow-payee">收款方：{{ fundFlowParty(f) }} · 打款账户：{{ fundFlowPayAccount(f) }}</div>
           <div v-if="f.note">{{ f.note }}</div>
         </div>
         <div v-if="fundFlowDetail.status === '冻结中'" class="wr-flow-item pending">
@@ -7717,6 +7747,7 @@ function fjMoney(n) {
 }
 // ===== 财务管理：充值记录 / 灵工资金流水 =====
 const FUND_METHODS = ['支付宝', '对公转账', '银行转账'];
+const FUND_ALIPAY_FEE_RATE = 0.006;   // 支付宝充值手续费率：0.6%（充值金额扣除手续费后入账）
 const FUND_ACCOUNTS = [
   '深圳唯臻人力资源有限公司',
   '深圳唯臻供应链管理有限公司',
@@ -7725,11 +7756,13 @@ const FUND_FLOW_KINDS = [
   { value: '', label: '全部' },
   { value: 'lf', label: '灵工' },
   { value: 'recharge', label: '充值' },
+  { value: 'fee', label: '手续费' },
   { value: 'wage', label: '发薪' },
 ];
 const FUND_FLOW_STATES = [
   { value: '', label: '全部' },
   { value: 'freeze', label: '冻结' },
+  { value: 'outflow', label: '支出' },
   { value: 'unfreeze', label: '解冻' },
 ];
 // 解冻去向：settle = 冻结金额转付员工（不回到可用余额）；back = 差额/取消退回可用余额
@@ -7811,48 +7844,83 @@ function fundKfQrSvg() {
     + '<text x="14.5" y="15.8" font-size="5" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-weight="700" fill="#07c160" text-anchor="middle">客</text></svg>';
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
-// 支出流水：结算转付员工与工资发放才真正离开账户，解冻退回不计支出
+// 支出流水：结算转付员工、工资发放与充值手续费（手续费由支付渠道从充值金额中扣除）
 function isFundOutflow(r) {
   if (!r) return false;
-  if (r.type === 'wage' || r.type === 'pay') return true;
+  if (r.type === 'wage' || r.type === 'pay' || r.type === 'fee') return true;
   return r.type === 'release' && r.dir === 'settle';
 }
-// 关联对象：充值/解冻退回（含取消单）是商户账户自身资金；冻结/灵工结算/发薪都归属员工
+// 收款方：充值/解冻退回进入商户账户；手续费支付给支付宝平台；冻结/灵工结算/发薪对应员工
 function fundFlowParty(r) {
   if (!r) return '—';
-  if (r.type === 'recharge' || r.type === 'pay' || (r.type === 'release' && r.dir !== 'settle')) return '商户账户';
+  if (r.type === 'fee') return '支付宝平台';
+  if (r.type === 'recharge' || ((r.type === 'release' || r.type === 'pay') && r.dir !== 'settle')) return '商户账户';
   return r.name || '—';
 }
-// 类型：灵工（冻结/解冻）/ 充值 / 发薪
+function fundFlowPayAccount(r) {
+  if (!r || !isFundOutflow(r)) return '—';
+  return String(r.payAccount || '').trim() || '—';
+}
+function fundFlowAmountSign(r) {
+  if (!r) return '';
+  return r.type === 'recharge' || ((r.type === 'release' || r.type === 'pay') && r.dir !== 'settle') ? '+' : '-';
+}
+function fundFlowAmountCls(r) {
+  if (!r) return '';
+  if (r.type === 'freeze') return 'freeze';
+  return fundFlowAmountSign(r) === '+' ? 'in' : 'out';
+}
+// 类型：灵工（冻结/支出/解冻）/ 充值 / 手续费 / 发薪
 function fundFlowKindLabel(row) {
   if (!row) return '';
   if (row.type === 'recharge') return '充值';
+  if (row.type === 'fee') return '手续费';
   if (row.type === 'wage') return '发薪';
   return '灵工';
 }
 function fundFlowKindCls(row) {
   if (!row) return '';
   if (row.type === 'recharge') return 'recharge';
+  if (row.type === 'fee') return 'fee';
   if (row.type === 'wage') return 'wage';
   return 'lf';
 }
-// 资金状态：仅冻结 / 解冻（充值、发薪行无此状态）
-function fundFlowStateLabel(row) {
-  if (!row) return '—';
-  if (row.type === 'freeze') return '冻结';
-  if (row.type === 'release' || row.type === 'pay') return '解冻';
-  return '—';
-}
-function fundFlowStateCls(row) {
+function fundFlowStateKey(row) {
   if (!row) return '';
   if (row.type === 'freeze') return 'freeze';
-  if (row.type === 'release' || row.type === 'pay') return 'release';
+  if (isFundOutflow(row)) return 'outflow';
+  if (row.type === 'release' || row.type === 'pay') return 'unfreeze';
   return '';
+}
+function fundFlowStateLabel(row) {
+  const state = fundFlowStateKey(row);
+  return state === 'freeze' ? '冻结' : (state === 'outflow' ? '支出' : (state === 'unfreeze' ? '解冻' : '—'));
+}
+function fundFlowStateCls(row) {
+  return fundFlowStateKey(row);
+}
+function fundFlowJobText(r) {
+  return (r && r.client || '—') + ' · ' + (r && r.job || '—') + '岗位';
+}
+function fundFlowWorkDates(r) {
+  const dates = ((r && r.dates) || []).slice().sort();
+  return dates.join('、') || (r && r.start) || '—';
+}
+function fundFlowFreezeNote(r, appended) {
+  return '给' + (r.name || '员工') + '的' + fundFlowJobText(r) + (appended ? '追加冻结了用工款' : '冻结了用工款') + '，用工日期：' + fundFlowWorkDates(r);
+}
+function fundFlowSettleNote(r) {
+  return '给' + (r.name || '员工') + '支付了' + fundFlowJobText(r) + '的用工款，结算日期：' + fundFlowWorkDates(r);
+}
+function fundFlowReleaseNote(r, expected, actual, released, cancelled) {
+  return (r.name || '员工') + (cancelled ? '取消了' : '已结算') + fundFlowJobText(r) + '的用工，应结算 ' + fjMoney(expected)
+    + '，实际结算 ' + fjMoney(actual) + '，解冻 ' + fjMoney(released) + ' 已退回余额' + (cancelled ? '（员工取消接单）' : '');
 }
 // 资金流向：充值→可用 / 可用→冻结 / 冻结→员工 / 冻结→可用 / 可用→员工
 function fundFlowRoute(row) {
   if (!row) return '';
   if (row.type === 'recharge') return '充值 → 可用';
+  if (row.type === 'fee') return '充值金额 → 手续费';
   if (row.type === 'freeze') return '可用 → 冻结';
   if (row.type === 'wage') return '可用 → 员工';
   if (row.type === 'release' || row.type === 'pay') return row.dir === 'settle' ? '冻结 → 员工' : '冻结 → 可用';
@@ -7894,6 +7962,7 @@ function fundFlowAxis(type, amount, dir) {
     return [{ k: '可用余额', v: '+' + s }, { k: '冻结中', v: '-' + s }];
   }
   if (type === 'wage') return [{ k: '可用余额', v: '-' + s }, { k: '已支出', v: '+' + s }];
+  if (type === 'fee') return [{ k: '充值金额', v: '-' + s }, { k: '已支出', v: '+' + s }];
   return [{ k: '冻结中', v: '-' + s }, { k: '已支出', v: '+' + s }];
 }
 // 写一条资金流水（业务动作统一入口，保证流水与账户数值同步）
@@ -7910,6 +7979,7 @@ function fundPushFlow(o) {
     wrId: o.wrId || '',
     name: o.name || '',
     job: o.job || '',
+    payAccount: String(o.payAccount || '').trim(),
     amount: amt,
     at: o.at || wrNow(),
     note: o.note || '',
@@ -7950,7 +8020,7 @@ function fundSeed() {
       const amt = fundRound(wrFreezeAmount(r));
       push({
         type: 'freeze', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: amt,
-        at: r.auditAt || r.applyAt, note: '接单审核通过，按「员工单价 × 应做工时」冻结',
+        at: r.auditAt || r.applyAt, note: fundFlowFreezeNote(r),
       });
       // 打款完成时一次性处理资金：结算单金额转付员工 + 该单冻结额差额解冻（支持一条记录多张结算单）
       (VM.stAll || []).filter(s => s.wrId === r.id && s.status === '已结算').forEach(function (s) {
@@ -7958,14 +8028,14 @@ function fundSeed() {
         const paidAt = s.paidAt || s.auditedAt || r.submittedAt;
         push({
           type: 'release', dir: 'settle', refType: '结算单', refId: s.id, wrId: r.id, name: r.name, job: r.job,
-          amount: fundRound(s.amount), at: paidAt,
-          note: '结算打款，冻结资金转付员工',
+          payAccount: s.payAccount || '', amount: fundRound(s.amount), at: paidAt,
+          note: fundFlowSettleNote(s),
         });
         const back = fundRound(stFrozen - fundRound(s.amount));
         if (back > 0) {
           push({
             type: 'release', dir: 'back', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: back,
-            at: paidAt, note: '结算打款，结算金额低于冻结额，差额解冻',
+            at: paidAt, note: fundFlowReleaseNote(s, stFrozen, s.amount, back),
           });
         }
       });
@@ -7975,20 +8045,20 @@ function fundSeed() {
       const amt = fundRound(wrFreezeAmount(r));
       push({
         type: 'freeze', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: amt,
-        at: r.auditAt, note: '接单审核通过，按「员工单价 × 应做工时」冻结',
+        at: r.auditAt, note: fundFlowFreezeNote(r),
       });
       push({
         type: 'release', dir: 'back', refId: r.id, wrId: r.id, name: r.name, job: r.job, amount: amt,
-        at: r.cancelAt || r.auditAt, note: '员工取消接单，冻结资金全额解冻',
+        at: r.cancelAt || r.auditAt, note: fundFlowReleaseNote(r, amt, 0, amt, true),
       });
     }
   });
   // 工资条代发（不属于灵工结算）：直接扣可用余额
   [
-    { name: '张伟', amount: 1200, at: '2026-11-10 16:20:00', refId: 'PS20261110001' },
-    { name: '李静', amount: 980, at: '2026-10-10 16:05:00', refId: 'PS20261010001' },
+    { name: '张伟', amount: 1200, at: '2026-11-10 16:20:00', refId: 'PS20261110001', payAccount: FUND_ACCOUNTS[0] },
+    { name: '李静', amount: 980, at: '2026-10-10 16:05:00', refId: 'PS20261010001', payAccount: FUND_ACCOUNTS[1] },
   ].forEach(function (w) {
-    push({ type: 'wage', refType: '工资条', refId: w.refId, name: w.name, amount: w.amount, at: w.at, note: '工资条代发' });
+    push({ type: 'wage', refType: '工资条', refId: w.refId, name: w.name, payAccount: w.payAccount, amount: w.amount, at: w.at, note: '工资条代发' });
   });
   const sumOf = function (t) { return fundRound(flows.filter(f => f.type === t).reduce((s, f) => s + f.amount, 0)); };
   const sumDir = function (t, d) { return fundRound(flows.filter(f => f.type === t && f.dir === d).reduce((s, f) => s + f.amount, 0)); };
@@ -8014,6 +8084,14 @@ function fundSeed() {
       voucher: fundVoucherSvg(i + 1, isBank ? '对公回单' : '支付宝'), at: p[1], note: '',
     };
   });
+  // 支付宝充值：按 0.6% 收取手续费，充值金额 = 实际到账 / (1 - 费率)，手续费由渠道从充值金额中扣除（不入可用余额）
+  list.filter(rc => rc.status === '已支付' && rc.method === '支付宝').forEach(function (rc) {
+    const arrived = fundRound(rc.amount);
+    const amt = fundRound(arrived / (1 - FUND_ALIPAY_FEE_RATE));
+    rc.amount = amt;
+    rc.arrived = arrived;
+    rc.fee = fundRound(amt - arrived);
+  });
   // 待支付示例：不影响资金余额与累计充值
   list.push({
     id: fundRechargeNoAt('2026-11-20 11:30:45'), method: '对公转账', account: FUND_ACCOUNTS[1],
@@ -8027,6 +8105,13 @@ function fundSeed() {
     push({
       type: 'recharge', refType: '充值', refId: rc.id, amount: fundRound(rc.arrived == null ? rc.amount : rc.arrived),
       at: rc.at, note: '充值到账（' + rc.method + '），可用金额增加',
+    });
+  });
+  // 支付宝充值手续费：单独记一条，可用余额与冻结中都不变动（支付时已从充值金额中扣除）
+  list.filter(rc => rc.status === '已支付' && Number(rc.fee) > 0).forEach(function (rc) {
+    push({
+      type: 'fee', refType: '充值', refId: rc.id, amount: fundRound(rc.fee),
+      at: rc.at, note: '支付宝充值手续费（费率 0.6%），从充值金额 ' + fjMoney(rc.amount) + ' 中扣除',
     });
   });
 
@@ -8083,7 +8168,7 @@ function fundExport() {
   const n = isRc ? VM.fundRechargeFiltered.length : VM.fundFlowsFiltered.length;
   showToast('已导出 ' + n + ' 条' + (isRc ? '充值记录' : '灵工资金流水'));
 }
-function openFundRechargeDlg() { VM.fundRechargeDlg = { visible: true }; }
+function openFundRechargeDlg() { VM.fundRechargeDlg = { visible: true, method: 'alipay', amount: null }; }
 
 // ===== 工作时间：区间归一化 / 重叠校验 / 合并工时 =====
 // "HH:mm" → 当日分钟数；非法返回 -1
@@ -8651,7 +8736,7 @@ function wrFreezeApply(rows, now) {
     fundPushFlow({
       type: 'freeze', refType: '用工记录', refId: r.id, wrId: r.id,
       name: r.name, job: r.job, amount: r.frozenAmt, at: now,
-      note: '接单审核通过，按「员工单价 × 应做工时」冻结',
+      note: fundFlowFreezeNote(r),
     });
   });
   sum = fundRound(sum);
@@ -8787,32 +8872,41 @@ function wrNow() {
 }
 function wrOnSelect(rows) { VM.wrSelected = rows; }
 function wrClearSelect() { VM.wrSelected = []; if (VM.$refs.wrTable) VM.$refs.wrTable.clearSelection(); }
-// 接单审核模块的步骤（与结算审核共用同一套 ap 流程样式）
-function wrApplySteps(row) {
+// 审核记录内容：与商户端小程序「审核记录」保持一致——只展示当前审核状态 / 审核人 / 审核时间 / 驳回理由 / 状态说明
+function wrLogCard(row) {
   const r = row || {};
-  const out = [{ title: '员工提交接单', who: r.name || '员工', time: r.applyAt || '', state: '已提交', cls: 'ok', done: true }];
-  (r.auditRounds || []).forEach(function (a) {
-    if (a.result === 'reject') {
-      out.push({ title: '接单审核驳回', who: a.auditor || '商户', time: a.time || '', state: '已驳回', cls: 'fail', done: true, reject: true,
-        note: a.reason ? '驳回理由：' + a.reason : '' });
-      if (a.resubmitAt) out.push({ title: '员工重新提交接单', who: r.name || '员工', time: a.resubmitAt, state: '已提交', cls: 'ok', done: true });
-    } else if (a.result === 'pass') {
-      out.push({ title: '接单审核通过', who: a.auditor || '商户', time: a.time || '', state: '已通过', cls: 'ok', done: true,
-        note: '通过后按「员工单价 × 应做工时」冻结资金' });
-    }
-  });
-  // 延长工期记录：紧跟审核通过之后，按发生时间排列
-  (r.extendLogs || []).forEach(function (e) {
-    out.push({ title: '延长工期', who: '商户', time: e.time || '', state: '已延长', cls: 'ok', done: true,
-      note: '延长 ' + e.days + ' 天工期，追加冻结 ' + fjMoney(e.amount) });
-  });
-  if (r.status === '已取消') {
-    out.push({ title: '员工取消接单', who: r.name || '员工', time: r.cancelAt || '', state: '已取消', cls: 'wait', done: true,
-      note: '员工自行取消，该笔用工不再生效' });
-  } else if (r.status === '待审核') {
-    out.push({ title: '等待商户审核', who: '待处理', time: '', state: '待审核', cls: 'wait', note: '建议 24 小时内处理，通过后冻结资金' });
+  const rounds = r.auditRounds || [];
+  const lastOf = function (kind) {
+    const arr = rounds.filter(function (a) { return a.result === kind; });
+    return arr[arr.length - 1] || null;
+  };
+  if (r.status === '审核驳回') {
+    const a = lastOf('reject') || {};
+    return {
+      state: 'rej', label: '审核驳回', showRows: true,
+      who: a.auditor || r.auditor || '—',
+      time: a.time || r.auditAt || '',
+      reason: a.reason || r.rejectReason || '未填写理由',
+      tip: '',
+    };
   }
-  return out;
+  if (r.status === '审核通过') {
+    const a = lastOf('pass') || {};
+    return {
+      state: 'ok', label: '审核通过', showRows: true,
+      who: a.auditor || r.auditor || '—',
+      time: a.time || r.auditAt || '',
+      reason: '', tip: '',
+    };
+  }
+  if (r.status === '已取消') {
+    const audited = !!(r.auditAt || lastOf('pass'));
+    return {
+      state: 'cancel', label: '已取消', showRows: false, who: '', time: '', reason: '',
+      tip: audited ? '审核通过后员工取消接单' : '员工在审核前取消接单',
+    };
+  }
+  return { state: 'wait', label: '待审核', showRows: false, who: '', time: '', reason: '', tip: '员工已提交接单，等待商户审核' };
 }
 function wrTabChange() {
   VM.wrPage = 1;
@@ -8854,9 +8948,9 @@ function wrConfirmEnd() {
   showToast('已结束用工，生成结算单 ' + fjMoney(r.actualAmount) + (added ? '，可在列表中结算审核' : ''));
   VM.$nextTick(() => relayoutTables());
 }
-// 审核记录：接单审核 / 结算审核两个模块上下展示，统一用同一套流程样式
+// 审核记录：内容与商户端小程序「审核记录」一致（状态卡片）
 function wrOpenLog(row) {
-  VM.wrLog = { visible: true, row: row };
+  VM.wrLog = { visible: true, row: row, card: wrLogCard(row) };
 }
 function wrOpenAudit(row) {
   const rows = Array.isArray(row) ? row : [row];
@@ -8909,7 +9003,7 @@ function stRowFromWr(r) {
     // 结算单自身冻结额（按本单覆盖日期计，已扣商业险），支持同一记录拆成多张结算单
     frozenAmt: wrFreezeAmount(r), releasedAmt: 0,
     submitAt: r.submittedAt,
-    status: '待审核', auditedAt: '', auditedBy: '', paidAt: '', paidBy: '', payNote: '', settleNote: '',
+    status: '待审核', auditedAt: '', auditedBy: '', paidAt: '', paidBy: '', payAccount: '', payNote: '', settleNote: '',
     auditRounds: [],
     photoDays: Number(r.photoDays || r.days || 0),
   };
@@ -8938,13 +9032,13 @@ function stInit(rows) {
       rounds: [{ result: 'pass', auditor: '朱轩均', time: '2026-11-18 11:12:03' }] },
     { name: '董伟', status: '待打款', auditedAt: '2026-11-18 14:36:28', auditedBy: '测试2号', amount: 621,
       rounds: [{ result: 'pass', auditor: '测试2号', time: '2026-11-18 14:36:28' }] },
-    { name: '陈志强', status: '已结算', auditedAt: '2026-11-17 09:12:33', auditedBy: '测试2号', paidAt: '2026-11-17 09:12:33', paidBy: '测试2号',
+    { name: '陈志强', status: '已结算', auditedAt: '2026-11-17 09:12:33', auditedBy: '测试2号', paidAt: '2026-11-17 09:12:33', paidBy: '测试2号', payAccount: FUND_ACCOUNTS[0],
       rounds: [
         { result: 'reject', auditor: '测试2号', time: '2026-11-16 20:20:11', reason: '完工照片不清晰，请重新上传', resubmitAt: '2026-11-17 08:40:00' },
         { result: 'pass', auditor: '测试2号', time: '2026-11-17 09:12:33' },
         { result: 'pay', auditor: '测试2号', time: '2026-11-17 09:12:33' },
       ] },
-    { name: '高雪', status: '已结算', auditedAt: '2026-11-17 10:05:08', auditedBy: '王秋玲', paidAt: '2026-11-17 10:05:08', paidBy: '王秋玲',
+    { name: '高雪', status: '已结算', auditedAt: '2026-11-17 10:05:08', auditedBy: '王秋玲', paidAt: '2026-11-17 10:05:08', paidBy: '王秋玲', payAccount: FUND_ACCOUNTS[1],
       rounds: [
         { result: 'pass', auditor: '王秋玲', time: '2026-11-17 10:05:08' },
         { result: 'pay', auditor: '王秋玲', time: '2026-11-17 10:05:08' },
@@ -8959,7 +9053,7 @@ function stInit(rows) {
     const t = list.find(s => s.name === p.name);
     if (!t) return;
     t.status = p.status; t.auditedAt = p.auditedAt || ''; t.auditedBy = p.auditedBy || '';
-    t.paidAt = p.paidAt || ''; t.paidBy = p.paidBy || '';
+    t.paidAt = p.paidAt || ''; t.paidBy = p.paidBy || ''; t.payAccount = p.payAccount || '';
     if (p.amount != null) t.amount = fundRound(p.amount);   // 允许演示数据指定结算金额（低于冻结额即产生退回金额）
     t.auditRounds = p.rounds.map(a => Object.assign({}, a));
     // 已结算记录：总冻结已结清，记录剩余冻结归零（退回额 = 本单冻结 − 结算金额）
@@ -8991,6 +9085,7 @@ function stInit(rows) {
       submitAt: o.submitAt || '', status: status,
       auditedAt: o.auditedAt || '', auditedBy: o.auditedBy || '',
       paidAt: o.paidAt || '', paidBy: o.paidBy || '',
+      payAccount: o.payAccount || (status === '已结算' ? FUND_ACCOUNTS[0] : ''),
       payNote: o.payNote || '', settleNote: o.settleNote || '',
       auditRounds: (o.rounds || []).map(a => Object.assign({}, a)), photoDays: 0,
     };
@@ -9202,16 +9297,17 @@ function stSubmitPay() {
   st.status = '已结算';
   st.paidAt = now;
   st.paidBy = who;
+  st.payAccount = a.account;
   st.payNote = String(a.note || '').trim();
   // 资金处理：结算金额从冻结中划转给员工（不回可用余额）；差额解冻回可用余额，单独记一条
   VM.fjFrozen = Math.max(0, fundRound(VM.fjFrozen - st.amount));
   fundPushFlow({
     type: 'release', dir: 'settle', refType: '结算单', refId: st.id, wrId: st.wrId,
-    name: st.name, job: st.job, amount: st.amount, at: now,
-    note: '结算打款，冻结资金转付员工（打款账户：' + a.account + '）',
+    name: st.name, job: st.job, payAccount: a.account, amount: st.amount, at: now,
+    note: fundFlowSettleNote(st),
   });
   if (back > 0) {
-    wrRelease(wr, back, '结算打款，结算金额低于冻结额，差额解冻', now);
+    wrRelease(wr, back, fundFlowReleaseNote(st, stFrozen, st.amount, back), now);
     st.releasedAmt = fundRound((Number(st.releasedAmt) || 0) + back);
   }
   // 记录总冻结额扣减本张结算单覆盖部分（剩余日期仍保留冻结，供后续结算）
@@ -9346,7 +9442,7 @@ function wrSubmitExtend() {
   fundPushFlow({
     type: 'freeze', refType: '用工记录', refId: r.id, wrId: r.id,
     name: r.name, job: r.job, amount: add, at: now,
-    note: '延长工期 ' + picked.length + ' 天（' + picked.join('、') + '），按「员工单价 × 延长工时」追加冻结',
+    note: fundFlowFreezeNote(r, true),
   });
   r.actualQty = null;                          // 清空核定值，按延长后的工期重算
   r.actualQty = wrActualQty(r);
@@ -9428,16 +9524,17 @@ function wrSubmitBatchPay() {
     st.status = '已结算';
     st.paidAt = now;
     st.paidBy = who;
+    st.payAccount = a.account;
     st.payNote = '批量打款';
     VM.fjFrozen = Math.max(0, fundRound(VM.fjFrozen - amount));
     fundPushFlow({
       type: 'release', dir: 'settle', refType: '结算单', refId: st.id, wrId: st.wrId,
-      name: st.name, job: st.job, amount: amount, at: now,
-      note: '批量打款，冻结资金转付员工（打款账户：' + a.account + '）',
+      name: st.name, job: st.job, payAccount: a.account, amount: amount, at: now,
+      note: fundFlowSettleNote(st),
     });
     const back = fundRound(frozen - released - amount);
     if (back > 0) {
-      wrRelease(r, back, '批量打款，结算金额低于冻结额，差额解冻', now);
+      wrRelease(r, back, fundFlowReleaseNote(st, frozen, amount, back), now);
       st.releasedAmt = fundRound((Number(st.releasedAmt) || 0) + back);
       backSum = fundRound(backSum + back);
     }
@@ -15027,10 +15124,10 @@ const FN_BRIDGE = {
   wrOpenBatchPay, wrSendPayCode, wrSendPayCodeSingle, wrSubmitBatchPay, wrStopPayTimer, wrStopPayTimerFor,
   wrOpenStLog, wrStLogOpText, wrSettlePickAll, wrSettlePickNone, wrEstimatedTotal, wrPaidStAmountOf, wrPendingSettleAmount,
   fundTabChange, fundSearch, fundReset, fundExport, openFundRechargeDlg, fundFlowKindLabel, fundFlowKindCls, fundFlowStateLabel, fundFlowStateCls, fundFlowRoute, openFundFlowDetail, fundFlowChainTitle,
-  fundFlowParty,
+  fundFlowParty, fundFlowPayAccount, fundFlowAmountSign, fundFlowAmountCls,
   rowStOf, rowStStatus, rowStLabel, rowStCls, wrDetailFlow, fsStateIcon,
   wrRefundAmt, wrFreezeAmount, wrExtendCalc,
-  wrApplySteps, wrStatusCode, wrStatusLabel, wrStatusCls, wrStatusReason, wrWorkLabel, wrWorkCls, wrAuditLabel, wrAuditCls, wrDoneTime, wrFlowNow, fsShortTime, fsNodeTitle,
+  wrStatusCode, wrStatusLabel, wrStatusCls, wrStatusReason, wrWorkLabel, wrWorkCls, wrAuditLabel, wrAuditCls, wrDoneTime, wrFlowNow, fsShortTime, fsNodeTitle,
   wrQtyUnit, wrQtyText, wrCanEnd, wrOpenEnd, wrConfirmEnd, wrCanExtend, wrCanExtendInSettle, wrOpenExtend, wrSubmitExtend,
   wrCanSettle, wrOpenSettle, wrSubmitSettle, wrSettlePickChange, stFrozenOf, stReleasedOf, stBackOf, stRejectReason, stDisplayStatus,
   stCls, stPlanQtyText, stActualQtyText, stDateText, stDateFull, stDateTip, stPhotoSvg, stPhotoGroups,
@@ -15524,7 +15621,7 @@ var VM = new Vue({
     fundTab: 'recharge',
     fundRecharge: [], fundFlows: [],
     fundMethods: FUND_METHODS, fundAccounts: FUND_ACCOUNTS, fundFlowKinds: FUND_FLOW_KINDS, fundFlowStates: FUND_FLOW_STATES,
-    fundRechargeDlg: { visible: false }, fjBankAcct: FJ_BANK_ACCT, kfQrSrc: fundKfQrSvg(),
+    fundRechargeDlg: { visible: false, method: 'alipay', amount: null }, fjBankAcct: FJ_BANK_ACCT, kfQrSrc: fundKfQrSvg(),
     fundFlowDetail: { visible: false, row: {}, chain: [], sum: { freeze: 0, settle: 0, back: 0, frozen: 0 }, status: '', wr: {} },
     fundRechargeFilter: fundBlankRechargeFilter(), fundRechargeQuery: fundBlankRechargeFilter(),
     fundFlowFilter: fundBlankFlowFilter(), fundFlowQuery: fundBlankFlowFilter(), fundFlowPickerOptions: fundFlowRangeShortcuts(),
@@ -15549,7 +15646,7 @@ var VM = new Vue({
     wrDetail: { visible: false, row: {} },
     // 详情页签：完工记录 / 结算记录 / 延期记录
     wrDtlTab: 'done',
-    wrLog: { visible: false, row: {} },
+    wrLog: { visible: false, row: {}, card: {} },
     // 结算记录（待结算打款页签）：按结算单展示操作人 / 时间 / 金额
     wrStLog: { visible: false, row: {} },
     wrAudit: { visible: false, mode: 'pass', rows: [], reason: '', batch: false },
@@ -15974,21 +16071,25 @@ var VM = new Vue({
       return this.fundRechargeFiltered.slice(s, s + this.fundRechargePageSize);
     },
     fundRechargeTotal() {
+      // 充值金额口径（含支付宝手续费）：对账公式 = 可用 + 冻结中 + 支出（灵工/发薪/手续费）
       return fundRound(this.fundRecharge.filter(r => r.status === '已支付')
-        .reduce((s, r) => s + Number(r.arrived == null ? r.amount : r.arrived), 0));
+        .reduce((s, r) => s + Number(r.amount || 0), 0));
     },
+    // 支付宝充值：手续费 0.6%，实际到账 = 充值金额 - 手续费
+    fundRcFee() { return fundRound((Number(this.fundRechargeDlg.amount) || 0) * FUND_ALIPAY_FEE_RATE); },
+    fundRcArrived() { return fundRound((Number(this.fundRechargeDlg.amount) || 0) - this.fundRcFee); },
     fundFlowsFiltered() {
       const q = this.fundFlowQuery;
-      return this.fundFlows.filter(r => {
+      const list = this.fundFlows.filter(r => {
         if (q.kind) {
           const isLf = r.type === 'freeze' || r.type === 'release' || r.type === 'pay';
           if (q.kind === 'lf' && !isLf) return false;
           if (q.kind === 'recharge' && r.type !== 'recharge') return false;
+          if (q.kind === 'fee' && r.type !== 'fee') return false;
           if (q.kind === 'wage' && r.type !== 'wage') return false;
         }
         if (q.state) {
-          const st = r.type === 'freeze' ? 'freeze' : ((r.type === 'release' || r.type === 'pay') ? 'unfreeze' : '');
-          if (st !== q.state) return false;
+          if (fundFlowStateKey(r) !== q.state) return false;
         }
         if (q.ref && String(r.id).indexOf(q.ref) < 0) return false;
         if (q.name && String(r.name || '').indexOf(q.name) < 0 && fundFlowParty(r).indexOf(q.name) < 0) return false;
@@ -16001,6 +16102,17 @@ var VM = new Vue({
         const t = String(b.at).localeCompare(String(a.at));
         return t !== 0 ? t : String(a.id).localeCompare(String(b.id));
       });
+      // 不限类型浏览时：各类别最新一条置顶，保证第一页每种类型（灵工/充值/手续费/发薪）都至少出现 1 条
+      const noKind = !q.kind && !q.state && !q.ref && !q.name && !(q.range && q.range.length === 2 && q.range[0]);
+      if (noKind) {
+        const seen = {}, head = [], rest = [];
+        list.forEach(function (f) {
+          const k = fundFlowKindCls(f);
+          if (!seen[k]) { seen[k] = 1; head.push(f); } else rest.push(f);
+        });
+        return head.concat(rest);
+      }
+      return list;
     },
     fundFlowRows() {
       const s = (this.fundFlowPage - 1) * this.fundFlowPageSize;
