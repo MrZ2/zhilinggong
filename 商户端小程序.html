@@ -4667,9 +4667,13 @@ document.getElementById('fjKw').oninput = e => { fjFilter.kw = e.target.value.tr
 const WR_PAY_DEMO_CODE = '123456';
 const WR_PAGE_SIZE = 10;
 const WR_PAY_ACCOUNTS = [
-    '深圳唯臻人力资源有限公司（招商银行 7559****2210）',
-    '深圳唯臻供应链管理有限公司（工商银行 4000****8866）',
-    '支付宝企业账户（zhilingong@alipay.com）',
+    '小程序钱包',
+];
+// 打款协议：小程序钱包打款需同时选择一份结算协议（多选一，必选）
+const WR_PAY_AGREEMENTS = [
+    '《小程序钱包支付服务协议》',
+    '《灵活用工结算服务协议》',
+    '《代发薪资授权协议》',
 ];
 
 /* ---------- 岗位 / 种子（与后台 WR_SEED 同源） ---------- */
@@ -5904,7 +5908,7 @@ function wrOpenPay(rows) {
     const total = fundRound(list.reduce((s, x) => s + fundRound(x.st.amount), 0));
     const refund = fundRound(list.reduce((s, x) => s + stBackOf(x.st), 0));
     const single = list.length === 1;
-    let mode = 'pass', account = '', code = '', note = '', reason = '', left = 0;
+    let mode = 'pass', account = '', agreement = '', code = '', note = '', reason = '', left = 0;
     const el = document.getElementById('wrSheet');
     const render = () => {
         el.innerHTML = `<div class="sb-hd"><b>${single ? '结算打款' : '批量打款'}</b><span class="x" data-close>✕</span></div>
@@ -5918,8 +5922,10 @@ function wrOpenPay(rows) {
                     <div class="mb-row"><span>${single ? '打款金额' : '打款金额合计'}</span><b>${fjMoney(total)}</b></div>
                     <div class="mb-row"><span>${single ? '退回金额' : '退回金额合计'}</span><b style="color:var(--green)">${fjMoney(refund)}</b></div>
                 </div>
-                <div class="frow"><label>打款账户</label><select class="fsel" id="wpAccount"><option value="">请选择打款账户</option>${
+                <div class="frow"><label><span class="req">*</span>打款账户</label><select class="fsel" id="wpAccount"><option value="">请选择打款账户</option>${
                     WR_PAY_ACCOUNTS.map(a => `<option ${account === a ? 'selected' : ''}>${wrTxt(a)}</option>`).join('')}</select></div>
+                <div class="frow"><label><span class="req">*</span>打款协议</label><select class="fsel" id="wpAgreement"><option value="">请选择打款协议</option>${
+                    WR_PAY_AGREEMENTS.map(a => `<option ${agreement === a ? 'selected' : ''}>${wrTxt(a)}</option>`).join('')}</select></div>
                 <div class="frow"><label>短信验证码</label><div class="wr-sms">
                     <input class="fin" id="wpCode" maxlength="6" inputmode="numeric" placeholder="请输入 6 位验证码" value="${wrTxt(code)}">
                     <span class="mini-btn" id="wpSend">${left > 0 ? left + 's 后重发' : '获取验证码'}</span></div>
@@ -5941,6 +5947,8 @@ function wrOpenPay(rows) {
         });
         const acc = el.querySelector('#wpAccount');
         if (acc) acc.onchange = () => { account = acc.value; };
+        const agr = el.querySelector('#wpAgreement');
+        if (agr) agr.onchange = () => { agreement = agr.value; };
         const codeEl = el.querySelector('#wpCode');
         if (codeEl) codeEl.oninput = () => { code = codeEl.value.trim(); };
         const noteEl = el.querySelector('#wpNote');
@@ -5970,15 +5978,16 @@ function wrOpenPay(rows) {
                 return;
             }
             if (!account) { toast('请选择打款账户'); return; }
+            if (!agreement) { toast('请选择打款协议'); return; }
             if (code !== WR_PAY_DEMO_CODE) { toast('短信验证码不正确（演示验证码 123456）'); return; }
             hideSheet(); wrStopPayTimer();
-            wrSubmitPay(list, account, note.trim());
+            wrSubmitPay(list, account, note.trim(), agreement);
         };
     };
     render();
     showSheet(el);
 }
-function wrSubmitPay(list, account, note) {
+function wrSubmitPay(list, account, note, agreement) {
     const now = wrNow();
     let paid = 0, backSum = 0, cnt = 0;
     list.forEach(x => {
@@ -5989,13 +5998,15 @@ function wrSubmitPay(list, account, note) {
         st.status = '已结算';
         st.paidAt = now;
         st.paidBy = ME;
+        st.payAccount = account || '';
+        st.payAgreement = agreement || '';
         st.payNote = note || (list.length > 1 ? '批量打款' : '');
         st.releasedAmt = fundRound(released + back);
         fjFrozen = Math.max(0, fundRound(fjFrozen - amount - back));
         fjBal = fundRound(fjBal + back);
         r.frozenAmt = Math.max(0, fundRound((r.frozenAmt != null ? Number(r.frozenAmt) : wrFreezeAmount(r)) - frozen));
-        st.auditRounds.push({ result: 'pay', auditor: ME, time: now });
-        fundPush({ type: 'release', dir: 'settle', wrId: r.id, name: r.name, job: r.job, amount: amount, at: now, note: '结算打款（' + account + '）' });
+        st.auditRounds.push({ result: 'pay', auditor: ME, time: now, agreement: agreement || '' });
+        fundPush({ type: 'release', dir: 'settle', wrId: r.id, name: r.name, job: r.job, amount: amount, at: now, note: '结算打款（' + account + (agreement ? ' · ' + agreement : '') + '）' });
         if (back > 0) fundPush({ type: 'release', dir: 'back', wrId: r.id, name: r.name, job: r.job, amount: back, at: now, note: '结算金额低于冻结额，差额解冻' });
         paid = fundRound(paid + amount);
         backSum = fundRound(backSum + back);
