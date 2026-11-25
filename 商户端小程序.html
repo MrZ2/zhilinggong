@@ -730,6 +730,34 @@
         .wr-op:last-child { border-bottom: none; }
         .wr-op span { margin-left: auto; color: #C0C4CC; }
         .dsec > h4 .tip { font-size: 11px; font-weight: 500; color: var(--sub); margin-left: 4px; }
+
+        /* 灵工岗位详情 */
+        .fjd-hero { margin: 12px; padding: 14px; border-radius: 16px; background: #fff; border: 1px solid var(--line); }
+        .fjd-hero .hd { display: flex; align-items: flex-start; gap: 8px; }
+        .fjd-hero .nm { font-size: 19px; font-weight: 800; line-height: 1.3; flex: 1; min-width: 0; }
+        .fjd-hero .tags { flex: none; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 55%; }
+        .fjd-hero .tags .atag { white-space: nowrap; }
+        .fjd-hero .cli { font-size: 12.5px; color: var(--sub); margin-top: 6px; line-height: 1.5; }
+        .fjd-hero .pay { display: flex; align-items: baseline; gap: 6px; margin-top: 12px; }
+        .fjd-hero .pay b { font-size: 27px; font-weight: 800; color: var(--red); line-height: 1; font-variant-numeric: tabular-nums; }
+        .fjd-hero .pay span { font-size: 12.5px; color: var(--sub); }
+        .fjd-hero .pay .need { margin-left: auto; font-size: 12px; color: var(--text); background: var(--fill); border-radius: 8px; padding: 4px 9px; }
+        .fjd-hero .need b { color: var(--blue); font-weight: 800; }
+        .fjd-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .fjd-chips .c { font-size: 11.5px; color: #4A4F58; background: var(--fill); border-radius: 7px; padding: 4px 9px; }
+        .fjd-chips .c b { font-weight: 700; color: var(--text); }
+        .fjd-media { display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+        .fjd-media .m { position: relative; flex: none; width: 100px; height: 74px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #F7F8FA; }
+        .fjd-media .m img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .fjd-media .m .cv { position: absolute; left: 5px; top: 5px; font-size: 10px; font-weight: 700; color: #fff; background: rgba(0,0,0,.5); border-radius: 5px; padding: 1px 6px; }
+        .fjd-media .m.vid { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px; font-size: 11px; color: var(--sub); }
+        .fjd-media .m.vid i { font-size: 20px; font-style: normal; }
+        .fjd-line { display: flex; align-items: baseline; gap: 8px; font-size: 13px; padding: 7px 0; line-height: 1.6; }
+        .fjd-line + .fjd-line { border-top: 1px solid #F6F7F9; }
+        .fjd-line .k { flex: none; width: 74px; color: var(--sub); font-size: 12.5px; }
+        .fjd-line .v { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+        .fjd-line .r { flex: none; font-size: 11.5px; font-weight: 700; color: var(--blue); background: var(--blue-light); border-radius: 6px; padding: 2px 7px; }
+        .fjd-intro { font-size: 13px; line-height: 1.8; color: #333; white-space: pre-wrap; overflow-wrap: anywhere; }
     </style>
 </head>
 <body>
@@ -3988,6 +4016,19 @@ const FJ_JOBS = [
       tags: ['包住', '工作轻松'], images: [], videos: [],
       on: false, audit: '审核通过', auditor: '朱轩均', rejectReason: '', publisher: '朱轩均', created: '2026-10-25 08:37', draft: false },
 ];
+/* 详情页轮播图演示素材：内联 SVG，避免依赖外链图片 */
+function fjPh(c1, c2, label) {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240">'
+        + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs>'
+        + '<rect width="320" height="240" fill="url(#g)"/>'
+        + '<circle cx="252" cy="52" r="34" fill="#fff" opacity=".35"/>'
+        + '<rect x="24" y="148" width="120" height="10" rx="5" fill="#fff" opacity=".5"/>'
+        + '<text x="24" y="204" font-family="sans-serif" font-size="19" fill="#2C3A55" opacity=".72">' + label + '</text></svg>';
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+FJ_JOBS[0].images = [fjPh('#DCE8FF', '#9FBFFF', '车间实拍 1'), fjPh('#E3F6EC', '#9ADDBB', '车间实拍 2'), fjPh('#FFF1DE', '#FFD09A', '宿舍环境')];
+FJ_JOBS[0].videos = ['车间环境.mp4'];
+FJ_JOBS[4].images = [fjPh('#E7ECFF', '#A9B8FF', '焊工工位'), fjPh('#FDE9E6', '#F7B4AC', '防护装备')];
 
 let fjIdSeq = 100, fjAgreed = false, fjAgreeSkipped = false;
 const fjFilter = { kw: '', client: '', audit: '', shelf: '' };
@@ -4012,17 +4053,6 @@ function fjWorkDays(f) {
     if (!r[0] || !r[1]) return 0;
     const d = Math.round((new Date(r[1] + 'T00:00:00') - new Date(r[0] + 'T00:00:00')) / 86400000) + 1;
     return d > 0 ? d : 0;
-}
-function fjDailyHours(f) {
-    let h = 0;
-    (f.workTimes || []).forEach(t => {
-        if (!t.start || !t.end) return;
-        const a = t.start.split(':').map(Number), b = t.end.split(':').map(Number);
-        let m = (b[0] * 60 + b[1]) - (a[0] * 60 + a[1]);
-        if (m < 0) m += 24 * 60;      // 跨天班次
-        h += m / 60;
-    });
-    return Math.round(h * 100) / 100;
 }
 /* ---------- 列表 ---------- */
 function fjMatch() {
@@ -4125,30 +4155,57 @@ function openFjDetail(id) { fjDetailId = id; renderFjDetail(); pushView('view-fj
 function renderFjDetail() {
     const r = findFj(fjDetailId);
     if (!r) return;
+    const days = fjWorkDays(r);
+    const shifts = (r.workTimes || []).filter(t => t.start && t.end);
+    // 工作时间只显示时段，多个时段用分号隔开；跨天班次标「次日」
+    const shiftText = shifts.map(t => esc(t.start) + ' ~ ' + esc(t.end) + (t.end <= t.start ? '（次日）' : '')).join('；');
+    const imgs = r.images || [], vids = r.videos || [];
+    const imgHtml = imgs.map((u, i) => `<div class="m"><img src="${u}" alt="岗位图片 ${i + 1}">${i === 0 ? '<span class="cv">封面</span>' : ''}</div>`).join('');
+    const vidHtml = vids.map(() => '<div class="m vid"><i>▶</i>岗位视频</div>').join('');
+    const headcount = (r.headcount === '' || r.headcount == null) ? 0 : Number(r.headcount);
+    const clock = !r.clockRange ? '' : (r.clockRange === '不限范围' ? '不限打卡范围' : r.clockRange.replace(/\s+$/, '') + '内可打卡');
     document.getElementById('fjdBody').innerHTML = `
-        <div class="dsec"><h4>岗位信息</h4>
-            ${kv('岗位名称', `<b>${esc(r.name)}</b>`)}
-            ${kv('审核状态', `<span class="atag ${FJ_AUDIT_CLS[r.audit] || 'a-other'}">${r.audit}</span>`)}
-            ${kv('上下架', r.on ? '已上架' : '未上架')}
-            ${kv('用工单位', esc(r.client))}
-            ${kv('用人单位', esc(r.employer || '—'))}
-            ${kv('用工日期', esc(fjDateText(r)))}
-            ${kv('需求人数', esc(fjHeadText(r)))}
-            ${kv('性别 / 年龄', `${esc(fjGenderText(r))} · ${esc(fjAgeText(r))}`)}
-            ${kv('员工单价', `<b style="color:var(--red)">${esc(fjPriceText(r))}</b>`)}
-            ${kv('商业险', r.insurance ? r.insurance + ' 元/天' : '—')}
-            ${kv('工作时间', esc(fjTimeText(r)))}
-            ${kv('工作地址', esc(r.address || '—'))}
-            ${kv('打卡范围', esc(r.clockRange || '—'))}
-            ${kv('岗位标签', (r.tags || []).length ? r.tags.map(t => `<span class="chip">${esc(t)}</span>`).join(' ') : '—')}
-            ${kv('发布人', esc(r.publisher))}
-            ${kv('创建时间', esc(r.created))}
-            ${kv('审核人', r.auditor || '—')}
-            ${r.rejectReason ? kv('驳回理由', `<span style="color:var(--red)">${esc(r.rejectReason)}</span>`) : ''}
+    <div class="fjd-hero">
+        <div class="hd">
+            <div class="nm">${esc(r.name)}</div>
+            <div class="tags">
+                <span class="atag ${FJ_AUDIT_CLS[r.audit] || 'a-other'}">${esc(r.audit)}</span>
+                <span class="atag ${r.on ? 'a-normal' : 'a-cancel'}">${r.on ? '已上架' : '未上架'}</span>
+            </div>
         </div>
-        <div class="dsec"><h4>岗位说明</h4><div style="font-size:13px;line-height:1.75">${esc(r.intro) || '<span class="mut">暂无</span>'}</div></div>
-        ${(r.images || []).length ? `<div class="dsec"><h4>轮播图</h4><div class="pic-grid">${r.images.map(u => `<div class="pic"><img src="${u}"></div>`).join('')}</div></div>` : ''}
-        `;
+        <div class="cli">${esc(r.client)}</div>
+        <div class="pay">
+            <b>${r.price === '' || r.price == null ? '—' : esc(r.price)}</b>
+            <span>${esc(fjUnit(r.priceType))} · ${esc(r.priceType)}</span>
+            <span class="need">需求 <b>${headcount || '—'}</b> 人</span>
+        </div>
+        <div class="fjd-chips">
+            <span class="c">${esc(fjGenderText(r))}</span>
+            <span class="c">${esc(fjAgeText(r))}</span>
+            ${days ? `<span class="c">共 <b>${days}</b> 天</span>` : ''}
+        </div>
+        ${(r.tags || []).length ? `<div class="fjd-chips" style="margin-top:6px">${r.tags.slice(0, 5).map(t => `<span class="c">${esc(t)}</span>`).join('')}</div>` : ''}
+    </div>
+    ${r.rejectReason ? `<div class="dsec"><div class="log-reason" style="margin-top:0"><span>驳回理由</span>${esc(r.rejectReason)}</div></div>` : ''}
+    ${(imgs.length || vids.length) ? `<div class="dsec"><h4>轮播图 / 视频</h4>
+        ${imgs.length ? `<div class="fjd-media">${imgHtml}</div>` : ''}
+        ${vids.length ? `<div class="fjd-media"${imgs.length ? ' style="margin-top:8px"' : ''}>${vidHtml}</div>` : ''}</div>` : ''}
+    <div class="dsec"><h4>用工安排</h4>
+        <div class="fjd-line"><span class="k">用工日期</span><span class="v">${esc(fjDateText(r))}</span>${days ? `<span class="r">共 ${days} 天</span>` : ''}</div>
+        ${shifts.length ? `<div class="fjd-line"><span class="k">工作时间</span><span class="v">${shiftText}</span></div>` : ''}
+        <div class="fjd-line"><span class="k">工作地址</span><span class="v">${esc(r.address || '—')}</span></div>
+        ${clock ? `<div class="fjd-line"><span class="k">打卡范围</span><span class="v">${esc(clock)}</span></div>` : ''}
+    </div>
+    <div class="dsec"><h4>薪资信息</h4>
+        <div class="fjd-line"><span class="k">员工单价</span><span class="v"><b style="color:var(--red);font-size:15px">${r.price === '' || r.price == null ? '—' : esc(r.price)}</b> ${esc(fjUnit(r.priceType))}</span></div>
+        <div class="fjd-line"><span class="k">商业险</span><span class="v">${r.insurance ? esc(r.insurance) + ' 元/天' : '<span class="mut">未购买</span>'}</span></div>
+    </div>
+    <div class="dsec"><h4>岗位说明</h4><div class="fjd-intro">${r.intro ? esc(r.intro) : '<span class="mut">暂无岗位说明</span>'}</div></div>
+    <div class="dsec"><h4>发布信息</h4>
+        ${kv('发布人', esc(r.publisher || '—'))}
+        ${kv('创建时间', esc(r.created || '—'))}
+    </div>
+    `;
     document.getElementById('fjdDel').style.display = fjCanDelete(r) ? '' : 'none';
     document.getElementById('fjdEdit').style.display = fjCanEdit(r) ? '' : 'none';
     document.getElementById('fjdRevoke').style.display = fjCanRevoke(r) ? '' : 'none';
@@ -4315,7 +4372,7 @@ function renderFjForm() {
             <div class="hint">支持 mp4 / avi / wmv / flv，仅 1 个</div>
         </div>
 
-        <div class="dsec"><h4>单价信息<span class="tip">发布时按单价预扣岗位工资</span></h4>
+        <div class="dsec"><h4>单价信息<span class="tip">接单审核通过时按员工工资冻结</span></h4>
             <div class="frow" data-req="price"><label><span class="req">*</span>员工单价</label>
                 <div class="fcs">
                     <span class="fc ${f.priceType === '时薪' ? 'on' : ''}" data-act="pricetype" data-v="时薪">时薪</span>
@@ -4328,7 +4385,7 @@ function renderFjForm() {
             </div>
             <div class="frow"><label>商业险</label>
                 <div class="f2"><input class="fin" data-f="insurance" inputmode="decimal" placeholder="请输入商业险" value="${esc(f.insurance)}"><span class="u">元/天</span></div>
-                <div class="hint">选填，按用工天数计入成本</div>
+                <div class="hint">选填，按实际用工天数随工资结算</div>
             </div>
         </div>
 
