@@ -5157,25 +5157,25 @@
 
     <el-form v-else :model="fundFlowFilter" class="wr-filter search-form" size="small" label-width="76px" @submit.native.prevent>
       <el-row :gutter="12">
-        <el-col :span="8"><el-form-item label="类型">
+        <el-col :span="6"><el-form-item label="类型">
           <el-select v-model="fundFlowFilter.kind" placeholder="全部" clearable>
             <el-option v-for="t in fundFlowKinds" :key="t.value" :label="t.label" :value="t.value"></el-option>
           </el-select>
         </el-form-item></el-col>
-        <el-col :span="8"><el-form-item label="资金状态">
+        <el-col :span="6"><el-form-item label="资金状态">
           <el-select v-model="fundFlowFilter.state" placeholder="全部" clearable>
             <el-option v-for="t in fundFlowStates" :key="t.value" :label="t.label" :value="t.value"></el-option>
           </el-select>
         </el-form-item></el-col>
-        <el-col :span="8"><el-form-item label="关联对象">
-          <el-input v-model="fundFlowFilter.name" placeholder="员工姓名 / 商户账户" clearable @keyup.enter.native="fundSearch"></el-input>
+        <el-col :span="6"><el-form-item label="收款方">
+          <el-input v-model="fundFlowFilter.name" placeholder="员工姓名 / 商户账户 / 平台" clearable @keyup.enter.native="fundSearch"></el-input>
+        </el-form-item></el-col>
+        <el-col :span="6"><el-form-item label="流水号">
+          <el-input v-model="fundFlowFilter.ref" placeholder="请输入流水号" clearable @keyup.enter.native="fundSearch"></el-input>
         </el-form-item></el-col>
       </el-row>
       <el-row :gutter="12">
-        <el-col :span="8"><el-form-item label="流水号">
-          <el-input v-model="fundFlowFilter.ref" placeholder="请输入流水号" clearable @keyup.enter.native="fundSearch"></el-input>
-        </el-form-item></el-col>
-        <el-col :span="8"><el-form-item label="时间">
+        <el-col :span="6"><el-form-item label="时间">
           <el-date-picker v-model="fundFlowFilter.range" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" unlink-panels :picker-options="fundFlowPickerOptions"></el-date-picker>
         </el-form-item></el-col>
       </el-row>
@@ -5190,40 +5190,40 @@
     </div>
 
     <el-table v-if="fundTab === 'recharge'" :data="fundRechargeRows" border stripe size="mini" row-key="id" empty-text="没有符合条件的充值记录" style="width:100%">
-      <el-table-column label="流水号" width="150">
+      <el-table-column label="流水号" width="140">
         <template slot-scope="{ row }"><span class="fund-no">{{ row.id }}</span></template>
       </el-table-column>
-      <el-table-column label="付款方式" width="90">
+      <el-table-column label="付款方式" width="84">
         <template slot-scope="{ row }">{{ row.method }}</template>
       </el-table-column>
-      <el-table-column label="付款账户" prop="account" min-width="160" show-overflow-tooltip></el-table-column>
-      <el-table-column label="充值金额" width="112" align="right">
+      <el-table-column label="付款账户" prop="account" min-width="150" show-overflow-tooltip></el-table-column>
+      <el-table-column label="充值金额" width="106" align="right">
         <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.amount) }}</span></template>
       </el-table-column>
-      <el-table-column label="实际到账" width="112" align="right">
+      <el-table-column label="实际到账" width="106" align="right">
         <template slot-scope="{ row }">
           <span class="fund-money" :class="{ in: row.arrived != null }">{{ row.arrived != null ? fjMoney(row.arrived) : '—' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手续费" width="92" align="right">
+      <el-table-column label="手续费" width="84" align="right">
         <template slot-scope="{ row }">
           <span v-if="row.fee != null" class="fund-money out">-{{ fjMoney(row.fee) }}</span>
           <span v-else class="fund-voucher-none">—</span>
         </template>
       </el-table-column>
-      <el-table-column label="支付状态" width="88" align="center">
+      <el-table-column label="支付状态" width="82" align="center">
         <template slot-scope="{ row }"><span class="wr-tag" :class="row.status === '已支付' ? 'pass' : 'wait'">{{ row.status }}</span></template>
       </el-table-column>
-      <el-table-column label="充值凭证" width="88" align="center">
+      <el-table-column label="充值凭证" width="80" align="center">
         <template slot-scope="{ row }">
           <el-image v-if="row.voucher" :src="row.voucher" :preview-src-list="[row.voucher]" fit="cover" style="width:38px;height:38px;border-radius:4px;border:1px solid var(--ad-border-secondary);cursor:zoom-in"></el-image>
           <span v-else class="fund-voucher-none">—</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" min-width="170" show-overflow-tooltip>
+      <el-table-column label="备注" min-width="140" show-overflow-tooltip>
         <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
       </el-table-column>
-      <el-table-column label="充值时间" min-width="150">
+      <el-table-column label="充值时间" min-width="140">
         <template slot-scope="{ row }">
           <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
         </template>
@@ -5231,37 +5231,37 @@
     </el-table>
 
     <el-table v-else :data="fundFlowRows" border stripe size="mini" row-key="id" empty-text="没有符合条件的资金流水" style="width:100%">
-      <el-table-column label="流水号" width="150">
+      <el-table-column label="流水号" width="146">
         <template slot-scope="{ row }"><span class="fund-no">{{ row.id }}</span></template>
       </el-table-column>
-      <el-table-column label="类型" width="84" align="center">
+      <el-table-column label="类型" width="78" align="center">
         <template slot-scope="{ row }"><span class="fund-type-text" :class="fundFlowKindCls(row)">{{ fundFlowKindLabel(row) }}</span></template>
       </el-table-column>
-      <el-table-column label="资金状态" width="84" align="center">
+      <el-table-column label="资金状态" width="78" align="center">
         <template slot-scope="{ row }">
           <span v-if="fundFlowStateLabel(row) !== '—'" class="fund-state-text" :class="fundFlowStateCls(row)">{{ fundFlowStateLabel(row) }}</span>
           <span v-else class="fund-dim">—</span>
         </template>
       </el-table-column>
-      <el-table-column label="收款方" width="130">
+      <el-table-column label="收款方" width="118">
         <template slot-scope="{ row }"><span class="fund-party-n">{{ fundFlowParty(row) }}</span></template>
       </el-table-column>
-      <el-table-column label="金额" width="126" align="right">
+      <el-table-column label="金额" width="120" align="right">
         <template slot-scope="{ row }"><span class="fund-money" :class="fundFlowAmountCls(row)">{{ fundFlowAmountSign(row) }}{{ fjMoney(row.amount) }}</span></template>
       </el-table-column>
-      <el-table-column label="资金流向" width="140">
+      <el-table-column label="资金流向" width="126">
         <template slot-scope="{ row }"><span class="fund-route">{{ fundFlowRoute(row) }}</span></template>
       </el-table-column>
-      <el-table-column label="可用余额" width="110" align="right">
+      <el-table-column label="可用余额" width="104" align="right">
         <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.balanceAfter) }}</span></template>
       </el-table-column>
-      <el-table-column label="冻结中" width="100" align="right">
+      <el-table-column label="冻结中" width="96" align="right">
         <template slot-scope="{ row }"><span class="fund-money muted">{{ fjMoney(row.frozenAfter) }}</span></template>
       </el-table-column>
-      <el-table-column label="备注" min-width="200" show-overflow-tooltip>
+      <el-table-column label="备注" min-width="140" show-overflow-tooltip>
         <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
       </el-table-column>
-      <el-table-column label="时间" width="150">
+      <el-table-column label="时间" width="144">
         <template slot-scope="{ row }">
           <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
         </template>
@@ -16102,15 +16102,38 @@ var VM = new Vue({
         const t = String(b.at).localeCompare(String(a.at));
         return t !== 0 ? t : String(a.id).localeCompare(String(b.id));
       });
-      // 不限类型浏览时：各类别最新一条置顶，保证第一页每种类型（灵工/充值/手续费/发薪）都至少出现 1 条
+      // 不限类型浏览时：第一页补入各类别最新一条，保证「灵工/充值/手续费/发薪」都能在第一页看到
       const noKind = !q.kind && !q.state && !q.ref && !q.name && !(q.range && q.range.length === 2 && q.range[0]);
-      if (noKind) {
-        const seen = {}, head = [], rest = [];
-        list.forEach(function (f) {
-          const k = fundFlowKindCls(f);
-          if (!seen[k]) { seen[k] = 1; head.push(f); } else rest.push(f);
+      if (noKind && list.length) {
+        const P = this.fundFlowPageSize || 10;
+        const head = list.slice(0, P), tail = list.slice(P);
+        const kindOf = f => fundFlowKindCls(f);
+        const headHas = k => head.some(f => kindOf(f) === k);
+        const kinds = [], inj = [];
+        list.forEach(f => { const k = kindOf(f); if (kinds.indexOf(k) < 0) kinds.push(k); });
+        kinds.forEach(function (k) {
+          if (headHas(k)) return;
+          const ci = tail.findIndex(f => kindOf(f) === k);
+          if (ci < 0) return;
+          // 从第一页末尾往前替换一条「同类出现多次」的行，既补齐类型又不打断整体时间倒序
+          for (let i = head.length - 1; i >= 0; i--) {
+            const kk = kindOf(head[i]);
+            if (head.filter(f => kindOf(f) === kk).length > 1) {
+              const displaced = head[i];
+              head[i] = tail[ci];
+              tail[ci] = displaced;
+              inj.push(i);
+              break;
+            }
+          }
         });
-        return head.concat(rest);
+        // 补进来的几行按时间倒序排好，避免第一页底部出现时间乱序
+        if (inj.length > 1) {
+          const s0 = Math.min.apply(null, inj);
+          const sub = head.slice(s0).sort((a, b) => String(b.at).localeCompare(String(a.at)));
+          head.splice(s0, sub.length, ...sub);
+        }
+        return head.concat(tail);
       }
       return list;
     },
