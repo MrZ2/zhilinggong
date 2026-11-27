@@ -282,7 +282,9 @@
     /* ===== 通用复刻页（GEN_PAGES 驱动） ===== */
     #genPage .gen-filter { margin-bottom: 4px; }
     #genPage .gen-num { display: flex; align-items: center; gap: 8px; }
-    #genPage .gen-unit { font-size: 12px; color: var(--ad-text-2); }
+    /* 弹框 append-to-body，单位后缀的样式不能只挂在 #genPage 下 */
+    #genPage .gen-num-wrap, .gen-dlg .gen-num-wrap { display: flex; align-items: center; gap: 8px; }
+    #genPage .gen-unit, .gen-dlg .gen-unit { font-size: 12px; color: var(--ad-text-2); }
     #genPage .gen-link { color: var(--ad-primary); cursor: pointer; }
     #genPage .gen-money { font-variant-numeric: tabular-nums; font-weight: 500; }
     #genPage .gen-calc { height: 30px; line-height: 30px; font-weight: 600; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
@@ -306,9 +308,44 @@
     .gen-drawer .gd-svc-row + .gd-svc-row { border-top: 1px solid var(--ad-border-2); }
     .gen-drawer .gd-svc-name { color: var(--ad-text-1); }
     .gen-drawer .gd-svc-qty { color: var(--ad-text-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    /* 员工个税抽屉：年份筛选 + 年度汇总卡 + 记录表 */
+    .emp-tax-drawer .emp-sub-gap { margin-left: 14px; }
+    .emp-tax-drawer .emp-year-bar { display: flex; align-items: center; gap: 10px; padding: 12px 0 14px; }
+    .emp-tax-drawer .emp-year-label { font-size: 13px; color: var(--ad-text-2); }
+    .emp-tax-drawer .emp-year-tip { font-size: 12px; color: var(--ad-text-3); }
+    .emp-tax-drawer .emp-sum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 6px; }
+    .emp-tax-drawer .emp-sum-card { position: relative; padding: 12px 14px; border: 1px solid var(--ad-border-2);
+      border-radius: var(--ad-radius); background: var(--ad-fill-2); }
+    .emp-tax-drawer .emp-sum-card::before { content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px;
+      border-radius: 2px; background: var(--ad-primary); }
+    .emp-tax-drawer .emp-sum-card.tax::before { background: #e6a23c; }
+    .emp-tax-drawer .emp-sum-card.net::before { background: #67c23a; }
+    .emp-tax-drawer .emp-sum-card span { display: block; font-size: 12px; color: var(--ad-text-3); }
+    .emp-tax-drawer .emp-sum-card b { display: block; margin: 5px 0 4px; font-size: 18px; color: var(--ad-text-1);
+      font-variant-numeric: tabular-nums; }
+    .emp-tax-drawer .emp-sum-card small { display: block; font-size: 11px; color: var(--ad-text-4); }
+    .emp-tax-drawer .emp-tax-amt { color: #e6a23c; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .emp-tax-drawer .el-table { font-size: 12px; }
+    .emp-tax-drawer .emp-pager { display: flex; justify-content: flex-end; padding: 12px 0 2px; }
     #genPage .gen-stats { display: flex; flex-wrap: wrap; gap: 28px; padding: 10px 14px; margin-bottom: 12px;
       background: var(--ad-fill-2); border-radius: var(--ad-radius); font-size: 12px; color: var(--ad-text-2); }
     #genPage .gen-stats b { margin-left: 6px; font-size: 15px; color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    /* 卡片式统计（statsCards）：数值分层更清楚，色条区分口径 */
+    #genPage .gen-stats-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px; margin-bottom: 14px; }
+    #genPage .gsc { position: relative; padding: 14px 16px 13px; background: var(--ad-fill-2);
+      border: 1px solid var(--ad-border-2); border-radius: var(--ad-radius); }
+    #genPage .gsc::before { content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px;
+      border-radius: 0 2px 2px 0; background: var(--ad-primary); }
+    #genPage .gsc-label { display: block; font-size: 12px; color: var(--ad-text-3); }
+    #genPage .gsc-value { display: block; margin-top: 7px; font-size: 20px; font-weight: 600; line-height: 1.2;
+      color: var(--ad-text-1); font-variant-numeric: tabular-nums; }
+    #genPage .gsc-sub { display: block; margin-top: 4px; font-size: 11px; color: var(--ad-text-4); }
+    #genPage .gsc-tax::before { background: #e6a23c; }
+    #genPage .gsc-net::before { background: #67c23a; }
+    #genPage .gsc-count::before { background: #909399; }
+    @media (max-width: 1200px) { #genPage .gen-stats-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    #genPage .gen-page-tip { margin: 0 0 14px; }
     #genPage .gen-img { display: inline-block; width: 34px; height: 24px; line-height: 24px; text-align: center;
       border: 1px solid var(--ad-border); border-radius: 3px; font-size: 11px; color: var(--ad-text-2); background: var(--ad-fill-1); }
     #genPage .gen-img.empty { color: var(--ad-text-4); background: transparent; border-style: dashed; }
@@ -349,6 +386,13 @@
     #genPage .gen-req-y { color: #00b578; }
     #genPage .gen-req-n { color: var(--ad-error); }
     .gen-dlg .gen-star { color: var(--ad-error); margin-right: 4px; }
+    /* 弹框是 append-to-body，上传框样式不能只挂在 #genPage 下 */
+    .gen-dlg .gen-upload { display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; width: 88px; height: 88px; border: 1px dashed var(--ad-border); border-radius: var(--ad-radius);
+      font-size: 12px; color: var(--ad-text-3); cursor: pointer; }
+    .gen-dlg .gen-upload:hover { border-color: var(--ad-primary); color: var(--ad-primary); }
+    .gen-dlg .gen-up-done { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; color: var(--ad-text-2); }
+    .gen-dlg .gen-up-done .gen-up-name { max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .gen-dlg .gen-pair { display: flex; align-items: center; gap: 8px; }
     .gen-dlg .gen-dsw-row { display: flex; align-items: center; gap: 10px; }
     .gen-dlg .gen-dsw-row .el-button--text { padding: 0; }
@@ -812,8 +856,19 @@
       <el-tab-pane v-for="(t, ti) in gen.tabs" :key="ti" :name="String(ti)" :label="t"></el-tab-pane>
     </el-tabs>
 
-    <div class="gen-stats" v-if="genStats.length">
+    <el-alert v-if="genView.pageTip" class="gen-page-tip" type="info" :closable="false" show-icon
+              :title="genView.pageTip"></el-alert>
+
+    <!-- 统计条：默认紧凑一行；页面配 statsCards 时改成卡片式（个税记录用） -->
+    <div class="gen-stats" v-if="genStats.length && !genView.statsCards">
       <span v-for="s in genStats" :key="s.l" class="gen-stat">{{ s.l }}<b>{{ s.v }}</b></span>
+    </div>
+    <div class="gen-stats-cards" v-else-if="genStats.length">
+      <div class="gsc" v-for="s in genStats" :key="s.l" :class="'gsc-' + (s.tone || 'default')">
+        <span class="gsc-label">{{ s.l }}</span>
+        <b class="gsc-value">{{ s.v }}</b>
+        <small v-if="s.sub" class="gsc-sub">{{ s.sub }}</small>
+      </div>
     </div>
 
     <!-- 日历：法定假日 -->
@@ -859,7 +914,7 @@
             <el-form-item :label="f.l">
               <el-input v-if="f.k === 'i'" v-model="genForm[fi]" :placeholder="'请输入' + f.l" clearable @keyup.enter.native="genSearch"></el-input>
               <el-select v-else-if="f.k === 's'" v-model="genForm[fi]" placeholder="全部" clearable style="width:100%">
-                <el-option v-for="o in f.o" :key="o" :label="o" :value="o"></el-option>
+                <el-option v-for="o in genFilterOpts(f)" :key="o" :label="o" :value="o"></el-option>
               </el-select>
               <el-date-picker v-else-if="f.k === 'd'" v-model="genForm[fi]" type="daterange" value-format="yyyy-MM-dd"
                               range-separator="~" start-placeholder="开始日期" end-placeholder="结束日期" unlink-panels style="width:100%"></el-date-picker>
@@ -869,10 +924,12 @@
         <div class="search-foot"><el-button type="primary" @click="genSearch">查询</el-button><el-button @click="genReset">重置</el-button></div>
       </el-form>
 
-      <div class="toolbar" v-if="genView.add || genView.export">
+      <div class="toolbar" v-if="genView.add || genView.export || genView.toolbarExtra">
         <el-button v-if="genView.add" type="primary" size="small" icon="el-icon-plus" @click="genOpenDlg(null, false)">{{ genView.add }}</el-button>
         <el-button v-if="genView.export" size="small" icon="el-icon-download" @click="genSaveTabs('导出任务已创建，请到「导出记录」下载')">{{ genView.export }}</el-button>
-        <span class="tag-count-tip">共 {{ genFiltered.length }} 条</span>
+        <el-button v-if="genView.toolbarExtra === 'distGenerateSettlements'" size="small" type="primary" plain
+                   icon="el-icon-tickets" @click="distGenerateSettlements">生成结算单</el-button>
+        <span class="tag-count-tip" v-if="!genView.hideCountTip">共 {{ genFiltered.length }} 条</span>
       </div>
 
       <el-table :data="genView.type === 'tree' ? genAll : genPageRows" border size="mini" :row-key="genView.rowKey || '_i'"
@@ -884,7 +941,8 @@
             <el-switch v-if="col.k === 'sw'" :value="row[col.p]" @change="genSwitch(row, col, $event)"></el-switch>
             <el-tag v-else-if="col.k === 'tag'" size="mini" effect="plain" :type="genTagType(col, row)">{{ row[col.p] }}</el-tag>
             <span v-else-if="col.k === 'money'" class="gen-money">{{ moneyText(row[col.p]) }}</span>
-            <span v-else-if="col.k === 'link'" class="gen-link">{{ row[col.p] }}</span>
+            <span v-else-if="col.k === 'percent'">{{ row[col.p] }}%</span>
+            <span v-else-if="col.k === 'link'" class="gen-link" @click="onLinkClick(col, row)">{{ row[col.p] }}</span>
             <span v-else-if="col.k === 'img'" class="gen-img" :class="{ empty: !row[col.p] }">{{ row[col.p] || '—' }}</span>
             <template v-else-if="col.k === 'attach'">
               <el-image v-if="row.fileUrl" class="gen-thumb" :src="row.fileUrl" :preview-src-list="[row.fileUrl]" fit="cover"></el-image>
@@ -920,7 +978,11 @@
         <el-input v-if="it.k === 'i'" v-model="genDlgForm[ii]" :placeholder="it.ph || ('请输入' + it.l)" :maxlength="it.max" :show-word-limit="!!it.max"></el-input>
         <el-input v-else-if="it.k === 'p'" v-model="genDlgForm[ii]" type="password" show-password :placeholder="'请输入' + it.l"></el-input>
         <el-input v-else-if="it.k === 'a'" v-model="genDlgForm[ii]" type="textarea" :rows="2" :placeholder="it.ph || ('请输入' + it.l)"></el-input>
-        <el-input-number v-else-if="it.k === 'n'" v-model="genDlgForm[ii]" :min="0" controls-position="right" style="width:100%"></el-input-number>
+        <div v-else-if="it.k === 'n'" class="gen-num-wrap">
+          <el-input-number v-model="genDlgForm[ii]" :min="it.min == null ? 0 : it.min" :max="it.max"
+                           :disabled="!!it.readonly" controls-position="right" style="width:100%"></el-input-number>
+          <span v-if="it.u" class="gen-unit">{{ it.u }}</span>
+        </div>
         <el-select v-else-if="it.k === 's'" v-model="genDlgForm[ii]" :placeholder="'请选择' + it.l" style="width:100%"
                    :multiple="!!it.multi" :collapse-tags="!!it.multi" :filterable="!!it.multi" @change="genDlgChange(ii)">
           <el-option v-for="o in genDlgOpts(it)" :key="o" :label="it.lab ? it.lab(o) : o" :value="o"></el-option>
@@ -1033,6 +1095,77 @@
       </div>
     </div>
   </el-drawer>
+
+  <!-- 员工个税抽屉：点个税记录里的员工姓名打开，按年份看总收入与全部个税 -->
+  <el-drawer :visible.sync="empDlg.visible" size="620px" :with-header="false" append-to-body
+             custom-class="gen-drawer emp-tax-drawer">
+    <div class="gd" v-if="empDlg.emp">
+      <div class="gd-head">
+        <div class="gd-title">{{ empDlg.emp }}</div>
+        <div class="gd-sub">
+          <span v-if="empProfile.idCard">身份证：{{ empProfile.idCard }}</span>
+          <span v-if="empProfile.mob" class="emp-sub-gap">手机号：{{ empProfile.mob }}</span>
+        </div>
+      </div>
+      <div class="gd-body">
+        <!-- 年份筛选 -->
+        <div class="emp-year-bar">
+          <span class="emp-year-label">支出年份</span>
+          <el-select v-model="empYear" size="small" style="width:130px" @change="empYear = $event">
+            <el-option v-for="y in empYearOptions" :key="y" :label="y + ' 年'" :value="y"></el-option>
+          </el-select>
+          <span class="emp-year-tip">共 {{ empSummary.count }} 笔个税记录</span>
+        </div>
+
+        <!-- 年度汇总 -->
+        <div class="emp-sum">
+          <div class="emp-sum-card">
+            <span>年度总收入</span>
+            <b>{{ moneyText(empSummary.gross) }}</b>
+            <small>结算金额合计（税前）</small>
+          </div>
+          <div class="emp-sum-card tax">
+            <span>个税合计</span>
+            <b>{{ moneyText(empSummary.tax) }}</b>
+          </div>
+          <div class="emp-sum-card net">
+            <span>实发合计</span>
+            <b>{{ moneyText(empSummary.net) }}</b>
+            <small>已扣税后到账</small>
+          </div>
+        </div>
+
+        <!-- 全部个税记录 -->
+        <div class="gd-sec">
+          <div class="gd-sec-title">个税记录（{{ empSummary.year }}）</div>
+          <el-table :data="empTaxPageRows" border size="mini" empty-text="该年份暂无个税记录" style="width:100%">
+            <el-table-column prop="period" label="结算月份" width="92"></el-table-column>
+            <el-table-column label="结算金额" width="94" align="right">
+              <template slot-scope="{ row }"><span class="gen-money">{{ moneyText(row.gross) }}</span></template>
+            </el-table-column>
+            <el-table-column label="税率" width="52" align="right">
+              <template slot-scope="{ row }">{{ row.rate }}%</template>
+            </el-table-column>
+            <el-table-column label="个税金额" width="92" align="right">
+              <template slot-scope="{ row }"><span class="emp-tax-amt">{{ moneyText(row.tax) }}</span></template>
+            </el-table-column>
+            <el-table-column label="实发金额" width="94" align="right">
+              <template slot-scope="{ row }"><span class="gen-money">{{ moneyText(row.net) }}</span></template>
+            </el-table-column>
+            <el-table-column prop="paidAt" label="扣缴时间" width="146"></el-table-column>
+          </el-table>
+          <div class="emp-pager" v-if="empTaxFiltered.length">
+            <el-pagination background small layout="total, sizes, prev, pager, next"
+                           :total="empTaxFiltered.length" :page-size.sync="empPageSize"
+                           :current-page.sync="empPage" :page-sizes="[5, 10, 20]"></el-pagination>
+          </div>
+        </div>
+      </div>
+      <div class="gd-foot">
+        <el-button size="small" @click="closeEmpTax">关闭</el-button>
+      </div>
+    </div>
+  </el-drawer>
 </div>
 
 <!-- ===== 通用占位页 ===== -->
@@ -1113,6 +1246,13 @@ const SIDE_MENU = [
   ]},
   { title: '灵活用工', icon: 'el-icon-s-flag',  slug: 'flex',    items: [
     { name: '服务协议', slug: 'flex/service-agreement' },
+    { name: '个税记录', slug: 'flex/tax-record' },
+  ]},
+  { title: '分销管理', icon: 'el-icon-s-promotion', slug: 'distribution', items: [
+    { name: '分销员管理', slug: 'distribution/agents' },
+    { name: '客户管理',   slug: 'distribution/customers' },
+    { name: '分销订单',   slug: 'distribution/orders' },
+    { name: '结算与开票', slug: 'distribution/settlements' },
   ]},
   { title: '财务管理', icon: 'el-icon-money',   slug: 'finance', items: [
     { name: '开票管理',   slug: 'finance/invoice'  },
@@ -1134,7 +1274,8 @@ const GEN_SLUGS = [
   'merchant/contract-tpl', 'merchant/fulltime-job', 'merchant/flex-job', 'merchant/sensitive-word',
   'merchant/apply', 'merchant/user', 'merchant/employer', 'merchant/contract', 'merchant/order',
   'ops/nav', 'ops/banner', 'ops/job-type', 'ops/points', 'ops/faq', 'ops/notice', 'ops/news',
-  'flex/service-agreement',
+  'flex/service-agreement', 'flex/tax-record',
+  'distribution/agents', 'distribution/customers', 'distribution/orders', 'distribution/settlements',
   'finance/invoice', 'finance/internet', 'finance/record', 'finance/withdraw', 'finance/funds',
 ];
 const ROUTE_PAGES  = { 'system/version': 'version', 'ops/price': 'sitePrice', 'merchant/list': 'merchants' };   // 手写页，其余已复刻菜单落通用页
@@ -2095,6 +2236,98 @@ const MODEL_LIST = [
     url: 'https://open.bigmodel.cn/api/paas/v4', key: 'zp-3c8e****7710', on: true,
     remark: '', created: '2026-09-15 09:18:03' },
 ];
+// 系统管理 / 收款管理：收款渠道账户，手续费比例按百分比存（0.6 即 0.6%），列表与弹框同源
+const PAYMENT_ROWS = [
+  { id: 4, name: '测试-深圳辉煌达人力-微信', type: '微信', account: '8888****1234', bank: '微信支付商户平台',
+    reqUrl: 'https://api.mch.weixin.qq.com/v3/pay', appId: 'wx9f2a4c1b7e', appKey: 'ak-3c1e****9d20',
+    appPub: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A', notifyUrl: 'https://api.zhilinggong.com/pay/wx/notify',
+    feeRate: 0.6, sort: 1, on: true, icon: 'wx.png', remark: '', created: '2025-11-08 15:41:50' },
+  { id: 5, name: '测试-深圳辉煌达人力-支付宝', type: '支付宝', account: '2088****6612', bank: '支付宝开放平台',
+    reqUrl: 'https://openapi.alipay.com/gateway.do', appId: '2021002f6a8b', appKey: 'ak-71bd****8e02',
+    appPub: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ9', notifyUrl: 'https://api.zhilinggong.com/pay/ali/notify',
+    feeRate: 0.6, sort: 2, on: true, icon: 'ali.png', remark: '', created: '2025-11-08 15:42:22' },
+  { id: 6, name: '深圳市辉煌达人力资源管理有限公司', type: '对公账户', account: '6225 **** **** 0188',
+    bank: '招商银行深圳分行', reqUrl: '', appId: '', appKey: '', appPub: '', notifyUrl: '',
+    feeRate: 0.2, sort: 3, on: true, icon: '', remark: '', created: '2025-11-08 15:43:03' },
+];
+// 灵活用工 / 个税记录：每笔灵工结算扣缴的个税，按员工 + 结算单逐笔留痕。
+// gross 为结算金额（税前），tax 为本次扣缴个税，net = gross - tax；year 用于员工侧按年汇总。
+const FLEX_TAX_ROWS = [
+  { id: 12, no: 'GS202611260012', emp: '陈志强', gender: '男', idCard: '440301199003152718', mob: '13822162216',
+    mch: '深圳市辉煌达人力资源管理有限公司', job: '普工/操作工', settleNo: 'JS202611-0812',
+    gross: 8600, tax: 258, net: 8342, rate: 3,
+    period: '2026-11', paidAt: '2026-11-26 10:12:38', year: '2026', remark: '' },
+  { id: 11, no: 'GS202611250011', emp: '刘美玲', gender: '女', idCard: '430102199508224826', mob: '13590338846',
+    mch: '东莞市金铢人力资源服务有限公司', job: '装配工', settleNo: 'JS202611-0790',
+    gross: 12400, tax: 744, net: 11656, rate: 6,
+    period: '2026-11', paidAt: '2026-11-25 15:40:07', year: '2026', remark: '' },
+  { id: 10, no: 'GS202611240010', emp: '王建国', gender: '男', idCard: '441900198711083735', mob: '13744885520',
+    mch: '深圳市辉煌达人力资源管理有限公司', job: '仓储分拣', settleNo: 'JS202611-0766',
+    gross: 9800, tax: 294, net: 9506, rate: 3,
+    period: '2026-11', paidAt: '2026-11-24 09:05:51', year: '2026', remark: '' },
+  { id: 9, no: 'GS202611200009', emp: '陈志强', gender: '男', idCard: '440301199003152718', mob: '13822162216',
+    mch: '深圳市辉煌达人力资源管理有限公司', job: '普工/操作工', settleNo: 'JS202611-0655',
+    gross: 9200, tax: 276, net: 8924, rate: 3,
+    period: '2026-11', paidAt: '2026-11-20 11:33:20', year: '2026', remark: '' },
+  { id: 8, no: 'GS202611180008', emp: '赵小燕', gender: '女', idCard: '320505199902275621', mob: '13922766418',
+    mch: '苏州锦程企业服务有限公司', job: '客服专员', settleNo: 'JS202611-0601',
+    gross: 7600, tax: 78, net: 7522, rate: 1,
+    period: '2026-11', paidAt: '2026-11-18 14:22:45', year: '2026', remark: '当月累计未超 3.6 万，按 1% 预扣' },
+  { id: 7, no: 'GS202610280007', emp: '陈志强', gender: '男', idCard: '440301199003152718', mob: '13822162216',
+    mch: '深圳市辉煌达人力资源管理有限公司', job: '普工/操作工', settleNo: 'JS202610-0520',
+    gross: 8800, tax: 264, net: 8536, rate: 3,
+    period: '2026-10', paidAt: '2026-10-28 16:08:12', year: '2026', remark: '' },
+  { id: 6, no: 'GS202610260006', emp: '刘美玲', gender: '女', idCard: '430102199508224826', mob: '13590338846',
+    mch: '东莞市金铢人力资源服务有限公司', job: '装配工', settleNo: 'JS202610-0501',
+    gross: 11800, tax: 708, net: 11092, rate: 6,
+    period: '2026-10', paidAt: '2026-10-26 10:55:33', year: '2026', remark: '' },
+  { id: 5, no: 'GS202609250005', emp: '孙浩然', gender: '男', idCard: '410105199601120954', mob: '13177529937',
+    mch: '郑州千禄企业管理有限公司', job: '物流配送', settleNo: 'JS202609-0388',
+    gross: 6400, tax: 64, net: 6336, rate: 1,
+    period: '2026-09', paidAt: '2026-09-25 13:19:04', year: '2026', remark: '' },
+  { id: 4, no: 'GS202609120004', emp: '陈志强', gender: '男', idCard: '440301199003152718', mob: '13822162216',
+    mch: '深圳市辉煌达人力资源管理有限公司', job: '普工/操作工', settleNo: 'JS202609-0341',
+    gross: 8400, tax: 252, net: 8148, rate: 3,
+    period: '2026-09', paidAt: '2026-09-12 09:47:26', year: '2026', remark: '' },
+  { id: 3, no: 'GS202512200003', emp: '陈志强', gender: '男', idCard: '440301199003152718', mob: '13822162216',
+    mch: '深圳市辉煌达人力资源管理有限公司', job: '普工/操作工', settleNo: 'JS202512-0918',
+    gross: 8000, tax: 240, net: 7760, rate: 3,
+    period: '2025-12', paidAt: '2025-12-20 15:02:11', year: '2025', remark: '' },
+  { id: 2, no: 'GS202512150002', emp: '刘美玲', gender: '女', idCard: '430102199508224826', mob: '13590338846',
+    mch: '东莞市金铢人力资源服务有限公司', job: '装配工', settleNo: 'JS202512-0902',
+    gross: 10200, tax: 612, net: 9588, rate: 6,
+    period: '2025-12', paidAt: '2025-12-15 11:26:49', year: '2025', remark: '' },
+  { id: 1, no: 'GS202511280001', emp: '赵小燕', gender: '女', idCard: '320505199902275621', mob: '13922766418',
+    mch: '苏州锦程企业服务有限公司', job: '客服专员', settleNo: 'JS202511-0871',
+    gross: 7200, tax: 72, net: 7128, rate: 1,
+    period: '2025-11', paidAt: '2025-11-28 10:14:03', year: '2025', remark: '' },
+];
+// 总后台分销模块：示例数据使用独立数组，订单成交价与分销底价分别留存，差额用于结算核对。
+// 分销折扣为「底价占官方价的百分比」，底价 = 官方价 × 折扣 / 100。
+const DIST_AGENT_ROWS = [
+  { id: 2, name: '深圳弘远数字科技有限公司', subjectType: '企业', creditCode: '91440300MA5F000002', legalName: '王弘', contact: '王琳', mobile: '13800002681', email: 'sales@hongyuan.example', bankName: '招商银行深圳分行', accountName: '深圳弘远数字科技有限公司', bankAccount: '6225 **** **** 0188', contractNo: 'FX-2026-008', contractFrom: '2026-08-12', contractTo: '2027-08-11', contractFile: '分销合作协议-深圳弘远.pdf', on: true, discount: 80, customerCount: 2, orderCount: 2, created: '2026-08-12 10:20:00', remark: '华南区域合作伙伴' },
+  { id: 1, name: '武汉智联人力资源服务有限公司', subjectType: '企业', creditCode: '91420100MA4F000001', legalName: '周凯', contact: '周凯', mobile: '13900001825', email: 'channel@zhilian.example', bankName: '招商银行武汉分行', accountName: '武汉智联人力资源服务有限公司', bankAccount: '6225 **** **** 0256', contractNo: 'FX-2026-004', contractFrom: '2026-07-25', contractTo: '2027-07-24', contractFile: '分销合作协议-武汉智联.pdf', on: true, discount: 82, customerCount: 2, orderCount: 1, created: '2026-07-25 15:40:00', remark: '' },
+];
+const DIST_CUSTOMER_ROWS = [
+  { id: 4, name: '深圳市创科精密制造有限公司', agent: '深圳弘远数字科技有限公司', contact: '陈先生', mobile: '13600001842', status: '已成交', owner: '王琳', lastFollow: '2026-11-22', created: '2026-10-08', remark: '采购高级版' },
+  { id: 3, name: '深圳市安达物流有限公司', agent: '深圳弘远数字科技有限公司', contact: '李女士', mobile: '13700005391', status: '未成交', owner: '王琳', lastFollow: '2026-11-20', created: '2026-10-16', remark: '预计月底确认' },
+  { id: 2, name: '武汉市嘉禾餐饮管理有限公司', agent: '武汉智联人力资源服务有限公司', contact: '刘经理', mobile: '13800006470', status: '已成交', owner: '周凯', lastFollow: '2026-11-18', created: '2026-09-02', remark: '标准版续费客户' },
+  { id: 1, name: '武汉市诚达电子商务有限公司', agent: '武汉智联人力资源服务有限公司', contact: '赵女士', mobile: '13900007113', status: '未成交', owner: '周凯', lastFollow: '', created: '2026-10-30', remark: '' },
+];
+const DIST_ORDER_ROWS = [
+  { id: 3, orderNo: 'FX202611220003', agent: '深圳弘远数字科技有限公司', customer: '深圳市创科精密制造有限公司', product: '高级版·1年', listPrice: 1999, retailPrice: 2500, discount: 80, basePrice: 1599.2, margin: 900.8, operator: '超级管理员', created: '2026-11-22 16:05:18', remark: '' },
+  { id: 2, orderNo: 'FX202611180002', agent: '武汉智联人力资源服务有限公司', customer: '武汉市嘉禾餐饮管理有限公司', product: '标准版·1年', listPrice: 999, retailPrice: 1200, discount: 82, basePrice: 819.18, margin: 380.82, operator: '超级管理员', created: '2026-11-18 11:24:09', remark: '后台代录订单' },
+  { id: 1, orderNo: 'FX202611150001', agent: '深圳弘远数字科技有限公司', customer: '深圳市创科精密制造有限公司', product: '标准版·1年', listPrice: 999, retailPrice: 1100, discount: 80, basePrice: 799.2, margin: 300.8, operator: '超级管理员', created: '2026-11-15 09:40:00', remark: '' },
+];
+const DIST_SETTLEMENT_ROWS = [
+  { id: 2, settleNo: 'JS202611-002', agent: '深圳弘远数字科技有限公司', period: '2026-11', orderCount: 1, salesAmount: 2500, baseAmount: 1599.2, invoiceAmount: 900.8, orderIds: [3], invoiceNo: '', invoiceStatus: '待开票', payStatus: '待付款', created: '2026-11-24 10:00:00', paidAt: '', remark: '' },
+  { id: 1, settleNo: 'JS202610-001', agent: '武汉智联人力资源服务有限公司', period: '2026-10', orderCount: 5, salesAmount: 32400, baseAmount: 26568, invoiceAmount: 5832, invoiceNo: '25342000000123456789', invoiceType: '增值税专用发票', invoiceDate: '2026-11-03', invoiceFile: '2026-10-分销服务费发票.pdf', invoiceFileKind: 'pdf', invoiceStatus: '已通过', payStatus: '已付款', created: '2026-11-02 09:30:00', paidAt: '2026-11-06 15:20:11', remark: '已完成对公付款' },
+];
+// 分销页顶部的口径提示，按 slug 挂到通用页上（见 GEN_PAGES 各页的 pageTip）
+const DIST_PAGE_TIPS = {
+  'distribution/orders': '分销底价 = 官方价 × 分销员折扣；分销差额 = 客户成交价 − 分销底价。底价与差额自动计算并随订单保存。',
+  'distribution/settlements': '应开票差额按客户成交额减分销底价合计计算；发票审核通过后，才能确认付款。',
+};
 const GEN_PAGES = {
   // ---------- 系统管理 ----------
   'system/daily-settle': {
@@ -2165,18 +2398,25 @@ const GEN_PAGES = {
       { l: '手机号', k: 'i' }, { l: '角色', k: 's', o: ['IT', '系统管理员', '运营专员'] }, { l: '状态', k: 'r', o: ['开启', '关闭'] }] },
   },
   'system/payment': {
+    live: 'paymentList', rowKey: 'id', keyField: 'name', idKey: 'id', createdKey: 'created',
     add: '新增',
     cols: [ { l: 'ID', p: 'id', w: 80 }, { l: '名称', p: 'name', mw: 280 }, { l: '类型', p: 'type', w: 120 },
+            // 手续费比例按百分比展示，与弹框里的「手续费比例（%）」同源
+            { l: '手续费比例', p: 'feeRate', k: 'percent', w: 110, align: 'right' },
             { l: '状态', p: 'on', k: 'sw', w: 100 }, { l: '备注', p: 'remark', mw: 200 }, { l: '创建时间', p: 'created', w: 170 } ],
-    ops: ['编辑', '删除'], total: 3,
-    rows: [
-      [4, '测试-深圳辉煌达人力-微信', '微信', true, '', '2025-11-08 15:41:50'],
-      [5, '测试-深圳辉煌达人力-支付宝', '支付宝', true, '', '2025-11-08 15:42:22'],
-      [6, '深圳市辉煌达人力资源管理有限公司', '对公账户', true, '', '2025-11-08 15:43:03'],
-    ],
-    dlg: { title: '新增收款账户', w: '560px', items: [
-      { l: '名称', k: 'i' }, { l: '类型', k: 's', o: ['微信', '支付宝', '对公账户'] },
-      { l: '商户号', k: 'i' }, { l: '账号', k: 'i' }, { l: '备注', k: 'a' }, { l: '状态', k: 'r', o: ['开启', '关闭'] }] },
+    ops: ['编辑', '删除'],
+    dlg: { title: '新增', w: '600px', items: [
+      { l: '类型', k: 's', p: 'type', o: ['微信', '支付宝', '对公账户'], req: true },
+      { l: '名称', k: 'i', p: 'name', req: true },
+      { l: '账户', k: 'i', p: 'account' }, { l: '开户银行', k: 'i', p: 'bank' },
+      { l: '请求地址', k: 'i', p: 'reqUrl' }, { l: '应用编号', k: 'i', p: 'appId' },
+      { l: '应用密钥', k: 'i', p: 'appKey' }, { l: '应用公钥', k: 'i', p: 'appPub' },
+      { l: '回调地址', k: 'i', p: 'notifyUrl' },
+      { l: '手续费比例', k: 'n', p: 'feeRate', min: 0, max: 100, u: '%' },
+      { l: '排序值', k: 'n', p: 'sort', def: 1 },
+      { l: '备注', k: 'a', p: 'remark' },
+      { l: '图标', k: 'u', p: 'icon', accept: 'image/*', txt: '上传图标' }] },
+    onCreate: function () { return { on: true, feeRate: 0, sort: 1 }; },
   },
   'system/value-added': {
     live: 'vaSvc', rowKey: 'id', keyField: 'name',
@@ -2708,8 +2948,10 @@ const GEN_PAGES = {
     tabs: ['商户协议', '员工协议'],
     tabViews: [
       {
-        stats: [], ops: ['下载合同'], opsW: 104,
+        stats: [], ops: ['签署', '下载合同'], opsW: 150,
         opEnable: { '下载合同': { p: 'st', eq: '已签署' } },
+        // 商家签署完成后、平台待签时才出现「签署」；平台签完协议才算签完，可下载
+        opShow: { '签署': [ { p: 'mchSign', eq: '已签署' }, { p: 'pltSign', eq: '待签署' } ] },
         keyField: 'no', rowKey: 'no', detailTitle: '商户协议详情',
         filters: [ { l: '商户名称', k: 's', p: 'mch', o: MCH_ROWS.map(function (r) { return r.name; }) },
                    { l: '合同状态', k: 's', p: 'st', o: ['待签署', '签署中', '已签署', '已作废'] },
@@ -2757,6 +2999,204 @@ const GEN_PAGES = {
     ],
   },
 
+  // ---------- 灵活用工 / 个税记录：逐笔留痕，员工姓名可点击查看其年度收入与全部个税 ----------
+  'flex/tax-record': {
+    live: 'flexTaxList', rowKey: 'id', keyField: 'id', idKey: 'id', createdKey: 'paidAt',
+    export: '导出',
+    statsCards: true,
+    hideCountTip: true,   // 工具栏不再显示「共 N 条」，条数见统计卡
+    stats: [
+      { l: '个税笔数', tone: 'count', calc: function (rows) { return rows.length + ' 笔'; } },
+      { l: '结算金额合计（含税）', tone: 'gross', calc: function (rows) { return moneyText(rows.reduce(function (n, r) { return n + Number(r.gross || 0); }, 0)); } },
+      { l: '个税合计', tone: 'tax', calc: function (rows) { return moneyText(rows.reduce(function (n, r) { return n + Number(r.tax || 0); }, 0)); } },
+      { l: '实发合计', tone: 'net', calc: function (rows) { return moneyText(rows.reduce(function (n, r) { return n + Number(r.net || 0); }, 0)); } },
+    ],
+    filters: [
+      { l: '员工姓名', k: 'i', p: 'emp' },
+      { l: '手机号', k: 'i', p: 'mob' },
+      { l: '身份证号', k: 'i', p: 'idCard' },
+      { l: '结算月份', k: 'i', p: 'period', ph: '如 2026-11' },
+      { l: '扣缴时间', k: 'd', p: 'paidAt' },
+    ],
+    cols: [
+      { l: 'ID', p: 'id', w: 70 },
+      // emp 用 link 列：模板里渲染成蓝色可点，@click 打开员工个税抽屉
+      { l: '员工姓名', p: 'emp', k: 'link', w: 105 },
+      { l: '性别', p: 'gender', w: 70 },
+      { l: '身份证号', p: 'idCard', w: 190 },
+      { l: '手机号', p: 'mob', w: 130 },
+      { l: '结算金额', p: 'gross', k: 'money', w: 115 },
+      { l: '个税税率', p: 'rate', k: 'percent', w: 95, align: 'right' },
+      { l: '个税金额', p: 'tax', k: 'money', w: 110 },
+      { l: '实发金额', p: 'net', k: 'money', w: 115 },
+      { l: '结算月份', p: 'period', w: 100 },
+      { l: '扣缴时间', p: 'paidAt', mw: 200 },
+    ],
+  },
+
+  // ---------- 分销管理：总后台维护分销员、客户、订单及差额结算 ----------
+  'distribution/agents': {
+    live: 'distAgents', keyField: 'name', idKey: 'id', createdKey: 'created', add: '新增分销员', export: '导出',
+    stats: [
+      { l: '合作中分销员', calc: function (rows) { return rows.filter(function (r) { return r.on; }).length + ' 家'; } },
+      { l: '累计客户', calc: function (rows, vm) { return vm.distCustomers.length + ' 家'; } },
+      { l: '累计成交订单', calc: function (rows, vm) { return vm.distOrders.length + ' 笔'; } },
+    ],
+    filters: [ { l: '分销员名称', k: 'i', p: 'name' }, { l: '合作状态', k: 's', o: ['开启', '关闭'], p: 'on' }, { l: '创建时间', k: 'd', p: 'created' } ],
+    cols: [ { l: '分销员名称', p: 'name', mw: 220 }, { l: '联系人', p: 'contact', w: 110 }, { l: '联系电话', p: 'mobile', w: 130 },
+      { l: '分销折扣', p: 'discount', k: 'percent', w: 95, align: 'right' },
+      { l: '客户数', p: 'customerCount', w: 80, align: 'right' },
+      { l: '成交订单', p: 'orderCount', w: 90, align: 'right' }, { l: '合作状态', p: 'on', k: 'sw', w: 95 },
+      { l: '创建时间', p: 'created', w: 160 }, { l: '备注', p: 'remark', mw: 150 } ],
+    ops: ['编辑'], opsW: 72,
+    dlg: { title: '新增分销员', w: '560px', items: [
+      { l: '合作主体名称', p: 'name', k: 'i', req: true }, { l: '联系人', p: 'contact', k: 'i', req: true },
+      { l: '联系电话', p: 'mobile', k: 'i', req: true }, { l: '联系邮箱', p: 'email', k: 'i' },
+      { l: '分销折扣（%）', p: 'discount', k: 'n' }, { l: '备注', p: 'remark', k: 'a' },
+    ] },
+    validate: function (vm, patch) {
+      const previous = vm.genEditRow;
+      if (previous && previous.name !== patch.name && (
+        vm.distCustomers.some(function (r) { return r.agent === previous.name; }) ||
+        vm.distOrders.some(function (r) { return r.agent === previous.name; }) ||
+        vm.distSettlements.some(function (r) { return r.agent === previous.name; })
+      )) return '该分销员已有客户、订单或结算记录，不能直接修改主体名称';
+      if (Number(patch.discount) <= 0 || Number(patch.discount) >= 100) return '分销折扣需大于 0 且小于 100';
+      return '';
+    },
+    onCreate: function () { return { on: true, customerCount: 0, orderCount: 0 }; },
+    afterSave: function (vm) { distRefreshCounts(vm); },
+  },
+  'distribution/customers': {
+    live: 'distCustomers', keyField: 'name', idKey: 'id', createdKey: 'created', add: '新增客户', export: '导出',
+    filters: [ { l: '客户名称', k: 'i', p: 'name' }, { l: '所属分销员', k: 's', oRef: 'distAgentOptions', p: 'agent' },
+      { l: '客户状态', k: 's', o: ['已成交', '未成交'], p: 'status' }, { l: '登记日期', k: 'd', p: 'created' } ],
+    cols: [ { l: '客户名称', p: 'name', mw: 240 }, { l: '所属分销员', p: 'agent', mw: 220 }, { l: '联系人', p: 'contact', w: 105 },
+      { l: '联系电话', p: 'mobile', w: 130 }, { l: '客户状态', p: 'status', k: 'tag', w: 100, tagType: { '已成交': 'success', '未成交': 'info' } },
+      { l: '跟进负责人', p: 'owner', w: 110 }, { l: '最近跟进', p: 'lastFollow', w: 110 }, { l: '登记日期', p: 'created', w: 110 }, { l: '备注', p: 'remark', mw: 180 } ],
+    ops: ['编辑'], opsW: 72,
+    dlg: { title: '新增客户', w: '620px', items: [
+      { l: '客户名称', p: 'name', k: 'i', req: true }, { l: '所属分销员', p: 'agent', k: 's', oRef: 'distAgentOptions', req: true },
+      { l: '联系人', p: 'contact', k: 'i', req: true }, { l: '联系电话', p: 'mobile', k: 'i', req: true },
+      { l: '客户状态', p: 'status', k: 's', o: ['已成交', '未成交'], def: 1 },
+      { l: '跟进负责人', p: 'owner', k: 'i' }, { l: '最近跟进日期', p: 'lastFollow', k: 'dt' }, { l: '备注', p: 'remark', k: 'a' },
+    ] },
+    onCreate: function () { return { lastFollow: '' }; },
+    validate: function (vm, patch) {
+      const previous = vm.genEditRow;
+      const agent = vm.distAgents.find(function (r) { return r.name === patch.agent; });
+      if ((!previous || previous.agent !== patch.agent) && agent && !agent.on) return '该分销员已停用，不能新增或转入客户';
+      if (previous && previous.name !== patch.name && vm.distOrders.some(function (o) { return o.customer === previous.name; })) {
+        return '该客户已有分销订单，不能直接修改客户名称';
+      }
+      if (previous && previous.agent !== patch.agent && vm.distOrders.some(function (o) { return o.customer === previous.name; })) {
+        return '该客户已有分销订单，不能直接变更所属分销员';
+      }
+      return '';
+    },
+    afterSave: function (vm) { distRefreshCounts(vm); },
+  },
+  'distribution/orders': {
+    live: 'distOrders', keyField: 'orderNo', idKey: 'id', createdKey: 'created', add: '登记分销订单', export: '导出',
+    pageTip: DIST_PAGE_TIPS['distribution/orders'],
+    stats: [
+      { l: '分销订单', calc: function (rows) { return rows.length + ' 笔'; } },
+      { l: '客户成交额', calc: function (rows) { return moneyText(rows.reduce(function (n, r) { return n + Number(r.retailPrice || 0); }, 0)); } },
+      { l: '分销差额', calc: function (rows) { return moneyText(rows.reduce(function (n, r) { return n + Number(r.margin || 0); }, 0)); } },
+    ],
+    filters: [ { l: '订单编号', k: 'i', p: 'orderNo' }, { l: '分销员', k: 's', oRef: 'distAgentOptions', p: 'agent' },
+      { l: '产品/服务', k: 'i', p: 'product' }, { l: '成交时间', k: 'd', p: 'created' } ],
+    cols: [ { l: '订单编号', p: 'orderNo', w: 160 }, { l: '客户名称', p: 'customer', mw: 220 }, { l: '分销员', p: 'agent', mw: 210 },
+      { l: '产品/服务', p: 'product', w: 140 }, { l: '官方价', p: 'listPrice', k: 'money', w: 110 },
+      { l: '客户成交价', p: 'retailPrice', k: 'money', w: 120 }, { l: '分销折扣', p: 'discount', k: 'percent', w: 90 },
+      { l: '分销底价', p: 'basePrice', k: 'money', w: 115 }, { l: '分销差额', p: 'margin', k: 'money', w: 115 },
+      { l: '操作人', p: 'operator', w: 110 }, { l: '成交时间', p: 'created', w: 160 }, { l: '备注', p: 'remark', mw: 150 } ],
+    ops: ['编辑', '详情'], opsW: 112,
+    dlg: { title: '登记分销订单', w: '640px', items: [
+      { l: '所属分销员', p: 'agent', k: 's', oRef: 'distAgentOptions', req: true,
+        onChange: function (vm) { distOrderAgentChange(vm); } },
+      { l: '客户名称', p: 'customer', k: 's', o: function (vm) {
+        const ai = genDlgIndex('agent'), agentName = vm.genDlgForm[ai];
+        return vm.distCustomers.filter(function (r) { return !agentName || r.agent === agentName; }).map(function (r) { return r.name; });
+      }, req: true },
+      { l: '产品/服务', p: 'product', k: 's', o: function (vm) { return distProductOptions(vm); }, def: 0,
+        onChange: function (vm) { distFillOrderBase(vm); } },
+      { l: '官方价', p: 'listPrice', k: 'n', readonly: true },
+      { l: '客户成交价', p: 'retailPrice', k: 'n', onChange: function (vm) { distFillOrderBase(vm); } },
+      { l: '成交时折扣（%）', p: 'discount', k: 'n', readonly: true },
+      { l: '分销底价', p: 'basePrice', k: 'n', readonly: true },
+      { l: '分销差额', p: 'margin', k: 'n', readonly: true }, { l: '备注', p: 'remark', k: 'a' },
+    ] },
+    requireFields: [{ p: 'agent', l: '所属分销员' }, { p: 'customer', l: '客户名称' }, { p: 'product', l: '产品/服务' }],
+    validate: function (vm, patch) {
+      const current = vm.genEditRow;
+      const agent = vm.distAgents.find(function (r) { return r.name === patch.agent; });
+      if ((!current || current.agent !== patch.agent) && agent && !agent.on) return '该分销员已停用，不能登记新订单';
+      const customer = vm.distCustomers.find(function (r) { return r.name === patch.customer; });
+      if (customer && customer.agent !== patch.agent) return '所选客户归属分销员与订单分销员不一致';
+      if (Number(patch.retailPrice) <= 0) return '请输入有效的客户成交价';
+      if (Number(patch.retailPrice) < Number(patch.basePrice)) return '客户成交价不能低于该订单的分销底价';
+      return '';
+    },
+    afterSave: function (vm, row) {
+      row.margin = Math.round((Number(row.retailPrice) - Number(row.basePrice)) * 100) / 100;
+      const customer = vm.distCustomers.find(function (r) { return r.name === row.customer; });
+      if (customer) { customer.status = '已成交'; customer.lastFollow = nowStr().slice(0, 10); }
+      distRefreshCounts(vm);
+    },
+    onCreate: function (vm) {
+      const date = nowStr().slice(0, 10).replace(/-/g, '');
+      const next = vm.distOrders.reduce(function (max, r) {
+        const m = String(r.orderNo || '').match(new RegExp('^FX' + date + '(\\d+)$'));
+        return m ? Math.max(max, Number(m[1]) || 0) : max;
+      }, 0) + 1;
+      return { orderNo: 'FX' + date + String(next).padStart(4, '0'), operator: '超级管理员' };
+    },
+    onOpen: function (vm) { if (!vm.genEditRow) distFillOrderBase(vm); },
+  },
+  'distribution/settlements': {
+    live: 'distSettlements', keyField: 'settleNo', idKey: 'id', createdKey: 'created', add: '新增结算单', export: '导出',
+    pageTip: DIST_PAGE_TIPS['distribution/settlements'],
+    toolbarExtra: 'distGenerateSettlements',
+    stats: [
+      { l: '待开票金额', calc: function (rows) { return moneyText(rows.filter(function (r) { return ['待开票', '待审核', '已驳回'].indexOf(r.invoiceStatus) >= 0; }).reduce(function (n, r) { return n + Number(r.invoiceAmount || 0); }, 0)); } },
+      { l: '待付款金额', calc: function (rows) { return moneyText(rows.filter(function (r) { return r.invoiceStatus === '已通过' && r.payStatus === '待付款'; }).reduce(function (n, r) { return n + Number(r.invoiceAmount || 0); }, 0)); } },
+      { l: '已付款金额', calc: function (rows) { return moneyText(rows.filter(function (r) { return r.payStatus === '已付款'; }).reduce(function (n, r) { return n + Number(r.invoiceAmount || 0); }, 0)); } },
+    ],
+    filters: [ { l: '结算单号', k: 'i', p: 'settleNo' }, { l: '分销员', k: 's', oRef: 'distAgentOptions', p: 'agent' },
+      { l: '发票状态', k: 's', o: ['待开票', '待审核', '已通过', '已驳回'], p: 'invoiceStatus' },
+      { l: '付款状态', k: 's', o: ['待付款', '已付款'], p: 'payStatus' }, { l: '结算时间', k: 'd', p: 'created', span: 6 } ],
+    cols: [ { l: '结算单号', p: 'settleNo', w: 155 }, { l: '分销员', p: 'agent', mw: 205 }, { l: '结算周期', p: 'period', w: 100 },
+      { l: '订单数', p: 'orderCount', w: 75, align: 'right' }, { l: '客户成交额', p: 'salesAmount', k: 'money', w: 120 },
+      { l: '分销底价合计', p: 'baseAmount', k: 'money', w: 130 }, { l: '应开票差额', p: 'invoiceAmount', k: 'money', w: 120 },
+      { l: '发票号码', p: 'invoiceNo', w: 190 }, { l: '发票文件', p: 'invoiceFile', k: 'img', w: 190 },
+      { l: '发票状态', p: 'invoiceStatus', k: 'tag', w: 100, tagType: { '待开票': 'info', '待审核': 'warning', '已通过': 'success', '已驳回': 'danger' } },
+      { l: '付款状态', p: 'payStatus', k: 'tag', w: 95, tagType: { '待付款': 'warning', '已付款': 'success' } },
+      { l: '结算时间', p: 'created', w: 155 } ],
+    ops: ['登记发票', '审核通过', '驳回', '确认付款'], opsW: 250,
+    opShow: {
+      '登记发票': [{ p: 'payStatus', eq: '待付款' }],
+      '审核通过': [{ p: 'invoiceStatus', eq: '待审核' }], '驳回': [{ p: 'invoiceStatus', eq: '待审核' }],
+      '确认付款': [{ p: 'invoiceStatus', eq: '已通过' }, { p: 'payStatus', eq: '待付款' }],
+    },
+    dlg: { title: '新增结算单', w: '640px', items: [
+      { l: '结算单号', p: 'settleNo', k: 'i', req: true }, { l: '所属分销员', p: 'agent', k: 's', oRef: 'distAgentOptions', req: true },
+      { l: '结算周期', p: 'period', k: 'i', req: true }, { l: '订单数', p: 'orderCount', k: 'n' },
+      { l: '客户成交额', p: 'salesAmount', k: 'n' }, { l: '分销底价合计', p: 'baseAmount', k: 'n' },
+      { l: '发票号码', p: 'invoiceNo', k: 'i' }, { l: '发票类型', p: 'invoiceType', k: 's', o: ['增值税普通发票', '增值税专用发票'] },
+      { l: '开票日期', p: 'invoiceDate', k: 'dt' }, { l: '发票文件', p: 'invoiceFile', k: 'u', accept: '.pdf,.png,.jpg,.jpeg', txt: '上传发票文件', fileKind: 'invoiceFileKind', fileUrl: 'invoiceFileUrl' },
+      { l: '发票状态', p: 'invoiceStatus', k: 's', o: ['待开票', '待审核', '已驳回'], def: 0 }, { l: '备注', p: 'remark', k: 'a' },
+    ] },
+    requireFields: [{ p: 'settleNo', l: '结算单号' }, { p: 'agent', l: '所属分销员' }, { p: 'period', l: '结算周期' }],
+    validate: function (vm, patch) {
+      if (Number(patch.salesAmount) < Number(patch.baseAmount)) return '客户成交额不能低于分销底价合计';
+      if (patch.invoiceStatus === '待审核' && !patch.invoiceNo) return '提交发票审核前请填写发票号码';
+      if (patch.invoiceStatus === '待审核' && !patch.invoiceFile) return '提交发票审核前请上传发票文件';
+      return '';
+    },
+    onCreate: function () { return { payStatus: '待付款', paidAt: '' }; },
+    afterSave: function (vm, row) { row.invoiceAmount = Math.max(0, Number(row.salesAmount) - Number(row.baseAmount)); },
+  },
   // ---------- 财务管理 ----------
   'finance/invoice': {
     tabs: ['全部记录', '待开票(4)'],
@@ -2797,15 +3237,47 @@ const GEN_PAGES = {
       { l: '税率（%）', k: 'n' }, { l: '服务费（%）', k: 'n' }, { l: '备注', k: 'a' }] },
   },
   'finance/record': {
+    tabs: ['充值记录', '资金流水'],
+    // 资金流水只记商户侧的资金流出，与充值到账记录分开
+    tabViews: [null, {
+      stats: [],
+      filters: [ { l: '商户名称', k: 's', o: GEN_MCH }, { l: '支出类型', k: 's', o: ['灵工结算', '发薪', '退款', '服务费', '提现'] },
+                 { l: '支付状态', k: 's', o: ['成功', '处理中', '失败'] }, { l: '发生时间', k: 'd' } ],
+      add: null, dlg: null, onCreate: null, onOpen: null, export: '导出', ops: null, total: 36,
+      cols: [ { l: 'ID', p: 'id', w: 70 }, { l: '商户名称', p: 'mch', mw: 250 },
+              { l: '支出类型', p: 'type', w: 110 }, { l: '流出金额', p: 'amt', k: 'money', w: 130 },
+              { l: '交易后余额', p: 'bal', k: 'money', w: 130 }, { l: '支付状态', p: 'st', k: 'tag', w: 110,
+                tagType: { '成功': 'success', '处理中': 'warning', '失败': 'danger' } },
+              { l: '备注', p: 'remark', k: 'dash', mw: 180 }, { l: '时间', p: 'ct', w: 165 } ],
+      rows: [
+        [36, '测-深圳市辉煌达人力资源管理有限公司', '灵工结算', '12860.00', '68230.50', '成功', '2026年7月第1批灵工结算', '2026-07-01 15:18:32'],
+        [35, '内蒙古西贝餐饮集团有限公司上海分公司', '服务费', '30.00', '12480.00', '成功', '在线充值服务费', '2026-07-01 11:02:18'],
+        [34, '北京一览科技有限公司', '发薪', '6800.00', '35200.00', '成功', '6月薪资代发', '2026-06-30 17:26:04'],
+        [33, '优酷信息技术(北京)有限公司', '灵工结算', '22500.00', '78110.20', '成功', '灵活用工人员结算', '2026-06-30 15:42:11'],
+        [32, '测-深圳市辉煌达人力资源管理有限公司', '退款', '2400.00', '81090.50', '成功', '重复支付退款', '2026-06-29 10:08:45'],
+        [31, '自贡市一品堂商贸有限责任公司', '提现', '5000.00', '18600.00', '处理中', '商户账户提现', '2026-06-28 16:33:20'],
+        [30, '东莞市住野五金机械有限公司', '服务费', '120.00', '12800.00', '成功', '对公转账充值服务费', '2026-06-27 09:14:06'],
+        [29, '内蒙古西贝餐饮集团有限公司', '发薪', '9600.00', '33200.00', '失败', '收款账户信息有误', '2026-06-26 14:05:51'],
+        [28, '测-武汉市辉煌达企业管理有限公司', '退款', '680.00', '9650.00', '成功', '取消用工订单退款', '2026-06-25 11:36:09'],
+      ],
+    }],
     stats: [ { l: '累计充值金额（元）', v: '977412.64' }, { l: '累计服务费（元）', v: '11531.14' } ],
     filters: [ { l: '商户名称', k: 's', o: GEN_MCH }, { l: '充值类型', k: 's', o: ['手动添加', '在线充值'] },
                { l: '付款方式', k: 's', o: ['支付宝', '对公转账', '微信'] }, { l: '状态', k: 's', o: ['已支付', '待支付', '已退款'] },
                { l: '充值时间', k: 'd' } ],
     add: '添加记录',
+    live: 'finRecRows', idKey: 'id', createdKey: 'ct', keyField: 'no',
+    requireFields: [ { p: 'mch', l: '商户名称' }, { p: 'way', l: '支付方式' }, { p: 'real', l: '实际到账' } ],
+    onCreate: function (vm, patch) {
+      return {
+        type: '手动添加', amt: (patch && patch.real) || 0, svc: 0, st: '已支付',
+        op: '朱轩均', no: genRechargeNo(),
+      };
+    },
     cols: [ { l: 'ID', p: 'id', w: 70 }, { l: '流水号', p: 'no', w: 160 }, { l: '商户名称', p: 'mch', mw: 240 },
             { l: '充值类型', p: 'type', w: 110 }, { l: '付款方式', p: 'way', w: 110 }, { l: '付款账户', p: 'acct', w: 130 },
             { l: '充值金额', p: 'amt', w: 110 }, { l: '实际到账', p: 'real', w: 110 }, { l: '服务费', p: 'svc', w: 100 },
-            { l: '状态', p: 'st', k: 'tag', w: 100 }, { l: '充值凭证', p: 'vch', k: 'img', w: 100 }, { l: '备注', p: 'remark', mw: 130 },
+            { l: '状态', p: 'st', k: 'tag', w: 100 }, { l: '充值凭证', p: 'vch', k: 'attach', w: 100 }, { l: '备注', p: 'remark', mw: 130 },
             { l: '操作人', p: 'op', w: 110 }, { l: '充值时间', p: 'ct', w: 165 } ],
     ops: ['编辑'], opsW: 80, total: 17,
     rows: [
@@ -2814,10 +3286,13 @@ const GEN_PAGES = {
       [18, '1353587873170021', '内蒙古西贝餐饮集团有限公司上海分公司', '在线充值', '微信', '', '5000.00', '5000.00', '30.00', '已支付', '', '', '王琰婷', '2026-06-12 09:31:20'],
       [17, '1353587873170012', '北京一览科技有限公司', '手动添加', '对公转账', '招行深圳分行', '20000.00', '20000.00', '120.00', '待支付', '', '合同附件待补', '冯国鲜', '2026-05-28 15:02:41'],
     ],
-    dlg: { title: '添加记录', w: '600px', items: [
-      { l: '商户名称', k: 's', o: GEN_MCH }, { l: '充值类型', k: 's', o: ['手动添加', '在线充值'] },
-      { l: '付款方式', k: 's', o: ['支付宝', '对公转账', '微信'] }, { l: '付款账户', k: 'i' },
-      { l: '充值金额', k: 'n' }, { l: '服务费', k: 'n' }, { l: '备注', k: 'a' }] },
+    dlg: { title: '添加记录', w: '600px', ok: '确定', items: [
+      { l: '商户名称', k: 's', o: GEN_MCH, p: 'mch', req: true },
+      { l: '支付方式', k: 's', o: ['支付宝', '对公转账', '微信'], p: 'way', req: true },
+      { l: '付款账户', k: 's', o: ['招行深圳分行', '工行武汉分行', '深圳博爱', '支付宝账户'], p: 'acct' },
+      { l: '实际到账', k: 'n', p: 'real', req: true, empty: true },
+      { l: '支付凭证', k: 'u', p: 'vch', accept: 'image/*', txt: '点击上传', fileKind: 'vchKind', fileUrl: 'vchUrl' },
+      { l: '备注', k: 'a', p: 'remark' }] },
   },
   'finance/withdraw': {
     tabs: ['提现记录', '规则设置'],
@@ -2856,6 +3331,13 @@ const GEN_PAGES = {
   },
 };
 let GEN_ROW_SEQ = 0;   // 树形表的 row-key 必须全局唯一；用字符串，el-table 内部按字符串索引
+let GEN_RC_SEQ = 0;
+// 充值流水号：195 + yyyyMMdd + 4 位序号（与支付渠道回单号同格式）
+function genRechargeNo() {
+  GEN_RC_SEQ += 1;
+  const d = String(nowStr()).replace(/[^0-9]/g, '').slice(0, 8) || '20260101';
+  return '195' + d + String(GEN_RC_SEQ).padStart(4, '0');
+}
 function genBuildRows(cols, rows) {
   return (rows || []).map(function (r) {
     const raw = Array.isArray(r) ? r : r.v;
@@ -2868,6 +3350,87 @@ function genBuildRows(cols, rows) {
     if (!Array.isArray(r) && r.c) o.children = genBuildRows(cols, r.c);
     return o;
   });
+}
+// ---------- 分销管理：实时重算客户数 / 订单数，订单底价与差额 ----------
+function distRefreshCounts(vm) {
+  (vm.distAgents || []).forEach(function (agent) {
+    agent.customerCount = (vm.distCustomers || []).filter(function (r) { return r.agent === agent.name; }).length;
+    agent.orderCount = (vm.distOrders || []).filter(function (r) { return r.agent === agent.name; }).length;
+  });
+}
+function distFillOrderBase(vm) {
+  const agentIndex = genDlgIndex('agent'), productIndex = genDlgIndex('product');
+  const listIndex = genDlgIndex('listPrice'), discountIndex = genDlgIndex('discount');
+  const baseIndex = genDlgIndex('basePrice'), retailIndex = genDlgIndex('retailPrice'), marginIndex = genDlgIndex('margin');
+  if (agentIndex < 0 || productIndex < 0 || baseIndex < 0) return;
+  const agent = (vm.distAgents || []).find(function (r) { return r.name === vm.genDlgForm[agentIndex]; });
+  const product = vm.genDlgForm[productIndex];
+  const listPrice = distProductPrice(vm, product);
+  const discount = agent ? Number(agent.discount) || 0 : 0;
+  const basePrice = Math.round(listPrice * discount) / 100;
+  const retailPrice = Number(vm.genDlgForm[retailIndex] || 0);
+  if (listIndex >= 0) vm.genDlgForm[listIndex] = listPrice;
+  if (discountIndex >= 0) vm.genDlgForm[discountIndex] = discount;
+  vm.genDlgForm[baseIndex] = basePrice;
+  if (marginIndex >= 0) vm.genDlgForm[marginIndex] = Math.round((retailPrice - basePrice) * 100) / 100;
+}
+function distProductOptions(vm) {
+  const out = [];
+  (vm.verAll || []).forEach(function (version) {
+    if (version.name === '免费版' || !version.on) return;
+    (version.prices || []).forEach(function (p) {
+      if (Number(p.price) > 0) out.push(version.name + '·' + p.years + '年');
+    });
+  });
+  return out;
+}
+function distProductPrice(vm, product) {
+  const match = String(product || '').match(/^(.*)·(\d+)年$/);
+  if (!match) return 0;
+  const version = (vm.verAll || []).find(function (v) { return v.name === match[1]; });
+  const priceRow = version && (version.prices || []).find(function (p) { return Number(p.years) === Number(match[2]); });
+  return priceRow ? Number(priceRow.price) || 0 : 0;
+}
+function distOrderAgentChange(vm) {
+  const customerIndex = genDlgIndex('customer');
+  if (customerIndex >= 0) vm.genDlgForm[customerIndex] = '';
+  distFillOrderBase(vm);
+}
+// 按月把未结算的分销订单归集成分销员结算单（已经生成过的订单不再重复计入）
+function distGenerateSettlements() {
+  const d = new Date(), period = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  const eligible = (VM.distOrders || []).filter(function (r) {
+    if (String(r.created || '').slice(0, 7) !== period) return false;
+    return !(VM.distSettlements || []).some(function (s) {
+      if (s.agent !== r.agent || s.period !== period) return false;
+      return !Array.isArray(s.orderIds) || s.orderIds.indexOf(r.id) >= 0;
+    });
+  });
+  if (!eligible.length) { VM.$message.info(period + '暂无未结算的订单'); return; }
+  const groups = {};
+  eligible.forEach(function (r) {
+    const g = groups[r.agent] || (groups[r.agent] = { agent: r.agent, orders: [], sales: 0, base: 0 });
+    g.orders.push(r);
+    g.sales += Number(r.retailPrice || 0);
+    g.base += Number(r.basePrice || 0);
+  });
+  const pending = Object.keys(groups).map(function (name) { return groups[name]; });
+  if (!pending.length) { VM.$message.info(period + '的可结算订单已生成结算单'); return; }
+  VM.$confirm('将为 ' + pending.length + ' 位分销员生成 ' + period + ' 结算单，共 ' + pending.reduce(function (n, g) { return n + g.orders.length; }, 0) + ' 笔订单。确认金额和订单归属后继续。',
+    '生成分销结算单', { type: 'info', confirmButtonText: '生成结算单', cancelButtonText: '取消' })
+    .then(function () {
+      let seq = (VM.distSettlements || []).reduce(function (m, r) { return Math.max(m, Number(r.id) || 0); }, 0);
+      pending.forEach(function (g) {
+        const sales = Math.round(g.sales * 100) / 100, base = Math.round(g.base * 100) / 100;
+        const nextId = ++seq;
+        VM.distSettlements.unshift({ id: nextId, settleNo: 'JS' + period.replace('-', '') + '-' + String(nextId).padStart(3, '0'),
+          agent: g.agent, period: period, orderCount: g.orders.length, salesAmount: sales, baseAmount: base,
+          orderIds: g.orders.map(function (r) { return r.id; }),
+          invoiceAmount: Math.max(0, sales - base), invoiceNo: '', invoiceType: '', invoiceDate: '', invoiceFile: '',
+          invoiceStatus: '待开票', payStatus: '待付款', created: nowStr(), paidAt: '', remark: '' });
+      });
+      showToast('已生成 ' + pending.length + ' 张分销结算单');
+    }).catch(() => {});
 }
 function genEnter(slug) {
   const c = GEN_PAGES[slug] || {};
@@ -2948,6 +3511,12 @@ function genDlgOpts(it) {
   if (it.oRef) return VM[it.oRef] || [];
   return it.o || [];
 }
+// 搜索区下拉选项：静态 o / 运行时字段 oRef（分销页按分销员名称联动）
+function genFilterOpts(f) {
+  if (typeof f.o === 'function') return f.o(VM);
+  if (f.oRef) return VM[f.oRef] || [];
+  return f.o || [];
+}
 function orderOpen(vm) { vm.genSvcLines = [{ svc: '', qty: 1, years: 1, copies: 500 }]; }
 function genSvcLineAdd() { VM.genSvcLines.push({ svc: '', qty: 1, years: 1, copies: 500 }); }
 function genSvcLineDel(i) { if (VM.genSvcLines.length > 1) VM.genSvcLines.splice(i, 1); }
@@ -2969,6 +3538,35 @@ function orderCreate(vm, patch) {
 }
 function genOpenDetail(row) {
   VM.genDetail = { visible: true, row: row };
+}
+// 个税记录：点员工姓名开侧边抽屉，默认看当前年份
+function openEmpTax(taxRow) {
+  const emp = (taxRow && taxRow.emp) || '';
+  if (!emp) return;
+  const curYear = String(new Date().getFullYear());
+  // 优先定位到该员工有记录的最新一年，否则退回当前年
+  const years = VM.flexTaxList
+    .filter(function (r) { return r.emp === emp; })
+    .map(function (r) { return String(r.year || (r.period || '').slice(0, 4) || ''); })
+    .filter(Boolean)
+    .sort()
+    .reverse();
+  VM.empDlg = { visible: true, emp: emp };
+  VM.empYear = years[0] || curYear;
+  VM.empPage = 1;
+}
+function closeEmpTax() {
+  VM.empDlg = { visible: false, emp: '' };
+  VM.empYear = '';
+  VM.empPage = 1;
+}
+// link 列的点击分发：按当前页 + 列字段决定打开哪个抽屉，新页面无需改模板
+function onLinkClick(col, row) {
+  if (!col) return;
+  if (col.p === 'emp') { openEmpTax(row); return; }
+  if (col.detail) { genOpenDetail(row); return; }
+  // 未配置专属行为的 link 列，退回「详情」抽屉，保持可点但不报错
+  genOpenDetail(row);
 }
 // 弹窗上传控件：原型不落地文件，只记文件名 + 类型 + 图片预览地址
 function genUploadPick(file, ii) {
@@ -3026,13 +3624,15 @@ function genOp(o, row) {
     if (row.mchSign !== '已签署' || row.pltSign !== '待签署') {
       VM.$message.warning('需商户完成签署后，平台才能签署'); return;
     }
-    VM.$confirm('确认对该合同完成平台签署？签署后合同即生效。', '平台签署', {
+    // 服务协议行带 tpl 字段，订单合同没有，用它区分文案里的「协议 / 合同」
+    const noun = row.tpl ? '协议' : '合同';
+    VM.$confirm('确认完成平台签署？商户已签署，平台签署后' + noun + '即生效，方可下载。', '平台签署', {
       type: 'warning', confirmButtonText: '确认签署', cancelButtonText: '取消'
     }).then(function () {
       row.pltSign = '已签署';
       row.st = '已签署';
       row.done = nowStr();
-      showToast('合同签署完成');
+      showToast(noun + '签署完成，可下载');
     }).catch(() => {});
     return;
   }
@@ -3044,6 +3644,26 @@ function genOp(o, row) {
     return;
   }
   if (o === '详情' || o === '查看' || o === '查看详情') { genOpenDetail(row); return; }
+  // ---------- 分销结算：登记发票 → 审核通过 → 确认付款 ----------
+  if (o === '登记发票') { genOpenDlg(row, true); return; }
+  if (o === '审核通过') {
+    if (!row.invoiceNo) { VM.$message.warning('请先登记发票号码，再审核通过'); return; }
+    if (!row.invoiceFile) { VM.$message.warning('请先上传发票文件，再审核通过'); return; }
+    VM.$confirm('确认结算单「' + row.settleNo + '」发票信息无误并通过审核？', '发票审核', { type: 'warning', confirmButtonText: '审核通过', cancelButtonText: '取消' })
+      .then(function () { row.invoiceStatus = '已通过'; showToast('发票审核通过'); }).catch(() => {});
+    return;
+  }
+  if (o === '驳回') {
+    VM.$prompt('请填写驳回原因', '驳回发票', { confirmButtonText: '确认驳回', cancelButtonText: '取消', inputType: 'textarea' })
+      .then(function (res) { row.invoiceStatus = '已驳回'; row.remark = '发票驳回：' + res.value; showToast('发票已驳回'); }).catch(() => {});
+    return;
+  }
+  if (o === '确认付款') {
+    if (row.invoiceStatus !== '已通过') { VM.$message.warning('请先审核通过发票'); return; }
+    VM.$confirm('确认已向「' + row.agent + '」支付 ¥' + Number(row.invoiceAmount || 0).toFixed(2) + '？', '确认付款', { type: 'warning', confirmButtonText: '确认付款', cancelButtonText: '取消' })
+      .then(function () { row.payStatus = '已付款'; row.paidAt = nowStr(); showToast('付款状态已更新'); }).catch(() => {});
+    return;
+  }
   if (o === '删除') {
     VM.$confirm('确认删除「' + (label || '该记录') + '」？', '提示', { type: 'warning', confirmButtonText: '确认删除', cancelButtonText: '取消' })
       .then(function () {
@@ -3089,7 +3709,9 @@ function genOpenDlg(row, fill) {
       if (it.bool) v = v ? it.o[0] : it.o[1];
     } else {
       // empty: 1 表示不预置数值（Element 的 input-number 会把 '' 强制成 0，只有 undefined 才真的空着）
-      v = it.k === 'n' ? (it.empty ? undefined : 0) : (it.k === 'c' || it.multi) ? []
+      // 数字字段的 def 直接当默认值用（如排序值默认 1），下拉/单选才按选项下标取
+      v = it.k === 'n' ? (it.empty ? undefined : (typeof it.def === 'number' ? it.def : 0))
+        : (it.k === 'c' || it.multi) ? []
         : it.k === 'r' ? (it.o && it.o[0]) : (it.k === 'chk' || it.k === 'dsw') ? it.def === true : '';
       // def: 0 表示默认选中第一个选项（数字/下拉都适用）
       if (it.def !== undefined) { const opts = genDlgOpts(it); if (opts.length) v = opts[it.def] || opts[0]; }
@@ -3157,6 +3779,11 @@ function genSaveDlg() {
       VM.$message.error(verb + rf.l); return;
     }
   }
+  // 页面自定义校验：返回非空字符串即拦截本次保存（分销折扣区间、成交价不低于底价等）
+  if (c.validate) {
+    const validationMessage = c.validate(VM, patch);
+    if (validationMessage) { VM.$message.warning(validationMessage); return; }
+  }
   const disp = label || patch.name || patch.mch || '';
   let saved = VM.genEditRow;
   if (saved) {
@@ -3219,6 +3846,7 @@ const FN_BRIDGE = {
   mchSearch, mchReset, openMchAdd, openMchEdit, saveMchEdit, openMchVer, saveMchVer, onMchSwitch, onAuditSwitch,
   mchUsed, mchQuota, mchQuotaText, mchUsageCls, mchExpireText, mchExpireSoon, verSvcCount,
   genSearch, genReset, genTabClick, genOp, genOpenDlg, genSaveDlg, genSwitch, genSaveTabs, genOpDisabled, genOpShow,
+  genFilterOpts, distGenerateSettlements, openEmpTax, closeEmpTax, onLinkClick,
   moneyText, svcQtyText, joinText, genTagType, genShow, genDlgOpts, genSvcLineAdd, genSvcLineDel, genUploadPick, genClearUpload,
   genDlgChange, genFileDownload,
 };
@@ -3461,6 +4089,8 @@ const VM = new Vue({
     genSlug: '', genTab: '0',
     genForm: {}, genQuery: {}, genPage: 1, genPageSize: 10,
     genAll: [], genDlg: { visible: false, title: '' }, genDlgForm: {}, genDlgFiles: {}, genEditRow: null, genForms: {},
+    // 充值记录（可新增/编辑，独立数据源，切页签不会丢新增的数据）
+    finRecRows: genBuildRows(GEN_PAGES['finance/record'].cols, GEN_PAGES['finance/record'].rows),
     genCal: [], genDetail: { visible: false, row: null }, genSvcLines: [], genFitExtra: 0,
     // 版本管理
     verPermGroups: VER_PERM_GROUPS,
@@ -3483,6 +4113,18 @@ const VM = new Vue({
     contractControls: CONTRACT_CONTROLS.map(r => Object.assign({}, r)),
     // 系统管理 · 模型管理
     modelList: MODEL_LIST.map(r => Object.assign({}, r)),
+    // 系统管理 · 收款管理（可新增/编辑/删除，独立数据源，切页不丢）
+    paymentList: PAYMENT_ROWS.map(r => Object.assign({}, r)),
+    // 灵活用工 · 个税记录（逐笔留痕，独立数据源）
+    flexTaxList: FLEX_TAX_ROWS.map(r => Object.assign({}, r)),
+    // 员工个税抽屉：emp 当前查看的员工，empYear 抽屉内的年份筛选
+    empDlg: { visible: false, emp: '' },
+    empYear: '', empPage: 1, empPageSize: 5,
+    // 分销管理（总后台维护）：分销员 / 客户 / 订单 / 结算各存一份，切页回来数据仍在
+    distAgents: DIST_AGENT_ROWS.map(r => Object.assign({}, r)),
+    distCustomers: DIST_CUSTOMER_ROWS.map(r => Object.assign({}, r)),
+    distOrders: DIST_ORDER_ROWS.map(r => Object.assign({}, r)),
+    distSettlements: DIST_SETTLEMENT_ROWS.map(r => Object.assign({}, r, { orderIds: (r.orderIds || []).slice() })),
     // 更多版本 / 增值服务：官网展示用的独立列表，与版本管理不联动
     spMore: SP_MORE.map(i => Object.assign({}, i)),
     spSvc: SP_SVC.map(i => Object.assign({}, i)),
@@ -3593,7 +4235,12 @@ const VM = new Vue({
     genStats() {
       const c = this.genView;
       if (!c || !c.stats) return [];
-      return c.stats.map(s => ({ l: s.l, v: typeof s.calc === 'function' ? s.calc(this.genAll, this) : s.v }));
+      return c.stats.map(s => ({
+        l: s.l,
+        v: typeof s.calc === 'function' ? s.calc(this.genAll, this) : s.v,
+        tone: s.tone || '',
+        sub: typeof s.sub === 'function' ? s.sub(this.genAll, this) : (s.sub || ''),
+      }));
     },
     genDetailKey() {
       const c = this.genView;
@@ -3608,14 +4255,70 @@ const VM = new Vue({
       return (r && Array.isArray(r.svcs)) ? r.svcs : [];
     },
     genVerNames() { return this.verAll.map(function (v) { return v.name; }); },
+    // 分销下拉：分销员选项随新增/改名实时变化，客户选项供后续联动
+    distAgentOptions() { return this.distAgents.map(function (r) { return r.name; }); },
+    distCustomerOptions() { return this.distCustomers.map(function (r) { return r.name; }); },
+    // ---------- 个税记录 · 员工抽屉 ----------
+    // 该员工的全部个税记录（按扣缴时间倒序），抽屉里的表格与汇总都基于这份
+    empTaxRows() {
+      const emp = this.empDlg.emp;
+      if (!emp) return [];
+      return this.flexTaxList
+        .filter(function (r) { return r.emp === emp; })
+        .slice()
+        .sort(function (a, b) { return String(b.paidAt || '').localeCompare(String(a.paidAt || '')); });
+    },
+    // 抽屉年份下拉：该员工有记录的年份 + 当前年，倒序
+    empYearOptions() {
+      const ys = {};
+      this.empTaxRows.forEach(function (r) {
+        const y = String(r.year || (r.period || '').slice(0, 4) || '');
+        if (y) ys[y] = true;
+      });
+      const cur = String(new Date().getFullYear());
+      ys[cur] = true;
+      return Object.keys(ys).sort().reverse();
+    },
+    // 按年份筛选后的记录（抽屉表格展示这一份）
+    empTaxFiltered() {
+      const y = this.empYear;
+      if (!y) return this.empTaxRows;
+      return this.empTaxRows.filter(function (r) {
+        return String(r.year || (r.period || '').slice(0, 4)) === String(y);
+      });
+    },
+    // 抽屉表格分页切片；汇总仍按 empTaxFiltered 全量算，不受翻页影响
+    empTaxPageRows() {
+      const s = (this.empPage - 1) * this.empPageSize;
+      return this.empTaxFiltered.slice(s, s + this.empPageSize);
+    },
+    // 当前年份汇总：总收入（税前结算额）、总个税、总实发、笔数
+    empSummary() {
+      const rows = this.empTaxFiltered;
+      const sum = function (p) { return rows.reduce(function (n, r) { return n + Number(r[p] || 0); }, 0); };
+      return {
+        count: rows.length,
+        gross: sum('gross'),
+        tax: sum('tax'),
+        net: sum('net'),
+        year: this.empYear || '全部年份',
+        avgTax: rows.length ? Math.round(sum('tax') / rows.length * 100) / 100 : 0,
+      };
+    },
+    // 该员工的基本信息（取最近一条记录上的身份证 / 手机号）
+    empProfile() {
+      const r = this.empTaxRows[0];
+      return r ? { emp: r.emp, idCard: r.idCard || '', mob: r.mob || '' } : { emp: this.empDlg.emp, idCard: '', mob: '' };
+    },
     genSvcTypes() { return ORDER_SVC_TYPES; },
     genChrome() {
       const c = this.genView || {};
       let chrome = 300;
       if (c.filters && c.filters.length) chrome += 62 * Math.ceil((c.filters.length + 1) / 4);
       if (c.tabs && c.tabs.length) chrome += 46;
-      if (c.stats) chrome += 46;
-      if (c.add || c.export) chrome += 50;
+      if (c.stats) chrome += c.statsCards ? 92 : 46;   // 卡片式统计更高
+      if (c.pageTip) chrome += 48;
+      if (c.add || c.export || c.toolbarExtra) chrome += 50;
       return chrome;
     },
     genTableHeight() { return Math.max(220, this.winH - this.genChrome) + (this.genFitExtra || 0); },
@@ -3680,6 +4383,9 @@ const VM = new Vue({
   watch: {
     verPageSize() { this.verPage = 1; },
     mchPageSize() { this.mchPage = 1; },
+    // 抽屉换年份 / 改每页条数时回到第 1 页，避免停在越界页码上
+    empYear() { this.empPage = 1; },
+    empPageSize() { this.empPage = 1; },
     activeSlug(v) { const m = this.$refs.sideMenu; if (m && m.activeIndex !== v) m.activeIndex = v; },
   },
   methods: {
