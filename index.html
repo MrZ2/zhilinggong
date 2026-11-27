@@ -5101,13 +5101,6 @@
       </div>
     </div>
     <div class="fund-stat">
-      <div class="fund-stat-ic blue"><i class="el-icon-lock"></i></div>
-      <div>
-        <div class="fund-stat-k">冻结金额（元）</div>
-        <div class="fund-stat-v">{{ fjMoney(fjFrozen) }}</div>
-      </div>
-    </div>
-    <div class="fund-stat">
       <div class="fund-stat-ic blue"><i class="el-icon-top"></i></div>
       <div>
         <div class="fund-stat-k">累计充值金额（元）</div>
@@ -5250,11 +5243,8 @@
       <el-table-column label="可用余额" width="110" align="right">
         <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.balanceAfter) }}</span></template>
       </el-table-column>
-      <el-table-column label="冻结中" width="96" align="right">
-        <template slot-scope="{ row }"><span class="fund-money muted">{{ fjMoney(row.frozenAfter) }}</span></template>
-      </el-table-column>
       <el-table-column label="备注" min-width="140" show-overflow-tooltip>
-        <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
+        <template slot-scope="{ row }"><span class="fund-note">{{ fundFlowNoteText(row) }}</span></template>
       </el-table-column>
       <el-table-column label="时间" width="144">
         <template slot-scope="{ row }">
@@ -7909,6 +7899,16 @@ function fundFlowWorkDates(r) {
 }
 function fundFlowFreezeNote(r, appended) {
   return '给' + (r.name || '员工') + '的' + fundFlowJobText(r) + (appended ? '追加冻结了用工款' : '冻结了用工款') + '，用工日期：' + fundFlowWorkDates(r);
+}
+// 流水记录列表备注文案：冻结口径在列表里统一叫「预扣」（解冻 = 释放预扣），仅列表展示层替换，
+// 详情抽屉与底层数据仍用冻结口径
+function fundFlowNoteText(row) {
+  const note = (row && row.note) || '';
+  if (!note) return '—';
+  return note
+    .replace(/冻结资金解冻/g, '预扣资金释放')
+    .replace(/解冻/g, '释放预扣')
+    .replace(/冻结/g, '预扣');
 }
 function fundFlowSettleNote(r) {
   return '给' + (r.name || '员工') + '支付了' + fundFlowJobText(r) + '的用工款，结算日期：' + fundFlowWorkDates(r);
@@ -15124,7 +15124,7 @@ const FN_BRIDGE = {
   stOpenDetail, stOpenAudit, stSubmitAudit, stSyncFromWr, wrOpenPay, stSubmitPay, stRejectPay,
   wrOpenBatchPay, wrSendPayCode, wrSendPayCodeSingle, wrSubmitBatchPay, wrStopPayTimer, wrStopPayTimerFor,
   wrOpenStLog, wrStLogOpText, wrSettlePickAll, wrSettlePickNone, wrEstimatedTotal, wrPaidStAmountOf, wrPendingSettleAmount,
-  fundTabChange, fundSearch, fundReset, fundExport, openFundRechargeDlg, fundFlowKindLabel, fundFlowKindCls, fundFlowStateLabel, fundFlowStateCls, fundFlowRoute, openFundFlowDetail, fundFlowChainTitle,
+  fundTabChange, fundSearch, fundReset, fundExport, openFundRechargeDlg, fundFlowKindLabel, fundFlowKindCls, fundFlowNoteText, fundFlowStateLabel, fundFlowStateCls, fundFlowRoute, openFundFlowDetail, fundFlowChainTitle,
   fundFlowParty, fundFlowPayAccount, fundFlowAmountSign, fundFlowAmountCls,
   rowStOf, rowStStatus, rowStLabel, rowStCls, wrDetailFlow, fsStateIcon,
   wrRefundAmt, wrFreezeAmount, wrExtendCalc,
