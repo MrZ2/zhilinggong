@@ -1726,10 +1726,8 @@
     .fund-type-text.fee { color: var(--ad-warning-text); }
     .fund-type-text.lf { color: var(--ad-primary); }
     .fund-state-text.outflow { color: var(--ad-error); }
-    .fund-state-text.freeze { color: var(--ad-warning-text); }
-    .fund-state-text.unfreeze { color: var(--ad-success-text); }
+    .fund-state-text.income { color: var(--ad-success-text); }
     .fund-dim { font-size: 12px; color: var(--ad-text-4); }
-    .fund-route { font-size: 12px; color: var(--ad-text-2); white-space: nowrap; }
     .fund-party-n { font-size: 12px; color: var(--ad-text-1); }
     .fund-flow-payee { margin-top: 4px; font-size: 12px; color: var(--ad-text-secondary); }
     .fund-note { font-size: 12px; color: var(--ad-text-2); }
@@ -5128,7 +5126,7 @@
   <div class="card wr-card">
     <el-tabs v-model="fundTab" class="wr-tabs" @tab-click="fundTabChange">
       <el-tab-pane :label="'充值记录' + (fundRecharge.length ? '（' + fundRecharge.length + '）' : '')" name="recharge"></el-tab-pane>
-      <el-tab-pane :label="'流水记录' + (fundFlows.length ? '（' + fundFlows.length + '）' : '')" name="flow"></el-tab-pane>
+      <el-tab-pane :label="'流水记录' + (fundFlowVisibleTotal ? '（' + fundFlowVisibleTotal + '）' : '')" name="flow"></el-tab-pane>
     </el-tabs>
 
     <el-form v-if="fundTab === 'recharge'" :model="fundRechargeFilter" class="wr-filter search-form" size="small" label-width="76px" @submit.native.prevent>
@@ -5243,16 +5241,13 @@
           <span v-else class="fund-dim">—</span>
         </template>
       </el-table-column>
-      <el-table-column label="收款方" width="118">
+      <el-table-column label="收款方" width="140">
         <template slot-scope="{ row }"><span class="fund-party-n">{{ fundFlowParty(row) }}</span></template>
       </el-table-column>
-      <el-table-column label="金额" width="120" align="right">
+      <el-table-column label="金额" width="126" align="right">
         <template slot-scope="{ row }"><span class="fund-money" :class="fundFlowAmountCls(row)">{{ fundFlowAmountSign(row) }}{{ fjMoney(row.amount) }}</span></template>
       </el-table-column>
-      <el-table-column label="资金流向" width="126">
-        <template slot-scope="{ row }"><span class="fund-route">{{ fundFlowRoute(row) }}</span></template>
-      </el-table-column>
-      <el-table-column label="可用余额" width="104" align="right">
+      <el-table-column label="可用余额" width="110" align="right">
         <template slot-scope="{ row }"><span class="fund-money">{{ fjMoney(row.balanceAfter) }}</span></template>
       </el-table-column>
       <el-table-column label="冻结中" width="96" align="right">
@@ -7761,9 +7756,8 @@ const FUND_FLOW_KINDS = [
 ];
 const FUND_FLOW_STATES = [
   { value: '', label: '全部' },
-  { value: 'freeze', label: '冻结' },
   { value: 'outflow', label: '支出' },
-  { value: 'unfreeze', label: '解冻' },
+  { value: 'income', label: '收入' },
 ];
 // 解冻去向：settle = 冻结金额转付员工（不回到可用余额）；back = 差额/取消退回可用余额
 const FUND_RELEASE_DIRS = ['settle', 'back'];
@@ -7885,16 +7879,23 @@ function fundFlowKindCls(row) {
   if (row.type === 'wage') return 'wage';
   return 'lf';
 }
+// 资金状态：只有「支出 / 收入」，口径按可用余额的增减——
+// 支出 = 可用 → 冻结、充值金额 → 手续费、可用 → 员工（工资条代发）；收入 = 冻结 → 可用（退回）、充值 → 可用。
+// 「冻结 → 员工」的打款转付流水不在流水记录中展示（仍保留在灵工流水的资金完整流程里）。
+function isFundSettleOut(r) {
+  if (!r) return false;
+  return (r.type === 'release' || r.type === 'pay') && r.dir === 'settle';
+}
 function fundFlowStateKey(row) {
-  if (!row) return '';
-  if (row.type === 'freeze') return 'freeze';
-  if (isFundOutflow(row)) return 'outflow';
-  if (row.type === 'release' || row.type === 'pay') return 'unfreeze';
+  if (!row || isFundSettleOut(row)) return '';
+  if (row.type === 'freeze' || row.type === 'fee' || row.type === 'wage') return 'outflow';
+  if (row.type === 'recharge') return 'income';
+  if (row.type === 'release' || row.type === 'pay') return 'income';   // dir = back：冻结 → 可用
   return '';
 }
 function fundFlowStateLabel(row) {
   const state = fundFlowStateKey(row);
-  return state === 'freeze' ? '冻结' : (state === 'outflow' ? '支出' : (state === 'unfreeze' ? '解冻' : '—'));
+  return state === 'outflow' ? '支出' : (state === 'income' ? '收入' : '—');
 }
 function fundFlowStateCls(row) {
   return fundFlowStateKey(row);
@@ -16078,9 +16079,14 @@ var VM = new Vue({
     // 支付宝充值：手续费 0.6%，实际到账 = 充值金额 - 手续费
     fundRcFee() { return fundRound((Number(this.fundRechargeDlg.amount) || 0) * FUND_ALIPAY_FEE_RATE); },
     fundRcArrived() { return fundRound((Number(this.fundRechargeDlg.amount) || 0) - this.fundRcFee); },
+    // 流水记录页签计数：与列表口径一致（不含「冻结 → 员工」打款转付流水）
+    fundFlowVisibleTotal() {
+      return this.fundFlows.filter(r => !isFundSettleOut(r)).length;
+    },
     fundFlowsFiltered() {
       const q = this.fundFlowQuery;
       const list = this.fundFlows.filter(r => {
+        if (isFundSettleOut(r)) return false;      // 只保留 可用→冻结 / 冻结→可用 / 充值→可用 / 扣手续费，冻结→员工 的打款转付不进列表
         if (q.kind) {
           const isLf = r.type === 'freeze' || r.type === 'release' || r.type === 'pay';
           if (q.kind === 'lf' && !isLf) return false;
