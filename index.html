@@ -1715,6 +1715,7 @@
     .fund-no { font-size: 12px; color: var(--ad-text-1); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .fund-money { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .fund-money.in { color: var(--ad-success-text); }
+    .fund-money.inc { color: var(--ad-text-1); }
     .fund-money.out { color: var(--ad-error); }
     .fund-money.freeze { color: var(--ad-text-1); }
     .fund-money.muted { color: var(--ad-text-secondary); font-weight: 500; }
@@ -7834,10 +7835,11 @@ function isFundOutflow(r) {
   if (r.type === 'wage' || r.type === 'pay' || r.type === 'fee') return true;
   return r.type === 'release' && r.dir === 'settle';
 }
-// 收款方：充值/解冻退回进入商户账户；手续费支付给支付宝平台；冻结/灵工结算/发薪对应员工
+// 收款方：充值/解冻退回进入商户账户；手续费支付给智灵工平台；冻结/灵工结算对应员工；发薪为批次代扣，无收款方
 function fundFlowParty(r) {
   if (!r) return '—';
-  if (r.type === 'fee') return '支付宝平台';
+  if (r.type === 'fee') return '智灵工平台';
+  if (r.type === 'wage') return '';
   if (r.type === 'recharge' || ((r.type === 'release' || r.type === 'pay') && r.dir !== 'settle')) return '商户账户';
   return r.name || '—';
 }
@@ -7851,8 +7853,8 @@ function fundFlowAmountSign(r) {
 }
 function fundFlowAmountCls(r) {
   if (!r) return '';
-  if (r.type === 'freeze') return 'freeze';
-  return fundFlowAmountSign(r) === '+' ? 'in' : 'out';
+  // 收入（冻结→可用退回、充值→到账）黑色，支出（可用→冻结、手续费）红色
+  return fundFlowStateKey(r) === 'income' ? 'inc' : 'out';
 }
 // 类型：灵工（冻结/支出/解冻）/ 充值 / 手续费 / 发薪
 function fundFlowKindLabel(row) {
@@ -8059,7 +8061,7 @@ function fundSeed() {
     { name: '张伟', amount: 1200, at: '2026-11-10 16:20:00', refId: 'PS20261110001', payAccount: FUND_ACCOUNTS[0] },
     { name: '李静', amount: 980, at: '2026-10-10 16:05:00', refId: 'PS20261010001', payAccount: FUND_ACCOUNTS[1] },
   ].forEach(function (w) {
-    push({ type: 'wage', refType: '工资条', refId: w.refId, name: w.name, payAccount: w.payAccount, amount: w.amount, at: w.at, note: '工资条代发' });
+    push({ type: 'wage', refType: '工资条', refId: w.refId, name: w.name, payAccount: w.payAccount, amount: w.amount, at: w.at, note: '批次XZ2026102316296ADB1AFFA6D3F发薪扣除' });
   });
   const sumOf = function (t) { return fundRound(flows.filter(f => f.type === t).reduce((s, f) => s + f.amount, 0)); };
   const sumDir = function (t, d) { return fundRound(flows.filter(f => f.type === t && f.dir === d).reduce((s, f) => s + f.amount, 0)); };
@@ -8105,14 +8107,14 @@ function fundSeed() {
   list.filter(rc => rc.status === '已支付').forEach(function (rc) {
     push({
       type: 'recharge', refType: '充值', refId: rc.id, amount: fundRound(rc.arrived == null ? rc.amount : rc.arrived),
-      at: rc.at, note: '充值到账（' + rc.method + '），可用金额增加',
+      at: rc.at, note: '商户充值',
     });
   });
   // 支付宝充值手续费：单独记一条，可用余额与冻结中都不变动（支付时已从充值金额中扣除）
   list.filter(rc => rc.status === '已支付' && Number(rc.fee) > 0).forEach(function (rc) {
     push({
       type: 'fee', refType: '充值', refId: rc.id, amount: fundRound(rc.fee),
-      at: rc.at, note: '支付宝充值手续费（费率 0.6%），从充值金额 ' + fjMoney(rc.amount) + ' 中扣除',
+      at: rc.at, note: '支付宝充值手续费扣除',
     });
   });
 
