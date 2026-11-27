@@ -1749,6 +1749,19 @@
     .fund-rc-qr i { font-size: 34px; color: var(--ad-primary); }
     .fund-rc-account { font-size: 13px; color: var(--ad-text-1); }
     .fund-rc-alipay .fund-rc-tip { text-align: left; }
+    /* 支付宝扫码支付弹框 */
+    .fund-qr-pay { text-align: center; }
+    .fund-qr-order { font-size: 12px; color: var(--ad-text-3); font-variant-numeric: tabular-nums; }
+    .fund-qr-img { width: 200px; height: 200px; margin: 12px auto 10px; padding: 6px; border: 1px solid var(--ad-border-secondary); border-radius: 8px; background: #fff; }
+    .fund-qr-img img { display: block; width: 100%; height: 100%; }
+    .fund-qr-amount { font-size: 22px; font-weight: 700; color: var(--ad-error); font-variant-numeric: tabular-nums; }
+    .fund-qr-sub { margin-top: 4px; font-size: 12px; color: var(--ad-text-3); }
+    /* 充值记录操作列 */
+    .fund-rc-ops { display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+    .fund-rc-ops .el-button { padding: 0; font-size: 12px; }
+    .fund-rc-ops .el-button + .el-button { margin-left: 0; }
+    .fund-op-cancel.el-button { color: var(--ad-error); }
+    .fund-op-cancel.el-button:hover { color: var(--ad-error); opacity: .8; }
     /* 审核弹窗 */
     .wr-audit-types { display: flex; gap: 10px; margin-bottom: 14px; }
     .wr-audit-type { flex: 1; min-height: 58px; padding: 10px 12px; border: 1px solid var(--ad-border); border-radius: 8px; cursor: pointer; transition: .15s; }
@@ -5139,6 +5152,7 @@
           <el-select v-model="fundRechargeFilter.status" placeholder="全部" clearable>
             <el-option label="已支付" value="已支付"></el-option>
             <el-option label="待支付" value="待支付"></el-option>
+            <el-option label="取消支付" value="取消支付"></el-option>
           </el-select>
         </el-form-item></el-col>
         <el-col :span="6"><el-form-item label="充值时间">
@@ -5194,7 +5208,8 @@
       </el-table-column>
       <el-table-column label="实际到账" width="106" align="right">
         <template slot-scope="{ row }">
-          <span class="fund-money" :class="{ in: row.arrived != null }">{{ row.arrived != null ? fjMoney(row.arrived) : '—' }}</span>
+          <span v-if="row.arrived != null" class="fund-money" :class="{ in: row.status === '已支付', muted: row.status === '取消支付' }">{{ fjMoney(row.arrived) }}</span>
+          <span v-else class="fund-voucher-none">—</span>
         </template>
       </el-table-column>
       <el-table-column label="手续费" width="84" align="right">
@@ -5203,8 +5218,8 @@
           <span v-else class="fund-voucher-none">—</span>
         </template>
       </el-table-column>
-      <el-table-column label="支付状态" width="82" align="center">
-        <template slot-scope="{ row }"><span class="wr-tag" :class="row.status === '已支付' ? 'pass' : 'wait'">{{ row.status }}</span></template>
+      <el-table-column label="支付状态" width="86" align="center">
+        <template slot-scope="{ row }"><span class="wr-tag" :class="fundRcStatusCls(row)">{{ row.status }}</span></template>
       </el-table-column>
       <el-table-column label="充值凭证" width="80" align="center">
         <template slot-scope="{ row }">
@@ -5212,12 +5227,22 @@
           <span v-else class="fund-voucher-none">—</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" min-width="140" show-overflow-tooltip>
-        <template slot-scope="{ row }"><span class="fund-note">{{ row.note || '—' }}</span></template>
+      <el-table-column label="备注" min-width="130" show-overflow-tooltip>
+        <template slot-scope="{ row }"><span v-if="fundRcNote(row)" class="fund-note">{{ fundRcNote(row) }}</span><span v-else class="fund-voucher-none">—</span></template>
       </el-table-column>
-      <el-table-column label="充值时间" min-width="140">
+      <el-table-column label="充值时间" width="136">
         <template slot-scope="{ row }">
           <div class="wr-time"><b>{{ wrDatePart(row.at) }}</b><span>{{ wrTimePart(row.at) }}</span></div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="110" align="center" fixed="right">
+        <template slot-scope="{ row }">
+          <div class="fund-rc-ops">
+            <el-button v-if="row.status === '待支付'" type="text" size="mini" @click="fundContinuePay(row)">继续支付</el-button>
+            <el-button v-if="row.status === '待支付'" type="text" size="mini" class="fund-op-cancel" @click="fundCancelPay(row)">取消支付</el-button>
+            <span v-if="row.status === '已支付'" class="fund-dim">—</span>
+            <span v-if="row.status === '取消支付'" class="fund-dim">—</span>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -5276,8 +5301,7 @@
     </div>
     <div class="fund-rc-money"><span>手续费（费率 0.6%）</span><b>{{ fundRechargeDlg.amount > 0 ? fjMoney(fundRcFee) : '—' }}</b></div>
     <div class="fund-rc-money arrived"><span>实际到账金额</span><b>{{ fundRechargeDlg.amount > 0 ? fjMoney(fundRcArrived) : '—' }}</b></div>
-    <div class="fund-rc-qr"><i class="el-icon-money"></i><span>支付宝收款码（示例）</span></div>
-    <div class="fund-rc-tip">请使用支付宝扫描上方收款码，按填写的充值金额付款；手续费按 0.6% 从充值金额中扣除，充值后预计 2 小时内到账。</div>
+    <div class="fund-rc-tip">点击「确认」生成充值单并弹出支付宝收款二维码；手续费按 0.6% 从充值金额中扣除，支付后预计 2 小时内到账。</div>
   </div>
   <div v-else>
     <div class="fund-rc-tip" style="margin-top:0">充值请联系专属客服，客服核对到账后 1 个工作日内为您入账。</div>
@@ -5300,7 +5324,25 @@
     </div>
   </div>
   <span slot="footer">
-    <el-button size="small" type="primary" @click="fundRechargeDlg.visible = false">关闭</el-button>
+    <el-button size="small" type="primary" @click="fundSubmitRecharge">确认</el-button>
+  </span>
+</el-dialog>
+
+<!-- 支付宝充值：扫码支付弹框（点「确认」后弹出） -->
+<el-dialog title="支付宝扫码支付" :visible.sync="fundPayQrDlg.visible" width="420px" :close-on-click-modal="false" append-to-body custom-class="fund-rc-dlg">
+  <template v-if="fundPayQrDlg.row.id">
+    <div class="fund-qr-pay">
+      <div class="fund-qr-order">充值单号 {{ fundPayQrDlg.row.id }}</div>
+      <div class="fund-qr-img">
+        <img :src="fundAlipayQrSrc" alt="支付宝收款码">
+      </div>
+      <div class="fund-qr-amount">{{ fjMoney(fundPayQrDlg.row.amount) }}</div>
+      <div class="fund-qr-sub">实际到账 {{ fjMoney(fundPayQrDlg.row.arrived) }}（手续费 {{ fjMoney(fundPayQrDlg.row.fee) }}）</div>
+      <div class="fund-rc-tip" style="text-align:left">请使用支付宝扫描上方二维码，按上述金额付款；支付完成后系统预计 2 小时内自动到账，也可联系客服核对。</div>
+    </div>
+  </template>
+  <span slot="footer">
+    <el-button size="small" @click="fundPayQrDlg.visible = false">关闭</el-button>
   </span>
 </el-dialog>
 
@@ -8095,10 +8137,15 @@ function fundSeed() {
     rc.arrived = arrived;
     rc.fee = fundRound(amt - arrived);
   });
-  // 待支付示例：不影响资金余额与累计充值
+  // 待支付示例：仅支付宝扫码充值会有待支付（对公转账为线下转账，无待支付状态）；不影响余额与累计充值
   list.push({
-    id: fundRechargeNoAt('2026-11-20 11:30:45'), method: '对公转账', account: FUND_ACCOUNTS[1],
-    amount: 5000, arrived: null, status: '待支付', voucher: '', at: '2026-11-20 11:30:45', note: '等待财务确认到账',
+    id: fundRechargeNoAt('2026-11-21 10:05:12'), method: '支付宝', account: FUND_ACCOUNTS[0],
+    amount: 2000, arrived: 1988, fee: 12, status: '待支付', voucher: '', at: '2026-11-21 10:05:12', note: '等待扫码支付',
+  });
+  // 取消支付示例：商户发起后主动取消，不入账（保留预计到账与手续费，便于核对单据）
+  list.push({
+    id: fundRechargeNoAt('2026-11-19 16:42:30'), method: '支付宝', account: FUND_ACCOUNTS[0],
+    amount: 1000, arrived: 994, fee: 6, status: '取消支付', voucher: '', at: '2026-11-19 16:42:30', note: '商户取消支付',
   });
   list.sort((a, b) => String(b.at).localeCompare(String(a.at)));
   VM.fundRecharge = list;
@@ -8172,6 +8219,84 @@ function fundExport() {
   showToast('已导出 ' + n + ' 条' + (isRc ? '充值记录' : '灵工资金流水'));
 }
 function openFundRechargeDlg() { VM.fundRechargeDlg = { visible: true, method: 'alipay', amount: null }; }
+// 充值记录备注：支付宝充值无备注；对公转账保留备注（在线发起时为「等待财务确认到账」等）
+function fundRcNote(row) {
+  if (!row) return '';
+  if (row.method === '支付宝') return '';
+  return row.note || '';
+}
+// 充值单支付状态样式：已支付=通过（绿）、待支付=等待（橙）、取消支付=灰
+function fundRcStatusCls(row) {
+  const s = row && row.status;
+  if (s === '已支付') return 'pass';
+  if (s === '取消支付') return 'cancel';
+  return 'wait';
+}
+// 支付宝收款二维码：SVG 生成的伪二维码（离线可用，中心为「支」）
+function fundAlipayQrSvg() {
+  let seed = 19;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const cells = [];
+  for (let y = 0; y < 25; y++) {
+    for (let x = 0; x < 25; x++) {
+      const inFinder = (x < 7 && y < 7) || (x > 17 && y < 7) || (x < 7 && y > 17);
+      if (!inFinder && rnd() > 0.53) cells.push('<rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="1" height="1"/>');
+    }
+  }
+  const finder = (x, y) => '<rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="7" height="7" fill="none" stroke="#1f2329" stroke-width="1"/><rect x="' + (x + 4) + '" y="' + (y + 4) + '" width="3" height="3"/>';
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 29 29" shape-rendering="crispEdges">'
+    + '<rect width="29" height="29" fill="#fff"/>'
+    + '<g fill="#1f2329">' + cells.join('') + finder(0, 0) + finder(18, 0) + finder(0, 18) + '</g>'
+    + '<rect x="10.5" y="10.5" width="8" height="8" rx="1.5" fill="#fff"/>'
+    + '<text x="14.5" y="15.8" font-size="5" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-weight="700" fill="#1677ff" text-anchor="middle">支</text></svg>';
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+function fundPayQrOpen(row) {
+  if (!row) return;
+  VM.fundPayQrDlg = { visible: true, row: row };
+}
+// 账户充值「确认」：支付宝生成待支付充值单并弹出收款二维码；对公转账提示联系客服
+function fundSubmitRecharge() {
+  const d = VM.fundRechargeDlg;
+  if (d.method === 'corporate') {
+    d.visible = false;
+    showToast('请先完成对公转账，并联系专属客服核对入账');
+    return;
+  }
+  const amount = Number(d.amount) || 0;
+  if (amount <= 0) { VM.$message.warning('请填写充值金额'); return; }
+  const fee = fundRound(amount * FUND_ALIPAY_FEE_RATE);
+  const arrived = fundRound(amount - fee);
+  const at = wrNow();
+  const row = {
+    id: fundRechargeNoAt(at), method: '支付宝', account: FUND_ACCOUNTS[0],
+    amount: amount, arrived: arrived, fee: fee, status: '待支付',
+    voucher: '', at: at, note: '等待扫码支付',
+  };
+  VM.fundRecharge.unshift(row);
+  d.visible = false;
+  fundPayQrOpen(row);
+}
+// 继续支付：仅支付宝充值单支持（重新弹出收款二维码）；对公转账为线下转账，没有待支付状态
+function fundContinuePay(row) {
+  if (!row || row.status !== '待支付') { VM.$message.warning('仅「待支付」的充值单可以继续支付'); return; }
+  if (row.method !== '支付宝') { VM.$message.warning('对公转账为线下转账，不支持在线继续支付'); return; }
+  fundPayQrOpen(row);
+}
+// 取消支付：二次确认后把待支付充值单置为「取消支付」
+function fundCancelPay(row) {
+  if (!row || row.status !== '待支付') { VM.$message.warning('仅「待支付」的充值单可以取消支付'); return; }
+  VM.$confirm('取消后该充值单将作废，不会入账也不会生成资金流水，确认取消支付？', '取消支付确认', {
+    confirmButtonText: '确认取消',
+    cancelButtonText: '再想想',
+    type: 'warning',
+  }).then(function () {
+    if (row.status !== '待支付') { VM.$message.warning('该充值单状态已变更，请刷新后重试'); return; }
+    row.status = '取消支付';
+    row.note = '商户取消支付';                 // 到账金额 / 手续费保留，取消只是作废本单，不改变单据口径
+    showToast('已取消支付，该充值单不会入账');
+  }).catch(function () {});
+}
 
 // ===== 工作时间：区间归一化 / 重叠校验 / 合并工时 =====
 // "HH:mm" → 当日分钟数；非法返回 -1
@@ -15126,7 +15251,7 @@ const FN_BRIDGE = {
   stOpenDetail, stOpenAudit, stSubmitAudit, stSyncFromWr, wrOpenPay, stSubmitPay, stRejectPay,
   wrOpenBatchPay, wrSendPayCode, wrSendPayCodeSingle, wrSubmitBatchPay, wrStopPayTimer, wrStopPayTimerFor,
   wrOpenStLog, wrStLogOpText, wrSettlePickAll, wrSettlePickNone, wrEstimatedTotal, wrPaidStAmountOf, wrPendingSettleAmount,
-  fundTabChange, fundSearch, fundReset, fundExport, openFundRechargeDlg, fundFlowKindLabel, fundFlowKindCls, fundFlowNoteText, fundFlowStateLabel, fundFlowStateCls, fundFlowRoute, openFundFlowDetail, fundFlowChainTitle,
+  fundTabChange, fundSearch, fundReset, fundExport, openFundRechargeDlg, fundRcStatusCls, fundRcNote, fundSubmitRecharge, fundContinuePay, fundCancelPay, fundFlowKindLabel, fundFlowKindCls, fundFlowNoteText, fundFlowStateLabel, fundFlowStateCls, fundFlowRoute, openFundFlowDetail, fundFlowChainTitle,
   fundFlowParty, fundFlowPayAccount, fundFlowAmountSign, fundFlowAmountCls,
   rowStOf, rowStStatus, rowStLabel, rowStCls, wrDetailFlow, fsStateIcon,
   wrRefundAmt, wrFreezeAmount, wrExtendCalc,
@@ -15625,6 +15750,8 @@ var VM = new Vue({
     fundRecharge: [], fundFlows: [],
     fundMethods: FUND_METHODS, fundAccounts: FUND_ACCOUNTS, fundFlowKinds: FUND_FLOW_KINDS, fundFlowStates: FUND_FLOW_STATES,
     fundRechargeDlg: { visible: false, method: 'alipay', amount: null }, fjBankAcct: FJ_BANK_ACCT, kfQrSrc: fundKfQrSvg(),
+    // 支付宝充值扫码支付弹框（点「确认」生成待支付充值单后弹出）
+    fundPayQrDlg: { visible: false, row: {} }, fundAlipayQrSrc: fundAlipayQrSvg(),
     fundFlowDetail: { visible: false, row: {}, chain: [], sum: { freeze: 0, settle: 0, back: 0, frozen: 0 }, status: '', wr: {} },
     fundRechargeFilter: fundBlankRechargeFilter(), fundRechargeQuery: fundBlankRechargeFilter(),
     fundFlowFilter: fundBlankFlowFilter(), fundFlowQuery: fundBlankFlowFilter(), fundFlowPickerOptions: fundFlowRangeShortcuts(),
